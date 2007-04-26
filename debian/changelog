@@ -1,3 +1,11 @@
+tcosmonitor (0.0.15.4) unstable; urgency=low
+
+  * tcos-devices.py, udev/tcos-udevd.sh , udev/050_tcos_devices.rules
+    Change udev to control all SUBSYSTEM=="block" events
+    Delete duplicate events, kernel do 4 umount and 1 mount event for mounting a floppy
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 25 Oct 2006 17:24:14 +0200
+
 tcosmonitor (0.0.15.3) unstable; urgency=low
 
   * TcosPersonalize: run as root only
