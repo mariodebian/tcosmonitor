@@ -440,11 +440,15 @@ class LocalData:
         hlogged=int(hdate) - int(hlast)
         mlogged=int(mdate) - int(mlast)
         print_debug ("TimeLogged() DIFF user=%s date=%s" %(hourlast, hourdate) )
+        hdays=""
         if mlogged < 1:
             hlogged=hlogged-1
             mlogged=mlogged+60
+        if hlogged < 0:
+            hdays="1d "
+            hlogged=hlogged+24
         print_debug ("TimeLogged() hour=%02d minute=%02d" %(hlogged, mlogged) )
-        return "%02d:%02d" %(hlogged, mlogged)
+        return "%s%02d:%02d" %(hdays, hlogged, mlogged)
         
 if __name__ == '__main__':
     local=LocalData (None)
