@@ -1,3 +1,11 @@
+tcosmonitor (0.0.15.9) unstable; urgency=low
+
+  * Fix minor problem in import headers in shared.py file.
+  * Fix version retrieve error (disable split in mayor, med and minor)
+  * Update web and translation.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 28 Nov 2006 21:36:10 +0100
+
 tcosmonitor (0.0.15.8) unstable; urgency=low
 
   * xmlrpc/Makefile

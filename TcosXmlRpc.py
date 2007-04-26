@@ -255,9 +255,10 @@ class TcosXmlRpc:
             return self.version
         try:
             self.version=self.tc.tcos.version()
-            mayor, med, minor = self.version.split('.')
-            if minor < 10:
-                shared.info_msg ( "Please update tcosxmlrpc terminal version, need 0.0.11, have %s" %(self.version) )
+            #print_debug("tcos version \"%s\"" %(self.version) )
+            #mayor, med, minor = self.version.split('.')
+            #if int(minor) < 10:
+            #    shared.info_msg ( "Please update tcosxmlrpc terminal version, need 0.0.11, have %s" %(self.version) )
             return self.version
         except:
             return None

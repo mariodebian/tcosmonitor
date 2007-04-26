@@ -349,6 +349,8 @@ class TcosActions:
             tcos_vars["hostname"]=self.main.localdata.GetHostname(ip)
             tcos_vars["version"]=self.main.xmlrpc.GetVersion()
 
+            #print_debug("tcos version: %s" %(tcos_vars["version"]) )
+
             if not tcos_vars["version"]:
                 tcos_vars["version"]=_("unknow")
         

@@ -36,8 +36,9 @@ have_display=False
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
         have_display=True
-        #import pygtk
-        #pygtk.require('2.0')
+        import pygtk
+        pygtk.require('2.0')
+        import gtk
         #from gtk import *
         #import gtk.glade
 
@@ -46,10 +47,10 @@ PACKAGE = "tcosmonitor"
 
 
 
-# verion
+# version
 version="0.0.15"
-website="http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor"
-website_label=_("TcosMonitor wiki page")
+website="http://cls-tcos.forja.rediris.es"
+website_label=_("TcosMonitor web page")
 
 
 # default debug value (overwrite with --debug or -d)
