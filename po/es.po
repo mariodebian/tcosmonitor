@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-19 11:22+0100\n"
-"PO-Revision-Date: 2006-12-19 11:23+0100\n"
+"POT-Creation-Date: 2006-12-20 16:30+0100\n"
+"PO-Revision-Date: 2006-12-20 16:31+0100\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +126,7 @@ msgstr ""
 msgid "Screenshot size:"
 msgstr "Tamaño de captura de pantalla"
 
-#: tcosmonitor.glade:743
+#: tcosmonitor.glade:743 tcosmonitor.glade:815
 msgid "% Size of screnshot."
 msgstr "%s de tamaño de captura de pantalla"
 
@@ -134,19 +134,23 @@ msgstr "%s de tamaño de captura de pantalla"
 msgid "Show system process"
 msgstr "Mostrar procesos del sistema"
 
-#: tcosmonitor.glade:793
+#: tcosmonitor.glade:787
+msgid "Mini screenshot size:"
+msgstr "Tamaño de mini capturas de pantalla"
+
+#: tcosmonitor.glade:843
 msgid "General settings"
 msgstr "Configuración general"
 
-#: tcosmonitor.glade:826
+#: tcosmonitor.glade:876
 msgid "TcosXmlRpc username"
 msgstr "Usuario TcosXmlRpc"
 
-#: tcosmonitor.glade:875
+#: tcosmonitor.glade:925
 msgid "TcosXmlRpc password"
 msgstr "Contraseña TcosXmlRpc"
 
-#: tcosmonitor.glade:924
+#: tcosmonitor.glade:974
 msgid ""
 "<b>NOTE:</b>\n"
 "This values are needed to do some actions\n"
@@ -177,105 +181,105 @@ msgstr ""
 "las instrucciones. Esto generará un archivo tcospasswd con los datos "
 "preguntados.\n"
 
-#: tcosmonitor.glade:971
+#: tcosmonitor.glade:1021
 msgid "Authentication "
 msgstr "Autenticación"
 
-#: tcosmonitor.glade:1001
+#: tcosmonitor.glade:1051
 msgid "<b>Info avalaible from tcosxmlrpc</b>"
 msgstr "<b>Información disponible de tcosxmlrpc</b>"
 
-#: tcosmonitor.glade:1027
+#: tcosmonitor.glade:1077
 msgid "Tcos general info"
 msgstr "Información general de Tcos"
 
-#: tcosmonitor.glade:1046
+#: tcosmonitor.glade:1096
 msgid "Cpu info"
 msgstr "Información de la CPU"
 
-#: tcosmonitor.glade:1065
+#: tcosmonitor.glade:1115
 msgid "Kernel and modules info"
 msgstr "Información del kernel y módulos"
 
-#: tcosmonitor.glade:1084
+#: tcosmonitor.glade:1134
 msgid "PCI bus info"
 msgstr "Información bus PCI"
 
-#: tcosmonitor.glade:1103
+#: tcosmonitor.glade:1153
 msgid "Ram and swap info"
 msgstr "Información de la RAM y SWAP"
 
-#: tcosmonitor.glade:1122
+#: tcosmonitor.glade:1172
 msgid "Process info"
 msgstr "Información de procesos"
 
-#: tcosmonitor.glade:1141
+#: tcosmonitor.glade:1191
 msgid "Network info"
 msgstr "Información de la red"
 
-#: tcosmonitor.glade:1160 TcosActions.py:538
+#: tcosmonitor.glade:1210 TcosActions.py:538
 msgid "Xorg info"
 msgstr "Información de Xorg"
 
-#: tcosmonitor.glade:1179
+#: tcosmonitor.glade:1229
 msgid "Sound server info"
 msgstr "Información del servidor de sonido"
 
-#: tcosmonitor.glade:1207
+#: tcosmonitor.glade:1257
 msgid "Avalaible info"
 msgstr "Información disponible"
 
-#: tcosmonitor.glade:1290
+#: tcosmonitor.glade:1340
 msgid "GPL"
 msgstr "GPL"
 
-#: tcosmonitor.glade:1291
+#: tcosmonitor.glade:1341
 msgid "A thin client network monitor"
 msgstr "Un monitor de clientes ligeros"
 
-#: tcosmonitor.glade:1297
+#: tcosmonitor.glade:1347
 msgid "translator-credits"
 msgstr ""
 "Mario Izquierdo (mariodebian)\n"
 "<mariodebian@gmail.com>"
 
-#: tcosmonitor.glade:1304
+#: tcosmonitor.glade:1354
 msgid "Question"
 msgstr "Pregunta"
 
-#: tcosmonitor.glade:1328
+#: tcosmonitor.glade:1378
 msgid "<b>Run app in unknow host</b>"
 msgstr "<b>Ejecutar aplicación en equipo desconicido</b>"
 
-#: Initialize.py:304
+#: Initialize.py:306
 msgid "Hostname"
 msgstr "Equipo"
 
-#: Initialize.py:310
+#: Initialize.py:312
 msgid "Ip address"
 msgstr "Dirección IP"
 
-#: Initialize.py:316
+#: Initialize.py:318
 msgid "Username"
 msgstr "Usuario"
 
-#: Initialize.py:322
+#: Initialize.py:324
 msgid "Active"
 msgstr "Activo"
 
-#: Initialize.py:327
+#: Initialize.py:329
 msgid "Logged"
 msgstr "Logueado"
 
-#: Initialize.py:332
+#: Initialize.py:334
 msgid "Screen Blocked"
 msgstr "Bloqueado"
 
-#: Initialize.py:337
+#: Initialize.py:339
 msgid "Num of process"
 msgstr "Núm. de procesos"
 
-#: Initialize.py:343
+#: Initialize.py:345
 msgid "Time log in"
 msgstr "Tiempo dentro"
 
@@ -305,125 +309,125 @@ msgstr "Encontrados %d equipos"
 msgid "TcosMonitor web page"
 msgstr "Página web de TcosMonitor"
 
-#: shared.py:172
+#: shared.py:173
 msgid "Refresh terminal info"
 msgstr "Actualizar información del terminal"
 
-#: shared.py:173
+#: shared.py:174
 msgid "Clean info about terminal"
 msgstr "Limpiar información del terminal"
 
-#: shared.py:174
+#: shared.py:175
 msgid "Reboot"
 msgstr "Reiniciar"
 
-#: shared.py:175
+#: shared.py:176
 msgid "Poweroff"
 msgstr "Apagar"
 
-#: shared.py:176
+#: shared.py:177
 msgid "Lock screen"
 msgstr "Bloquear pantalla"
 
-#: shared.py:177
+#: shared.py:178
 msgid "Unlock screen"
 msgstr "Desbloquear pantalla"
 
-#: shared.py:178
+#: shared.py:179
 msgid "Connect to remote screen (iTALC)"
 msgstr "Conectar a la pantalla remota (iTALC)"
 
-#: shared.py:179
+#: shared.py:180
 msgid "Connect to remote screen (VNC)"
 msgstr "Conectar a la pantalla remota (VNC)"
 
-#: shared.py:180
+#: shared.py:181
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
-#: shared.py:181
+#: shared.py:182
 msgid "Give a remote xterm"
 msgstr "Ejecutar un terminal xterm en el cliente"
 
-#: shared.py:182
+#: shared.py:183
 msgid "Configure this host"
 msgstr "Configurar este equipo"
 
-#: shared.py:183
+#: shared.py:184
 msgid "Logout client"
 msgstr "Desconectar cliente"
 
-#: shared.py:184
+#: shared.py:185
 msgid "Restart X session with new settings"
 msgstr "Reiniciar sesión X con la nueva configuración"
 
-#: shared.py:185
+#: shared.py:186
 msgid "Exec app on user display"
 msgstr "Ejecutar aplicación en pantalla de usuario"
 
-#: shared.py:186
+#: shared.py:187
 msgid "Send a text message to user"
 msgstr "Enviar un mensaje de texto al usuario"
 
-#: shared.py:187
+#: shared.py:188
 msgid "Show running apps of this client"
 msgstr "Mostrar aplicaciones ejecutadas por este cliente"
 
-#: shared.py:194
+#: shared.py:195
 msgid "Reboot all clients"
 msgstr "Reiniciar todos los clientes"
 
-#: shared.py:195
+#: shared.py:196
 msgid "Poweroff all clients"
 msgstr "Apagar todos los clientes"
 
-#: shared.py:196
+#: shared.py:197
 msgid "Lock all screens"
 msgstr "Bloquear todas las pantallas"
 
-#: shared.py:197
+#: shared.py:198
 msgid "Unlock all screens"
 msgstr "Desbloquear todas las pantallas"
 
-#: shared.py:198
+#: shared.py:199
 msgid "Logout clients"
 msgstr "Desconectar todos los clientes"
 
-#: shared.py:199
+#: shared.py:200
 msgid "Restart X session of all clients"
 msgstr "Reiniciar sesión X de todos los clientes"
 
-#: shared.py:200
+#: shared.py:201
 msgid "Exec same app in all connected users"
 msgstr "Ejecutar misma aplicación en todos los usuarios conectados"
 
-#: shared.py:201
+#: shared.py:202
 msgid "Send a text message to all connected users"
 msgstr "Enviar un mensaje de texto a todos los usuarios conectados"
 
-#: shared.py:202
+#: shared.py:203
 msgid "Enter demo mode, all connected users see my screen"
 msgstr "Entrar en modo demostración, todos los usuarios ven mi pantalla"
 
-#: shared.py:203
+#: shared.py:204
 msgid "Exit demo mode"
 msgstr "Salir del modo demostración"
 
-#: shared.py:204
+#: shared.py:205
 msgid "Capture All clients screens"
 msgstr "Capturar todas las pantallas"
 
-#: shared.py:347
+#: shared.py:348
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr "PREGUNTA: %(txt)s, RESPUESTA %(response)s"
 
-#: shared.py:359
+#: shared.py:360
 #, python-format
 msgid "INFO: %s"
 msgstr "INFO: %s"
 
-#: shared.py:370
+#: shared.py:371
 #, python-format
 msgid "ERROR: %s"
 msgstr "ERROR: %s"
@@ -1046,81 +1050,89 @@ msgstr "Ejecutandose en modo demostración"
 msgid "Demo mode off."
 msgstr "Modo demostración desactivado."
 
-#: TcosActions.py:1179
+#: TcosActions.py:1174
+msgid "Screenshots of all hosts"
+msgstr "Captura de pantalla de todos los equipos"
+
+#: TcosActions.py:1193
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr "Realizando acción \"%(action)s\" en equipo %(ip)s..."
 
-#: TcosActions.py:1205
+#: TcosActions.py:1228
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr "Acción \"%(action)s\" terminada en %(ip)s"
 
-#: TcosActions.py:1254
+#: TcosActions.py:1235
+msgid "Waiting for screenshots..."
+msgstr "Esperando a las capturas..."
+
+#: TcosActions.py:1281
 msgid "Trying to order terminal to do a screenshot..."
 msgstr "Intentando mandar al terminal que se haga una captura de pantalla"
 
-#: TcosActions.py:1259
+#: TcosActions.py:1286
 msgid "Can't make screenshot, connection error"
 msgstr "No se pudo hacer una captura de pantalla, error de conexión"
 
-#: TcosActions.py:1265
+#: TcosActions.py:1292
 msgid "Get another screenshot"
 msgstr "Hacer otra captura de pantalla"
 
-#: TcosActions.py:1279
+#: TcosActions.py:1306
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr "Captura de pantalla de <span style='font-style: italic'>%s</span>"
 
-#: TcosActions.py:1288
+#: TcosActions.py:1315
 #, python-format
 msgid "Screenshot of %s"
 msgstr "Captura de pantalla de %s"
 
-#: TcosActions.py:1293
+#: TcosActions.py:1320
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr "Captura de pantalla de %s hecha."
 
-#: TcosActions.py:1312
+#: TcosActions.py:1339
 msgid "User not connected, no processes."
 msgstr "Usuario no conectado, no existen procesos."
 
-#: TcosActions.py:1321
+#: TcosActions.py:1348
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr "Procesos ejecutados por el usuario \"%s\":"
 
-#: TcosActions.py:1325
+#: TcosActions.py:1352
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 "AVISO: Hay varios procesos del sistema ocultos. Puede activarlos en la "
 "ventana de Preferencias."
 
-#: TcosActions.py:1330
+#: TcosActions.py:1357
 msgid "Pid"
 msgstr "Pid"
 
-#: TcosActions.py:1331
+#: TcosActions.py:1358
 msgid "Process command"
 msgstr "Comando del proceso"
 
-#: TcosActions.py:1338
+#: TcosActions.py:1365
 msgid "Kill this process"
 msgstr "Matar este proceso"
 
-#: TcosActions.py:1447
+#: TcosActions.py:1474
 msgid "Actions for selected host"
 msgstr "Acciones para el equipo seleccionado"
 
-#: TcosActions.py:1453
+#: TcosActions.py:1480
 #, python-format
 msgid "Actions for %s"
 msgstr "Acciones para %s"
 
-#: TcosActions.py:1489
+#: TcosActions.py:1516
 msgid "Actions for all hosts"
 msgstr "Acciones para todos los equipos"
 
