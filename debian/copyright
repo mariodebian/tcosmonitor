@@ -1,0 +1,49 @@
+This package was debianized by Mario Izquierdo (mariodebian) <mariodebian@gmail.com> on
+Sat, 14 Oct 2005 10:24:07 +0200.
+
+It was created by Mario Izquierdo (mariodebian)
+       mariodebian@gmail.com
+
+
+License of TcosMonitor:
+
+   This package is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; version 2 dated June, 1991.
+
+   This package is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this package; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301,
+   USA.
+
+On Debian systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL'.
+
+
+  Some parts are based on other works:
+    ping.py
+       High based on yetist [1], I have added a second
+       class named PingPort writen by me.
+         (don't know license of it, japanesse page)
+
+    xmlrpc/hex2ascii.c
+       Based on http://www.bigbold.com/snippets/posts/show/2073
+       this is a small tool to convert an HEX string into ASCII
+       used by TCOS thin client when DHCP server is configured
+       with no static MAC.
+        (web says:
+          "Snippets is a public source code repository."
+            I suppose that I can use without problems )
+
+
+    TcosDbus.py class
+        Based on dbus bindings of Student-Control-Center of Ubuntu [2]
+           GPL Copyright Holder: Oliver Grawert <ogra@ubuntu.com>
+
+[1] http://www.osprg.org/modules/newbb/viewtopic.php?forum=3&post_id=487
+[2] http://people.ubuntu.com/~ogra/bzr-archive/student-control-panel-0.1/

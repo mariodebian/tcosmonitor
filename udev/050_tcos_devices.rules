@@ -1,0 +1,8 @@
+# writing udev rules
+# http://reactivated.net/writing_udev_rules.html
+#
+# This rule exec a script to save some udev env vars in a tmp file
+#
+
+KERNEL=="sd*",                    RUN+="/sbin/tcos-udevd.sh"
+

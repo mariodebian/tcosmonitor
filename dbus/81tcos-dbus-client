@@ -1,0 +1,24 @@
+# $Id:$
+# Startup script for tcos-dbus-client
+#
+
+DISPLAY_HOST=$(echo $DISPLAY| awk -F ":" '{print $1}')
+
+if [ "x${DISPLAY_HOST}" != "x" ]; then
+  # export PulseAudio server
+  export PULSE_SERVER="${DISPLAY_HOST}"
+  
+  # load spanish kbmap
+  if [ -x /usr/bin/xmodmap ]; then
+   xmodmap /usr/share/xmodmap/xmodmap.es
+  fi
+
+  # launch tcos-dbus-client 
+  tcos-dbus-client &
+  
+  # launch tcos-devices as daemon mode
+  #[ -x /usr/bin/tcos-devices ] && /usr/bin/tcos-devices --daemon 2>&1 >> /tmp/${DISPLAY_HOST}-devices.log &
+fi
+
+
+

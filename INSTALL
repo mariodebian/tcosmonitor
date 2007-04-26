@@ -1,0 +1,36 @@
+
+
+
+  If you can, better use debian package
+
+
+  if not using debian/ubuntu:
+
+Requirements:
+  * python2.4
+  * python2.4 xml libs
+  * dbus and python-dbus
+  * libxmlrpc-c3-dev
+  * libxmlrpc-c3
+  * busybox static bin placed on busybox dir
+      (you can donwload and uncompress debian package,
+       see busybox/Makefile for commands)
+
+  # make
+  # make install 
+
+  Then install your thin client arquitecture bindings:
+
+  PXES
+  # make install-pxes(VERSION)
+  VERSION could be 1.0,  1.1, or 1.2
+
+  LTSP
+  (installed on /opt/ltsp/ if not make a link, or move to it)
+  # make install-ltsp
+
+  TCOS
+  # make install-tcos
+
+
+  Regenerate init images in case of pxes or tcos.

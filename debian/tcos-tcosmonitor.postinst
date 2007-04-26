@@ -1,0 +1,13 @@
+#!/bin/sh
+
+OLD_FILES="
+ /etc/tcos/hooks-addons/tcosmonitor \
+ /etc/tcos/hooks-addons/tcoshttpd \
+"
+
+for _file in ${OLD_FILES}; do
+  if [ -f ${_file} ] ; then
+    echo "  tcos-tcosmonitor: Deleting deprecated ${_file}"
+    rm -f ${_file}
+  fi
+done

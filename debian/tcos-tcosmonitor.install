@@ -1,0 +1,14 @@
+etc/tcos/*
+usr/lib/tcos/tcos-udevd.sh
+usr/lib/tcos/tcosxmlrpc
+usr/lib/tcos/lockscreen
+usr/lib/tcos/hex2ascii
+usr/lib/tcos/screenshot.sh
+usr/lib/tcos/soundctl.sh
+usr/lib/tcos/starthttpd.sh
+usr/lib/tcos/getinfo.sh
+usr/lib/tcos/useallmodules.sh
+usr/lib/tcos/devicesctl.sh
+usr/share/initramfs-tools-tcos/hooks-addons/tcosmonitor
+usr/share/tcosmonitor/xmlrpc/*
+

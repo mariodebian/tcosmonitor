@@ -1,0 +1,244 @@
+# -*- coding: UTF-8 -*-
+##########################################################################
+# TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
+#
+#
+# Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+###########################################################################
+
+import shared
+import os, sys
+from os.path import isdir, join
+#import ConfigParser
+from time import time, sleep
+
+
+def print_debug(txt):
+    if shared.debug:
+        print "%s::%s" %(__name__, txt)
+
+def crono(start, txt):
+    print_debug ("crono(), %s get %f seconds" %(txt, (time() - float(start))) )
+    return
+
+class TcosConf:
+    def __init__(self, main, openfile=True):
+        print_debug ( "__init__()" )
+        self.main=main
+        self.FirstRunning=False
+        self.allnetworkinterfaces=[]
+        self.GetAllNetworkInterfaces()
+        
+        # reset memory data
+        self.data=""
+        #print_debug("reset() reset self.conf...")
+        self.vars=None
+        self.vars=[]
+        
+        if openfile:
+            self.CheckConfFile()
+            self.reset()
+        else:
+            print_debug ( "__init__() not opening conf file" )
+        
+        #self.CheckConfFile()
+        #
+        #print self.vars
+        
+    def reset(self):
+        print_debug("reset() reset data...")
+        # reset memory data
+        self.data=""
+        #print_debug("reset() reset self.conf...")
+        self.vars=None
+        self.vars=[]
+        #print_debug("reset() reset self.vars...")
+        self.OpenFile()
+    
+    def OpenFile(self):
+        self.CheckConfFile()
+        conf=None
+        conf=[]
+        print_debug("open_file() reading data from \"%s\"..." \
+                            %(shared.config_file) )
+        fd=file(shared.config_file, 'r')
+        self.data=fd.readlines()
+        fd.close()
+        for line in self.data:
+            if line != '\n':
+                line=line.replace('\n', '')
+                conf.append(line)
+        print_debug ( "OpenFile() Found %d vars" %( len(conf)) )
+        if len(conf) <1:
+            print_debug ( "OpenFile() FILE IS EMPTY!!!" )
+            return
+        for i in range( len(conf) ):
+            if conf[i].find("#") != 0:
+                #print_debug ( "OpenFile() conf=" + conf[i] )
+                (var,value)=conf[i].split("=", 1)
+                self.vars.append([var,value])
+        return
+    
+    def CheckConfFile(self):
+        if not os.path.isfile(shared.config_file):
+            print_debug ( "CheckConfFile() %s not exists" %(shared.config_file) )
+            self.CreateConfFile()
+        
+    def CreateConfFile(self):
+        print_debug ( "CreateConfFile()" )
+        # save this into file
+        fd=file(shared.config_file, 'w')
+        #fd.write("[main]\n")
+        for item in shared.DefaultConfig:
+            key=item[0]
+            value=item[1]
+            print_debug ("key=%s value=%s" %(key, value))
+            fd.write("%s=%s\n" %(key, value) )
+        fd.close
+        # make chmod 600
+        os.system ("chmod 600 %s" %(shared.config_file) )
+        self.FirstRunning=True
+        
+    def SetVar(self, varname, value):
+        print_debug ( "SetVar(%s)=\"%s\"" %(varname, value) )
+        self.newdata=None
+        self.newdata=[]
+        for i in range(len(self.vars)):
+            if varname == self.vars[i][0]:
+                print_debug ( "changing value %s to %s of %s" \
+                                %(self.vars[i][1], value, varname) )
+                self.vars[i][1]="%s" %(value)
+            
+
+    def SaveToFile(self):
+        print_debug ( "SaveToFile() len(self.vars)=%d" %( len(self.vars) ) )
+        if len(self.vars) < 1:
+            print_debug ( "SaveToFile() self.vars is empty" )
+            return
+        
+        fd=file(shared.config_file, 'w')
+        for i in range(len(self.vars)):
+            fd.write("%s=%s\n" %(self.vars[i][0], self.vars[i][1]))
+        fd.close
+        os.system ("chmod 600 %s" %(shared.config_file) )
+        print_debug ( "SaveToFile() new settings SAVED!!!")   
+        return
+    
+    def GetVar(self, varname):
+        for i in range( len(self.vars) ):
+            if self.vars[i][0].find(varname) == 0:
+                if self.vars[i][1] == "1":
+                    return 1
+                return self.vars[i][1]
+        # search for new var
+        for _var in shared.DefaultConfig:
+            if _var[0] == varname:
+                print_debug ( "GetVar() NEW VAR FOUND, %s, adding to list \"\""\
+                                                 %(varname) )
+                self.vars.append([_var[0],_var[1]])
+                return _var[1]
+        print_debug ( "GetVar() not found, %s, returning \"\"" %(varname) )
+        return ""
+        
+    def SaveSettings(self):
+        """
+        save settings
+        """
+        start=time()
+        print_debug ( "SaveSettings() INIT" )
+        self.SetVar("xmlrpc_username", "" + self.main.pref_xmlrpc_username.get_text() )
+        self.SetVar("xmlrpc_password", "" + self.main.pref_xmlrpc_password.get_text() )
+        self.SetVar("refresh_interval", float(self.main.pref_spin_update.get_value()) )
+        
+        self.SetVar("scrot_size", int(self.main.pref_scrotsize.get_value()) )
+        
+        self.SetVar("cache_timeout", float(self.main.pref_cache_timeout.get_value()) )
+        
+        self.SetVar("tcosmonitorversion", shared.version )
+        
+        self.read_checkbox(self.main.pref_populatelistatstartup, "populate_list_at_startup")
+        self.read_checkbox(self.main.pref_cybermode, "work_as_cyber_mode")
+        self.read_checkbox(self.main.pref_systemprocess, "systemprocess")
+            
+        if self.main.pref_combo_scan_method.get_active() == 0:
+            self.SetVar("scan_network_method", "netstat")
+        else:
+             self.SetVar("scan_network_method", "ping")
+        
+        self.read_checkbox(self.main.pref_tcosinfo, "tcosinfo")
+        self.read_checkbox(self.main.pref_kernelmodulesinfo, "kernelmodulesinfo")
+        self.read_checkbox(self.main.pref_pcibusinfo, "pcibusinfo")
+        self.read_checkbox(self.main.pref_ramswapinfo, "ramswapinfo")
+        self.read_checkbox(self.main.pref_processinfo, "processinfo")
+        self.read_checkbox(self.main.pref_networkinfo, "networkinfo")
+        self.read_checkbox(self.main.pref_tcosinfo, "tcosinfo")
+        self.read_checkbox(self.main.pref_cpuinfo, "cpuinfo")
+        self.read_checkbox(self.main.pref_xorginfo, "xorginfo")
+        self.read_checkbox(self.main.pref_soundserverinfo, "soundserverinfo")
+                    
+        # read all combo values and save text
+        self.SetVar("network_interface", \
+                self.read_select_value(self.main.combo_network_interfaces, "network_interface") )
+                
+                
+        self.SaveToFile()
+        crono(start, "SaveSettings()" )        
+    
+    def read_checkbox(self, widget, varname):
+        if widget.get_active() == 1:
+            print_debug ( "read_checkbox(%s) CHECKED" %(widget.name) )
+            self.SetVar(varname, 1)
+        else:
+            print_debug ( "read_checkbox(%s) UNCHECKED" %(widget.name) )
+            self.SetVar(varname, 0)
+    
+    def read_select_value(self, widget, varname):
+        selected=-1
+        try:
+            selected=widget.get_active()
+        except:
+            print_debug ( "TcosGui::read_select() ERROR reading %s" %(varname) )
+        #FIXME ALERT
+        model=widget.get_model()
+        value=model[selected][0]
+        print_debug ( "TcosGui::read_select() reading %s=%s" %(varname, value) )
+        return value
+            
+    def GetAllNetworkInterfaces(self):
+        #print_debug ( "GetAllNetInterfaces() init" )
+        self.allnetworkinterfaces=None
+        self.allnetworkinterfaces=[]
+        d="/sys/class/net/"
+        for sub in os.listdir(d):
+            if isdir(join(d, sub)):
+                if sub != "lo" and sub != "sit0":
+                    self.allnetworkinterfaces.append(sub)
+        print_debug ( "GetAllNetworkInterfaces() %s" %( self.allnetworkinterfaces ) )
+        return self.allnetworkinterfaces
+        
+if __name__ == '__main__':
+    conf = TcosConf(None)
+    
+    conf.SetVar("xmlrpc_username", "user2")
+    print_debug ( conf.vars )
+    conf.SaveToFile()
+    
+    #conf.SetVar("xmlrpc_username", "user")
+    #print conf.vars
+    #conf.SaveToFile()

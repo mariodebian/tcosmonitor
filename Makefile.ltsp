@@ -1,0 +1,135 @@
+# Makefile for ltsp-tcosmonitor
+#
+#  Avoid duplicated files with this script
+#  for _file in $(find -type f); do ls /opt/lts/i386/$_file >/dev/null 2>&1 && echo SI ; done
+#
+
+
+# ltsp dir
+LTSP=/opt/ltsp/i386
+
+all:
+	#none
+
+#install: dirs tcosxmlrpc screenshots utils tserver
+install: dirs tcosxmlrpc screenshots utils busybox
+
+
+dirs:
+	# pxes dirs
+	install -d $(DESTDIR)/$(LTSP)/bin
+	install -d $(DESTDIR)/$(LTSP)/sbin
+	install -d $(DESTDIR)/$(LTSP)/usr/bin
+	install -d $(DESTDIR)/$(LTSP)/usr/sbin
+	install -d $(DESTDIR)/$(LTSP)/etc/rc.d/
+	install -d $(DESTDIR)/$(LTSP)/usr/lib
+
+tcosxmlrpc:
+	# add some apps
+	install -m 755 lockscreen/lockscreen  $(DESTDIR)/$(LTSP)/usr/bin/lockscreen
+#	install -m 755 xmlrpc/tcosmd5         $(DESTDIR)/$(LTSP)/usr/bin/tcosmd5
+	install -m 755 xmlrpc/tcosxmlrpc      $(DESTDIR)/$(LTSP)/usr/bin/tcosxmlrpc
+
+	# files of tcosxmlrpc
+	install -m 644 xmlrpc/var/etc/mime.types $(DESTDIR)/$(LTSP)/etc/
+	install -m 644 xmlrpc/var/etc/abyss.conf $(DESTDIR)/$(LTSP)/etc/
+
+	# configure /etc/abyss.conf
+	# abs path of mime.types
+	@sed -i s/"etc"/"\/etc"/g $(DESTDIR)/$(LTSP)/etc/abyss.conf
+
+	# abs path of var
+	@sed -i s/"var"/"\/var"/g $(DESTDIR)/$(LTSP)/etc/abyss.conf
+
+	# FIXME configure user THIS IS VERY DANGEROUS!!!!
+	@sed -i s/"nobody"/"root"/g $(DESTDIR)/$(LTSP)/etc/abyss.conf
+
+#	# create user:pass file
+#	@echo "Creating user:pass file"
+#	@echo "user:$(shell xmlrpc/tcosmd5 pass)" > $(DESTDIR)/$(LTSP)/etc/tcospasswd
+
+
+	# tcosxmlrpc libs
+	install -m 644 /usr/lib/libxmlrpc_abyss_server.so.3 $(DESTDIR)/$(LTSP)/usr/lib/
+	install -m 644 /usr/lib/libxmlrpc_abyss.so.3        $(DESTDIR)/$(LTSP)/usr/lib/
+	install -m 644 /usr/lib/libxmlrpc.so.3              $(DESTDIR)/$(LTSP)/usr/lib/
+	install -m 644 /usr/lib/libxmlrpc_xmlparse.so.3     $(DESTDIR)/$(LTSP)/usr/lib/
+	install -m 644 /usr/lib/libxmlrpc_xmltok.so.3       $(DESTDIR)/$(LTSP)/usr/lib/
+	#install -m 644 /lib/libcrypt.so.1                   $(DESTDIR)/$(LTSP)/lib/
+
+	# init scripts
+	install -m 755 ltsp/ltsp.startxmlrpc $(DESTDIR)/$(LTSP)/etc/rc.d/tcosxmlrpc
+	install -m 755 ltsp/ltsp.configurexorg $(DESTDIR)/$(LTSP)/sbin/configurexorg
+
+	# add some scripts
+	install -m 755 xmlrpc/sh/screenshot.sh    $(DESTDIR)/$(LTSP)/sbin/screenshot.sh
+	install -m 755 xmlrpc/sh/getinfo.sh       $(DESTDIR)/$(LTSP)/sbin/getinfo.sh
+	install -m 755 xmlrpc/sh/restartx.sh       $(DESTDIR)/$(LTSP)/sbin/restartx
+
+busybox:
+	install -m 755 busybox/busybox $(DESTDIR)/$(LTSP)/bin/busybox-static
+	touch $(DESTDIR)/$(LTSP)/etc/busybox.conf
+	cd $(DESTDIR)/$(LTSP)/bin/ && ln -s busybox-static awk
+	cd $(DESTDIR)/$(LTSP)/bin/ && ln -s busybox-static httpd
+	cd $(DESTDIR)/$(LTSP)/bin/ && ln -s busybox-static which
+	install -m 755 /sbin/start-stop-daemon $(DESTDIR)/$(LTSP)/sbin/start-stop-daemon
+	install -m 755 /usr/bin/seq                $(DESTDIR)/$(LTSP)/usr/bin/seq
+
+	# configure httpd2.conf
+	install -m 644 xmlrpc/var/etc/httpd2.conf $(DESTDIR)/$(LTSP)/etc/httpd2.conf
+	install -d                                $(DESTDIR)/$(LTSP)/var/www
+
+utils:
+	# need awk and start-stop-daemon or change xmlrpc/*.h awk for cut (not work on all)
+#	install -m 755 /usr/bin/awk            $(DESTDIR)/$(LTSP)/bin/awk
+#	install -m 755 /sbin/start-stop-daemon $(DESTDIR)/$(LTSP)/bin/start-stop-daemon
+
+	# which wrapper
+#	install -m 755 ltsp/ltsp.which.sh    $(DESTDIR)/$(LTSP)/bin/which
+
+
+
+
+	
+screenshots:
+	# SCROT package
+	install -m 755 /usr/bin/scrot            $(DESTDIR)/$(LTSP)/usr/bin/
+	install -m 644 /usr/lib/libgiblib.so.1   $(DESTDIR)/$(LTSP)/usr/lib/
+	install -m 644 /usr/lib/libImlib2.so.1   $(DESTDIR)/$(LTSP)/usr/lib/
+	install -m 644 /usr/lib/libfreetype.so.6 $(DESTDIR)/$(LTSP)/usr/lib/
+	install -m 644 /usr/lib/libXdmcp.so.6    $(DESTDIR)/$(LTSP)/usr/lib/
+
+	install -d $(DESTDIR)/$(LTSP)/usr/lib/imlib2/filters/
+	install -d $(DESTDIR)/$(LTSP)/usr/lib/imlib2/loaders/
+	install -m 644 /usr/lib/imlib2/loaders/png.so $(DESTDIR)/$(LTSP)/usr/lib/imlib2/loaders/
+	install -m 644 /usr/lib/imlib2/loaders/gif.so $(DESTDIR)/$(LTSP)/usr/lib/imlib2/loaders/
+
+tserver:
+	# download mini web server
+	install -d $(DESTDIR)/$(LTSP)/usr/share/html
+	
+	cd ltsp &&\
+	if [ ! -f start_tserver ] ; then \
+	wget -q http://wiki.ltsp.org/twiki/pub/Ltsp/ClientWebserver/start_tserver; fi
+	
+	#cd ltsp &&\
+	#if [ ! -f tserver ] ; then \
+	#wget -q http://wiki.ltsp.org/twiki/pub/Ltsp/ClientWebserver/tserver; fi
+	
+	cd ltsp &&\
+	if [ ! -f nohup ] ; then \
+	wget -q http://wiki.ltsp.org/twiki/pub/Ltsp/ClientWebserver/nohup; fi
+	
+	cd ltsp &&\
+	if [ ! -f index.html ] ; then \
+	wget -q http://wiki.ltsp.org/twiki/pub/Ltsp/ClientWebserver/index.html; fi
+	
+	
+	install -m 755 ltsp/start_tserver $(DESTDIR)/$(LTSP)/etc/rc.d/
+	install -m 755 http-tserver/tserver $(DESTDIR)/$(LTSP)/usr/sbin/
+	install -m 755 ltsp/nohup $(DESTDIR)/$(LTSP)/usr/bin/
+	install -m 644 ltsp/index.html $(DESTDIR)/$(LTSP)/usr/share/html/index.html 
+
+	
+clean:
+	rm -f ltsp/nohup ltsp/index.html ltsp/start_tserver

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+# remove obsolete files
+if [ -f /etc/xdg/autostart/tcos-devices.desktop ]; then
+  rm -f /etc/xdg/autostart/tcos-devices.desktop
+fi
+
+
+#DEBHELPER#

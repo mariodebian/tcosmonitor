@@ -1,0 +1,18 @@
+import gtk
+import pango
+w = gtk.Window()
+w.connect("destroy", lambda w: gtk.main_quit())
+l = gtk.Label("some VERY_BOLD ITALIC text")
+k = gtk.Label("some normal text")
+PLIST = pango.AttrList()
+BOLD = pango.AttrWeight(pango.WEIGHT_HEAVY, 0, -1)
+ITALIC = pango.AttrStyle(pango.STYLE_ITALIC, 0, -1)
+PLIST.insert(BOLD)
+PLIST.insert(ITALIC)
+l.set_property("attributes", PLIST)
+v = gtk.VBox()
+v.pack_start(l)
+v.pack_start(k)
+w.add(v)
+w.show_all()
+gtk.main()

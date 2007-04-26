@@ -1,0 +1,62 @@
+README file for server-utils tool
+
+
+server-utils is a small python tool to allow do some jobs from UNIX cron.
+
+
+=================
+Requisites to run
+=================
+
+First of all need to create a conf file in the user who run cron jobs
+with data to connect to thin client.
+
+Example (user root):
+
+create /root/.tcosmonitor.conf with this data:
+#######################
+xmlrpc_username=__TCOS_USERNAME__
+xmlrpc_password=__TCOS_PASSWORD__
+#######################
+
+Replace __TCOS_USERNAME__  and __TCOS_PASSWORD__ with the correct info
+that you are configured in /etc/tcos/tcos.conf
+
+Be sure to chmod 600 this file, password is in plain text.
+
+
+
+=========================
+Poweroff All TCOS clients
+=========================
+Add this to your /etc/crontab:
+
+55 20   * * 5   root    /usr/sbin/tcos-server-utils --action=message --text="In 5 minutes poweroff all pcs"
+00 21   * * 5   root    /usr/sbin/tcos-server-utils --action=poweroff 
+
+This will poweroff all TCOS thin clients at 21:00 all Fridays
+
+
+
+=========================
+Reboot   All TCOS clients
+=========================
+Add this to your /etc/crontab:
+
+55 14   * * *   root    /usr/sbin/tcos-server-utils --action=message --text="In 5 minutes all pcs will be rebooted"
+00 15   * * *   root    /usr/sbin/tcos-server-utils --action=reboot 
+
+This will reboot all TCOS thin clients at 15:00 all days of week
+
+=============================
+Restart Xorg All TCOS clients
+=============================
+Add this to your /etc/crontab:
+
+00 09   * * *   root    /usr/sbin/tcos-server-utils --action=restartx
+
+This will reboot all TCOS thin clients at 09:00 all days of week
+
+
+
+For more cron info see man crontab

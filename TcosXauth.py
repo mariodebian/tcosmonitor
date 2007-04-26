@@ -1,0 +1,77 @@
+from subprocess import Popen, PIPE, STDOUT
+import os
+import sys
+
+
+import shared
+def print_debug(txt):
+    if shared.debug:
+        print "%s::%s" %("TcosXauth", txt)
+    return
+        
+
+class TcosXauth:
+    def __init__(self, main):
+        self.main=main
+        self.display_host=os.environ["DISPLAY"].split(':')[0]
+        print_debug ( "__init__() display_host=%s" %self.display_host)
+        self.cookie=None
+
+    def init_standalone(self):
+        print_debug ( "init_standalone() " )
+        self.name="TcosXauth"
+        import TcosConf
+        import TcosXmlRpc
+        self.config=TcosConf.TcosConf(self, openfile=False)
+        self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
+
+    def read_cookie(self):
+        if self.cookie != None:
+            # return last cookie (cookie in X session don't change)
+            return self.cookie
+        p = Popen("xauth list", shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
+        readed=p.stdout.read()
+        readed=readed.split('\n')[0:-1]
+        print_debug ( "read_cookie() %s" %readed )
+        for line in readed:
+            if len(line.split()) != 3:
+                continue
+            host, ctype, cookie = line.split()
+            if host.split(':')[0] == self.display_host:
+                self.cookie=cookie
+                return cookie
+        return None
+        
+    def get_cookie(self):
+        return self.read_cookie()
+        
+    def get_hostname(self):
+        return self.display_host
+
+    def set_hostname(self, hostname):
+        self.display_host=hostname
+
+    def test_auth(self):
+        cookie=self.read_cookie()
+        if cookie == None:
+            print_debug ( "test_auth() Can't read cookie" )
+            return
+        self.xmlrpc.newhost(self.display_host)
+        if not self.xmlrpc.connected:
+            print_debug ( "test_auth() No connection" )
+            return
+        returned = self.xmlrpc.tc.tcos.xauth(cookie, self.display_host)
+        if "OK" in returned: return True
+        elif "error" in returned: return False
+
+
+
+if __name__ == "__main__":
+    shared.debug=True
+    app=TcosXauth(None)
+    app.init_standalone()
+    app.set_hostname("tcos27")
+    if app.test_auth():
+        print "Xauth OK"
+    else:
+        print "Xauth error"

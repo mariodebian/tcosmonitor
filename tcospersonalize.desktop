@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=TcosPersonalize
+Name[en_GB]=TcosPersonalize
+Name[es]=TcosPersonalize
+Comment=Configure a simple TCOS thin client
+Comment[en_GB]=Configure a simple TCOS thin client
+Comment[es]=Configurar un terminal TCOS
+Exec=/usr/bin/tcospersonalize $@
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/tcos-icon-32x32.png
+Categories=GNOME;Application;System;Utility;
+GenericName[es_ES]=TcosPersonalize

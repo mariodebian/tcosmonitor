@@ -1,0 +1,1420 @@
+# Spanish translations for tcosmonitor package
+# Traducciones al español para el paquete tcosmonitor.
+# Copyright (C) 2006 THE tcosmonitor'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the tcosmonitor package.
+# <mariodebian@gmail.com>, 2006.
+#  <mariodebian@gmail.com>, 2006.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: tcosmonitor 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-10-09 16:39+0200\n"
+"PO-Revision-Date: 2006-10-09 16:40+0200\n"
+"Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
+"Language-Team: Spanish/Spain <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
+
+#: tcosmonitor.py:228 tcospersonalize.py:378 tcos-volume-manager.py:263
+#: tcos-devices.py:737
+msgid "Exiting"
+msgstr "Saliendo"
+
+#: tcosmonitor.glade:10
+msgid "TcosMonitor"
+msgstr "TcosMonitor"
+
+#: tcosmonitor.glade:42
+msgid "Exit TcosMonitor"
+msgstr "Salir de TcosMonitor"
+
+#: tcosmonitor.glade:43
+msgid "Quit"
+msgstr "Salir"
+
+#: tcosmonitor.glade:59
+msgid "Open preferences dialog"
+msgstr "Abrir diálogo de preferencias"
+
+#: tcosmonitor.glade:60 tcosmonitor.glade:437 tcospersonalize.glade:8
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: tcosmonitor.glade:76
+msgid "Update host list"
+msgstr "Actualizar lista de equipos"
+
+#: tcosmonitor.glade:77
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: tcosmonitor.glade:115
+msgid "Search for host"
+msgstr "Buscar un equipo"
+
+#: tcosmonitor.glade:181
+msgid "Search for hostname, ip address or username"
+msgstr "Buscar por nombre de equipo, dirección ip, o nombre de usuario"
+
+#: tcosmonitor.glade:243
+msgid "Search"
+msgstr "Buscar"
+
+#: tcosmonitor.glade:287
+msgid "About this app"
+msgstr "Acerca de esta aplicación"
+
+#: tcosmonitor.glade:394
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: tcosmonitor.glade:482
+msgid "Show host list on startup"
+msgstr "Mostrar lista de equipos al arranque"
+
+#: tcosmonitor.glade:504
+msgid "Work as cyber mode (not work yet)"
+msgstr "Trabajar en modo cyber (no disponible)"
+
+#: tcosmonitor.glade:525
+msgid "Update host list every (seg)"
+msgstr "Actualizar interfaz cada (seg)"
+
+#: tcosmonitor.glade:554
+msgid ""
+"Update host list every selected seconds.\n"
+"\n"
+"Value=0 disable update."
+msgstr ""
+"Actualizar lista de equipos cada número\n"
+"de segundos seleccionado.\n"
+"\n"
+"Valor=0 deshabilitar actualización."
+
+#: tcosmonitor.glade:578
+msgid "Scan network method"
+msgstr "Método de escaneo de equipos"
+
+#: tcosmonitor.glade:606
+msgid ""
+"Network interface\n"
+"(thin client)"
+msgstr ""
+"Interface de red\n"
+"(clientes ligeros)"
+
+#: tcosmonitor.glade:669
+msgid "Cache timeout (seg)"
+msgstr "Tiempo de vida de la cache (seg)"
+
+#: tcosmonitor.glade:697
+msgid ""
+"Cache some data and connection status during selected seconds.\n"
+"\n"
+"Value=0 disable cache."
+msgstr ""
+"Cachear datos y estado de conexiones durante el número\n"
+"de segundos seleccionado.\n"
+"\n"
+"Valor=0 deshabilitar cache."
+
+#: tcosmonitor.glade:734
+msgid "Screenshot size:"
+msgstr "Tamaño de captura de pantalla"
+
+#: tcosmonitor.glade:762
+msgid "% Size of screnshot."
+msgstr "%s de tamaño de captura de pantalla"
+
+#: tcosmonitor.glade:785
+msgid "Show system process"
+msgstr "Mostrar procesos del sistema"
+
+#: tcosmonitor.glade:812
+msgid "General settings"
+msgstr "Configuración general"
+
+#: tcosmonitor.glade:845
+msgid "TcosXmlRpc username"
+msgstr "Usuario TcosXmlRpc"
+
+#: tcosmonitor.glade:894
+msgid "TcosXmlRpc password"
+msgstr "Contraseña TcosXmlRpc"
+
+#: tcosmonitor.glade:943
+msgid ""
+"<b>NOTE:</b>\n"
+"This values are needed to do some actions\n"
+"on thin client, if you don't use \n"
+"<b>update-tcospasswd</b> app, default\n"
+"user is <b>root</b> and default password is <b>root</b>.\n"
+"\n"
+"To change it you have to edit /etc/tcos/tcos.conf and change\n"
+"TCOS_ROOT_PASSWD var value. Then regenerate images with\n"
+"<b>gentcos</b> or <b>tcosconfig</b>.\n"
+"\n"
+"Using TcosMonitor in PXES or LTSP networks require to use\n"
+"<b>update-tcospasswd</b> script, run it as root, and follow\n"
+"instructions. This will generate a tcospasswd file with asked data.\n"
+msgstr ""
+"<b>NOTA:</b>\n"
+"Estos valores se necesitan para realizar ciertas acciones\n"
+"en el cliente ligero, si no ha usado aún la aplicación\n"
+"<b>update-tcospasswd</b> los valores por defecto son, \n"
+"usuario: <b>root</b> contraseña:<b>root</b>.\n"
+"\n"
+"Para cambiarlos, edite el archivo /etc/tcos/tcos.conf editando\n"
+"la variable TCOS_ROOT_PASSWD y regenere la\n"
+"imagen de arranque con <b>gentcos</b> o use <b>tcosconfig</b>.\n"
+"\n"
+"Si está usando TcosMonitor en una red PXES o LTSP, necesita usar\n"
+"el script <b>update-tcospasswd</b>, ejecútelo como root, y siga\n"
+"las instrucciones. Esto generará un archivo tcospasswd con los datos "
+"preguntados.\n"
+
+#: tcosmonitor.glade:990
+msgid "Authentication "
+msgstr "Autenticación"
+
+#: tcosmonitor.glade:1020
+msgid "<b>Info avalaible from tcosxmlrpc</b>"
+msgstr "<b>Información disponible de tcosxmlrpc</b>"
+
+#: tcosmonitor.glade:1046
+msgid "Tcos general info"
+msgstr "Información general de Tcos"
+
+#: tcosmonitor.glade:1065
+msgid "Cpu info"
+msgstr "Información de la CPU"
+
+#: tcosmonitor.glade:1084
+msgid "Kernel and modules info"
+msgstr "Información del kernel y módulos"
+
+#: tcosmonitor.glade:1103
+msgid "PCI bus info"
+msgstr "Información bus PCI"
+
+#: tcosmonitor.glade:1122
+msgid "Ram and swap info"
+msgstr "Información de la RAM y SWAP"
+
+#: tcosmonitor.glade:1141
+msgid "Process info"
+msgstr "Información de procesos"
+
+#: tcosmonitor.glade:1160
+msgid "Network info"
+msgstr "Información de la red"
+
+#: tcosmonitor.glade:1179 TcosActions.py:513
+msgid "Xorg info"
+msgstr "Información de Xorg"
+
+#: tcosmonitor.glade:1198
+msgid "Sound server info"
+msgstr "Información del servidor de sonido"
+
+#: tcosmonitor.glade:1226
+msgid "Avalaible info"
+msgstr "Información disponible"
+
+#: tcosmonitor.glade:1309
+msgid "GPL"
+msgstr "GPL"
+
+#: tcosmonitor.glade:1310
+msgid "A thin client network monitor"
+msgstr "Un monitor de clientes ligeros"
+
+#: tcosmonitor.glade:1316
+msgid "translator-credits"
+msgstr ""
+"Mario Izquierdo (mariodebian)\n"
+"<mariodebian@gmail.com>"
+
+#: tcosmonitor.glade:1323
+msgid "Question"
+msgstr "Pregunta"
+
+#: tcosmonitor.glade:1347
+msgid "<b>Run app in unknow host</b>"
+msgstr "<b>Ejecutar aplicación en equipo desconicido</b>"
+
+#: Initialize.py:301
+msgid "Hostname"
+msgstr "Equipo"
+
+#: Initialize.py:307
+msgid "Ip address"
+msgstr "Dirección IP"
+
+#: Initialize.py:313
+msgid "Username"
+msgstr "Usuario"
+
+#: Initialize.py:319
+msgid "Active"
+msgstr "Activo"
+
+#: Initialize.py:324
+msgid "Logged"
+msgstr "Logueado"
+
+#: Initialize.py:329
+msgid "Screen Blocked"
+msgstr "Bloqueado"
+
+#: Initialize.py:334
+msgid "Num of process"
+msgstr "Núm. de procesos"
+
+#: Initialize.py:340
+msgid "Time log in"
+msgstr "Tiempo dentro"
+
+#: LocalData.py:37 LocalData.py:56 TcosActions.py:351
+msgid "unknow"
+msgstr "desconocido"
+
+#: ping.py:63
+#, python-format
+msgid "Ping to %s..."
+msgstr "Haciendo ping a %s..."
+
+#: ping.py:72
+msgid "Waiting for pings..."
+msgstr "Esperando a los pings..."
+
+#: ping.py:84
+msgid "No host found"
+msgstr "No se han encontrado equipos"
+
+#: ping.py:91 TcosActions.py:164
+#, python-format
+msgid "Found %d hosts"
+msgstr "Encontrados %d equipos"
+
+#: shared.py:45
+msgid "TcosMonitor wiki page"
+msgstr "Página wiki de TcosMonitor"
+
+#: shared.py:158
+msgid "Refresh terminal info"
+msgstr "Actualizar información del terminal"
+
+#: shared.py:159
+msgid "Clean info about terminal"
+msgstr "Limpiar información del terminal"
+
+#: shared.py:160
+msgid "Reboot"
+msgstr "Reiniciar"
+
+#: shared.py:161
+msgid "Poweroff"
+msgstr "Apagar"
+
+#: shared.py:162
+msgid "Lock screen"
+msgstr "Bloquear pantalla"
+
+#: shared.py:163
+msgid "Unlock screen"
+msgstr "Desbloquear pantalla"
+
+#: shared.py:164
+msgid "Connect to remote screen (iTALC)"
+msgstr "Conectar a la pantalla remota (iTALC)"
+
+#: shared.py:165
+msgid "Connect to remote screen (VNC)"
+msgstr "Conectar a la pantalla remota (VNC)"
+
+#: shared.py:166
+msgid "Screenshot"
+msgstr "Captura de pantalla"
+
+#: shared.py:167
+msgid "Give a remote xterm"
+msgstr "Ejecutar un terminal xterm en el cliente"
+
+#: shared.py:168
+msgid "Configure this host"
+msgstr "Configurar este equipo"
+
+#: shared.py:169
+msgid "Logout client"
+msgstr "Desconectar cliente"
+
+#: shared.py:170
+msgid "Restart X session with new settings"
+msgstr "Reiniciar sesión X con la nueva configuración"
+
+#: shared.py:171
+msgid "Exec app on user display"
+msgstr "Ejecutar aplicación en pantalla de usuario"
+
+#: shared.py:172
+msgid "Send a text message to user"
+msgstr "Enviar un mensaje de texto al usuario"
+
+#: shared.py:173
+msgid "Show running apps of this client"
+msgstr "Mostrar aplicaciones ejecutadas por este cliente"
+
+#: shared.py:180
+msgid "Reboot all clients"
+msgstr "Reiniciar todos los clientes"
+
+#: shared.py:181
+msgid "Poweroff all clients"
+msgstr "Apagar todos los clientes"
+
+#: shared.py:182
+msgid "Lock all screens"
+msgstr "Bloquear todas las pantallas"
+
+#: shared.py:183
+msgid "Unlock all screens"
+msgstr "Desbloquear todas las pantallas"
+
+#: shared.py:184
+msgid "Logout clients"
+msgstr "Desconectar todos los clientes"
+
+#: shared.py:185
+msgid "Restart X session of all clients"
+msgstr "Reiniciar sesión X de todos los clientes"
+
+#: shared.py:186
+msgid "Exec same app in all connected users"
+msgstr "Ejecutar misma aplicación en todos los usuarios conectados"
+
+#: shared.py:187
+msgid "Send a text message to all connected users"
+msgstr "Enviar un mensaje de texto a todos los usuarios conectados"
+
+#: shared.py:188
+msgid "Enter demo mode, all connected users see my screen"
+msgstr "Entrar en modo demostración, todos los usuarios ven mi pantalla"
+
+#: shared.py:189
+msgid "Exit demo mode"
+msgstr "Salir del modo demostración"
+
+#: shared.py:327
+#, python-format
+msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
+msgstr "PREGUNTA: %(txt)s, RESPUESTA %(response)s"
+
+#: shared.py:339
+#, python-format
+msgid "INFO: %s"
+msgstr "INFO: %s"
+
+#: shared.py:350
+#, python-format
+msgid "ERROR: %s"
+msgstr "ERROR: %s"
+
+#: TcosXmlRpc.py:71 TcosXmlRpc.py:73
+msgid ""
+"Username or password are empty,\n"
+"please edit in preferences dialog!"
+msgstr ""
+"El usuario o la contraseña están vacíos,\n"
+"por favor, verifique el dialogo de preferencias"
+
+#: tcospersonalize.py:102
+msgid ""
+"Need a host to configure!!!\n"
+"Try exec:\n"
+" tcospersonalize --host=XXX.XXX.XXX.XXX"
+msgstr ""
+"¡Se necesita una dirección de equipo a configurar!\n"
+"Pruebe a ejecutar:\n"
+" tcospersonalize --host=XXX.XXX.XXX.XXX"
+
+#: tcospersonalize.py:148
+msgid "host: "
+msgstr "equipo: "
+
+#: tcospersonalize.py:345
+msgid "Host down, can't connect to tcosxmlrpc."
+msgstr "Equipo inaccesible, no se pudo conectar a tcosxmlrpc."
+
+#: tcospersonalize.py:353
+#, python-format
+msgid "New %d drivers loaded from terminal."
+msgstr "Cargados %d drivers desde el terminal."
+
+#: tcospersonalize.py:371
+#, python-format
+msgid "Really delete config of %s?"
+msgstr "¿Borrar archivo de configuración de %s?"
+
+#: tcospersonalize.py:374
+msgid "Deleted!"
+msgstr "¡Borrado!"
+
+#: tcospersonalize.glade:57
+msgid "<b>unknow host</b>"
+msgstr "<b>equipo desconocido</b>"
+
+#: tcospersonalize.glade:103 TcosActions.py:549
+msgid "Enable mouse wheel"
+msgstr "Activar rueda del ratón"
+
+#: tcospersonalize.glade:125
+msgid "Disable Ctrl + Alt + Backspace (for kill Xorg)"
+msgstr "Deshabilitar Ctrl+Alt+Backspace (cerrar Xorg)"
+
+#: tcospersonalize.glade:146 TcosActions.py:541
+msgid "Xorg Resolution"
+msgstr "Resolución de Xorg"
+
+#: tcospersonalize.glade:208 TcosActions.py:543
+msgid "Xorg Color depth"
+msgstr "Profundidad de color de Xorg"
+
+#: tcospersonalize.glade:253 TcosActions.py:537
+msgid "X Session Type"
+msgstr "Tipo de sessión gráfica"
+
+#: tcospersonalize.glade:299 TcosActions.py:545
+msgid "DPMS energy monitor control"
+msgstr "Control de energía del monitor DPMS"
+
+#: tcospersonalize.glade:326 TcosActions.py:539
+msgid "Xorg Driver"
+msgstr "Driver de Xorg"
+
+#: tcospersonalize.glade:352
+msgid "Get avalaible drivers"
+msgstr "Cargar drivers disponibles"
+
+#: tcospersonalize.glade:383
+msgid "Display Settings"
+msgstr "Configuración gráfica"
+
+#: tcospersonalize.glade:416
+msgid "Extra modules"
+msgstr "Módulos extra"
+
+#: tcospersonalize.glade:471
+msgid "Kernel modules"
+msgstr "Módulos del kernel"
+
+#: tcospersonalize.glade:501
+msgid "<b>Extra modules avalaible</b>"
+msgstr "<b>Módulos extra disponibles</b>"
+
+#: tcospersonalize.glade:527
+msgid "Add X11vnc support"
+msgstr "Añadir soporte X11vnc"
+
+#: tcospersonalize.glade:546
+msgid "Add iTALC support"
+msgstr "Añadir soporte iTALC"
+
+#: tcospersonalize.glade:565
+msgid "Add FreeNX support"
+msgstr "Añadir soporte FreeNX"
+
+#: tcospersonalize.glade:605
+msgid "Addons"
+msgstr "Añadidos"
+
+#: tcospersonalize.glade:648 TcosActions.py:559
+msgid "X Horiz sync"
+msgstr "Sincronización horizontal"
+
+#: tcospersonalize.glade:676 TcosActions.py:561
+msgid "X Vert sync"
+msgstr "Sincronización vertical"
+
+#: tcospersonalize.glade:763
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: tcospersonalize.glade:877
+msgid "Delete Config"
+msgstr "Borrar configuración"
+
+#: TcosDBus.py:58
+msgid "Need admin and passwd data to do this action"
+msgstr "Se necesita usuario y contraseña para hacer esta acción"
+
+#: TcosDBus.py:76
+msgid "TcosDBus not allowed in local display"
+msgstr "TcosDBus no permitido en pantalla local."
+
+#: TcosDBus.py:87
+#, python-format
+msgid "Seems that tcosxmlrpc isn't running on host=\"%s\""
+msgstr "Parece que tcosxmlrpc no se está ejecutando en equipo=\"%s\""
+
+#: TcosDBus.py:107
+msgid "tcosxmlrpc ERROR conection unavalaible."
+msgstr "tcosxmlrpc ERROR conexión no disponible"
+
+#: TcosDBus.py:118
+msgid "ERROR conecting to tcosxmlrpc, check username and password."
+msgstr ""
+"No se puede conectar a tcosxmlrpc, verifique el usuario y la contraseña."
+
+#: TcosDBus.py:174
+msgid "Message from admin"
+msgstr "Mensaje del administrador"
+
+#: TcosDBus.py:233 TcosDBus.py:248 TcosDBus.py:266 TcosDBus.py:284
+msgid "User not allowed to run this dbus call."
+msgstr "Su usuario no tiene permitidas estas llamadas dbus."
+
+#: tcos-volume-manager.py:81
+msgid ""
+"tcos-volume-manager isn't allowed to run in local DISPLAY\n"
+"Force with --host=xx.xx.xx.xx"
+msgstr ""
+"tcos-volume-manager no permite ejecutarse en el DISPLAY local\n"
+"Puede forzarlo con --host=xx.xx.xx.xx"
+
+#: tcos-volume-manager.py:110 tcos-devices.py:156
+#, python-format
+msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
+msgstr "ERROR: Parece que tcosxmlrpc no se está ejecutando en %s"
+
+#: tcos-volume-manager.py:126 tcos-devices.py:183
+#, python-format
+msgid "Error connecting with TcosXmlRpc in %s."
+msgstr "Error conectando con tcosxmlrpc en %s"
+
+#: tcos-volume-manager.py:137 tcos-volume-manager.glade:10
+msgid "Tcos Volume Manager"
+msgstr "Monitor de volumen TCOS"
+
+#: tcos-volume-manager.py:138
+#, python-format
+msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
+msgstr "<span size='large'><b>Mezclador de audio del equipo %s</b></span>"
+
+#: tcos-volume-manager.py:143
+msgid "Loading channels info..."
+msgstr "Cargando información de canales..."
+
+#: tcos-volume-manager.py:149
+msgid "Ready"
+msgstr "Listo"
+
+#: tcos-volume-manager.py:153
+msgid "Error loading channels info"
+msgstr "Error cargando información de canales"
+
+#: tcos-volume-manager.py:213 TcosActions.py:622
+msgid "Mute"
+msgstr ""
+
+#: tcos-volume-manager.py:234 TcosActions.py:704
+#, python-format
+msgid "Changing value of %(channel)s channel, to %(value)s%%..."
+msgstr "Cambiando valor del canal %(channel)s, a %(value)s%%..."
+
+#: tcos-volume-manager.py:240 TcosActions.py:710
+#, python-format
+msgid "Changed value of %(channel)s channel, to %(value)s"
+msgstr "Valor cambiado del canal %(channel)s, a %(value)s"
+
+#: tcos-volume-manager.py:247 TcosActions.py:717
+#, python-format
+msgid "Unmuting %s channel..."
+msgstr "Quitando enmudecido al canal %s..."
+
+#: tcos-volume-manager.py:251 TcosActions.py:721
+#, python-format
+msgid "Muting %s channel..."
+msgstr "Enmudeciendo canal %s..."
+
+#: tcos-volume-manager.py:253 TcosActions.py:723
+#, python-format
+msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
+msgstr "Estado del canal %(channel)s es \"%(newvalue)s\""
+
+#: tcos-volume-manager.glade:87
+msgid "Main Channels"
+msgstr "Canales principales"
+
+#: tcos-volume-manager.glade:129
+msgid "Secondary Channels"
+msgstr "Canales secundarios"
+
+#: TcosActions.py:60 TcosActions.py:68 TcosActions.py:76
+msgid "PulseAudio apps need /dev/shm."
+msgstr "PulseAudio necesita /dev/shm"
+
+#: TcosActions.py:80
+msgid "Are you sure sou want to stop this process?"
+msgstr "¿Está seguro que quiere parar este proceso?"
+
+#: TcosActions.py:84
+#, python-format
+msgid ""
+"Error while killing app:\n"
+"Reason: %s"
+msgstr ""
+"Error cuando se cerraba aplicación:\n"
+"Razón: %s"
+
+#: TcosActions.py:140
+msgid "New settings saved."
+msgstr "Configuración guardada."
+
+#: TcosActions.py:150
+msgid "Searching for connected hosts..."
+msgstr "Buscando equipos conectados..."
+
+#: TcosActions.py:159
+msgid "Not connected hosts found."
+msgstr "No se encontraron equipos conectados."
+
+#: TcosActions.py:204
+#, python-format
+msgid "Error connecting to tcosxmlrpc in %s"
+msgstr "Error conectando a tcosxmlrpc en %s"
+
+#: TcosActions.py:236
+msgid "Clients not connected"
+msgstr "No hay usuarios conectados"
+
+#: TcosActions.py:242
+#, python-format
+msgid "<b>Exec app in %s user screen</b>"
+msgstr "<b>Ejecutar aplicación en pantalla de usuario %s</b>"
+
+#: TcosActions.py:244
+#, python-format
+msgid "<b>Send a message to %s</b>"
+msgstr "<b>Enviar mensaje a %s</b>"
+
+#: TcosActions.py:258 TcosActions.py:1110
+#, python-format
+msgid ""
+"Error while exec remote app:\n"
+"Reason: %s"
+msgstr ""
+"Error cuando se ejecutaba aplicación remota:\n"
+"Razón: %s"
+
+#: TcosActions.py:265
+#, python-format
+msgid ""
+"Error while send message:\n"
+"Reason: %s"
+msgstr ""
+"Error cuando se enviaba mensaje:\n"
+"Razón: %s"
+
+#: TcosActions.py:316
+#, python-format
+msgid "Connecting with %s to retrieve some info..."
+msgstr "Conectando a %s para recibir información..."
+
+#: TcosActions.py:336
+msgid "Tcos info"
+msgstr "Información de Tcos"
+
+#: TcosActions.py:339
+msgid "PXES info"
+msgstr "Información de PXES"
+
+#: TcosActions.py:342
+msgid "LTSP info"
+msgstr "Información de LTSP"
+
+#: TcosActions.py:345
+msgid "Unknow client info"
+msgstr "Información de cliente desconocido"
+
+#: TcosActions.py:354
+msgid "Hostname: "
+msgstr "Equipo: "
+
+#: TcosActions.py:355
+msgid "Ip address: "
+msgstr "Dirección IP: "
+
+#: TcosActions.py:356
+msgid "TcosXmlRpc version: "
+msgstr "Versión de TcosXmlRpc: "
+
+#: TcosActions.py:364
+msgid "Tcos image version: "
+msgstr "Versión de la imagen de Tcos: "
+
+#: TcosActions.py:365
+msgid "Tcos image date: "
+msgstr "Fecha y hora de creación de la imagen de Tcos: "
+
+#: TcosActions.py:366
+msgid "Date of thin client: "
+msgstr "Fecha y hora del cliente ligero: "
+
+#: TcosActions.py:375
+msgid "Kernel info"
+msgstr "Información del kernel"
+
+#: TcosActions.py:384
+msgid "Force download and mount all modules"
+msgstr "Forzar descarga y montaje de todos los módulos"
+
+#: TcosActions.py:395
+msgid "None"
+msgstr "Ninguno"
+
+#: TcosActions.py:398
+msgid "Kernel version: "
+msgstr "Versión del kernel: "
+
+#: TcosActions.py:399
+msgid "Kernel complete version: "
+msgstr "Versión completa del kernel: "
+
+#: TcosActions.py:400
+msgid "Loaded Modules: "
+msgstr "Módulos cargados: "
+
+#: TcosActions.py:401
+msgid "Modules not found: "
+msgstr "Módulos no encontrados: "
+
+#: TcosActions.py:415
+msgid "Cpu info: "
+msgstr "Información de la CPU: "
+
+#: TcosActions.py:422
+msgid "Cpu model: "
+msgstr "Modelo de CPU: "
+
+#: TcosActions.py:423
+msgid "Cpu vendor: "
+msgstr "Fabricante de CPU: "
+
+#: TcosActions.py:424
+msgid "Cpu speed: "
+msgstr "Velocidad de CPU: "
+
+#: TcosActions.py:433
+msgid "PCI buses: "
+msgstr "Buses PCI: "
+
+#: TcosActions.py:450
+msgid "Process running: "
+msgstr "Procesos ejecutándose"
+
+#: TcosActions.py:461
+msgid "Ram info: "
+msgstr "Información de la ram:"
+
+#: TcosActions.py:468
+msgid "Total Ram: "
+msgstr "RAM total: "
+
+#: TcosActions.py:469
+msgid "Free RAM: "
+msgstr "RAM libre: "
+
+#: TcosActions.py:470
+msgid "Active RAM: "
+msgstr "RAM activa: "
+
+#: TcosActions.py:473
+msgid "Swap info: "
+msgstr "Información de la swap: "
+
+#: TcosActions.py:479
+msgid "Swap enabled: "
+msgstr "Swap activada: "
+
+#: TcosActions.py:480
+msgid "Total Swap: "
+msgstr "Swap total: "
+
+#: TcosActions.py:481
+msgid "Used Swap: "
+msgstr "Swap usada: "
+
+#: TcosActions.py:490
+msgid "Network info: "
+msgstr "Información de la red:"
+
+#: TcosActions.py:500
+msgid "Network hostname: "
+msgstr "Nombre de máquina: "
+
+#: TcosActions.py:501
+msgid "Network IP: "
+msgstr "Dirección ip: "
+
+#: TcosActions.py:502
+msgid "Network MASK: "
+msgstr "Máscara de red: "
+
+#: TcosActions.py:503
+msgid "Network MAC: "
+msgstr "Número de MAC: "
+
+#: TcosActions.py:504
+msgid "Data received(rx): "
+msgstr "Datos recibidos(rx): "
+
+#: TcosActions.py:505
+msgid "Data send(tx): "
+msgstr "Datos enviados(tx): "
+
+#: TcosActions.py:522
+#, python-format
+msgid ""
+"Error getting Xorg info:\n"
+"%s"
+msgstr ""
+"Error obteniendo información de Xorg:\n"
+"%s"
+
+#: TcosActions.py:532
+msgid "enabled"
+msgstr "activado"
+
+#: TcosActions.py:534
+msgid "disabled"
+msgstr "desactivado"
+
+#: TcosActions.py:547
+msgid "Disable kill X with Ctrl+Alt+Backspace"
+msgstr "Deshabilitar matar Xorg con Ctrl+Alt+Backspace"
+
+#: TcosActions.py:551
+msgid "Refresh rate"
+msgstr "Tasa de Refresco"
+
+#: TcosActions.py:553
+msgid "Xorg font server"
+msgstr "Servidor de fuentes de Xorg"
+
+#: TcosActions.py:555
+msgid "Mouse device"
+msgstr "Dispositivo del ratón"
+
+#: TcosActions.py:557
+msgid "Mouse protocol"
+msgstr "Protocolo del ratón"
+
+#: TcosActions.py:573
+msgid "PulseAudio Sound server is running"
+msgstr "El servidor PulseAudio está funcionando"
+
+#: TcosActions.py:590
+msgid "Remote Sound Mixer"
+msgstr "Mezclador de sonido remoto"
+
+#: TcosActions.py:654
+msgid "PulseAudio Control"
+msgstr "Control de PulseAudio"
+
+#: TcosActions.py:659
+msgid "PulseAudio Meter"
+msgstr "Niveles de PulseAudio "
+
+#: TcosActions.py:664
+msgid "PulseAudio Manager"
+msgstr "Gestor de PulseAudio"
+
+#: TcosActions.py:668
+msgid "PulseAudio utils: "
+msgstr "Utilidades de PulseAudio: "
+
+#: TcosActions.py:674
+msgid "PulseAudio stats"
+msgstr "Estadísticas de PulseAudio: "
+
+#: TcosActions.py:741
+msgid "Searching info of hosts..."
+msgstr "Buscando información de equipos..."
+
+#: TcosActions.py:763
+#, python-format
+msgid "Connecting to %s..."
+msgstr "Conectando a %s..."
+
+#: TcosActions.py:842
+#, python-format
+msgid "Do you want to reboot %s?"
+msgstr "¿Quiere reiniciar el equipo %s ?"
+
+#: TcosActions.py:848
+#, python-format
+msgid "Do you want to poweroff %s?"
+msgstr "¿Quiere apagar el equipo %s?"
+
+#: TcosActions.py:855 TcosActions.py:862
+msgid ""
+"Can't connect to tcosxmlrpc.\n"
+"Please verify user and password in prefences!"
+msgstr ""
+"No se puede conectar a tcosxmlrpc.\n"
+"Por favor verifique el usuario y la contraseña en las preferencias."
+
+#: TcosActions.py:885
+msgid "Enter password of remote thin client (if asked for it)"
+msgstr "Introduzca contraseña del cliente remoto (si preguntase)"
+
+#: TcosActions.py:898
+#, python-format
+msgid "%s is not supported to personalize!"
+msgstr "¡%s no está soportado para personalizar!"
+
+#: TcosActions.py:903
+#, python-format
+msgid "Do you want to restart Xorg of %s?"
+msgstr "¿Quiere reiniciar Xorg del equipo %s?"
+
+#: TcosActions.py:911
+#, python-format
+msgid "Restart X session of %s with new config?"
+msgstr "¿Reiniciar sesión de %s con la nueva configuración?"
+
+#: TcosActions.py:955
+msgid "Can't start VNC, please add X11VNC support"
+msgstr "No se pudo arrancar VNC, por favor añada soporte para X11VNC."
+
+#: TcosActions.py:986
+msgid "Can't start IVS, please add iTALC support"
+msgstr "No se puede arrancar el proceso IVS. Añada soporte para iTALC"
+
+#: TcosActions.py:1007
+msgid "No clients connected, press refresh button."
+msgstr "No se encontraron clientes, pulse el botón actualizar."
+
+#: TcosActions.py:1012
+#, python-format
+msgid "Do you want to reboot the following hosts:%s?"
+msgstr "¿Quiere reiniciar los siguientes equipos: %s ?"
+
+#: TcosActions.py:1022
+#, python-format
+msgid "Do you want to poweroff the following hosts:%s?"
+msgstr "¿Quiere apagar los siguientes equipos: %s?"
+
+#: TcosActions.py:1032
+#, python-format
+msgid "Do you want to lock the following screens:%s?"
+msgstr "¿Quiere bloquear la pantalla de los siguientes equipos: %s ?"
+
+#: TcosActions.py:1043
+#, python-format
+msgid "Do you want to unlock the following screens:%s?"
+msgstr "¿Quiere desbloquear la pantalla de los siguientes equipos: %s ?"
+
+#: TcosActions.py:1066
+#, python-format
+msgid "Do you want to restart X screens:%s?"
+msgstr "¿Quiere reiniciar las sesiones X de los siguientes equipos: %s?"
+
+#: TcosActions.py:1111
+msgid "Running in demo mode."
+msgstr "Ejecutandose en modo demostración"
+
+#: TcosActions.py:1122
+msgid "Demo mode off."
+msgstr "Modo demostración desactivado."
+
+#: TcosActions.py:1143
+#, python-format
+msgid "Doing action \"%(action)s\" in %(ip)s..."
+msgstr "Realizando acción \"%(action)s\" en equipo %(ip)s..."
+
+#: TcosActions.py:1169
+#, python-format
+msgid "Done action \"%(action)s\" in %(ip)s"
+msgstr "Acción \"%(action)s\" terminada en %(ip)s"
+
+#: TcosActions.py:1218
+msgid "Trying to order terminal to do a screenshot..."
+msgstr "Intentando mandar al terminal que se haga una captura de pantalla"
+
+#: TcosActions.py:1223
+msgid "Can't make screenshot, connection error"
+msgstr "No se pudo hacer una captura de pantalla, error de conexión"
+
+#: TcosActions.py:1229
+msgid "Get another screenshot"
+msgstr "Hacer otra captura de pantalla"
+
+#: TcosActions.py:1243
+#, python-format
+msgid "Screenshot of <span style='font-style: italic'>%s</span>"
+msgstr "Captura de pantalla de <span style='font-style: italic'>%s</span>"
+
+#: TcosActions.py:1252
+#, python-format
+msgid "Screenshot of %s"
+msgstr "Captura de pantalla de %s"
+
+#: TcosActions.py:1260
+#, python-format
+msgid "Screenshot of %s, done."
+msgstr "Captura de pantalla de %s hecha."
+
+#: TcosActions.py:1278
+msgid "User not connected, no processes."
+msgstr "Usuario no conectado, no existen procesos."
+
+#: TcosActions.py:1287
+#, python-format
+msgid "Running processes for user \"%s\": "
+msgstr "Procesos ejecutados por el usuario \"%s\":"
+
+#: TcosActions.py:1291
+msgid ""
+"ALERT: There are some system process hidden. Enable it in Preferences dialog."
+msgstr ""
+"AVISO: Hay varios procesos del sistema ocultos. Puede activarlos en la "
+"ventana de Preferencias."
+
+#: TcosActions.py:1296
+msgid "Pid"
+msgstr "Pid"
+
+#: TcosActions.py:1297
+msgid "Process command"
+msgstr "Comando del proceso"
+
+#: TcosActions.py:1304
+msgid "Kill this process"
+msgstr "Matar este proceso"
+
+#: TcosActions.py:1411
+msgid "Actions for selected host"
+msgstr "Acciones para el equipo seleccionado"
+
+#: TcosActions.py:1417
+#, python-format
+msgid "Actions for %s"
+msgstr "Acciones para %s"
+
+#: TcosActions.py:1453
+msgid "Actions for all hosts"
+msgstr "Acciones para todos los equipos"
+
+#: tcos-devices.py:151
+msgid "Your user isn't in fuse group, ask your system administrator."
+msgstr "Su usuario no pertenece al grupo fuse, pregunte a su administrador."
+
+#: tcos-devices.py:232
+msgid "usbdisk"
+msgstr "disco-usb"
+
+#: tcos-devices.py:310
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Connected USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+"Desde el terminal %(host)s.\n"
+"Dispositivo USB conectado %(device)s\n"
+"%(vendor)s %(model)s"
+
+#: tcos-devices.py:317
+#, python-format
+msgid "Can't mount device %s"
+msgstr "No se pudo montar el dispositivo %s"
+
+#: tcos-devices.py:351
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Disconnected USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+"Desde el terminal %(host)s.\n"
+"Dispositivo USB desconectado %(device)s\n"
+"%(vendor)s %(model)s"
+
+#: tcos-devices.py:383
+#, python-format
+msgid "Can't umount device %s"
+msgstr "No se pudo desmontar el dispositivo %s"
+
+#: tcos-devices.py:432
+#, python-format
+msgid "Umount %s remote device"
+msgstr "Desmontar dispositivo %s remoto"
+
+#: tcos-devices.py:437
+#, python-format
+msgid ""
+"Partition %(device)s has been mounted in \n"
+"%(mnt_point)s\n"
+"click on Desktop icon to secure extract."
+msgstr ""
+"La partición %(device)s se ha montado en \n"
+"%(mnt_point)s\n"
+"pulse en el icono del escritorio para extracción segura."
+
+#: tcos-devices.py:455
+#, python-format
+msgid ""
+"Partition %s has been umounted.\n"
+"You can extract it secure."
+msgstr ""
+"La partición %s se ha desmontado.\n"
+"Ahora puede extraerlo con seguridad."
+
+#: tcos-devices.py:477
+msgid "Tcos device daemon"
+msgstr "Gestor de dispositivos TCOS"
+
+#: tcos-devices.py:505
+#, python-format
+msgid "Tcos Devices daemon on host %s"
+msgstr "Gestor de dispositivos TCOS en equipo %s"
+
+#: tcos-devices.py:527
+#, python-format
+msgid "Tcos Devices on %s host"
+msgstr "Gestor de dispositivos TCOS en equipo %s"
+
+#: tcos-devices.py:579
+msgid "No support for more than one cdrom, first detected will be used"
+msgstr "No hay soporte para más de un cdrom, se usará el primero."
+
+#: tcos-devices.py:583
+msgid "No cdrom detected. Click on refresh button."
+msgstr "No se encontró cdrom. Pulse el botón actualizar."
+
+#: tcos-devices.py:603 tcos-devices.py:608 tcos-devices.py:617
+#: tcos-devices.py:619
+msgid "Floppy"
+msgstr "Disquete"
+
+#: tcos-devices.py:606
+msgid "Can't mount floppy"
+msgstr "No se pudo montar el disquete"
+
+#: tcos-devices.py:622
+msgid "Can't umount floppy"
+msgstr "No se pudo desmontar el disquete"
+
+#: tcos-devices.py:631 tcos-devices.py:636 tcos-devices.py:645
+#: tcos-devices.py:649
+msgid "Cdrom"
+msgstr "Cdrom"
+
+#: tcos-devices.py:634
+msgid "Can't mount cdrom"
+msgstr "No se pudo montar el cdrom"
+
+#: tcos-devices.py:652
+msgid "Can't umount cdrom"
+msgstr "No se pudo desmontar el cdrom"
+
+#: tcos-devices.py:752
+#, python-format
+msgid "Umounting %s, please wait..."
+msgstr "Desmontando %s, por favor, espere..."
+
+#: tcos-devices.glade:9
+msgid "Tcos Devices"
+msgstr "Dispositivos TCOS"
+
+#: tcos-devices.glade:68
+msgid "Hide"
+msgstr "Ocultar"
+
+#: tcos-devices.glade:118
+msgid "<b>Floppy status:</b>"
+msgstr "<b>Estado del disquete:</b>"
+
+#: tcos-devices.glade:194
+msgid "Mount Floppy"
+msgstr "Montar disquete"
+
+#: tcos-devices.glade:272
+msgid "Umount Floppy"
+msgstr "Desmontar disquete"
+
+#: tcos-devices.glade:336
+msgid "<b>CDROM status:</b>"
+msgstr "<b>Estado del CDROM:</b>"
+
+#: tcos-devices.glade:412
+msgid "Mount CDROM"
+msgstr "Montar CDROM"
+
+#: tcos-devices.glade:490
+msgid "Umount CDROM"
+msgstr "Desmontar CDROM"
+
+#~ msgid "No cdrom detected."
+#~ msgstr "No se ha detectado ningún cdrom."
+
+#~ msgid "Enable kill X with Ctrl+Alt+Backspace"
+#~ msgstr "Habilitar matar Xorg con Ctrl+Alt+Backspace"
+
+#~ msgid "Tcos Devices daemon"
+#~ msgstr "Gestor de dispositivos TCOS"
+
+#~ msgid "<span size='large'><b>Devices on %s host</b></span>"
+#~ msgstr "<span size='large'><b>Dispositivos en el equipo %s</b></span>"
+
+#~ msgid "Loading devices info..."
+#~ msgstr "Cargando información de dispositivos..."
+
+#~ msgid "Show main window"
+#~ msgstr "Mostrar ventana principal"
+
+#~ msgid "Mounted devices"
+#~ msgstr "Dispositivos montados"
+
+#~ msgid ""
+#~ "tcos-devices isn't allowed to run in local DISPLAY\n"
+#~ "Force with --host=xx.xx.xx.xx"
+#~ msgstr ""
+#~ "tcos-devices no permite ejecutarse en el DISPLAY local\n"
+#~ "Puede forzarlo con --host=xx.xx.xx.xx"
+
+#~ msgid "Can't start vnc server on thin thin client. Add X11vnc support!!"
+#~ msgstr "No se puede arrancar el servidor vnc. ¡Añada soporte para X11vnc!"
+
+#~ msgid "Tcos Volume Control of %s"
+#~ msgstr "Control de Volumen TCOS de %s"
+
+#~ msgid "volume level: "
+#~ msgstr "volumen: "
+
+#~ msgid "<span style='color:blue'>ok</span>"
+#~ msgstr "<span style='color:blue'>ok</span>"
+
+#~ msgid "<span style='color:red'>channel muted</span>"
+#~ msgstr "<span style='color:red'>canal enmudecido</span>"
+
+#~ msgid "Process id"
+#~ msgstr "Id de proceso"
+
+#~ msgid "CPU time"
+#~ msgstr "Tiempo de CPU"
+
+#~ msgid "Information"
+#~ msgstr "Información"
+
+#~ msgid "login manager"
+#~ msgstr "gestor de login"
+
+#~ msgid "A monitor of a thin client network (TCOS based)"
+#~ msgstr "Un monitor de redes de clientes ligeros."
+
+#~ msgid "Hardware info"
+#~ msgstr "Información del hardware"
+
+#~ msgid "Can't download screenshot, connection error"
+#~ msgstr "No se pudo descargar la captura, error de conexión"
+
+#~ msgid "Enter a app to exec"
+#~ msgstr "Introduzca la aplicación a ejecutar"
+
+#~ msgid "Can't find app \"%s\" in path, please give absolute path!!"
+#~ msgstr ""
+#~ "No se puede encontrar %s en las rutas, por favor indique la ruta absoluta."
+
+#~ msgid "Debug: Use allmodules.squashfs"
+#~ msgstr "Depurar: Cargar allmodules.squashfs"
+
+#~ msgid "No host specified"
+#~ msgstr "No se ha indicado equipo"
+
+#~ msgid "Client isn't logged!"
+#~ msgstr "¡Usuario no conectado!"
+
+#~ msgid "Restart X session"
+#~ msgstr "Reiniciar sesión X"
+
+#~ msgid "Stop"
+#~ msgstr "Parar"
+
+#~ msgid "Start"
+#~ msgstr "Arrancar"
+
+#~ msgid "Autoupdate host list disabled."
+#~ msgstr "Actualizar automáticamente lista deshabilitado"
+
+#~ msgid "Autoupdate hostlist enabled."
+#~ msgstr "Actualizar automáticamente lista habilitado"
+
+#~ msgid "Found %d hosts, retrieving data..."
+#~ msgstr "Encontrados %d equipos, descargando información..."
+
+#~ msgid "User not logged"
+#~ msgstr "Usuario no conectado"
+
+#~ msgid "Give root password to exec \"%s\" as user"
+#~ msgstr ""
+#~ "Escriba la contraseña de administrador para ejecutar \"%s\" como usuario"
+
+#~ msgid "Not used yet"
+#~ msgstr "No se usa todavía"
+
+#~ msgid ""
+#~ "Access denied for %s.\n"
+#~ "Please verify username and password in preferences."
+#~ msgstr ""
+#~ "Acceso denegado para %s.\n"
+#~ "Por favor verifique el usuario y la contraseña en las preferencias."
+
+#~ msgid "TcosMonitor Preferences"
+#~ msgstr "Preferencias de TcosMonitor"
+
+#~ msgid "<span size=\"x-large\">TcosMonitor preferences</span>"
+#~ msgstr "<span size=\"x-large\">Preferencias de TcosMonitor</span>"
+
+#~ msgid "Update Interval"
+#~ msgstr "Intervalo de actualización"
+
+#, fuzzy
+#~ msgid "enable first host discovery"
+#~ msgstr "activar el descubrimiento de máquinas"
+
+#~ msgid "Ciber Mode"
+#~ msgstr "Modo Ciber"
+
+#~ msgid "enable ciber mode"
+#~ msgstr "activar modo cibercafé"
+
+#~ msgid "Gui"
+#~ msgstr "Interfaz"
+
+#~ msgid "SSH keys"
+#~ msgstr "Claves SSH"
+
+#~ msgid "Generate SSH keys"
+#~ msgstr "Generar claves SSH"
+
+#~ msgid "VNC passkey"
+#~ msgstr "Claves VNC"
+
+#~ msgid "Generate VNC keys"
+#~ msgstr "Generar claves VNC"
+
+#~ msgid "iTALC key"
+#~ msgstr "Claves iTALC"
+
+#~ msgid "Generate iTALC keys"
+#~ msgstr "Generar claves iTALC"
+
+#~ msgid "Apply"
+#~ msgstr "Aplicar"

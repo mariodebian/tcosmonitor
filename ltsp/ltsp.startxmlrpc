@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+mkdir -p /var/www
+mkdir -p /var/log
+cd /
+/usr/bin/tcosxmlrpc /etc/abyss.conf >> /var/log/tcosxmlrpc.log 2>&1
+
+
+busybox-static httpd -c /etc/httpd2.conf -p 8081 -h /var/www &
+
+exit 0

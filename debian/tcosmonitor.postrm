@@ -1,0 +1,15 @@
+#!/bin/sh
+
+
+tcos_dir=/etc/tcos
+
+if [ "x${1}" = "xpurge" ]; then
+  # delete some things
+  if [ -f ${tcos_dir}/hooks-addons/tcosmonitor ]; then
+    echo "Deleting tcosmonitor hook"
+    rm -f ${tcos_dir}/hook-addons/tcosmonitor
+  fi
+fi
+
+
+#DEBHELPER#

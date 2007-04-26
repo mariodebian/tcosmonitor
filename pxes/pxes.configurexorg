@@ -1,0 +1,30 @@
+#!/bin/sh
+
+
+mysettings=/var/run/pxes/env
+
+get_setting() {
+ value=$(grep "^${1}=" ${mysettings} | awk -F "=" '{print $2}' | sed s/\'//g)
+ if [ "${value}" != "" ]; then
+   echo ${value}
+ else
+   echo ${2}
+ fi
+}
+
+if [ "$1" = "--getsettings" ]; then
+
+  _VARS="PXES X_HORIZONTAL_SYNC_DEFAULT X_VERTICAL_REFRESH_DEFAULT\
+ XDM_OPTIONS X_FONT_PATH X_VERSION X_COLOR_DEPTH X_DRIVER X_VIDEO_MODE_CUSTOM_MODELINE X_VIDEO_MODES\
+ KEYBOARD_MODEL KEYBOARD_LAYOUT\
+ MOUSE_EMULATE_3_TIMEOUT\
+ X11 X_OPTION_DONT_ZAP\
+ X_MONITOR_AUTODETECT_ENABLED\
+ X_DPMS_OFF X_DPMS_ENABLED "
+  for _var in $_VARS; do
+     echo -n "${_var}=$(get_setting ${_var} ) "
+  done
+fi
+
+exit 0
+

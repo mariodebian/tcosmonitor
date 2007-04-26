@@ -1,0 +1,106 @@
+Source: tcosmonitor
+Section: gnome
+Priority: optional
+Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
+Build-Depends: debhelper (>= 4.0.0), libxmlrpc-c3, libxmlrpc-c3-dev, wget, scrot, initramfs-tools-tcos, libxau-dev, libxaw-headers, libxaw7-dev
+Standards-Version: 3.7.2
+
+Package: tcosmonitor
+Architecture: any
+Depends:  scrot, gksu | kdesu, zenity, dbus, python2.4-dbus, python-gtk2, python-glade2, python-notify, python-gnome2-extras, python (>= 2.4), ${misc:Depends}, ${shlibs:Depends}
+Description: Thin client monitor
+ TCOS, thin Client Operating System is a method to create small embedded os
+ based on debian/ubuntu with normal debian kernel's.
+ .
+ tcosmonitor is a small pygtk app to monitor thin clients
+ .
+ Project pages:
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
+ http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
+
+Package: tcos-tcosmonitor
+Architecture: any
+Depends: tcosmonitor (= ${Source-Version}) , initramfs-tools-tcos (>= 0.53.pre4), gentcos (>= 0.53.pre4), ${shlibs:Depends}
+Description: Thin client monitor of TCOS networks
+ TCOS, thin Client Operating System is a method to create small embedded os
+ based on debian/ubuntu with normal debian kernel's.
+ .
+ tcosmonitor is a small pygtk app to monitor thin clients
+ .
+ This package contain TCOS bindings to work with tcosmonitor.
+ .
+ Project pages:
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
+ http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
+
+Package: pxes-1.0-tcosmonitor
+Architecture: any
+Suggests: pxes-base-i586 (>= 1.0)
+Depends: tcosmonitor (= ${Source-Version}) , ${misc:Depends}
+Description: Thin client monitor of PXES (1.0) networks
+ TCOS, thin Client Operating System is a method to create small embedded os
+ based on debian/ubuntu with normal debian kernel's.
+ .
+ tcosmonitor is a small pygtk app to monitor thin clients
+ .
+ This package contain PXES (1.0) bindings to work with tcosmonitor.
+ .
+ Project pages:
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
+ http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
+
+Package: pxes-1.1-tcosmonitor
+Architecture: any
+Suggests: pxes-base-i586 (>= 1.1)
+Depends: tcosmonitor (= ${Source-Version}) , ${misc:Depends}
+Description: Thin client monitor of PXES (1.1) networks
+ TCOS, thin Client Operating System is a method to create small embedded os
+ based on debian/ubuntu with normal debian kernel's.
+ .
+ tcosmonitor is a small pygtk app to monitor thin clients
+ .
+ This package contain PXES (1.1) bindings to work with tcosmonitor.
+ .
+ Project pages:
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
+ http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
+
+Package: pxes-1.2-tcosmonitor
+Architecture: any
+Suggests: pxes-base-i586 (>= 1.2)
+Depends: tcosmonitor (= ${Source-Version}), ${misc:Depends}
+Description: Thin client monitor of PXES (1.2) networks
+ TCOS, thin Client Operating System is a method to create small embedded os
+ based on debian/ubuntu with normal debian kernel's.
+ .
+ tcosmonitor is a small pygtk app to monitor thin clients
+ .
+ This package contain PXES (1.2) bindings to work with tcosmonitor.
+ .
+ Project pages:
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
+ http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
+
+Package: ltsp-tcosmonitor
+Architecture: any
+Suggests: ltsp-server
+Depends: tcosmonitor (= ${Source-Version}), ${misc:Depends}
+Description: Thin client monitor of LTSP networks
+ TCOS, thin Client Operating System is a method to create small embedded os
+ based on debian/ubuntu with normal debian kernel's.
+ .
+ tcosmonitor is a small pygtk app to monitor thin clients
+ .
+ This package contain LTSP bindings to work with tcosmonitor.
+ .
+ Project pages:
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+ http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
+ http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
+
+

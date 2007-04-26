@@ -1,0 +1,15 @@
+#!/bin/sh
+
+##
+## get all vars in LTSP
+##
+
+#  FIXME
+#  FIXME !!!!!
+
+allvars=$(getltscfg -a|grep -v ^export)
+
+echo $allvars
+
+exit 0
+

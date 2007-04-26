@@ -1,0 +1,80 @@
+#
+#
+#
+#              OBSOLETE FILE
+#              NOT USING IT
+#
+#
+#
+
+# this hooks start busybox httpd server
+# and copy system-info.tpl webserver.sh....
+
+stat_before
+
+mkdir -p $DESTDIR/etc
+mkdir -p $DESTDIR/sbin
+mkdir -p $DESTDIR/bin
+
+cpifexists /usr/share/tcosmonitor/httpd/system-info.tpl /etc/
+cpifexists /usr/share/tcosmonitor/httpd/httpd.conf      /etc/
+cpifexists /usr/share/tcosmonitor/httpd/webserver.sh    /sbin/
+
+chmod +x $DESTDIR/sbin/webserver.sh
+
+copy_exec /usr/bin/seq    /bin/
+copy_exec /usr/bin/lspci    /bin/
+
+# pci database
+mkdir -p $DESTDIR/usr/share/misc/
+cpifexists /usr/share/misc/pci.ids /usr/share/misc/
+
+
+# add init process
+cat << EOF > $DESTDIR/scripts/tcos-bottom/15starthttpd
+#!/bin/sh
+#
+
+PREREQ="05inittcos 10initsound"
+
+prereqs()
+{
+        echo "$PREREQ"
+}
+
+case \$1 in
+# get pre-requisites
+prereqs)
+        prereqs
+        exit 0
+        ;;
+esac
+
+quiet=n
+. /scripts/functions
+. /conf/tcos.conf
+. /conf/tcos-run-functions
+
+
+# if break=httpd STOP here
+maybe_break httpd
+
+# DOCUMENTME nohttpd | disable webserver.sh daemon
+nohttpd=\$(read_cmdline_var "nohttpd" "0")
+if [ \${nohttpd} = 1 ]; then
+  _log "START-WEBSERVER.SH httpd disabled from cmdline"
+  exit 0
+fi
+
+# start daemon
+log_begin_msg "Starting httpd server"
+  _log "START-HTTPD starting httpd webserver...."
+  /sbin/webserver.sh
+log_end_msg
+exit 0
+
+EOF
+chmod +x $DESTDIR/scripts/tcos-bottom/15starthttpd
+
+
+stat_after "Httpd server"

@@ -1,0 +1,16 @@
+usr/bin/tcosmonitor
+usr/bin/tcospersonalize
+usr/bin/tcos-volume-manager
+usr/bin/tcos-dbus-client
+usr/bin/tcos-devices
+etc/xdg/autostart/*
+etc/dbus-1/system.d/tcosmonitor.conf
+etc/X11/Xsession.d/81tcos-dbus-client
+usr/sbin/*
+usr/share/locale/*
+usr/share/tcosmonitor/*.py
+usr/share/tcosmonitor/*.glade
+usr/share/tcosmonitor/images/*
+usr/share/pixmaps/tcos-icon-32x32.png
+usr/share/applications/*
+usr/share/control-center-2.0/capplets/*

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=TcosMonitor
+Name[en_GB]=TcosMonitor
+Name[es]=TcosMonitor
+Comment=Thin client network monitor
+Comment[en_GB]=Thin client network monitor
+Comment[es]=Monitorizar una red de clientes ligeros
+Exec=/usr/bin/tcosmonitor $@
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/tcos-icon-32x32.png
+GenericName[es_ES]=TcosMonitor
+Categories=GNOME;Application;System;Utility;

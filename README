@@ -1,0 +1,50 @@
+                       TcosMonitor
+               (mariodebian AT gmail DOT com)
+
+  TcosMonitor is a pygtk app to control and supervise
+  a thin client classroom based on TCOS, PXES, LTSP or others.
+
+
+  The project have 2 different parts:
+
+   * Teacher Tool (TcosMonitor) made with pygtk and other
+     standar libs
+
+   * Thin Client daemon (tcosxmlrpc) developed in C based on
+     xmlrpc libs and abyss web server code and libs
+
+   * Some extra tools (hex2ascii, update-tcospasswd, etc...)
+
+
+  The initial code is written from scratch helped with pygtk
+  tutorial [1] and some web pages (blogs, maillist, etc...)
+
+  I have reutilized some python/C code from others:
+  
+    ping.py
+       High based on yetist [2], I have added a second
+       class named PingPort writen by me. 
+         (don't know license of it, japanesse page)
+  
+    xmlrpc/hex2ascii.c 
+       Based on http://www.bigbold.com/snippets/posts/show/2073
+       this is a small tool to convert an HEX string into ASCII
+       used by TCOS thin client when DHCP server is configured
+       with no static MAC.
+        (web says:
+          "Snippets is a public source code repository."
+            I suppose that I can use without problems )
+
+
+    TcosDbus.py class
+        Based on dbus bindings of Student-Control-Center of Ubuntu [3]
+           GPL Copyright Holder: Oliver Grawert <ogra@ubuntu.com>
+
+
+
+
+Links:
+[1] http://www.pygtk.org/pygtk2tutorial-es/
+[2] http://www.osprg.org/modules/newbb/viewtopic.php?forum=3&post_id=487
+[3] http://people.ubuntu.com/~ogra/bzr-archive/student-control-panel-0.1/
+
