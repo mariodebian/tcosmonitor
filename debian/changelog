@@ -1,3 +1,10 @@
+tcosmonitor (0.0.18.2) unstable; urgency=low
+
+  * Downgrade initramfs-tools-tcos dependencies to >= 0.59
+    tcosmonitor must be installed before initramfs-tools-tcos 0.60
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun,  4 Feb 2007 22:04:25 +0100
+
 tcosmonitor (0.0.18.1) unstable; urgency=low
 
   * hooks-addons/tcosmonitor:
