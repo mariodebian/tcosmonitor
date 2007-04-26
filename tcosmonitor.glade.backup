@@ -102,37 +102,18 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToolItem" id="toolitem2">
+	    <widget class="GtkToolButton" id="allhostbutton">
 	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">All Hosts</property>
+	      <property name="use_underline">True</property>
+	      <property name="stock_id">gtk-go-down</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
-
-	      <child>
-		<widget class="GtkLabel" id="label76">
-		  <property name="width_request">95</property>
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Search for host</property>
-		  <property name="use_underline">True</property>
-		  <property name="use_markup">False</property>
-		  <property name="justify">GTK_JUSTIFY_RIGHT</property>
-		  <property name="wrap">True</property>
-		  <property name="selectable">False</property>
-		  <property name="xalign">0.5</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
-		  <property name="mnemonic_widget">searchtxt</property>
-		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-		  <property name="width_chars">-1</property>
-		  <property name="single_line_mode">False</property>
-		  <property name="angle">0</property>
-		</widget>
-	      </child>
 	    </widget>
 	    <packing>
 	      <property name="expand">False</property>
-	      <property name="homogeneous">False</property>
+	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 

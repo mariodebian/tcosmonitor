@@ -97,6 +97,12 @@ class TcosActions:
                         % (number, shared.onehost_menuitems[number][0]) )
         self.menu_event_one(number)
 
+    def on_allhostbutton_click(self, widget):
+        print_debug("on_allhostbutton_click() ....")
+        event = gtk.gdk.Event(gtk.gdk.BUTTON_PRESS)
+        self.main.allmenu.popup( None, None, None, event.button, event.time)
+        return True
+
     def on_rightclickmenuall_click(self, menu, number):
         print_debug ( "on_rightclickmenuall_click() => allhost_menuitems[%d]=%s" \
                         % (number, shared.allhost_menuitems[number][0]) )
@@ -1151,11 +1157,22 @@ class TcosActions:
             self.main.exe_cmd("killall x11vnc")
             self.main.write_into_statusbar( _("Demo mode off.") )
         
+        if action == 10:
+            # capture screenshot of all and show minis
+            # Ask for unlock screens
+            self.main.worker=shared.Workers(self.main, None, None)
+            self.main.worker.set_for_all_action(self.action_for_clients,\
+                                                    allclients, "screenshot" )
+        
         crono(start1, "menu_event[%d]=\"%s\"" %(action, shared.allhost_menuitems[action] ) )
 
 
     def action_for_clients(self, allhost, action):
+        block_txt=_("Screenshot of <span style='font-style: italic'>All hosts</span>")
+        self.main.datatxt.insert_block( block_txt )
+        
         gtk.gdk.threads_enter()
+        self.main.datatxt.clean()
         self.main.progressbar.show()
         #self.main.progressbutton.show()
         gtk.gdk.threads_leave()
@@ -1188,6 +1205,11 @@ class TcosActions:
                     gtk.gdk.threads_enter()
                     self.change_lockscreen(ip)
                     gtk.gdk.threads_leave()
+                elif action == "screenshot":
+                    self.main.xmlrpc.screenshot(size=10)
+                    url="http://%s:%s/capture-thumb.png" %(ip, shared.httpd_port)
+                    self.main.datatxt.insert_html( "<img src='%s' alt='%s'/>\n"\
+                                 %(url, _("Screenshot of %s" %(ip) )) )
                 else:
                     self.main.xmlrpc.Exe(action)
             except:
@@ -1202,6 +1224,7 @@ class TcosActions:
             sleep(shared.wait_between_many_host)
         
         gtk.gdk.threads_enter()
+        self.main.datatxt.display()
         self.main.progressbar.hide()
         #self.main.progressbutton.hide()
         gtk.gdk.threads_leave()     

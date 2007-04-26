@@ -106,6 +106,9 @@ class Initialize:
         self.main.fullscreenbutton = self.ui.get_widget('fullscreenbutton')
         self.main.fullscreenbutton.connect('clicked', self.main.actions.on_fullscreenbutton_click)
         
+        self.main.allhostbutton = self.ui.get_widget('allhostbutton')
+        self.main.allhostbutton.connect('clicked', self.main.actions.on_allhostbutton_click)
+        
         self.main.aboutbutton = self.ui.get_widget('aboutbutton')
         self.main.aboutbutton.connect('clicked', self.main.actions.on_aboutbutton_click)
         

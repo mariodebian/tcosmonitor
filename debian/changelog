@@ -1,3 +1,10 @@
+tcosmonitor (0.0.15.14) unstable; urgency=low
+
+  * Add New toolbar button (All Hosts) that show all_actions_menu
+  * Add new global action: "Capture all hosts screenshots"
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 19 Dec 2006 11:34:56 +0100
+
 tcosmonitor (0.0.15.13) unstable; urgency=low
 
   * Fix typo on on_another_screenshot() Worker => Workers
