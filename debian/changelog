@@ -1,3 +1,10 @@
+tcosmonitor (0.0.15.7) unstable; urgency=low
+
+  * allow to enable/disable tcos-devices and tcos-volume-manager
+    from a new conf file: /etc/tcos/tcosmonitor.conf in runtime.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed,  8 Nov 2006 13:11:41 +0100
+
 tcosmonitor (0.0.15.6) unstable; urgency=low
 
   * tcos-volume-manager.py, tcos-volume-manager.glade, tcos-volume-manager.desktop
