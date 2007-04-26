@@ -67,6 +67,14 @@ import gobject
 import getopt
 from gettext import gettext as _
 
+
+if not os.path.isfile("shared.py"):
+        sys.path.append('/usr/share/tcosmonitor')
+else:
+        sys.path.append('./')
+
+
+
 import shared
 # load conf file and exit if not active
 if not shared.test_start("tcos-devices") :
@@ -80,11 +88,6 @@ if not shared.test_start("tcos-devices") :
 #import gtk.glade
 import pynotify
 
-
-if not os.path.isfile("shared.py"):
-        sys.path.append('/usr/share/tcosmonitor')
-else:
-        sys.path.append('./')
 
 
 def print_debug(txt):

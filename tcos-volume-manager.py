@@ -31,6 +31,11 @@ import gobject
 import getopt
 from gettext import gettext as _
 
+if not os.path.isfile("shared.py"):
+        sys.path.append('/usr/share/tcosmonitor')
+else:
+        sys.path.append('./')
+
 import shared
 # load conf file and exit if not active
 if not shared.test_start("tcos-volume-manager") :
@@ -43,12 +48,7 @@ pygtk.require('2.0')
 from gtk import *
 import gtk.glade
 
-if not os.path.isfile("shared.py"):
-        sys.path.append('/usr/share/tcosmonitor')
-else:
-        sys.path.append('./')
 
-import shared
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" %("tcos-volume-manager", txt)
