@@ -1,3 +1,11 @@
+tcosmonitor (0.0.15.12) unstable; urgency=low
+
+  * Add set_sensitive() to TreeView before/after updating list or 
+    connecting to thin client.
+  * Fix app/msg dialog, print hostname/username in new lines.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon,  4 Dec 2006 09:46:20 +0100
+
 tcosmonitor (0.0.15.11) unstable; urgency=low
 
   * Fix LocalData.py who |grep "%s "  (add space after %s)

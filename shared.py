@@ -134,6 +134,8 @@ socket_default_timeout=15
 
 dbus_disabled=False
 
+disable_textview_on_update=False
+
 
 #NO_LOGIN_MSG=_("login manager")
 NO_LOGIN_MSG="----"

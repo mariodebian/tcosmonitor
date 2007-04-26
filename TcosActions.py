@@ -241,9 +241,9 @@ class TcosActions:
             self.ask_usernames=users
         
         if mode == "exec":
-            self.main.ask_label.set_markup( _("<b>Exec app in %s user screen</b>" ) %(", ".join(self.ask_usernames)) )
+            self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n %s" ) %("\n".join(self.ask_usernames)) )
         elif mode == "mess":
-            self.main.ask_label.set_markup( _("<b>Send a message to %s</b>" ) %(", ".join(self.ask_usernames)) )
+            self.main.ask_label.set_markup( _("<b>Send a message to:</b>\n %s" ) %("\n".join(self.ask_usernames)) )
         elif mode == "any":
             self.main.ask_label.set_markup( msg )
         self.ask_mode=mode
@@ -311,6 +311,9 @@ class TcosActions:
         
         # print into statusbar
         gtk.gdk.threads_enter()
+        
+        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(False)
+        
         #self.main.write_into_statusbar( _("Connecting with %s to retrieve some info..."  ) %(ip) )
         
         self.main.progressbar.show()
@@ -694,6 +697,9 @@ class TcosActions:
         self.update_progressbar( 1 )
         self.main.progressbar.hide()
         #self.main.write_into_statusbar( "" )
+        
+        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(True)
+        
         gtk.gdk.threads_leave()
         
         crono(start1, "populate_datatxt(%s)" %(ip) )
@@ -738,6 +744,9 @@ class TcosActions:
         print_debug ( "populate_hostlist() clear list and start progressbar!!!" )
         
         gtk.gdk.threads_enter()
+
+        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(False)
+
         #disable refresh button
         self.main.refreshbutton.set_sensitive(False)
         self.main.progressbar.show()
@@ -812,6 +821,9 @@ class TcosActions:
         self.main.progressbutton.hide()
         self.main.refreshbutton.set_sensitive(True)
         self.main.progressbutton.set_sensitive(True)
+        
+        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(True)
+        
         gtk.gdk.threads_leave()
         
         self.main.worker.set_finished()
