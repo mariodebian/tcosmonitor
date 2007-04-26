@@ -249,12 +249,12 @@ class TcosActions:
                 users_txt+="\n"
             counter=int(counter+1)
 
-        users_txt=users_txt[1:-2]
+        users_txt=users_txt[:-2]
         
         if mode == "exec":
-            self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n %s" ) %( users_txt ) )
+            self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n%s" ) %( users_txt ) )
         elif mode == "mess":
-            self.main.ask_label.set_markup( _("<b>Send a message to:</b>\n %s" ) %( users_txt ) )
+            self.main.ask_label.set_markup( _("<b>Send a message to:</b>\n%s" ) %( users_txt ) )
         elif mode == "any":
             self.main.ask_label.set_markup( msg )
         self.ask_mode=mode
