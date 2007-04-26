@@ -31,6 +31,13 @@ import gobject
 import getopt
 from gettext import gettext as _
 
+import shared
+# load conf file and exit if not active
+if not shared.test_start("tcos-volume-manager") :
+    print "tcos-volume-manager disabled at %s" %(shared.module_conf_file)
+    sys.exit(1)
+
+
 import pygtk
 pygtk.require('2.0')
 from gtk import *

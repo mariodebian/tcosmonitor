@@ -67,10 +67,17 @@ import gobject
 import getopt
 from gettext import gettext as _
 
-import pygtk
-pygtk.require('2.0')
-from gtk import *
-import gtk.glade
+import shared
+# load conf file and exit if not active
+if not shared.test_start("tcos-devices") :
+    print "tcos-devices disabled at %s" %(shared.module_conf_file)
+    sys.exit(1)
+
+
+#import pygtk
+#pygtk.require('2.0')
+#from gtk import *
+#import gtk.glade
 import pynotify
 
 
@@ -79,7 +86,7 @@ if not os.path.isfile("shared.py"):
 else:
         sys.path.append('./')
 
-import shared
+
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" %("tcos-devices", txt)

@@ -36,6 +36,9 @@ have_display=False
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
         have_display=True
+        import pygtk
+        pygtk.require('2.0')
+        from gtk import *
         import gtk.glade
 
 # program name to use in gettext .mo
@@ -109,6 +112,8 @@ setlocale( LC_ALL )
 bindtextdomain( PACKAGE, LOCALE_DIR )
 textdomain( PACKAGE )
 
+# text file enabling or disabling tcos-devices or tcos-volume-manager
+module_conf_file="/etc/tcos/tcosmonitor.conf"
 
 httpd_port=8081
 # not used anymore
@@ -124,7 +129,7 @@ sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux"]
 cache_timeout=20
 
 wait_between_many_host=0.5
-socket_default_timeout=5
+socket_default_timeout=15
 
 dbus_disabled=False
 
@@ -152,7 +157,9 @@ appslist=[
 'gcalctool',
 'nautilus',
 'konqueror',
-'beep-media-player'
+'beep-media-player',
+'tcos-volume-manager',
+'tcos-devices'
 ]
 
 ###
@@ -354,6 +361,25 @@ if have_display:
         print_debug ( _("ERROR: %s") % txt )
 
 
+    def test_start(module):
+        """
+            read conf file and test if module is active
+        """
+        f=open(module_conf_file, "r")
+        conf=f.readlines()
+        f.close()
+        
+        for line in conf:
+            if line == '\n': continue
+            if line.find('#') == 0: continue
+            line=line.replace('\n', '')
+            if "=" in line:
+                #print "%s is %s" %(line.split('=')[0], line.split('=')[1])
+                if line.split('=')[0] == module:
+                    if line.split('=')[1] == "0":
+                        return False
+                    else:
+                        return True
 
 
 from threading import Thread

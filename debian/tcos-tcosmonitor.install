@@ -1,4 +1,3 @@
-etc/tcos/*
 usr/lib/tcos/tcos-udevd.sh
 usr/lib/tcos/tcosxmlrpc
 usr/lib/tcos/lockscreen

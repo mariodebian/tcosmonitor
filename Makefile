@@ -92,7 +92,8 @@ install:
 	install -d $(DESTDIR)/$(PREFIX)/bin
 	install -d $(DESTDIR)/$(PREFIX)/sbin
 	install -d $(DESTDIR)/$(TCOS_BINS)
-	install -d $(DESTDIR)/etc/xdg/autostart/
+	install -d $(DESTDIR)/etc/xdg/autostart
+	install -d $(DESTDIR)/etc/tcos/
 	
 
 	# Installing tcosmonitor in  $(DESTDIR)
@@ -107,6 +108,8 @@ install:
 	install -m 644 tcosmonitor.desktop $(DESTDIR)/$(PREFIX)/share/applications/
 	install -m 644 tcospersonalize.desktop $(DESTDIR)/$(PREFIX)/share/applications/
 	install -m 644 images/tcos-icon-32x32.png $(DESTDIR)/$(PREFIX)/share/pixmaps/
+
+	install -m 644 tcosmonitor.conf $(DESTDIR)/etc/tcos/
 
 	install -m 644 Initialize.py  $(DESTDIR)/$(PREFIX)/share/$(project)/
 	install -m 644 shared.py      $(DESTDIR)/$(PREFIX)/share/$(project)/

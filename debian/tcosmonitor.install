@@ -1,3 +1,4 @@
+etc/tcos/tcosmonitor.conf
 usr/bin/tcosmonitor
 usr/bin/tcospersonalize
 usr/bin/tcos-volume-manager
