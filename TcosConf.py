@@ -124,6 +124,8 @@ class TcosConf:
                 print_debug ( "changing value %s to %s of %s" \
                                 %(self.vars[i][1], value, varname) )
                 self.vars[i][1]="%s" %(value)
+                return
+        print_debug ("SetVar() WARNING var=%s value=%s not in vars!!!" %(varname, value))
             
 
     def SaveToFile(self):
@@ -167,6 +169,7 @@ class TcosConf:
         self.SetVar("refresh_interval", float(self.main.pref_spin_update.get_value()) )
         
         self.SetVar("scrot_size", int(self.main.pref_scrotsize.get_value()) )
+        self.SetVar("miniscrot_size", int(self.main.pref_miniscrotsize.get_value()) )
         
         self.SetVar("cache_timeout", float(self.main.pref_cache_timeout.get_value()) )
         

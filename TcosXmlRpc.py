@@ -486,11 +486,11 @@ class TcosXmlRpc:
     
     
         
-    def screenshot(self, size=65):
+    def screenshot(self, size="65"):
+        print_debug ( "screenshot() %s" %(size) )
         try:
-            #self.login ()
             result=self._ParseResult( self.tc.tcos.screenshot(\
-                     size,\
+                     "%s" %(size),\
                      self.main.config.GetVar("xmlrpc_username"), \
                      self.main.config.GetVar("xmlrpc_password")) )
                      
@@ -499,6 +499,7 @@ class TcosXmlRpc:
         except:
             # connection error
             return False
+        
         
 
         

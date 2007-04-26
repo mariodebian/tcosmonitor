@@ -12,7 +12,7 @@ def howmany():
 #server_url = 'http://192.168.0.10:8080/RPC2';
 
 #server_url = 'http://192.168.0.11:8080/RPC2';
-server_url = 'http://192.168.0.27:8080/RPC2';
+server_url = 'http://192.168.0.6:8080/RPC2';
 #server_url = 'http://localhost:8080/RPC2';
 
 server = xmlrpclib.Server(server_url);
@@ -20,6 +20,8 @@ server = xmlrpclib.Server(server_url);
 
 result = server.tcos.version("")
 print "PYTHON::version is=%s" %(result)
+
+print server.tcos.screenshot("10", "root", "toor")
 
 sys.exit(0)
 

@@ -206,6 +206,7 @@ class Initialize:
         self.main.pref_spin_update = self.main.ui.get_widget('spin_update')
         self.main.pref_cache_timeout = self.main.ui.get_widget('spin_cache_timeout')
         self.main.pref_scrotsize = self.main.ui.get_widget('spin_scrotsize')
+        self.main.pref_miniscrotsize = self.main.ui.get_widget('spin_miniscrotsize')
         self.main.pref_xmlrpc_username = self.main.ui.get_widget('xmlrpc_username')
         self.main.pref_xmlrpc_password = self.main.ui.get_widget('xmlrpc_password')
         
@@ -242,6 +243,7 @@ class Initialize:
         self.main.pref_spin_update.set_value( float(self.main.config.GetVar("refresh_interval")) )
         self.main.pref_cache_timeout.set_value( float(self.main.config.GetVar("cache_timeout")) )
         self.main.pref_scrotsize.set_value( float(self.main.config.GetVar("scrot_size")) )
+        self.main.pref_miniscrotsize.set_value( float(self.main.config.GetVar("miniscrot_size")) )
         
         # set value of text widgets
         self.main.pref_xmlrpc_username.set_text(\

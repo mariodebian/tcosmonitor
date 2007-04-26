@@ -1168,11 +1168,14 @@ class TcosActions:
 
 
     def action_for_clients(self, allhost, action):
-        block_txt=_("Screenshot of <span style='font-style: italic'>All hosts</span>")
-        self.main.datatxt.insert_block( block_txt )
-        
+        if action == "screenshot":
+            gtk.gdk.threads_enter()
+            self.main.datatxt.clean()
+            block_txt=_("Screenshots of all hosts")
+            self.main.datatxt.insert_block( block_txt )
+            gtk.gdk.threads_leave()
+            
         gtk.gdk.threads_enter()
-        self.main.datatxt.clean()
         self.main.progressbar.show()
         #self.main.progressbutton.show()
         gtk.gdk.threads_leave()
@@ -1206,10 +1209,14 @@ class TcosActions:
                     self.change_lockscreen(ip)
                     gtk.gdk.threads_leave()
                 elif action == "screenshot":
-                    self.main.xmlrpc.screenshot(size=10)
+                    #self.main.worker=shared.Workers(self.main,\
+                    #    target=self.main.xmlrpc.screenshot, \
+                    #    args=[ self.main.config.GetVar("miniscrot_size") ])
+                    self.main.xmlrpc.screenshot( self.main.config.GetVar("miniscrot_size") ) 
+                    
                     url="http://%s:%s/capture-thumb.png" %(ip, shared.httpd_port)
-                    self.main.datatxt.insert_html( "<img src='%s' alt='%s'/>\n"\
-                                 %(url, _("Screenshot of %s" %(ip) )) )
+                    self.main.datatxt.insert_html( "<div><img src='%s' alt=''/>\n" %(url) )
+                    self.main.datatxt.insert_html( "%s </div>" %(ip))
                 else:
                     self.main.xmlrpc.Exe(action)
             except:
@@ -1224,7 +1231,10 @@ class TcosActions:
             sleep(shared.wait_between_many_host)
         
         gtk.gdk.threads_enter()
-        self.main.datatxt.display()
+        if action == "screenshot": 
+            self.set_progressbar( _("Waiting for screenshots...") , float(1) )
+            sleep(5)
+            self.main.datatxt.display()
         self.main.progressbar.hide()
         #self.main.progressbutton.hide()
         gtk.gdk.threads_leave()     

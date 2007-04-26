@@ -90,6 +90,7 @@ DefaultConfig=[
 ["cache_timeout", 20, "int"],
 ["scan_network_method", "netstat", "str"],
 ["scrot_size", 65, "int"],      # % of screenshot
+["miniscrot_size", 15, "int"],      # % of screenshot
 ["xmlrpc_username", "user", "str"], 
 ["xmlrpc_password","", "str"], 
 ["network_interface","eth0", "str"], 
