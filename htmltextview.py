@@ -593,7 +593,11 @@ class HtmlTextView(gtk.TextView):
         parser = xml.sax.make_parser(['drv_libxml2'])
         # parser.setFeature(xml.sax.handler.feature_validation, True)
         parser.setContentHandler(HtmlHandler(self, eob, main=self.main))
-        parser.parse(StringIO(html))
+        try:
+            parser.parse(StringIO(html))
+        except:
+            print "Found exception in HtmlParser"
+            print html
         
         if not eob.starts_line():
             try:
