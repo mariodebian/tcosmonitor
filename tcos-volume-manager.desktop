@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Tcos Volume levels remote control
+Exec=tcos-volume-manager
+Terminal=false
+Type=Application
+Icon=/usr/share/tcosmonitor/images/tcos-volume-32x32.png
+Categories=Application;AudioVideo;GTK;GNOME

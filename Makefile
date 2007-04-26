@@ -129,6 +129,8 @@ install:
 	install -m 644 tcos-devices-daemon.desktop      $(DESTDIR)/etc/xdg/autostart/
 	install -m 644 tcos-devices-autostart.desktop   $(DESTDIR)/etc/xdg/autostart/
 	install -m 644 tcos-devices.desktop             $(DESTDIR)$(PREFIX)/share/applications/
+	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)$(PREFIX)/share/applications/
+	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)/etc/xdg/autostart/
 
 	# locales
 	install -d $(DESTDIR)/$(PREFIX)/share/locale/es/LC_MESSAGES/

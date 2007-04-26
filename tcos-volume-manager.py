@@ -87,23 +87,22 @@ class TcosVolumeManager:
     def __init__(self, host):
         self.host=host
         self.name="TcosVolumeManager"
-        #import shared
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
         
-        # Widgets
-        self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcos-volume-manager.glade')
-        self.mainwindow = self.ui.get_widget('mainwindow')
+        import egg.trayicon
+        icon = egg.trayicon.TrayIcon("TCOS_sound")
+        eventbox = gtk.EventBox()
+        icon.add(eventbox)
+        image=gtk.Image()
+        image.set_from_file (shared.IMG_DIR + "tcos-volume-32x32.png")
+        eventbox.add(image)
+        tips = gtk.Tooltips()
         
-        # close windows signals
-        self.mainwindow.connect('destroy', self.salirse )
-        #self.mainwindow.hide()
+        tips.set_tip(icon, ( _("Tcos Sound levels on %s") %(self.host) )[0:79])
+        tips.enable()
+        icon.show_all()
+        eventbox.connect("button_press_event",
+                         self.on_tray_icon_press_event)
         
-        self.mainlabel=self.ui.get_widget('mainlabel')
-        
-        self.scrolledwindow=self.ui.get_widget('scrolledwindow')
-        self.scrolledwindow2=self.ui.get_widget('scrolledwindow2')
-        self.statusbar=self.ui.get_widget('statusbar')
         
         from ping import PingPort
         if PingPort(self.host, shared.xmlremote_port, 0.5).get_status() != "OPEN":
@@ -121,6 +120,12 @@ class TcosVolumeManager:
         self.config=TcosConf.TcosConf(self, openfile=False)
         self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
         
+        # make a test and exit if no cookie match
+        if not self.xauth.test_auth():
+            print "ERROR: Xauth cookie don't match"
+            #sys.exit(1)
+        
+        
         self.xmlrpc.newhost(self.host)
         if not self.xmlrpc.connected:
             shared.error_msg( _("Error connecting with TcosXmlRpc in %s.") %(self.host) )
@@ -128,6 +133,24 @@ class TcosVolumeManager:
         
         self.allchannels=self.xmlrpc.GetSoundChannels()
         print_debug ("__init__() %s" %( self.allchannels ) )
+        
+        #import shared
+        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+        gtk.glade.textdomain(shared.PACKAGE)
+        
+        # Widgets
+        self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcos-volume-manager.glade')
+        self.mainwindow = self.ui.get_widget('mainwindow')
+        
+        # close windows signals
+        #self.mainwindow.connect('destroy', self.salirse )
+        self.mainwindow.connect('delete-event', self.mainwindow_close )
+        
+        self.mainlabel=self.ui.get_widget('mainlabel')
+        
+        self.scrolledwindow=self.ui.get_widget('scrolledwindow')
+        self.scrolledwindow2=self.ui.get_widget('scrolledwindow2')
+        self.statusbar=self.ui.get_widget('statusbar')
         
         
         primary_channels=[]
@@ -145,7 +168,7 @@ class TcosVolumeManager:
                 primary_channels.append(channel)
             gobject.timeout_add( 500, self.populate_mixer, primary_channels, self.scrolledwindow)
             gobject.timeout_add( 1500, self.populate_mixer, secondary_channels, self.scrolledwindow2)
-            gobject.timeout_add( 3000, self.write_into_statusbar, _("Ready") )
+            #gobject.timeout_add( 4000, self.write_into_statusbar, _("Ready") )
             
         else:
             print_debug ( "ERROR: No auth" )
@@ -154,12 +177,11 @@ class TcosVolumeManager:
         self.mainwindow.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
         self.mainwindow.set_title( _("Tcos Volume Manager")  )
         self.mainlabel.set_markup( _("<span size='large'><b>Sound mixer of %s host</b></span>") %(self.host) )
-        self.mainwindow.show()
+        #self.mainwindow.show()
         
         #self.populate_mixer(primary_channels, self.scrolledwindow)
         #self.populate_mixer(secondary_channels, self.scrolledwindow2)
         
-    
     
     def populate_mixer(self, all_channels, scrollwindow):
         box1 = gtk.HBox(False, 0)
@@ -186,7 +208,7 @@ class TcosVolumeManager:
                 ismute = True
             else:
                 ismute = False
-            print_debug ( "__init__() channel=%s ismute=%s volume level=%s" %(channel, ismute, value) )
+            print_debug ( "populate_mixer() channel=%s ismute=%s volume level=%s" %(channel, ismute, value) )
             #############################################################
             adjustment = gtk.Adjustment(value=0,
                                          lower=0,
@@ -223,6 +245,14 @@ class TcosVolumeManager:
             
             frame.show()
             box1.pack_start(frame, True, True, 0)
+        
+        # write in statusbar if populating primary controls
+        if scrollwindow == self.scrolledwindow:
+            self.write_into_statusbar( _("Main controls ready") )
+        
+        # write in statusbar if populating secondary controls
+        if scrollwindow == self.scrolledwindow2:
+            self.write_into_statusbar( _("All remote controls loaded.") )
         return False
         
         
@@ -259,6 +289,15 @@ class TcosVolumeManager:
         self.statusbar.pop(context_id)
         self.statusbar.push(context_id, msg)
         return False
+
+    def on_tray_icon_press_event(self, widget, event):
+        self.mainwindow.show()
+        return
+    
+    def mainwindow_close(self, widget, event):
+        print_debug ( "mainwindow_close() closing mainwindow to systray" )
+        self.mainwindow.hide()
+        return True
 
     def salirse(self,True):
         print_debug ( _("Exiting") )

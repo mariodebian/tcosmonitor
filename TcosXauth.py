@@ -29,6 +29,8 @@ class TcosXauth:
         if self.cookie != None:
             # return last cookie (cookie in X session don't change)
             return self.cookie
+        
+        print_debug ( "read_cookie() exec \"xauth list\"" )
         p = Popen("xauth list", shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
         readed=p.stdout.read()
         readed=readed.split('\n')[0:-1]
