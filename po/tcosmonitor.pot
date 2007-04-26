@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-20 16:30+0100\n"
+"POT-Creation-Date: 2006-12-23 21:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:310
+#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:318
 #: tcos-devices.py:881
 msgid "Exiting"
 msgstr ""
@@ -553,7 +553,9 @@ msgstr ""
 
 #: tcos-volume-manager.py:107
 #, python-format
-msgid "Tcos Sound levels on %s"
+msgid ""
+"Tcos Sound levels on:\n"
+"%s"
 msgstr ""
 
 #: tcos-volume-manager.py:116 tcos-devices.py:170
@@ -566,65 +568,69 @@ msgstr ""
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr ""
 
-#: tcos-volume-manager.py:170
+#: tcos-volume-manager.py:179
 msgid "Loading channels info..."
 msgstr ""
 
-#: tcos-volume-manager.py:182
-msgid "Error loading channels info"
+#: tcos-volume-manager.py:191
+msgid "Error loading channels info (xauth error)"
 msgstr ""
 
-#: tcos-volume-manager.py:185 tcos-volume-manager.glade:9
+#: tcos-volume-manager.py:194 tcos-volume-manager.glade:9
 msgid "Tcos Volume Manager"
 msgstr ""
 
-#: tcos-volume-manager.py:186
+#: tcos-volume-manager.py:195
 #, python-format
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr ""
 
-#: tcos-volume-manager.py:243 TcosActions.py:647
+#: tcos-volume-manager.py:252 TcosActions.py:647
 msgid "Mute"
 msgstr ""
 
-#: tcos-volume-manager.py:258
+#: tcos-volume-manager.py:267
 msgid "Main controls ready"
 msgstr ""
 
-#: tcos-volume-manager.py:262
+#: tcos-volume-manager.py:271
 msgid "All remote controls loaded."
 msgstr ""
 
-#: tcos-volume-manager.py:272 TcosActions.py:732
+#: tcos-volume-manager.py:280 TcosActions.py:732
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr ""
 
-#: tcos-volume-manager.py:278 TcosActions.py:738
+#: tcos-volume-manager.py:286 TcosActions.py:738
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr ""
 
-#: tcos-volume-manager.py:285 TcosActions.py:745
+#: tcos-volume-manager.py:293 TcosActions.py:745
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr ""
 
-#: tcos-volume-manager.py:289 TcosActions.py:749
+#: tcos-volume-manager.py:297 TcosActions.py:749
 #, python-format
 msgid "Muting %s channel..."
 msgstr ""
 
-#: tcos-volume-manager.py:291 TcosActions.py:751
+#: tcos-volume-manager.py:299 TcosActions.py:751
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr ""
 
-#: tcos-volume-manager.glade:86
+#: tcos-volume-manager.glade:61
+msgid "Sound levels"
+msgstr ""
+
+#: tcos-volume-manager.glade:123
 msgid "Main Channels"
 msgstr ""
 
-#: tcos-volume-manager.glade:128
+#: tcos-volume-manager.glade:165
 msgid "Secondary Channels"
 msgstr ""
 

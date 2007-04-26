@@ -3,8 +3,10 @@ tcosmonitor (0.0.15.14) unstable; urgency=low
   * Add New toolbar button (All Hosts) that show all_actions_menu
   * Add new global action: "Capture all hosts screenshots"
   * New Preferences var: miniscrot_size (default 15%)
+  * tcos-volume-manager:
+     - add refresh button to reload all sliders values.
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 20 Dec 2006 16:30:09 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 23 Dec 2006 21:10:31 +0100
 
 tcosmonitor (0.0.15.13) unstable; urgency=low
 

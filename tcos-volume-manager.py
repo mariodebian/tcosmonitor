@@ -104,7 +104,7 @@ class TcosVolumeManager:
         eventbox.add(image)
         tips = gtk.Tooltips()
         
-        tips.set_tip(icon, ( _("Tcos Sound levels on %s") %(self.host) )[0:79])
+        tips.set_tip(icon, ( _("Tcos Sound levels on:\n%s") %(self.host) )[0:79])
         tips.enable()
         icon.show_all()
         eventbox.connect("button_press_event",
@@ -157,15 +157,24 @@ class TcosVolumeManager:
         
         self.scrolledwindow=self.ui.get_widget('scrolledwindow')
         self.scrolledwindow2=self.ui.get_widget('scrolledwindow2')
+        
         self.statusbar=self.ui.get_widget('statusbar')
+        self.refreshbutton=self.ui.get_widget('refreshbutton')
+        self.refreshbutton.connect('clicked', self.on_refresh_button )
         
+        self.get_channel_info()
         
+    def on_refresh_button(self, widget):
+        self.scrolledwindow.foreach( self.delete_child, self.scrolledwindow )
+        self.scrolledwindow2.foreach( self.delete_child, self.scrolledwindow2 )
+        self.get_channel_info()    
+
+    def delete_child(self, widget, scrolled):
+        scrolled.remove(widget)
+
+    def get_channel_info(self):
         primary_channels=[]
         secondary_channels=[]
-        
-        
-        
-        
         if self.allchannels != None:
             gobject.timeout_add( 50, self.write_into_statusbar, _("Loading channels info...") )
             for channel in self.allchannels:
@@ -179,7 +188,7 @@ class TcosVolumeManager:
             
         else:
             print_debug ( "ERROR: No auth" )
-            gobject.timeout_add( 2000, self.write_into_statusbar, _("Error loading channels info") )
+            gobject.timeout_add( 2000, self.write_into_statusbar, _("Error loading channels info (xauth error)") )
         
         self.mainwindow.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
         self.mainwindow.set_title( _("Tcos Volume Manager")  )
@@ -220,8 +229,8 @@ class TcosVolumeManager:
             adjustment = gtk.Adjustment(value=0,
                                          lower=0,
                                          upper=100,
-                                         step_incr=0.1,
-                                         page_incr=0.1);            
+                                         step_incr=1,
+                                         page_incr=1);            
             
             
             volume_slider = None    
@@ -261,7 +270,6 @@ class TcosVolumeManager:
         if scrollwindow == self.scrolledwindow2:
             self.write_into_statusbar( _("All remote controls loaded.") )
         return False
-        
         
 
     def slider_value_changed(self, widget, event, adj, channel, ip):
