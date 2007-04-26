@@ -1,4 +1,4 @@
-all: server tcospasswd hex2ascii
+all: server tcospasswd
 
 
 include ../common.mk
@@ -22,9 +22,6 @@ server:
 debug:
 	$(GCC) $(TEST_DEFINES) -o $(SERVER) $(CFLAGS) $(LIBS) $(SERVER).c
 
-hex2ascii:
-	$(GCC) hex2ascii.c -o hex2ascii -Wall -ansi -pedantic
-
 
 validate-tcos:
 	$(GCC) $(DEFINES) -o validate-tcos $(CFLAGS) $(LIBS) validate-tcos.c
@@ -38,7 +35,7 @@ tcospasswd:
 
 clean:
 #	cd md5 && make clean
-	rm -f $(SERVER) tcosmd5 prueba prueba2 prueba3 validate-tcos tcospasswd var/log.txt var/log/* *~ hex2ascii
+	rm -f $(SERVER) tcosmd5 prueba prueba2 prueba3 validate-tcos tcospasswd var/log.txt var/log/* *~
 
 run:
 	./$(SERVER) var/etc/abyss.conf
@@ -59,7 +56,6 @@ install:
 	install -d $(DESTDIR)/$(PREFIX)/sbin
     
 	install -m 755 tcosxmlrpc     $(DESTDIR)/$(TCOS_BINS)/tcosxmlrpc
-	install -m 755 hex2ascii      $(DESTDIR)/$(TCOS_BINS)/hex2ascii
 
 	install -m 755 tcospasswd $(DESTDIR)/$(PREFIX)/sbin/tcospasswd
 	install -m 755 sh/update-tcospasswd.sh $(DESTDIR)/$(PREFIX)/sbin/update-tcospasswd

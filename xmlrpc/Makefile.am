@@ -11,7 +11,7 @@ GCC=gcc
 SERVER=tcosxmlrpc
 
 
-all: server tcospasswd hex2ascii
+all: server tcospasswd 
 
 server:
 	$(GCC) $(DEFINES) -o $(SERVER) $(CFLAGS) $(LIBS) $(SERVER).c
@@ -19,8 +19,6 @@ server:
 debug:
 	$(GCC) $(TEST_DEFINES) -o $(SERVER) $(CFLAGS) $(LIBS) $(SERVER).c
 
-hex2ascii:
-	$(GCC) hex2ascii.c -o hex2ascii -Wall -ansi -pedantic
 
 
 validate-tcos:
@@ -35,7 +33,7 @@ tcospasswd:
 
 clean:
 #	cd md5 && make clean
-	rm -f $(SERVER) tcosmd5 prueba prueba2 prueba3 validate-tcos tcospasswd var/log.txt var/log/* *~ hex2ascii
+	rm -f $(SERVER) tcosmd5 prueba prueba2 prueba3 validate-tcos tcospasswd var/log.txt var/log/* *~
 
 run:
 	./$(SERVER) var/etc/abyss.conf

@@ -35,12 +35,14 @@ cpifexists /usr/share/tcosmonitor/xmlrpc/050_tcos_devices.rules  /etc/udev/rules
 
 cpifexists ${TCOS_BINS}/tcosxmlrpc  /usr/bin/
 cpifexists ${TCOS_BINS}/lockscreen  /usr/bin/
-cpifexists ${TCOS_BINS}/hex2ascii   /bin/
 
 copy_exec /sbin/start-stop-daemon  /sbin/
-copy_exec /usr/bin/seq             /bin/
 cpifexists ${TCOS_BINS}/getinfo.sh       /sbin/
 chmod +x $DESTDIR/sbin/getinfo.sh
+
+# fixed in initramfs-tools-tcos 0.60
+#copy_exec /usr/bin/seq             /bin/
+
 
 
 cat << EOF >  $DESTDIR/sbin/restartx
@@ -66,7 +68,7 @@ cpifexists /usr/share/tcosmonitor/xmlrpc/mime.types     /etc/
 # abs path of mime.types
 sed -i s/"etc"/"\/etc"/g ${DESTDIR}/etc/abyss.conf
 
-# configure user THIS IS VERY DANGEROUS!!!!
+# configure user
 sed -i s/"nobody"/"root"/g ${DESTDIR}/etc/abyss.conf
 
 mkdir -p $DESTDIR/var/log
@@ -75,7 +77,6 @@ mkdir -p $DESTDIR/var/www
 # add launcher
 cat << EOF > $DESTDIR/sbin/startxmlrpc
 #!/bin/sh
-mkdir -p /var/log
 cd /
 /usr/bin/tcosxmlrpc /etc/abyss.conf >> /var/log/tcosxmlrpc.log 2>&1
 exit 0
@@ -87,7 +88,7 @@ cat << EOF > $DESTDIR/scripts/tcos-bottom/15startxmlrpc
 #!/bin/sh
 #
 
-PREREQ="01ldconfig 02autofs 05inittcos 10initsound"
+PREREQ=""
 
 prereqs()
 {
@@ -119,9 +120,6 @@ if [ \${noxmlrpc} = 1 ]; then
 fi
 
 
-# create a user:pass file
-#echo "\$TCOS_XMLRPC_USER:\$(tcosmd5 \$TCOS_XMLRPC_PASS)" > /etc/tcospasswd
-
 
 # start daemon
 log_begin_msg "Starting tcosxmlrpc server"
@@ -138,7 +136,7 @@ cat << EOF > $DESTDIR/scripts/tcos-bottom/16starthttpd
 #!/bin/sh
 #
 
-PREREQ="01ldconfig 02autofs 05inittcos 10initsound"
+PREREQ=""
 
 prereqs()
 {

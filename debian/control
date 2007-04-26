@@ -2,12 +2,18 @@ Source: tcosmonitor
 Section: gnome
 Priority: optional
 Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
-Build-Depends: debhelper (>= 4.0.0), libxmlrpc-c3, libxmlrpc-c3-dev, wget, scrot, initramfs-tools-tcos, libxau-dev, libxaw-headers, libxaw7-dev
+Build-Depends: debhelper (>= 4.0.0), libxmlrpc-c3, libxmlrpc-c3-dev, 
+               wget, scrot, initramfs-tools-tcos (>= 0.60), libxau-dev,
+               libxaw-headers, libxaw7-dev
 Standards-Version: 3.7.2
 
 Package: tcosmonitor
 Architecture: any
-Depends:  scrot, gksu | kdesu, zenity, dbus, python2.4-dbus, python-gtk2, python-glade2, python-notify, python-gnome2-extras, python (>= 2.4), ${misc:Depends}, ${shlibs:Depends}
+Depends:  scrot, gksu | kdesu, zenity, dbus, 
+          python2.4-dbus, python-gtk2, python-glade2, 
+          python-notify, python-gnome2-extras, python (>= 2.4), 
+          ${misc:Depends}, ${shlibs:Depends}
+Suggests: tcos-tcosmonitor
 Description: Thin client monitor
  TCOS, thin Client Operating System is a method to create small embedded os
  based on debian/ubuntu with normal debian kernel's.
@@ -21,7 +27,9 @@ Description: Thin client monitor
 
 Package: tcos-tcosmonitor
 Architecture: any
-Depends: tcosmonitor (= ${Source-Version}) ,eject ,  initramfs-tools-tcos (>= 0.53.pre4), gentcos (>= 0.53.pre4), ${shlibs:Depends}
+Depends: tcosmonitor (= ${Source-Version}) , eject,
+         initramfs-tools-tcos (>= 0.60), gentcos (>= 0.60), 
+         ${shlibs:Depends}
 Description: Thin client monitor of TCOS networks
  TCOS, thin Client Operating System is a method to create small embedded os
  based on debian/ubuntu with normal debian kernel's.
