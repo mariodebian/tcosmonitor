@@ -36,10 +36,10 @@ have_display=False
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
         have_display=True
-        import pygtk
-        pygtk.require('2.0')
-        from gtk import *
-        import gtk.glade
+        #import pygtk
+        #pygtk.require('2.0')
+        #from gtk import *
+        #import gtk.glade
 
 # program name to use in gettext .mo
 PACKAGE = "tcosmonitor"
