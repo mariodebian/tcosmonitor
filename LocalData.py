@@ -324,7 +324,7 @@ class LocalData:
             print_debug ( "GetUsername(%s) not active, returning NO_LOGIN_MSG" %(ip) )
             return shared.NO_LOGIN_MSG
         
-        cmd="who |grep \"%s\" | head -1 |awk '{print $1}'" %(ip)
+        cmd="who |grep \"%s \" | head -1 |awk '{print $1}'" %(ip)
         output=self.exe_cmd(cmd)
         if output != []:
             self.username=output
