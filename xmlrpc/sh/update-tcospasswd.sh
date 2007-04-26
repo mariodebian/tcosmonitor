@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # update-tcospasswd.sh shell script to generate tcospasswd
 #                      to PXES, LTSP or TCOS
@@ -63,13 +63,13 @@ fi
 echo -n "              : "
 read _arq
 
-if [ "$_arq" == "LTSP" ]; then
+if [ "$_arq" = "LTSP" ]; then
   fpass=/opt/ltsp/i386/etc/tcospasswd
 
-elif [ "$_arq" == "PXES" ]; then
+elif [ "$_arq" = "PXES" ]; then
   fpass=$(echo /opt/pxes*)/stock/dist/etc/tcospasswd
 
-elif [ "$_arq" == "TCOS" ]; then
+elif [ "$_arq" = "TCOS" ]; then
   fpass=/etc/tcos/tcospasswd
 else
   echo "Error: Arquitecture: ${_arq} not supported, please use LTSP, PXES, or TCOS"

@@ -1,3 +1,10 @@
+tcosmonitor (0.1.1) unstable; urgency=low
+
+  * xmlrpc/sh/update-tcospasswd.sh (bashism)
+    - Change /bin/sh to /bin/bash and remove ==
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 24 Feb 2007 10:35:15 +0100
+
 tcosmonitor (0.1.0) unstable; urgency=low
 
   * Not build LTSP or PXES packages anymore (not clean, not debian)
