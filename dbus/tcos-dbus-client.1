@@ -1,0 +1,42 @@
+.\"Created with GNOME Manpages Editor Wizard
+.\"http://gmanedit.sourceforge.net
+.\"Sergio Rua <srua@gpul.org>
+.\"
+.TH tcos-dbus-client 1 "Mar 11, 2007" "tcos-dbus-client man page"
+
+.SH NAME
+tcos-dbus-client \- DBUS service that allow TcosMonitor to exec or retrieve data from connected users.
+
+.SH DESCRIPTION
+
+.PP
+\fBtcos-dbus-client\fP is a python script that generate DBUS service used by TcosMonitor to do some jobs:
+ * Send a message
+ * Exec app
+ * Read all user running process and kill by PID
+
+tcos-dbus-client use same auth that tcosxmlrpc (user and password) and is 
+loaded in /etc/X11/Xsession.d/81tcos-dbus-client.
+
+If DISPLAY is local tcos-dbus-client don't start.
+
+.SH OPTIONS
+.B [no options]
+ With no options will run a dbus service for connected user.
+
+.B --help
+ Some usage help about tcos-dbus-client
+
+.B --debug
+ Show verbose output when running
+
+.SH BUGS
+Contact Mario Izquierdo <mariodebian@gmail.com>
+
+Info about TCOS project: http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+
+.SH SEE ALSO
+tcos-dbus-client(1)
+
+.SH AUTHOR
+Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
