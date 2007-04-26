@@ -38,7 +38,7 @@ glade:
 	$(MAKE) fix-glade
 
 fix-glade:
-	sh fix-glade.sh
+	bash fix-glade.sh
 
 exec:
 	python2.4 $(PACKAGE).py --debug
