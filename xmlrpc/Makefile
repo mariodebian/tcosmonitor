@@ -6,8 +6,8 @@ include ../common.mk
 
 CFLAGS=-Wall -ansi -pedantic `xmlrpc-c-config abyss-server --cflags`
 LIBS=`xmlrpc-c-config abyss-server --libs` -lcrypt -lX11
-DEFINES= -DBSIZE=512 -DVERSION="'$(VERSION)'"
-TEST_DEFINES=-DDEBUG -DBSIZE=512 -DVISIBLE_PASSWD
+DEFINES= -DBSIZE=512 -DVERSION=\"$(VERSION)\"
+TEST_DEFINES=-DDEBUG -DVERSION=\"$(VERSION)\" -DBSIZE=512 -DVISIBLE_PASSWD
 GCC=gcc
 SERVER=tcosxmlrpc
 

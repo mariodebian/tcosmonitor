@@ -11,10 +11,16 @@ def howmany():
 # Create an object to represent our server.
 #server_url = 'http://192.168.0.10:8080/RPC2';
 
-server_url = 'http://192.168.0.11:8080/RPC2';
-#server_url = 'http://localhost:8080/RPC2';
+#server_url = 'http://192.168.0.11:8080/RPC2';
+server_url = 'http://localhost:8080/RPC2';
 
 server = xmlrpclib.Server(server_url);
+
+
+result = server.tcos.version("")
+print "PYTHON::version is=%s" %(result)
+
+sys.exit(0)
 
 
 #print "PYTHON client type=%s" %(server.tcos.info("get_client"))

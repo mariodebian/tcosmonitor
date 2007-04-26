@@ -348,6 +348,7 @@ class LocalData:
         return True or False if host is active
         use xmlrpc echo
         """
+        print_debug ( "IsActive(%s) = %s " %(host, self.main.xmlrpc.GetVersion()) )
         if self.main.xmlrpc.GetVersion() != None:
             print_debug ( "IsActive(%s)=True" %(host) )
             return True

@@ -218,7 +218,12 @@ system_process=[
  "gnome-vfs",  
  "panel-plugins",
  "dcop", 
- "bonobo"
+ "bonobo",
+ "xauth",
+ "tcos-devices",
+ "tcos-volume-manager",
+ "notification-daemon",
+ "bash"
 ]
 
 

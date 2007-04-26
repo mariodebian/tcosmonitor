@@ -1,3 +1,14 @@
+tcosmonitor (0.0.15.8) unstable; urgency=low
+
+  * xmlrpc/Makefile
+          -DVERSION=\"fooo\" not use "'foo'"
+  * LocalData.py
+       Add print_debug in version get
+  * shared.py Add some hidden process to list
+       ( xauth, tcos-devices, tcos-volume-manager, notification-daemon, bash )
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 19 Nov 2006 20:14:59 +0100
+
 tcosmonitor (0.0.15.7) unstable; urgency=low
 
   * allow to enable/disable tcos-devices and tcos-volume-manager
