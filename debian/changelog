@@ -1,3 +1,9 @@
+tcosmonitor (0.1.7) unstable; urgency=low
+
+  * Change username method (use pwd class)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 03 Apr 2007 14:54:06 +0200
+
 tcosmonitor (0.1.6) unstable; urgency=low
 
   * Add some man pages trying to make a lintian clean package.

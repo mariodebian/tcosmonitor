@@ -91,12 +91,16 @@ import gtk.glade
 #from gtk import *
 #import gtk.glade
 import pynotify
-
+import pwd
 
 
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" %("tcos-devices", txt)
+
+def get_username():
+    return pwd.getpwuid(os.getuid())[0]
+
 
 def usage():
     print "tcos-devices help:"
@@ -159,7 +163,7 @@ class TcosDevices:
         self.host=host
         self.name="TcosDevices"
         self.mounted={}
-        self.username=os.environ["USERNAME"]
+        self.username=get_username()
         
         if not self.is_in_group("fuse"):
             print _("Your user isn't in fuse group, ask your system administrator.")

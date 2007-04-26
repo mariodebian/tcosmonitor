@@ -47,11 +47,15 @@ import pygtk
 pygtk.require('2.0')
 from gtk import *
 import gtk.glade
-
+import pwd
 
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" %("tcos-volume-manager", txt)
+
+def get_username():
+    return pwd.getpwuid(os.getuid())[0]
+
 
 def usage():
     print "tcos-volume-manager help:"

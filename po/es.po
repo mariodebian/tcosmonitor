@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-29 15:55+0100\n"
+"POT-Creation-Date: 2007-03-23 23:55+0100\n"
 "PO-Revision-Date: 2006-12-26 19:36+0100\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:318
+#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:321
 #: tcos-devices.py:887
 msgid "Exiting"
 msgstr "Saliendo"
@@ -417,22 +417,22 @@ msgstr "Salir del modo demostración"
 msgid "Capture All clients screens"
 msgstr "Capturar todas las pantallas"
 
-#: shared.py:349
+#: shared.py:350
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr "PREGUNTA: %(txt)s, RESPUESTA %(response)s"
 
-#: shared.py:361
+#: shared.py:362
 #, python-format
 msgid "INFO: %s"
 msgstr "INFO: %s"
 
-#: shared.py:372
+#: shared.py:373
 #, python-format
 msgid "ERROR: %s"
 msgstr "ERROR: %s"
 
-#: TcosXmlRpc.py:72 TcosXmlRpc.py:74
+#: TcosXmlRpc.py:73 TcosXmlRpc.py:75
 msgid ""
 "Username or password are empty,\n"
 "please edit in preferences dialog!"
@@ -605,56 +605,56 @@ msgstr "ERROR: Parece que tcosxmlrpc no se está ejecutando en %s"
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr "Error conectando con tcosxmlrpc en %s"
 
-#: tcos-volume-manager.py:179
+#: tcos-volume-manager.py:182
 msgid "Loading channels info..."
 msgstr "Cargando información de canales..."
 
-#: tcos-volume-manager.py:191
+#: tcos-volume-manager.py:194
 msgid "Error loading channels info (xauth error)"
 msgstr "Error cargando información de canales (error de xauth)"
 
-#: tcos-volume-manager.py:194 tcos-volume-manager.glade:9
+#: tcos-volume-manager.py:197 tcos-volume-manager.glade:9
 msgid "Tcos Volume Manager"
 msgstr "Monitor de volumen TCOS"
 
-#: tcos-volume-manager.py:195
+#: tcos-volume-manager.py:198
 #, python-format
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr "<span size='large'><b>Mezclador de audio del equipo %s</b></span>"
 
-#: tcos-volume-manager.py:252 TcosActions.py:649
+#: tcos-volume-manager.py:255 TcosActions.py:649
 msgid "Mute"
 msgstr ""
 
-#: tcos-volume-manager.py:267
+#: tcos-volume-manager.py:270
 msgid "Main controls ready"
 msgstr "Controles principales cargados"
 
-#: tcos-volume-manager.py:271
+#: tcos-volume-manager.py:274
 msgid "All remote controls loaded."
 msgstr "Todos los controles remotos cargados."
 
-#: tcos-volume-manager.py:280 TcosActions.py:734
+#: tcos-volume-manager.py:283 TcosActions.py:734
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr "Cambiando valor del canal %(channel)s, a %(value)s%%..."
 
-#: tcos-volume-manager.py:286 TcosActions.py:740
+#: tcos-volume-manager.py:289 TcosActions.py:740
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr "Valor cambiado del canal %(channel)s, a %(value)s"
 
-#: tcos-volume-manager.py:293 TcosActions.py:747
+#: tcos-volume-manager.py:296 TcosActions.py:747
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr "Quitando enmudecido al canal %s..."
 
-#: tcos-volume-manager.py:297 TcosActions.py:751
+#: tcos-volume-manager.py:300 TcosActions.py:751
 #, python-format
 msgid "Muting %s channel..."
 msgstr "Enmudeciendo canal %s..."
 
-#: tcos-volume-manager.py:299 TcosActions.py:753
+#: tcos-volume-manager.py:302 TcosActions.py:753
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr "Estado del canal %(channel)s es \"%(newvalue)s\""
