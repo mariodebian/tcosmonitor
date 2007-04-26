@@ -1,6 +1,9 @@
 Todo file for TcosMonitor
 
- *  VNC mas facil y vnc inverso
- 
+ *  Write man pages 
+
+
+Obsolete PXES LTSP support
+
  *  Make better PXES LTSP scripts
  *  avoid using busybox-static in PXES/LTSP (awk, httpd, seq...)
