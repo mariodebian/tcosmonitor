@@ -1,3 +1,9 @@
+tcosmonitor (0.0.15.11) unstable; urgency=low
+
+  * Fix LocalData.py who |grep "%s "  (add space after %s)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 29 Nov 2006 19:07:45 +0100
+
 tcosmonitor (0.0.15.10) unstable; urgency=low
 
   * Put 1d if hours connected < 0 (connected yesterday)
