@@ -48,7 +48,7 @@ PACKAGE = "tcosmonitor"
 
 
 # version
-version="0.1.0"
+version="0.1.4"
 website="http://cls-tcos.forja.rediris.es"
 website_label=_("TcosMonitor web page")
 
@@ -130,7 +130,7 @@ sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux", "vol", "pcm", 
 
 cache_timeout=20
 
-wait_between_many_host=0.5
+wait_between_many_host=0.2
 socket_default_timeout=15
 
 dbus_disabled=False
