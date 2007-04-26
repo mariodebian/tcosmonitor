@@ -87,10 +87,10 @@ DefaultConfig=[
 ["populate_list_at_startup", 0, "int"],
 ["work_as_cyber_mode", 0, "int"],
 ["refresh_interval", 10, "int"],
-["cache_timeout", 20, "int"],
+["cache_timeout", 0, "int"],
 ["scan_network_method", "netstat", "str"],
 ["scrot_size", 65, "int"],      # % of screenshot
-["miniscrot_size", 20, "int"],      # % of screenshot
+["miniscrot_size", 25, "int"],      # % of screenshot
 ["xmlrpc_username", "user", "str"], 
 ["xmlrpc_password","", "str"], 
 ["network_interface","eth0", "str"], 
@@ -243,6 +243,7 @@ xsession_values=[
 "local", 
 "sshX",
 "FreeNX"
+"rDesktop"
 ]
 xsession_default="XDMCP"
 

@@ -30,6 +30,8 @@ import re
 import popen2
 import shared
 from gettext import gettext as _
+import socket
+
 
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
@@ -57,7 +59,6 @@ class TcosXmlRpc:
         self.url=None
         self.tc=None
         self.ports=[]
-        # cache time set to zero to disable
         
         if self.main != None:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
@@ -202,9 +203,13 @@ class TcosXmlRpc:
                     
         self.url = 'http://%s:%d/RPC2' %(self.ip, shared.xmlremote_port)
         try:
+            # set min socket timeout
+            socket.setdefaulttimeout(2)
             self.tc = xmlrpclib.Server(self.url)
             #echo=self.tc.tcos.echo("test")
             self.connected=True
+            # save socket default timeout
+            socket.setdefaulttimeout(shared.socket_default_timeout)
             print_debug ( "newhost() tcosxmlrpc running on %s" %(self.ip) )
         except:
             print_debug("newhost() ERROR conection unavalaible !!!")
@@ -266,7 +271,7 @@ class TcosXmlRpc:
         
     def Exe(self, cmd):
         """
-        Exe a command in terminal
+        Exe a command in thin client
         """
         print_debug ("EXE() INIT, %s" %(cmd) )
         if not self.connected:
@@ -286,7 +291,7 @@ class TcosXmlRpc:
         
     def Kill(self, app):
         """
-        kill a running app
+        kill a running app in thin client
         """
         print_debug ("Kill() INIT, %s" %(app) )
         if not self.connected:

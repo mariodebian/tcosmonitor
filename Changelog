@@ -1,3 +1,518 @@
-   TcosMonitor
+tcosmonitor (0.1.0) unstable; urgency=low
 
-   => see debian changelog
+  * Not build LTSP or PXES packages anymore (not clean, not debian)
+  * Not get busybox-static
+  * Use python-support to bytecompile packages
+  * Update debhelper Build-dep
+  * Move TcosMonitor desktop icon to Admin menu
+  * Hide tcospersonalize menu
+  * Not ignore debhelper in tcos-tcosmonitor.postinst
+  * Change tcospersonalize config dir to new /var/lib/tcos/tftp/config
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 18 Feb 2007 13:36:53 +0100
+
+tcosmonitor (0.0.19.1) unstable; urgency=low
+
+  * xmlrpc/*:
+     - Change #ifdef DEBUG for a new function dbgtcos(); read TCOS_DEBUG env var
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu,  8 Feb 2007 18:33:04 +0100
+
+tcosmonitor (0.0.18.2) unstable; urgency=low
+
+  * Downgrade initramfs-tools-tcos dependencies to >= 0.59
+    tcosmonitor must be installed before initramfs-tools-tcos 0.60
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun,  4 Feb 2007 22:04:25 +0100
+
+tcosmonitor (0.0.18.1) unstable; urgency=low
+
+  * hooks-addons/tcosmonitor:
+     - remove copy od seq (fixed in initramfs-tools-tcos 0.60)
+  * debian/control:
+     - update version depends
+  * Remove hex2ascii bin => initramfs-tools-tcos
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat,  3 Feb 2007 20:39:01 +0100
+
+tcosmonitor (0.0.17.1) unstable; urgency=low
+
+  * xmlrpc/*.c:
+     - Remove tcosxmlrpc verbose messages
+  * debian/control, hooks-addons/tcosmonitor:
+     - Add /usr/bin/eject and eject cdrom from TcosDevices (daemon)
+  * tcos-devices.py:
+     - Remove sys.exit(1) from tcos-devices (retry cookie don't match)
+  * xmlrpc/sh/devicesctl.sh
+     - Add --eject method
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 29 Jan 2007 16:13:43 +0100
+
+tcosmonitor (0.0.16.2) unstable; urgency=low
+
+  * Change /bin/sh to /bin/bash (solve ubuntu dash problems)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 29 Jan 2007 16:02:30 +0100
+
+tcosmonitor (0.0.16.1) unstable; urgency=low
+
+  * New stable release.
+  * Add vertical label in all screenshots.
+  * Add uptime var (readed in TCOS general info)
+  * Change preferences minicrot_size default (20) and step (1)
+  * Change version string in shared.py (in future read from debian/changelog when building package)
+  * Fix typo in tcos-server-utils.py
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 26 Dec 2006 23:35:11 +0100
+
+tcosmonitor (0.0.15.14) unstable; urgency=low
+
+  * Add New toolbar button (All Hosts) that show all_actions_menu
+  * Add new global action: "Capture all hosts screenshots"
+  * New Preferences var: miniscrot_size (default 15%)
+  * tcos-volume-manager:
+     - add refresh button to reload all sliders values.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 23 Dec 2006 21:10:31 +0100
+
+tcosmonitor (0.0.15.13) unstable; urgency=low
+
+  * Fix typo on on_another_screenshot() Worker => Workers
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 11 Dec 2006 16:12:48 +0100
+
+tcosmonitor (0.0.15.12) unstable; urgency=low
+
+  * Add set_sensitive() to TreeView before/after updating list or 
+    connecting to thin client.
+  * Fix app/msg dialog, print hostname/username in new lines.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon,  4 Dec 2006 09:46:20 +0100
+
+tcosmonitor (0.0.15.11) unstable; urgency=low
+
+  * Fix LocalData.py who |grep "%s "  (add space after %s)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 29 Nov 2006 19:07:45 +0100
+
+tcosmonitor (0.0.15.10) unstable; urgency=low
+
+  * Put 1d if hours connected < 0 (connected yesterday)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 29 Nov 2006 18:46:20 +0100
+
+tcosmonitor (0.0.15.9) unstable; urgency=low
+
+  * Fix minor problem in import headers in shared.py file.
+  * Fix version retrieve error (disable split in mayor, med and minor)
+  * Update web and translation.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 28 Nov 2006 21:36:10 +0100
+
+tcosmonitor (0.0.15.8) unstable; urgency=low
+
+  * xmlrpc/Makefile
+          -DVERSION=\"fooo\" not use "'foo'"
+  * LocalData.py
+       Add print_debug in version get
+  * shared.py Add some hidden process to list
+       ( xauth, tcos-devices, tcos-volume-manager, notification-daemon, bash )
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 19 Nov 2006 20:14:59 +0100
+
+tcosmonitor (0.0.15.7) unstable; urgency=low
+
+  * allow to enable/disable tcos-devices and tcos-volume-manager
+    from a new conf file: /etc/tcos/tcosmonitor.conf in runtime.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed,  8 Nov 2006 13:11:41 +0100
+
+tcosmonitor (0.0.15.6) unstable; urgency=low
+
+  * tcos-volume-manager.py, tcos-volume-manager.glade, tcos-volume-manager.desktop
+   - iconize in systray tcos-volume-manager
+   - new systray icon for tcos-volume-manager
+   - add xdg/autostart tcos-volume-manager (desktop file)
+   - exit if xauth dont match
+   - mainwindow hide by default in glade file
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 28 Oct 2006 15:38:06 +0200
+
+tcosmonitor (0.0.15.5) unstable; urgency=low
+
+  * tcos-devices.py
+    - fix get_value(), DEVICE is not a udev var, varname is DEVNAME
+    - fix get_local_mountpoint() fslabel and fsvendor
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 28 Oct 2006 11:54:13 +0200
+
+tcosmonitor (0.0.15.4) unstable; urgency=low
+
+  * tcos-devices.py, udev/tcos-udevd.sh , udev/050_tcos_devices.rules
+    - Change udev to control all SUBSYSTEM=="block" events
+    - Delete duplicate events, kernel do 4 umount and 1 mount event for mounting a floppy
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 25 Oct 2006 17:24:14 +0200
+
+tcosmonitor (0.0.15.3) unstable; urgency=low
+
+  * TcosPersonalize: run as root only
+  * TcosActions: fix update info bug
+  * TcosXmlRpc, TcosXauth, TcosConf, ping: import gtk modules if env var DISPLAY is set
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 13 Oct 2006 00:09:47 +0200
+
+tcosmonitor (0.0.15.2) unstable; urgency=low
+
+  * Stable release.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun,  8 Oct 2006 20:16:03 +0200
+
+tcosmonitor (0.0.15.1) unstable; urgency=low
+
+  * Fix empty password freeze bug.
+  * Add tcos-server-utils python script to make some admin tags 
+    (reboot, poweroff, restartx) in all connected TCOS clients.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun,  8 Oct 2006 10:59:52 +0200
+
+tcosmonitor (0.0.15-1) unstable; urgency=low
+
+  * New stable release.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri,  6 Oct 2006 09:34:03 +0200
+
+tcosmonitor (0.0.14pre1.7) unstable; urgency=low
+
+  * Change gtk.threads_*() for gtk.gdk.threads_*()
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun,  1 Oct 2006 22:42:57 +0200
+
+tcosmonitor (0.0.14pre1.6) unstable; urgency=low
+
+  * Use /usr/lib/tcos to put scripts and bins ==> $TCOS_BINS
+  * tcos-devices.py Don't exist if cookie test error.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 28 Sep 2006 11:12:29 +0200
+
+tcosmonitor (0.0.14pre1.5) unstable; urgency=low
+
+  * Add Xauth authentication method in tcosxmlrpc and tcos-devices.py
+    tcos-devices send a MIT-MAGIC-COOKIE-1 to tcosxmlrpc in terminal,
+    terminal try to use this temp cookie to self connect to his Xorg, if
+    can't connect don't allow to use remote devices (udev, USB, floppy, cdrom...)
+  * New class TcosXauth, that allows to send cookie to tcosxmlrpc.
+  * Add -lX11 flag to tcosxmlrpc Makefile (now depends on libX11.so)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 24 Sep 2006 21:16:53 +0200
+
+tcosmonitor (0.0.14pre1.4) unstable; urgency=low
+
+  * tcos-devices.py
+     - allow mount usbdisk with more than one partition (like gnome-volume-manager)
+     - run daemon actions in threads, if crash only crash thread not daemon.
+     - save mounted usb partitions in a dictionary (umount watching at this dictionary)
+     - change notifications term: Device => Partition.
+  * Remove old shell launchers from svn.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 23 Sep 2006 15:00:48 +0200
+
+tcosmonitor (0.0.14pre1.3) unstable; urgency=low
+
+  * Work in tcospersonalize.py, now it's possible to configure xdriver as auto mode
+    or retrieve a list of avalaible drivers in tcos image with XMLRPC.
+  * Recomended to delete all personalized settings in /tftpboot/tcos/conf/, auto mode works fine.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 22 Sep 2006 11:58:15 +0200
+
+tcosmonitor (0.0.14pre1.2) unstable; urgency=low
+
+  * Add remote devices support with LTSPFS and FUSE:
+    - tcos-devices --daemon ( scan USB udev events in terminal and mount/umount)
+    - tcos-devices --hidden ( make a systray icon, to show tcos-devices)
+    - tcos-devices          ( show floppy and cdrom and allow to mount and umount)
+  * Add xmlrpc/devices.[ch] and tcosxmlrpc method tcos.devices()
+  * Add xmlrpc/sh/devicesctl.sh to allow tcosxmlrpc to work with devices
+  * Change dbus bus name to com.consoltux.TcosMonitor
+  * Add TcosGetDevices() in TcosXmlRpc class.
+  * Add python-notify debian depends
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 20 Sep 2006 22:01:41 +0200
+
+tcosmonitor (0.0.14pre1.1) unstable; urgency=low
+
+  * Split Initialize.py code and add TcosActions with button events and many functions.
+  * Use shared.Workers in many sites to thread friendly and add a watch-dog to it
+  * Minor fixes
+  * Add Demo mode (all users see the teacher screen)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 18 Sep 2006 15:54:49 +0200
+
+tcosmonitor (0.0.12+p1.4) unstable; urgency=low
+
+  * Add many sound info and actions (XMLRPC mixer included)
+  * Add support for local images, buttons, sliders and checkboxes in HtmlTextView class.
+  * tcosxmlrpc, add sound.[ch] and tcos.sound method with soundctl.sh script.
+  * Add tcos-volume-manager (small gui to change volume and mute levels with XMLRPC)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 16 Sep 2006 23:13:23 +0200
+
+tcosmonitor (0.0.12.3) unstable; urgency=low
+
+  * Add HtmlTextView class to draw datatxt more easy (html)
+  * Fix Localdata::GetUserName() no need to cache !!
+  * Export some vars in 81tcos-dbus-client based on DISPLAY empty status (for PulseAudio)
+  * Load spanish kbmap in 81tcos-dbus-client (FIXME add new var TCOS_KBMAP and load during start)
+  * Start to clean code (need very much)
+  * Change gtk.main() for gobject.mainloop()
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 14 Sep 2006 11:55:03 +0200
+
+tcosmonitor (0.0.12.2) unstable; urgency=low
+
+  * Reconfigure socket.defaulttimeout just before using it in PinPort class.
+  * Launch tcos-dbus-client from /etc/X11/Xsesssion.d/81tcos-dbus-client
+  * Add more hidden apps to shared.system_process
+    (need KDE related, don't know, because I don't use it)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 11 Sep 2006 13:22:32 +0200
+
+tcosmonitor (0.0.12.1) unstable; urgency=low
+
+  * Use LC_ALL=C for console commands.
+  * Minor fixes.
+  * Set more socket.defaulttimeout for downloading screenshots.
+  * Minor changes on tcos-dbus-client
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 10 Sep 2006 19:13:07 +0200
+
+tcosmonitor (0.0.12) unstable; urgency=low
+
+  * Make populate_datatxt() python-thread friend
+  * Add a new menu option to show running user processes
+    (in X session not thin client)
+  * Some minor bugs
+  * Change python encoding from UTF8 to UTF-8
+  * Update translations and fix some _("%s" %var ) ERRORS
+  * Use New class PingPort based on sockets and remove echoping dependency
+  * Know bugs: if call 2 threads at same time (afeter first ends get async errors)
+  * Experimental support with DBUS, based on some ideas and code from
+    student-control-panel from Ubuntu.
+  * Thanks of DBUS, new menu option: Send a text message to user.
+  * More small fixes.
+  * Update pot file (template) and Spanish translation.
+  * Update dependencies (add dbus and python-dbus)
+  * New files (tcos-dbus-client , 81tcos-dbus-client
+    (for X11 startup) and dbus spec)
+  * Remove bash launchers (do a sys.path.append() if necesary)
+  * Add ESTABLISHED option to netstat scan
+    (only running connections, no timeout)
+  * Add GNU/GPL headers at many files (*.py *.h *.c)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 10 Sep 2006 10:58:25 +0200
+
+tcosmonitor (0.0.11.pre2) unstable; urgency=low
+
+  * Fix a small bug in TcosXmlRpc.py in Exe user, pass params function
+  * Show passwords if tcosxmlrpc is compiled with -DVISIBLE_PASSWD=1
+  * Add hex2ascci a simple C app to process xx:xx:xx:xx:xx and returns a string
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue,  5 Sep 2006 23:12:21 +0200
+
+tcosmonitor (0.0.11.pre1) unstable; urgency=low
+
+  * Pre release.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 22 Aug 2006 15:19:17 +0200
+
+tcosmonitor (0.0.10.b5) unstable; urgency=low
+
+  * Rewrite auth method, new 3 methods avalaible in this order:
+    - /etc/tcospasswd
+    - /etc/shadow
+    - /etc/passwd
+  * New root script: update-tcospasswd to change LTSP, PXES or TCOS user and pass
+  * Fix new discover not found modules in script: xmlrpc/sh/getinfo.sh
+  * Revert kernel default version 2.6.16-1-486 (2.6.16-2-** don't work on my laptop)
+  * Add xmlrcp/sh/useallmodules.sh that download allmodules-$(uname -r).squashfs
+    and mount it to know what modules need the thin client througt tcosmonitor
+  * When read username get only first line (head -1) Localdata.py
+  * Split defines and functions in .h and .c files in xmlrpc/ dir
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 21 Aug 2006 17:51:53 +0200
+
+tcosmonitor (0.0.10.b4) unstable; urgency=low
+
+  * Change echo close | telnet IP PORT ==> echoping -h / IP:PORT 2>&1 (more speed)
+  * Add window icons from python code (glade window icon seem to not work)
+  * Change tcosxmlrpc auth method, use pass/shadow info.
+  * No create temp file for tcosxmlrpc login, send user/pass in every action
+  * Change method to get info (auth classes work with 4 params)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 16 Aug 2006 18:56:39 +0200
+
+tcosmonitor (0.0.10.b3) unstable; urgency=low
+
+  * Revised Makefiles, split ltsp, pxes and tcos in targets
+  * Make preferences chache_timeout work
+  * Delete Logout user action => Restart Xorg
+  * Search for errors while exec iTALC or X11vnc sessions
+  * Allow tcospersonalize only in TCOS, pxes and LTSP require more work.
+  * Add refresh_client_info after some actions
+  * Add 32x32 icon
+  * Write some info in INSTALL
+  * Clean Treeview if no host
+  * Fix Makefile targz target
+  * Change load /conf/tcos-functions by /conf/tcos-run-functions (initramfs-tools-tcos >= 0.49)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 15 Jul 2006 22:28:47 +0200
+
+tcosmonitor (0.0.10.b2) unstable; urgency=low
+
+  * Fix ping method, now is very usable
+  * Add a cancel button to progress (stop thread)
+  * Make thread work into shared.Workers class
+  * Add process info in xmlrpc/info.h and xmlrpc/getinfo.sh (need some gui work)
+  * Add all clients actions
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 15 Jul 2006 00:08:20 +0200
+
+tcosmonitor (0.0.10.b1) unstable; urgency=low
+
+  * Add a progressbar during host discovery
+  * Re enable cache
+  * Delete start/stop button
+  * Add code to work searchtxt and searchbutton
+  * Change /bin/start-stop-daemon for /sbin/start-stop-daemon
+           in LTSP and TCOS (PXES is the same bin or sbin)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 12 Jul 2006 23:05:52 +0200
+
+tcosmonitor (0.0.10) unstable; urgency=low
+
+  * Semi-stable release, work with tcos, pxes and ltsp
+  * Some jobs is do in threads.
+  * Beter gui (with some icons)
+  * Packages:
+    - tcosmonitor (the gui)
+    - tcos-tcosmonitor
+    - pxes-1.0-tcosmonitor
+    - pxes-1.1-tcosmonitor
+    - pxes-1.2-tcosmonitor
+    - ltsp-tcosmonitor
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 12 Jul 2006 15:53:12 +0200
+
+tcosmonitor (0.0.9.b6) unstable; urgency=low
+
+  * Add /etc/busybox.conf (for busybox-static) in LTSP/PXES environment
+  * Fix import os in tcosmonitor.py
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 10 Jul 2006 10:21:41 +0200
+
+tcosmonitor (0.0.9.b5) unstable; urgency=low
+
+  * First initial support of LTSP.
+  * Need busybox static to work on PXES / LTSP ???
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 10 Jul 2006 09:51:52 +0200
+
+tcosmonitor (0.0.9.b4) unstable; urgency=low
+
+  * Add screenshot PXES support (add -ac to X options and add 8081 httpd server)
+  * Copy scrot and libs into pxes-1.2 and pxes-1.2 dirs
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat,  8 Jul 2006 17:00:34 +0200
+
+tcosmonitor (0.0.9.b3) unstable; urgency=low
+
+  * Fix dependencies, only python2.4, not python|python2.4
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri,  7 Jul 2006 16:43:19 +0200
+
+tcosmonitor (0.0.9.b2) unstable; urgency=low
+
+  * First initial support of PXES.
+    - split package:
+       - pxes-1.1-tcosmonitor for pxes 1.1 version
+       - pxes-1.2-tcosmonitor for pxes 1.2 version
+  * Change all icons to Tango icon theme, right click menu have icons too
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri,  7 Jul 2006 13:59:00 +0200
+
+tcosmonitor (0.0.9.b1) unstable; urgency=low
+
+  * Hide tcos exe, not avalaible yet
+  * Fix shell scripts launchers
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue,  4 Jul 2006 14:03:50 +0200
+
+tcosmonitor (0.0.8) unstable; urgency=low
+
+  * Add tcospersonalize python and glade (personalize thin client xorg settings)
+  * Add right menu a new action: "Restart Xorg with new personalize settings"
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue,  4 Jul 2006 12:13:25 +0200
+
+tcosmonitor (0.0.7) unstable; urgency=low
+
+  * Add Config support with preferences dialog.
+  * Add kernel methods in xmlrpc/info.h
+  * Add a lot of actions in host right click.
+  * Add new method to discover host on lan (netstat and ping)
+  * Fix many small bugs
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue,  4 Jul 2006 12:13:07 +0200
+
+tcosmonitor (0.0.6) unstable; urgency=low
+
+  * Allow to run TcosMonitor any user, tcosmonitor.sh.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 29 Jun 2006 10:15:39 +0200
+
+tcosmonitor (0.0.5) unstable; urgency=low
+
+  * Remove RemoteXml class
+  * Clean Localdata and Initialize classes
+  * add crono function to stat time.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 29 Jun 2006 10:03:33 +0200
+
+tcosmonitor (0.0.4) unstable; urgency=low
+
+  * New beta release.
+  * All code is bassed now in tcosxmlrpc, webserver.sh deprecated !!!
+  * Support to retrieve pci and modules info throught xmlrpc/pci.h and xmlrpc/info.h
+  * Add lockscreen (rename of iTALC screenlock project, to avoid conflict binaries)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 26 Jun 2006 18:18:47 +0200
+
+tcosmonitor (0.0.3) unstable; urgency=low
+
+  * xmlrpc/tcosxmlrpc semi functional:
+    - Auth support ( for each method login first )
+    - Read username and password from /etc/tcospasswd (password in md5)
+  * xmlrpc/tcosmd5, small app to create md5 of a passed string.
+  * New python classes:
+    - LocalData:  read connected hosts and his statistics
+    - TcosXmlRpc: connect to tcosxmlrpc and get info
+    - RemoteXml:  download system-info.xml and parse it.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 21 Jun 2006 19:58:39 +0200
+
+tcosmonitor (0.0.2) unstable; urgency=low
+
+  * Very much work on xmlrpc/tcosxmlrpc.c, not yet finish!!!
+  * Initial mockup of TcosMonitor python glade gui.
+  * Add hooks and scripts to /etc/tcos/
+  * Add exejobs.sh script (abyss server run in nobody mode)
+  * Add webserver.sh script
+  * Update tcosxmlrpc methods
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 20 Jun 2006 17:00:53 +0200
+
+tcosmonitor (0.0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 14 Jun 2006 18:10:47 +0200
