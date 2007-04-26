@@ -1319,7 +1319,7 @@ instructions. This will generate a tcospasswd file with asked data.
 
 <widget class="GtkWindow" id="askwindow">
   <property name="width_request">400</property>
-  <property name="height_request">120</property>
+  <property name="height_request">250</property>
   <property name="title" translatable="yes">Question</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_CENTER</property>
@@ -1338,7 +1338,7 @@ instructions. This will generate a tcospasswd file with asked data.
     <widget class="GtkVBox" id="vbox11">
       <property name="border_width">10</property>
       <property name="visible">True</property>
-      <property name="homogeneous">True</property>
+      <property name="homogeneous">False</property>
       <property name="spacing">5</property>
 
       <child>
@@ -1388,6 +1388,7 @@ instructions. This will generate a tcospasswd file with asked data.
 
       <child>
 	<widget class="GtkHBox" id="hbox18">
+	  <property name="height_request">40</property>
 	  <property name="visible">True</property>
 	  <property name="homogeneous">True</property>
 	  <property name="spacing">0</property>
@@ -1430,8 +1431,8 @@ instructions. This will generate a tcospasswd file with asked data.
 	</widget>
 	<packing>
 	  <property name="padding">0</property>
-	  <property name="expand">True</property>
-	  <property name="fill">True</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
 	</packing>
       </child>
     </widget>

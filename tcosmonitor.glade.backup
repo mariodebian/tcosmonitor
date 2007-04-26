@@ -4,7 +4,7 @@
 <glade-interface>
 
 <widget class="GtkWindow" id="mainwindow">
-  <property name="width_request">720</property>
+  <property name="width_request">740</property>
   <property name="height_request">500</property>
   <property name="visible">True</property>
   <property name="title" translatable="yes">TcosMonitor</property>
@@ -13,12 +13,12 @@
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
-  <property name="icon_name">gtk-fullscreen</property>
+  <property name="icon_name"></property>
   <property name="decorated">True</property>
   <property name="skip_taskbar_hint">False</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
-  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="gravity">GDK_GRAVITY_CENTER</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
 
@@ -39,6 +39,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="quitbutton">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Exit TcosMonitor</property>
 	      <property name="label" translatable="yes">Quit</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-quit</property>
@@ -55,6 +56,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="preferencesbutton">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Open preferences dialog</property>
 	      <property name="label" translatable="yes">Preferences</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-preferences</property>
@@ -71,6 +73,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="refreshbutton">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Update host list</property>
 	      <property name="label" translatable="yes">Refresh</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-refresh</property>
@@ -85,11 +88,9 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToolButton" id="startstopbutton">
+	    <widget class="GtkToolButton" id="fullscreenbutton">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes"></property>
-	      <property name="use_underline">True</property>
-	      <property name="stock_id">gtk-media-play</property>
+	      <property name="stock_id">gtk-fullscreen</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
@@ -97,6 +98,41 @@
 	    <packing>
 	      <property name="expand">False</property>
 	      <property name="homogeneous">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolItem" id="toolitem2">
+	      <property name="visible">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+
+	      <child>
+		<widget class="GtkLabel" id="label76">
+		  <property name="width_request">95</property>
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Search for host</property>
+		  <property name="use_underline">True</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_RIGHT</property>
+		  <property name="wrap">True</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		  <property name="mnemonic_widget">searchtxt</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
 	    </packing>
 	  </child>
 
@@ -112,7 +148,7 @@
 		  <property name="border_width">1</property>
 		  <property name="visible">True</property>
 		  <property name="homogeneous">False</property>
-		  <property name="spacing">0</property>
+		  <property name="spacing">3</property>
 
 		  <child>
 		    <widget class="GtkLabel" id="label2">
@@ -142,6 +178,7 @@
 		  <child>
 		    <widget class="GtkEntry" id="searchtxt">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Search for hostname, ip address or username</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">True</property>
@@ -247,6 +284,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="aboutbutton">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">About this app</property>
 	      <property name="stock_id">gtk-about</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
@@ -267,14 +305,14 @@
 
       <child>
 	<widget class="GtkVPaned" id="vpaned1">
-	  <property name="border_width">5</property>
+	  <property name="border_width">2</property>
 	  <property name="visible">True</property>
 	  <property name="can_focus">True</property>
 	  <property name="position">1</property>
 
 	  <child>
 	    <widget class="GtkScrolledWindow" id="scrolledwindow3">
-	      <property name="height_request">140</property>
+	      <property name="height_request">100</property>
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
@@ -303,7 +341,7 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkScrolledWindow" id="scrolledwindow4">
+	    <widget class="GtkScrolledWindow" id="scrolledtextview">
 	      <property name="height_request">150</property>
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
@@ -313,23 +351,7 @@
 	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 	      <child>
-		<widget class="GtkTextView" id="descriptiontext">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">False</property>
-		  <property name="overwrite">False</property>
-		  <property name="accepts_tab">True</property>
-		  <property name="justification">GTK_JUSTIFY_LEFT</property>
-		  <property name="wrap_mode">GTK_WRAP_NONE</property>
-		  <property name="cursor_visible">False</property>
-		  <property name="pixels_above_lines">5</property>
-		  <property name="pixels_below_lines">5</property>
-		  <property name="pixels_inside_wrap">5</property>
-		  <property name="left_margin">5</property>
-		  <property name="right_margin">5</property>
-		  <property name="indent">0</property>
-		  <property name="text" translatable="yes"></property>
-		</widget>
+		<placeholder/>
 	      </child>
 	    </widget>
 	    <packing>
@@ -354,6 +376,57 @@
 	  <property name="padding">0</property>
 	  <property name="expand">False</property>
 	  <property name="fill">False</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkTable" id="table4">
+	  <property name="visible">True</property>
+	  <property name="n_rows">1</property>
+	  <property name="n_columns">2</property>
+	  <property name="homogeneous">False</property>
+	  <property name="row_spacing">0</property>
+	  <property name="column_spacing">0</property>
+
+	  <child>
+	    <widget class="GtkButton" id="progressbutton">
+	      <property name="can_focus">True</property>
+	      <property name="label" translatable="yes">Cancel</property>
+	      <property name="use_underline">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
+	    </widget>
+	    <packing>
+	      <property name="left_attach">0</property>
+	      <property name="right_attach">1</property>
+	      <property name="top_attach">0</property>
+	      <property name="bottom_attach">1</property>
+	      <property name="x_options">fill</property>
+	      <property name="y_options"></property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkProgressBar" id="progressbar">
+	      <property name="orientation">GTK_PROGRESS_LEFT_TO_RIGHT</property>
+	      <property name="fraction">0</property>
+	      <property name="pulse_step">0.10000000149</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	    </widget>
+	    <packing>
+	      <property name="left_attach">1</property>
+	      <property name="right_attach">2</property>
+	      <property name="top_attach">0</property>
+	      <property name="bottom_attach">1</property>
+	      <property name="x_options">expand|shrink|fill</property>
+	      <property name="y_options"></property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">True</property>
 	</packing>
       </child>
     </widget>
@@ -396,7 +469,7 @@
 	    <widget class="GtkTable" id="table2">
 	      <property name="border_width">10</property>
 	      <property name="visible">True</property>
-	      <property name="n_rows">9</property>
+	      <property name="n_rows">12</property>
 	      <property name="n_columns">2</property>
 	      <property name="homogeneous">False</property>
 	      <property name="row_spacing">10</property>
@@ -428,7 +501,7 @@
 		<widget class="GtkCheckButton" id="ck_cybermode">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">Work as cyber mode (not yet)</property>
+		  <property name="label" translatable="yes">Work as cyber mode (not work yet)</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
@@ -641,6 +714,91 @@ Value=0 disable cache.</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
+
+	      <child>
+		<widget class="GtkHSeparator" id="hseparator1">
+		  <property name="visible">True</property>
+		</widget>
+		<packing>
+		  <property name="left_attach">0</property>
+		  <property name="right_attach">2</property>
+		  <property name="top_attach">7</property>
+		  <property name="bottom_attach">8</property>
+		  <property name="x_options">fill</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkLabel" id="label77">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Screenshot size:</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
+		</widget>
+		<packing>
+		  <property name="left_attach">0</property>
+		  <property name="right_attach">1</property>
+		  <property name="top_attach">8</property>
+		  <property name="bottom_attach">9</property>
+		  <property name="x_options">fill</property>
+		  <property name="y_options"></property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkSpinButton" id="spin_scrotsize">
+		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">% Size of screnshot.</property>
+		  <property name="can_focus">True</property>
+		  <property name="climb_rate">5</property>
+		  <property name="digits">0</property>
+		  <property name="numeric">False</property>
+		  <property name="update_policy">GTK_UPDATE_ALWAYS</property>
+		  <property name="snap_to_ticks">False</property>
+		  <property name="wrap">False</property>
+		  <property name="adjustment">65 0 100 5 10 10</property>
+		</widget>
+		<packing>
+		  <property name="left_attach">1</property>
+		  <property name="right_attach">2</property>
+		  <property name="top_attach">8</property>
+		  <property name="bottom_attach">9</property>
+		  <property name="y_options"></property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkCheckButton" id="ck_systemprocess">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">Show system process</property>
+		  <property name="use_underline">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
+		  <property name="active">False</property>
+		  <property name="inconsistent">False</property>
+		  <property name="draw_indicator">True</property>
+		</widget>
+		<packing>
+		  <property name="left_attach">0</property>
+		  <property name="right_attach">2</property>
+		  <property name="top_attach">6</property>
+		  <property name="bottom_attach">7</property>
+		  <property name="x_options">fill</property>
+		  <property name="y_options"></property>
+		</packing>
+	      </child>
 	    </widget>
 	    <packing>
 	      <property name="tab_expand">False</property>
@@ -651,7 +809,7 @@ Value=0 disable cache.</property>
 	  <child>
 	    <widget class="GtkLabel" id="label63">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">TcosMonitor</property>
+	      <property name="label" translatable="yes">General settings</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -675,7 +833,7 @@ Value=0 disable cache.</property>
 	    <widget class="GtkTable" id="table3">
 	      <property name="border_width">10</property>
 	      <property name="visible">True</property>
-	      <property name="n_rows">2</property>
+	      <property name="n_rows">3</property>
 	      <property name="n_columns">2</property>
 	      <property name="homogeneous">False</property>
 	      <property name="row_spacing">10</property>
@@ -778,6 +936,47 @@ Value=0 disable cache.</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
+
+	      <child>
+		<widget class="GtkLabel" id="label78">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">&lt;b&gt;NOTE:&lt;/b&gt;
+This values are needed to do some actions
+on thin client, if you don't use 
+&lt;b&gt;update-tcospasswd&lt;/b&gt; app, default
+user is &lt;b&gt;root&lt;/b&gt; and default password is &lt;b&gt;root&lt;/b&gt;.
+
+To change it you have to edit /etc/tcos/tcos.conf and change
+TCOS_ROOT_PASSWD var value. Then regenerate images with
+&lt;b&gt;gentcos&lt;/b&gt; or &lt;b&gt;tcosconfig&lt;/b&gt;.
+
+Using TcosMonitor in PXES or LTSP networks require to use
+&lt;b&gt;update-tcospasswd&lt;/b&gt; script, run it as root, and follow
+instructions. This will generate a tcospasswd file with asked data.
+</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">True</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
+		</widget>
+		<packing>
+		  <property name="left_attach">0</property>
+		  <property name="right_attach">2</property>
+		  <property name="top_attach">2</property>
+		  <property name="bottom_attach">3</property>
+		  <property name="x_options">fill</property>
+		  <property name="y_options"></property>
+		</packing>
+	      </child>
 	    </widget>
 	    <packing>
 	      <property name="tab_expand">False</property>
@@ -788,7 +987,7 @@ Value=0 disable cache.</property>
 	  <child>
 	    <widget class="GtkLabel" id="label64">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Information</property>
+	      <property name="label" translatable="yes">Authentication </property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -936,6 +1135,25 @@ Value=0 disable cache.</property>
 	      </child>
 
 	      <child>
+		<widget class="GtkCheckButton" id="ck_processinfo">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">Process info</property>
+		  <property name="use_underline">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
+		  <property name="active">False</property>
+		  <property name="inconsistent">False</property>
+		  <property name="draw_indicator">True</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
 		<widget class="GtkCheckButton" id="ck_networkinfo">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
@@ -959,6 +1177,25 @@ Value=0 disable cache.</property>
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
 		  <property name="label" translatable="yes">Xorg info</property>
+		  <property name="use_underline">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
+		  <property name="active">False</property>
+		  <property name="inconsistent">False</property>
+		  <property name="draw_indicator">True</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkCheckButton" id="ck_soundserverinfo">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">Sound server info</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
@@ -1068,21 +1305,22 @@ Value=0 disable cache.</property>
 
 <widget class="GtkAboutDialog" id="aboutdialog">
   <property name="destroy_with_parent">False</property>
-  <property name="name">TcosMonitor 0.0.9</property>
-  <property name="comments" translatable="yes">A monitor of a thin client network (TCOS based)</property>
+  <property name="name">TcosMonitor</property>
+  <property name="copyright" translatable="yes">GPL</property>
+  <property name="comments" translatable="yes">A thin client network monitor</property>
   <property name="wrap_license">False</property>
-  <property name="website">http://www.soleup.eup.uva.es/mediawiki/index.php/TcosMonitor</property>
-  <property name="website_label" translatable="yes">TcosMonitor homepage</property>
-  <property name="authors">      Mario Izquierdo (mariodebian)
-       &lt;mariodebian@gmail.com&gt;</property>
+  <property name="website"></property>
+  <property name="website_label" translatable="yes"></property>
+  <property name="authors"> Mario Izquierdo (mariodebian)
+ &lt;mariodebian@gmail.com&gt;</property>
   <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
   <property name="logo">tcos-icon.png</property>
 </widget>
 
 <widget class="GtkWindow" id="askwindow">
-  <property name="width_request">300</property>
-  <property name="height_request">120</property>
-  <property name="title" translatable="yes">Enter a app to exec</property>
+  <property name="width_request">400</property>
+  <property name="height_request">250</property>
+  <property name="title" translatable="yes">Question</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_CENTER</property>
   <property name="modal">False</property>
@@ -1100,7 +1338,7 @@ Value=0 disable cache.</property>
     <widget class="GtkVBox" id="vbox11">
       <property name="border_width">10</property>
       <property name="visible">True</property>
-      <property name="homogeneous">True</property>
+      <property name="homogeneous">False</property>
       <property name="spacing">5</property>
 
       <child>
@@ -1150,6 +1388,7 @@ Value=0 disable cache.</property>
 
       <child>
 	<widget class="GtkHBox" id="hbox18">
+	  <property name="height_request">40</property>
 	  <property name="visible">True</property>
 	  <property name="homogeneous">True</property>
 	  <property name="spacing">0</property>
@@ -1178,7 +1417,7 @@ Value=0 disable cache.</property>
 	    <widget class="GtkButton" id="ask_exebutton">
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="label">gtk-execute</property>
+	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
@@ -1192,8 +1431,8 @@ Value=0 disable cache.</property>
 	</widget>
 	<packing>
 	  <property name="padding">0</property>
-	  <property name="expand">True</property>
-	  <property name="fill">True</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
 	</packing>
       </child>
     </widget>
