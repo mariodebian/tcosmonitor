@@ -147,6 +147,44 @@ class LocalData:
             if verbose == 1:
                 print_debug ( "get_result(%s)=None" %(cmd) )
             return []
+
+    def sorted_copy(alist):
+        # inspired by Alex Martelli
+        # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52234
+        indices = map(_generate_index, alist)
+        decorated = zip(indices, alist)
+        decorated.sort()
+        return [ item for index, item in decorated ]
+    
+    def _generate_index(str):
+        """
+        Splits a string into alpha and numeric elements, which
+        is used as an index for sorting"
+        """
+        #
+        # the index is built progressively
+        # using the _append function
+        #
+        index = []
+        def _append(fragment, alist=index):
+            if fragment.isdigit(): fragment = int(fragment)
+            alist.append(fragment)
+
+        # initialize loop
+        prev_isdigit = str[0].isdigit()
+        current_fragment = ''
+        # group a string into digit and non-digit parts
+        for char in str:
+            curr_isdigit = char.isdigit()
+            if curr_isdigit == prev_isdigit:
+                current_fragment += char
+            else:
+                _append(current_fragment)
+                current_fragment = char
+                prev_isdigit = curr_isdigit
+        _append(current_fragment)    
+        return tuple(index)
+
         
     def GetAllClients(self, method):
         """
@@ -193,7 +231,10 @@ class LocalData:
                         self.allclients.append(host)
             # sort list
             self.allclients.sort()
-        
+            
+            # sort numeric
+            self.allclients = self.sorted_copy(self.allclients)
+            
             print_debug ( "GetAllClients() Host connected=%s" %(self.allclients) )
             crono(start, "GetAllClients()")
             return self.allclients
