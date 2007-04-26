@@ -47,6 +47,7 @@
 #define TCOS_DATE            "/sbin/getinfo.sh -i TCOS_DATE"
 #define TCOS_GENERATION_DATE "/sbin/getinfo.sh -i TCOS_GENERATION_DATE"
 #define TCOS_VERSION         "/sbin/getinfo.sh -i TCOS_VERSION"
+#define TCOS_UPTIME          "/sbin/getinfo.sh -i TCOS_UPTIME"
 
 /* KERNEL methods*/
 #define KERNEL_VERSION          "/sbin/getinfo.sh -i KERNEL_VERSION"

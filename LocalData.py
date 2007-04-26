@@ -212,10 +212,10 @@ class LocalData:
                 if int(block) < 0 or int(block) >= 255:
                     print_debug ( "ipValid() block < 0 or >= 255 %s" %(block) )
                     return false
-            print_debug ( "ipValid(\"%s\") TRUE" %(ip) )
+            #print_debug ( "ipValid(\"%s\") TRUE" %(ip) )
             return True
         except:
-            print_debug ( "ipValid(\"%s\") EXCEPTION" %(ip) )
+            #print_debug ( "ipValid(\"%s\") EXCEPTION" %(ip) )
             return False
         
         

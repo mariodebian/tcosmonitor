@@ -196,6 +196,10 @@ TCOS_VERSION)
 grep ^TCOS_VERSION /conf/tcos.conf| awk -F "=" '{print $2}' |sed s/'"'//g
 ;;
 
+TCOS_UPTIME)
+uptime
+;;
+
 # KERNEL methods
 KERNEL_VERSION)
 busybox uname -r

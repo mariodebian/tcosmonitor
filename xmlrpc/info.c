@@ -76,6 +76,8 @@ tcos_info(xmlrpc_env *env, xmlrpc_value *in, void *ud)
       fp=(FILE*)popen(TCOS_GENERATION_DATE, "r");
   else if ( strcmp(info, "tcos_version" ) == 0)
       fp=(FILE*)popen(TCOS_VERSION, "r");
+  else if ( strcmp(info, "tcos_uptime" ) == 0)
+      fp=(FILE*)popen(TCOS_UPTIME, "r");
 
   /* KERNEL METHODS*/
   else if ( strcmp(info, "kernel_version" ) == 0)

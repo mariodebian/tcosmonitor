@@ -388,11 +388,23 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                 li_head = "%i." % self.list_counters[0]
             self.text = ' '*len(self.list_counters)*4 + li_head + ' '
         elif name == 'img':
+            title=None
+            title_rotate=None
         
             try:
                 imgfile = attrs['file']
             except KeyError:
                 imgfile = None
+            
+            try:
+                title=attrs['title']
+            except KeyError:
+                title=None
+            
+            try:
+                title_rotate=attrs['title_rotate']
+            except KeyError:
+                title_rotate=None
                 
             if imgfile:
                 #print "############"
@@ -433,11 +445,27 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                         alt = attrs['alt']
                     except KeyError:
                         alt = "Broken image"
+                        
                 if pixbuf is not None:
                     tags = self._get_style_tags()
                     if tags:
                         tmpmark = self.textbuf.create_mark(None, self.iter, True)
-
+                    
+                    if title:
+                        label=gtk.Label(title)
+                        if title_rotate:
+                            try:
+                                title_rotate=int(title_rotate)
+                                label.set_property("angle", title_rotate)
+                            except:
+                                pass
+                        label.show()
+                        anchor_widget = self.textbuf.create_child_anchor(self.iter)
+                        try:
+                            self.textview.add_child_at_anchor (label, anchor_widget)
+                        except:
+                            pass
+                        
                     self.textbuf.insert_pixbuf(self.iter, pixbuf)
 
                     if tags:
@@ -593,12 +621,15 @@ class HtmlTextView(gtk.TextView):
         parser = xml.sax.make_parser(['drv_libxml2'])
         # parser.setFeature(xml.sax.handler.feature_validation, True)
         parser.setContentHandler(HtmlHandler(self, eob, main=self.main))
+        
+        parser.parse(StringIO(html))
+        """
         try:
             parser.parse(StringIO(html))
         except:
             print "Found exception in HtmlParser"
             print html
-        
+        """
         if not eob.starts_line():
             try:
                 buffer.insert(eob, "\n")

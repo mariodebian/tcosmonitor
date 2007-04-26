@@ -48,7 +48,7 @@ PACKAGE = "tcosmonitor"
 
 
 # version
-version="0.0.15"
+version="0.0.16.1"
 website="http://cls-tcos.forja.rediris.es"
 website_label=_("TcosMonitor web page")
 
@@ -90,7 +90,7 @@ DefaultConfig=[
 ["cache_timeout", 20, "int"],
 ["scan_network_method", "netstat", "str"],
 ["scrot_size", 65, "int"],      # % of screenshot
-["miniscrot_size", 15, "int"],      # % of screenshot
+["miniscrot_size", 20, "int"],      # % of screenshot
 ["xmlrpc_username", "user", "str"], 
 ["xmlrpc_password","", "str"], 
 ["network_interface","eth0", "str"], 
@@ -190,6 +190,7 @@ onehost_menuitems=[
 
 # add download all modules into modules info
 # [ _("Debug: Use allmodules.squashfs") , "menu_exec.png" ],   #action=14
+# [ _("Run installer"), "menu_configure.png" ] ,               #action=11
 
 allhost_menuitems=[
  [ _("Reboot all clients"), "menu_reboot.png"] ,                  #action=0

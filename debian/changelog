@@ -1,3 +1,14 @@
+tcosmonitor (0.0.16.1) unstable; urgency=low
+
+  * New stable release.
+  * Add vertical label in all screenshots.
+  * Add uptime var (readed in TCOS general info)
+  * Change preferences minicrot_size default (20) and step (1)
+  * Change version string in shared.py (in future read from debian/changelog when building package)
+  * Fix typo in tcos-server-utils.py
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 26 Dec 2006 23:35:11 +0100
+
 tcosmonitor (0.0.15.14) unstable; urgency=low
 
   * Add New toolbar button (All Hosts) that show all_actions_menu

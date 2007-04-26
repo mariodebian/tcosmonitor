@@ -384,11 +384,13 @@ class TcosActions:
             tcos_vars["tcos_version"]=self.main.xmlrpc.ReadInfo("tcos_version")
             tcos_vars["tcos_generation_date"]=self.main.xmlrpc.ReadInfo("tcos_generation_date")
             tcos_vars["tcos_date"]=self.main.xmlrpc.ReadInfo("tcos_date")
+            tcos_vars["tcos_uptime"]=self.main.xmlrpc.ReadInfo("tcos_uptime")
             
             self.datatxt.insert_list( [ \
             [_("Tcos image version: "), tcos_vars["tcos_version"] ], \
             [_("Tcos image date: "), tcos_vars["tcos_generation_date"] ], \
-            [_("Date of thin client: "), tcos_vars["tcos_date"] ]
+            [_("Date of thin client: "), tcos_vars["tcos_date"] ],
+            [_("Uptime: "), tcos_vars["tcos_uptime"] ]
              ] )
         
         
@@ -932,6 +934,13 @@ class TcosActions:
                 th=self.main.exe_cmd( cmd )
             else:
                 shared.info_msg( _("%s is not supported to personalize!") %(client_type) )
+        
+#        if action == 11:
+#            # run installer
+#            pass_msg=_("Enter password of remote thin client (if asked for it)")
+#            cmd="xterm -e \"echo '%s'; ssh root@%s /sbin/installer.sh\"" %(pass_msg, self.main.selected_ip)
+#            print_debug ( "menu_event_one(%d) cmd=%s" %(action, cmd) )
+#            th=self.main.exe_cmd( cmd )
             
         if action == 11:
             # reset xorg
@@ -960,7 +969,7 @@ class TcosActions:
             self.askfor(mode="exec", users=[self.main.localdata.GetUsername(self.main.selected_ip)])
             
         if action == 14:
-            # exec app
+            # send message
             self.askfor(mode="mess", users=[self.main.localdata.GetUsername(self.main.selected_ip)] )
             
         if action == 15:
@@ -976,14 +985,14 @@ class TcosActions:
         # check if remote proc is running
         if not self.main.xmlrpc.GetStatus("x11vnc"):
             gtk.gdk.threads_enter()
-            self.main.write_into_statusbar( "Connecting with %s to start VNC support" %(ip) )
+            self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
             gtk.gdk.threads_leave()
             
             try:
                 self.main.xmlrpc.newhost(ip)
                 self.main.xmlrpc.Exe("startvnc")
                 gtk.gdk.threads_enter()
-                self.main.write_into_statusbar( "Waiting for start of VNC server..." )
+                self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
                 gtk.gdk.threads_leave()
                 sleep(5)
             except:
@@ -1173,6 +1182,7 @@ class TcosActions:
             self.main.datatxt.clean()
             block_txt=_("Screenshots of all hosts")
             self.main.datatxt.insert_block( block_txt )
+            self.main.datatxt.insert_html("<br/>")
             gtk.gdk.threads_leave()
             
         gtk.gdk.threads_enter()
@@ -1215,8 +1225,15 @@ class TcosActions:
                     self.main.xmlrpc.screenshot( self.main.config.GetVar("miniscrot_size") ) 
                     
                     url="http://%s:%s/capture-thumb.png" %(ip, shared.httpd_port)
-                    self.main.datatxt.insert_html( "<div><img src='%s' alt=''/>\n" %(url) )
-                    self.main.datatxt.insert_html( "%s </div>" %(ip))
+                    #self.main.datatxt.insert_html( "<div><img src='%s' alt=''/>\n" %(url) )
+                    #self.main.datatxt.insert_html( "%s </div>" %(ip))
+                    hostname=self.main.localdata.GetHostname(ip)
+                    self.main.datatxt.insert_html( 
+                     "<span style='background-color:#f3d160'>" +
+                     "\n\t<img src='%s' title='%s' title_rotate='90' /> " %(url,_( "Screenshot of %s" ) %(hostname) ) +
+                     "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>" +
+                     #"\n<span style='background-color:#FFFFFF; color: #FFFFFF; margin-left: 20px; margin-right: 20px'>____</span>"+
+                     "")
                 else:
                     self.main.xmlrpc.Exe(action)
             except:
@@ -1232,8 +1249,8 @@ class TcosActions:
         
         gtk.gdk.threads_enter()
         if action == "screenshot": 
-            self.set_progressbar( _("Waiting for screenshots...") , float(1) )
-            sleep(5)
+            self.set_progressbar( _("Waiting for screenshots...") , 1 )
+            #sleep(5)
             self.main.datatxt.display()
         self.main.progressbar.hide()
         #self.main.progressbutton.hide()

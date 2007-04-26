@@ -184,7 +184,7 @@ class ServerUtils:
                 self.xmlrpc.newhost(client)
                 self.xmlrpc.Exe("poweroff")
             elif action == "restartx":
-                print ( "Shutting down %s..."  %client )
+                print ( "Restarting Xorg of %s..."  %client )
                 self.xmlrpc.newhost(client)
                 self.xmlrpc.Exe("restartx")
             elif action == "message":
