@@ -26,67 +26,156 @@
 #  cget cID        get control contents for one control
 
 
-read_line() {
-head -$1 /tmp/soundctl | tail -1
-}
+# aumix commands
+# 
+# aumix -q print all channels info
+# aumix -v 80% (set master to 90%)
 
 CMD="amixer -c 0 "
 
 output=""
 need_parse="0"
+unmute_level="80"
 
+if [ -e /dev/dsp ] && [ ! -d /proc/asound ]; then
+  TCOS_OSS=1
+  MIXER="aumix"
+else
+  TCOS_OSS=
+  MIXER="amixer -c 0 "
+fi
+
+# for debug force OSS
+TCOS_OSS=1
+MIXER="aumix"
+#####################
+
+get_controls() {
+  if [ $TCOS_OSS ]; then
+    $MIXER -q | awk '{print $1}'
+  else
+    $MIXER scontrols | awk -F " control " '{print $2}'| awk -F "," '{print $1}' | sed s/"'"//g
+  fi
+}
+
+get_level() {
+  if [ "$1" = "" ]; then
+   echo "soundctl error, need a control to retrieve data"
+   exit 1
+  fi
+  
+  if [ $TCOS_OSS ]; then
+    $MIXER -q | grep $1 | head -1 | awk '{print $3}' | sed s/","//g
+  else
+    $MIXER  sget "$1" | grep "^  Front"| head -1 | awk '{print $5}'| sed s/"\["//g| sed s/"\]"//g
+  fi
+}
+
+set_level() {
+ if [ "$1" = "" ]; then
+   echo "soundctl error, need a control to retrieve data"
+   exit 1
+ fi
+ if [ "$2" = "" ]; then
+   echo "soundctl error, need a xxx% level or 1-31 int"
+   exit 1
+ fi
+ 
+ if [ $TCOS_OSS ]; then
+    if [ "$1" = "vol" ]; then
+      $MIXER -v "$2" ; get_level "$1"
+    elif [ "$1" = "pcm" ]; then
+      $MIXER -w "$2" ; get_level "$1"
+    elif [ "$1" = "line" ]; then
+      $MIXER -l "$2" ; get_level "$1"
+    elif [ "$1" = "mic" ]; then
+      $MIXER -m "$2" ; get_level "$1"
+    elif [ "$1" = "cd" ]; then
+      $MIXER -c "$2" ; get_level "$1"
+    else
+      echo "unknow OSS mixer channel"
+    fi
+ else
+    $MIXER  set "$1" "$2" | grep "^  Front"| head -1 | awk '{print $5}'| sed s/"\["//g| sed s/"\]"//g
+ fi
+}
+
+get_mute() {
+ if [ "$1" = "" ]; then
+   echo "soundctl error, need a control to retrieve data"
+   exit 1
+ fi
+ if [ $TCOS_OSS ]; then
+    if [ "$(get_level $1)" = "0" ]; then
+      echo "off"
+    else
+      echo "on"
+    fi
+  else
+    $MIXER  sget $1| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g
+  fi
+}
+
+set_mute() {
+ if [ "$1" = "" ]; then
+   echo "soundctl error, need a control to retrieve data"
+   exit 1
+ fi
+ if [ $TCOS_OSS ]; then
+    set_level "$1" "0"
+  else
+    $MIXER  set $2 mute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g
+  fi
+}
+
+set_unmute() {
+ if [ "$1" = "" ]; then
+   echo "soundctl error, need a control to retrieve data"
+   exit 1
+ fi
+ if [ $TCOS_OSS ]; then
+    set_level "$1" "$unmute_level"
+  else
+    $MIXER set $2 unmute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g
+  fi
+}
+
+read_line() {
+head -$1 /tmp/soundctl | tail -1
+}
 
 if [ "$1" = "--showcontrols" ]; then
- output=$($CMD  scontrols| awk -F " control " '{print $2}'| awk -F "," '{print $1}' | sed s/"'"//g)
+ output=$(get_controls)
  need_parse="1"
 fi
 
 if [ "$1" = "--getlevel" ]; then
- if [ "$2" = "" ]; then
-   echo "soundctl error, need a control to retrieve data"
-   exit 1
- fi
- output=$($CMD  sget "$2" | grep "^  Front"| head -1 | awk '{print $5}'| sed s/"\["//g| sed s/"\]"//g)
+ output=$(get_level "$2")
 fi
 
+
 if [ "$1" = "--setlevel" ]; then
- if [ "$2" = "" ]; then
-   echo "soundctl error, need a control to retrieve data"
-   exit 1
- fi
- if [ "$3" = "" ]; then
-   echo "soundctl error, need a xxx% level or 1-31 int"
-   exit 1
- fi
- output=$($CMD  set "$2" "$3" | grep "^  Front"| head -1 | awk '{print $5}'| sed s/"\["//g| sed s/"\]"//g)
+ output=$(set_level "$2" "$3")
 fi
 
 if [ "$1" = "--getmute" ]; then
- if [ "$2" = "" ]; then
-   echo "soundctl error, need a control to retrieve data"
-   exit 1
- fi
- output=$($CMD  sget $2| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g)
+ output=$(get_mute "$2")
 fi
 
-
 if [ "$1" = "--setmute" ]; then
- if [ "$2" = "" ]; then
-   echo "soundctl error, need a control to retrieve data"
-   exit 1
- fi
- output=$($CMD  set $2 mute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g)
+ output=$(set_mute "$2")
 fi
 
 if [ "$1" = "--setunmute" ]; then
- if [ "$2" = "" ]; then
-   echo "soundctl error, need a control to retrieve data"
-   exit 1
- fi
- output=$($CMD  set $2 unmute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g)
+ output=$(set_unmute "$2")
 fi
 
+
 if [ "$1" = "--getserverinfo" ]; then
+  if [ "$(pidof pulseaudio)" = "" ]; then
+    echo "error: pulseaudio not running"
+    exit 1
+  fi
   pactl -s 127.0.0.1 stat > /tmp/soundinfo
   output=$(cat /tmp/soundinfo)
   rm /tmp/soundinfo

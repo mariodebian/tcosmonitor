@@ -225,6 +225,7 @@ class LocalData:
            first read /etc/hosts
            second search into dhcpd.conf
         """
+        print_debug("GetHostname() ip=%s" %(ip))
         ########  cache( ip, 1=hostname)
         cached=self.cache(ip, 1)
         if cached != None:
@@ -235,6 +236,16 @@ class LocalData:
         #    return self.hostname
         
         self.hostname=unknow
+        
+        
+        ######## new method #########
+        import socket
+        try:
+            self.hostname = socket.gethostbyaddr(ip)[0]
+            self.add_to_cache( ip, 1 , self.hostname )
+            return self.hostname
+        except:
+            pass
         
         #read hostnam from /etc/hosts
         fd=file("/etc/hosts", 'r')

@@ -125,7 +125,7 @@ xmlremote_port=8080
 xmlremote_url="/RPC2"
 
 pulseaudio_soundserver_port=4713
-sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux"]
+sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux", "vol", "pcm", "line", "cd", "mic"]
 
 
 cache_timeout=20
