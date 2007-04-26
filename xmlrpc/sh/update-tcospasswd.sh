@@ -72,7 +72,7 @@ elif [ "$_arq" == "PXES" ]; then
 elif [ "$_arq" == "TCOS" ]; then
   fpass=/etc/tcos/tcospasswd
 else
-  echo "Error: Arquitecture: ${_arq} nost supported"
+  echo "Error: Arquitecture: ${_arq} not supported, please use LTSP, PXES, or TCOS"
   exit 1
 fi
 
