@@ -1,14 +1,4 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
-
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-
 
 
 CFLAGS = -Wall -g
@@ -22,8 +12,6 @@ endif
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	# Add here commands to configure the package.
-
 	touch configure-stamp
 
 
@@ -32,7 +20,6 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
-	# Add here commands to compile the package.
 	$(MAKE) -B
 
 	touch build-stamp
@@ -41,8 +28,6 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-
-	# Add here commands to clean up after the build process.
 	-$(MAKE) clean
 
 	dh_clean 
@@ -53,17 +38,16 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/tcosmonitor
-	$(MAKE) install DESTDIR=`pwd`/debian/tmp PREFIX=/usr
+	$(MAKE) install DESTDIR=`pwd`/debian/tmp 
+	$(MAKE) install-tcos    DESTDIR=$(CURDIR)/debian/tmp PREFIX=/usr
 
 	install -d $(DESTDIR)/usr/share/control-center-2.0/capplets/
 	dh_link /usr/share/applications/tcosmonitor.desktop /usr/share/control-center-2.0/capplets/tcosmonitor.desktop
 
-	$(MAKE) install-pxes1.0 DESTDIR=`pwd`/debian/tmp
-	$(MAKE) install-pxes1.1 DESTDIR=`pwd`/debian/tmp
-	$(MAKE) install-pxes1.2 DESTDIR=`pwd`/debian/tmp
-	$(MAKE) install-ltsp    DESTDIR=`pwd`/debian/tmp
-	$(MAKE) install-tcos    DESTDIR=`pwd`/debian/tmp PREFIX=/usr
+#	$(MAKE) install-pxes1.0 DESTDIR=`pwd`/debian/tmp
+#	$(MAKE) install-pxes1.1 DESTDIR=`pwd`/debian/tmp
+#	$(MAKE) install-pxes1.2 DESTDIR=`pwd`/debian/tmp
+#	$(MAKE) install-ltsp    DESTDIR=`pwd`/debian/tmp
 
 
 # Build architecture-independent files here.
@@ -78,27 +62,16 @@ binary-arch: build install
 	dh_installdocs
 	dh_installexamples
 	dh_install --sourcedir=`pwd`/debian/tmp --list-missing
-#	dh_installmenu
-#	dh_installdebconf	
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
-#	dh_installinfo
 	dh_installman
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
 	dh_desktop
-#	dh_perl
-#	dh_python /usr/lib/python2.4/site-packages
-	dh_python -V2.4
-#	dh_makeshlibs
+	dh_pysupport
+#	dh_python
 	dh_installdeb
-	dh_shlibdeps -X opt/
+	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

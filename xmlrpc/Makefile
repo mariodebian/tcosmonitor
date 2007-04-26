@@ -68,6 +68,6 @@ install:
 	install -m 755 sh/useallmodules.sh $(DESTDIR)/$(TCOS_BINS)/
 	install -m 755 sh/devicesctl.sh $(DESTDIR)/$(TCOS_BINS)/
 
-	install -m 755 var/etc/httpd2.conf $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
+	install -m 644 var/etc/httpd2.conf $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
 	install -m 644 var/etc/abyss.conf $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
 	install -m 644 var/etc/mime.types $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/

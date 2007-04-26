@@ -1,3 +1,15 @@
+tcosmonitor (0.1.0-1) unstable; urgency=low
+
+  * Not build LTSP or PXES packages anymore (not clean, not debian)
+  * Not get busybox-static
+  * Use python-support to bytecompile packages
+  * Update debhelper Build-dep
+  * Move TcosMonitor desktop icon to Admin menu
+  * Hide tcospersonalize menu
+  * Not igonre debhelper in tcos-tcosmonitor.postinst
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 18 Feb 2007 00:04:24 +0100
+
 tcosmonitor (0.0.19.1) unstable; urgency=low
 
   * xmlrpc/*:

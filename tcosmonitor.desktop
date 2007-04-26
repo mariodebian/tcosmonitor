@@ -12,4 +12,4 @@ Terminal=false
 Type=Application
 Icon=/usr/share/pixmaps/tcos-icon-32x32.png
 GenericName[es_ES]=TcosMonitor
-Categories=GNOME;Application;System;Utility;
+Categories=GNOME;Application;Settings;System;

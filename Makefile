@@ -1,4 +1,4 @@
-all: fix-glade busybox_static es.gmo tcosxmlrpc dbus udev
+all: fix-glade es.gmo tcosxmlrpc dbus udev
 
 include common.mk
 
@@ -10,7 +10,7 @@ test-all:
 	@$(MAKE) test
 	@cd xmlrpc &&  $(MAKE) test
 	@cd udev &&    $(MAKE) test
-	@cd busybox && $(MAKE) test && $(MAKE) test2
+#	@cd busybox && $(MAKE) test && $(MAKE) test2
 	@cd dbus &&    $(MAKE) test
 
 dist-clean:
@@ -181,6 +181,6 @@ tcos:
 	rm -f ../tcosmonitor_*deb ../pxes-*-tcosmonitor*deb ../ltsp-tcos*deb ../tcos-tcosmon*deb
 	dpkg-buildpackage -us -uc -rfakeroot
 	#debuild -uc -us; true
-	sudo dpkg -i ../tcosmonitor_*deb ../pxes-1.2-tcosmonitor*deb ../ltsp-tcos*deb ../tcos-tcosmoni*deb
+	sudo dpkg -i ../tcosmonitor_*deb  ../tcos-tcosmoni*deb
 
-.PHONY: fix-glade busybox_static es.gmo tcosxmlrpc dbus udev
+.PHONY: fix-glade es.gmo tcosxmlrpc dbus udev

@@ -11,3 +11,5 @@ for _file in ${OLD_FILES}; do
     rm -f ${_file}
   fi
 done
+
+#DEBHELPER#
