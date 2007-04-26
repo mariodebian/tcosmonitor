@@ -242,12 +242,42 @@ class TcosDevices:
                         return desktop + "/" + mnt + "-" + str(counter)
                     counter+=1
     
+    def remove_dupes(self, mylist):
+        """
+        check for duplicate events, 
+        kernel create 3-4 umount events before mounting a device
+        the events are created and diff at max 1 second
+        """
+        
+        if len(mylist) != 1:
+            have_umount=False
+            have_mount=False
+            umount_index=None
+            nodupes=[]
+            nodupes=[ u for u in mylist if u not in locals()['_[1]'] ]
+            
+            # if have ACTION=umount and ACTION=mount and 
+            # DEVPATH is the same remove ACTION=umount
+            for event in nodupes:
+                action=self.get_value(event.split('#'), "ACTION")
+                if action == "umount":
+                    have_umount=True
+                    umount_index=event
+                if action == "mount": have_mount=True
+            
+            if have_mount and have_umount:
+                for i in range(len(nodupes)):
+                    if self.get_value(nodupes[i].split('#'), "ACTION") == "umount":
+                        print_debug ( "remove_dupes() Deleting umount ACTION: %s" %nodupes[i] )
+                        del nodupes[i]
+                        break
+            mylist=nodupes
+        return mylist
     
     def init_daemon(self):
         # two list, first contain a part of dmesg line
         # second contains function to exec with line arg
         #
-        # udev_date=$(date +%Y-%m-%d_%H:%M:%S)
         # id_bus=$(get_env_var "ID_BUS")
         # device=$(get_env_var "DEVNAME")
         # action=$(get_env_var "ACTION")
@@ -255,14 +285,29 @@ class TcosDevices:
         # fs_type=$(get_env_var "ID_FS_TYPE")
         # vendor=$(get_env_var "ID_VENDOR")
         # model=$(get_env_var "ID_MODEL")
+        # devpath=$(get_env_var "DEVPATH")
         #
-        # echo "$udev_date|$id_bus|$device|$action|$label|$fs_type|$vendor|$model" >> $output_file
+        # echo "$id_bus#$device#$action#$label#$fs_type#$vendor#$model#$devpath" >> $output_file
         #
         print_debug ("init_daemon() running as daemon...")
         from time import sleep
         
-        events=[ ["ID_BUS=usb", "ACTION=add"], ["ID_BUS=usb", "ACTION=remove"] ]
-        actions=[self.add_usb, self.remove_usb]
+        """ listen is a udev event dictionary
+            key is a string like "mount" or "insert", not very important
+            value is a list:
+              * list[0] is another list with all udev conditions, example: ["ID_BUS=usb", "ACTION=add"]
+              * list[1] is python function to do, example: self.mount_floppy_event
+        """
+        listen={ 
+        "insert":[ ["ID_BUS=usb", "ACTION=add"],    self.add_usb], 
+        "remove":[ ["ID_BUS=usb", "ACTION=remove"], self.remove_usb], 
+        "mount-floppy":[ ["DEVPATH=/block/fd0", "ACTION=mount"] , self.mount_floppy_event ],
+        "umount-floppy":[ ["DEVPATH=/block/fd0", "ACTION=umount"], self.umount_floppy_event ],
+        "mount-cdrom":[ ["DEVPATH=/block/hd", "ACTION=mount"] , self.mount_cdrom_event ],
+        "umount-cdrom":[ ["DEVPATH=/block/hd", "ACTION=umount"], self.umount_cdrom_event ], 
+        "mount-flash":[ ["DEVPATH=/block/sd", "ACTION=mount"] , self.mount_flash_event ],
+        "umount-flash":[ ["DEVPATH=/block/sd", "ACTION=umount"], self.umount_flash_event ]
+        }
         
         udev_old=""
         first_run=True
@@ -271,17 +316,49 @@ class TcosDevices:
             while True:
                 udev=self.xmlrpc.GetDevicesInfo(device="", mode="--getudev").split('|')
                 if "error" in " ".join(udev):
-                    print "Connection error: \"%s\"" " ".join(udev)
+                    print "Connection error: \"%s\" exiting..." %( " ".join(udev) )
                     sys.exit(1)
-                if udev != udev_old:
+                print_debug ( "action udev=%s" %(udev) )
+                
+                # remove last
+                udev=udev[:-1]
+                
+                if udev != udev_old and udev[0] != "unknow":
+                    # delete duplicate events
+                    udev=self.remove_dupes(udev)
+                    ################################
                     for line in udev:
-                        for event in events:
-                            if event[0] in line and event[1] in line:
-                                function_call=actions[events.index(event)]
-                                #function_call( line )
+                        ######################
+                        self.action_found=True
+                        for event in listen:
+                            #print_debug ( "EVENT=%s value=%s" %(event, listen[event]) )
+                            # check for all events
+                            for udev_var in listen[event][0]:
+                                if not udev_var in line:
+                                    #print_debug ( "***BREAK, udev_var=%s not found in line=%s" %(udev_var, line) )
+                                    self.action_found=False
+                                    break
+                                else:
+                                    #print_debug ( "***PASS, udev_var=%s found !!!" %(udev_var) )
+                                    self.action_found=True
+                                    
+                            if self.action_found:
+                                #print_debug ( "##EVENT MATCH## exec=%s args=%s" %(listen[event][1] , ([line])) )
+                                # if here we have all events
                                 self.worker_running=False
-                                worker=shared.Workers(self, target=function_call, args=([line]), dog=False)
+                                worker=shared.Workers(self, target=listen[event][1], args=([line]), dog=False)
                                 worker.start()
+                            #else:
+                            #    print_debug ( "##EVENT NOT MATCH##" )
+                            
+                        ###################### OLD CODE ################
+                        #for event in events:
+                        #    if event[0] in line and event[1] in line:
+                        #        function_call=actions[events.index(event)]
+                        #        #function_call( line )
+                        #        self.worker_running=False
+                        #        worker=shared.Workers(self, target=function_call, args=([line]), dog=False)
+                        #        worker.start()
                                 
                         
                 udev_old=udev       
@@ -295,24 +372,64 @@ class TcosDevices:
             print_debug ( "init_daemon() Ctrl+C exiting...." )
             sys.exit(0)
     
+    def get_value(self, data, key):
+        """
+           returns value of given key, example:
+              data=["ID_BUS=usb", "DEVICE=/dev/sda", "FSTYPE=vfat"]
+              if key="DEVICE"
+                returns "/dev/sda" 
+            udev current avalaible keys:
+             "ID_BUS" "DEVNAME" "ACTION" "ID_FS_LABEL" "ID_FS_TYPE" "ID_VENDOR" "ID_MODEL" "DEVPATH"
+        """
+        print_debug ( "::==> get_value() searching for \"%s\"" %key )
+        for uvar in data:
+            if uvar.split('=')[0] == key:
+                return uvar.split('=')[1]
+        # return empty string if not found
+        return ""
+    
+    def mount_floppy_event(self, line):
+        self.show_notification (  _("Floppy mounted. Ready for use.")  )
+    
+    def umount_floppy_event(self, line):
+        self.show_notification (  _("Floppy umounted. You can extract it.")  )
+    
+    def mount_cdrom_event(self,line):
+        self.show_notification (  _("Cdrom mounted. Ready for use.")  )
+        
+    def umount_cdrom_event(self, line):
+        self.show_notification (  _("Cdrom umounted. You can extract it.")  )
+        # FIXME exec eject in thin client....
+
+    def mount_flash_event(self, line):
+        self.show_notification (  _("Flash device mounted. Ready for use.")  )
+    
+    def umount_flash_event(self, line):
+        self.show_notification (  _("Flash device umounted. You can extract it.")  )
+    
     def add_usb(self, line):
         data=line.split('#')
         print_debug ( "add_usb() data=%s" %data )
         
-        device=data[2].split('=')[1]
-        fstype=data[5]
+        device=self.get_value(data, "DEVICE")
+        fstype=self.get_value(data, "ID_FS_TYPE")
+        #device=data[1].split('=')[1]
+        #fstype=data[4]
+        
         # /dev/sda
         #if len(device) < 9:
         if fstype == "":
-            vendor=data[6].split('=')[1]
-            model=data[7].split('=')[1]
+            vendor=self.get_value(data, "ID_VENDOR")
+            model=self.get_value(data, "ID_MODEL")
+            #vendor=data[5].split('=')[1]
+            #model=data[6].split('=')[1]
             # this is a disk, search a partition
             self.show_notification( _("From terminal %(host)s.\nConnected USB device %(device)s\n%(vendor)s %(model)s" ) \
          %{"host":shared.remotehost, "device":device, "vendor":vendor, "model":model } ) 
             return
         
         # we have something like /dev/sda1
-        fstype=data[5].split('=')[1]
+        #fstype=data[4].split('=')[1]
         if not self.mounter_remote(device, fstype, "--mount"):
             self.show_notification (  _("Can't mount device %s") %(device)  )
             return
@@ -337,16 +454,19 @@ class TcosDevices:
         data=line.split('#')
         print_debug ( "remove_usb() data=%s" %data )
         
-        
-        device=data[2].split('=')[1]
-        
+        device=self.get_value(data, "DEVICE")
+        fstype=self.get_value(data, "ID_FS_TYPE")
+        #device=data[2].split('=')[1]
         # /dev/sda
-        fstype=data[5]
+        #fstype=data[5]
+        
         # /dev/sda
         #if len(device) < 9:
         if fstype == "":
-            vendor=data[6].split('=')[1]
-            model=data[7].split('=')[1]
+            vendor=self.get_value(data, "ID_VENDOR")
+            model=self.get_value(data, "ID_MODEL")
+            #vendor=data[6].split('=')[1]
+            #model=data[7].split('=')[1]
             # this is a disk, search a partition
             self.show_notification( _("From terminal %(host)s.\nDisconnected USB device %(device)s\n%(vendor)s %(model)s" ) \
          %{"host":shared.remotehost, "device":device, "vendor":vendor, "model":model } ) 
@@ -378,7 +498,7 @@ class TcosDevices:
             if status == 0:
                 print_debug ( "remove_usb() device=%s seems not mounted" %(device) )
             else:
-                fstype=data[5].split('=')[1]
+                #fstype=data[5].split('=')[1]
                 if not self.mounter_remote(device, fstype, "--umount"):
                     self.show_notification (  _("Can't umount device %s") %(device)  )
                     return
@@ -395,14 +515,19 @@ class TcosDevices:
         print_debug ( "remove_usb() REMOVE usb, done" )
     
     def mounter_remote(self, device, fstype, mode="--mount"):
+        print_debug ( "mounter_remote() device=%s fstype=%s" %(device, fstype) )
+        if device == None:
+            return False
         mnt_point="/mnt/%s" %(device[5:])
         if mode == "--mount":
             print_debug ( "mount_remote() mounting device=%s fstype=%s mnt_point=%s" %(device, fstype, mnt_point) )
         elif mode == "--umount":
             print_debug ( "mount_remote() umounting device=%s fstype=%s mnt_point=%s" %(device, fstype, mnt_point) )
         
+        # set socket timeout bigger (floppy can take some time)
         import socket
-        socket.setdefaulttimeout(10)
+        socket.setdefaulttimeout(15)
+        
         mount=self.xmlrpc.GetDevicesInfo(device=device, mode=mode)
         if mount != mnt_point:
             print_debug ( "mount_remote() mount failed, retry with filesystem")
@@ -434,7 +559,7 @@ Categories=GNOME;Application
             fd.write(icon_data)
             fd.close
             # send notification
-            self.show_notification( _("Partition %(device)s has been mounted in \n%(mnt_point)s\nclick on Desktop icon to secure extract." )\
+            self.show_notification( _("Mounting device %(device)s in \n%(mnt_point)s\nPlease wait...\nClick on Desktop icon to secure umount." )\
              %{"device":device, "mnt_point":local_mount_point}, urgency=pynotify.URGENCY_NORMAL )
         
         if mode == "umount":
@@ -452,7 +577,7 @@ Categories=GNOME;Application
                 if local_mount_point == self.mounted[dev]:
                     mydevice=device
                 
-            self.show_notification( _("Partition %s has been umounted.\nYou can extract it secure." ) %(mydevice)\
+            self.show_notification( _("Umounting device %s.\nPlease wait..." ) %(mydevice)\
              , urgency=pynotify.URGENCY_NORMAL )
             
     
@@ -575,12 +700,12 @@ Categories=GNOME;Application
         print_debug ( "get_data() cdroms=%s" %(self.cdrom_devices) )
         self.cdrom_devices=self.cdrom_devices[0:-1]
         print_debug ( "get_data() detected cdroms=%s" %self.cdrom_devices )
-        if len(self.cdrom_devices) > 1:
+        if len(self.cdrom_devices) > 0:
             print_debug (  _("No support for more than one cdrom, first detected will be used")  )
             self.cdrom_device="/dev/" + self.cdrom_devices[0]
             self.cdrom_remote="/mnt/" + self.cdrom_devices[0]
         elif len(self.cdrom_devices) == 0:
-            self.show_notification (  _("No cdrom detected. Click on refresh button.")  )
+            #self.show_notification (  _("No cdrom detected. Click on refresh button.")  )
             self.cdrom_mount_button.set_sensitive(False)
             self.cdrom_umount_button.set_sensitive(False)
         
@@ -597,6 +722,8 @@ Categories=GNOME;Application
             print_debug ( "error loading cdrom status" )
             self.cdrom_mount_button.set_sensitive(False)
             self.cdrom_umount_button.set_sensitive(False)
+        
+        print_debug ( "get_data()  cdrom_device=%s" %(self.cdrom_device) )
     
     def floppy_mount(self, widget):
         desktop=os.path.expanduser("~/Desktop")
