@@ -1,8 +1,27 @@
+tcosmonitor (0.0.15.6) unstable; urgency=low
+
+  * tcos-volume-manager.py, tcos-volume-manager.glade, tcos-volume-manager.desktop
+   - iconize in systray tcos-volume-manager
+   - new systray icon for tcos-volume-manager
+   - add xdg/autostart tcos-volume-manager (desktop file)
+   - exit if xauth dont match
+   - mainwindow hide by default in glade file
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 28 Oct 2006 15:38:06 +0200
+
+tcosmonitor (0.0.15.5) unstable; urgency=low
+
+  * tcos-devices.py
+    - fix get_value(), DEVICE is not a udev var, varname is DEVNAME
+    - fix get_local_mountpoint() fslabel and fsvendor
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 28 Oct 2006 11:54:13 +0200
+
 tcosmonitor (0.0.15.4) unstable; urgency=low
 
   * tcos-devices.py, udev/tcos-udevd.sh , udev/050_tcos_devices.rules
-    Change udev to control all SUBSYSTEM=="block" events
-    Delete duplicate events, kernel do 4 umount and 1 mount event for mounting a floppy
+    - Change udev to control all SUBSYSTEM=="block" events
+    - Delete duplicate events, kernel do 4 umount and 1 mount event for mounting a floppy
 
  -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 25 Oct 2006 17:24:14 +0200
 

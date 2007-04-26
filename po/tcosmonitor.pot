@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-25 17:38+0200\n"
+"POT-Creation-Date: 2006-10-28 12:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:264
-#: tcos-devices.py:859
+#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:296
+#: tcos-devices.py:867
 msgid "Exiting"
 msgstr ""
 
@@ -549,71 +549,80 @@ msgid ""
 "Force with --host=xx.xx.xx.xx"
 msgstr ""
 
-#: tcos-volume-manager.py:110 tcos-devices.py:156
+#: tcos-volume-manager.py:100
+#, python-format
+msgid "Tcos Sound levels on %s"
+msgstr ""
+
+#: tcos-volume-manager.py:126 tcos-devices.py:156
 #, python-format
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr ""
 
-#: tcos-volume-manager.py:126 tcos-devices.py:183
+#: tcos-volume-manager.py:142 tcos-devices.py:183
 #, python-format
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr ""
 
-#: tcos-volume-manager.py:140
+#: tcos-volume-manager.py:156
 msgid "Loading channels info..."
 msgstr ""
 
-#: tcos-volume-manager.py:148
-msgid "Ready"
-msgstr ""
-
-#: tcos-volume-manager.py:152
+#: tcos-volume-manager.py:168
 msgid "Error loading channels info"
 msgstr ""
 
-#: tcos-volume-manager.py:155 tcos-volume-manager.glade:10
+#: tcos-volume-manager.py:171 tcos-volume-manager.glade:9
 msgid "Tcos Volume Manager"
 msgstr ""
 
-#: tcos-volume-manager.py:156
+#: tcos-volume-manager.py:172
 #, python-format
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr ""
 
-#: tcos-volume-manager.py:214 TcosActions.py:624
+#: tcos-volume-manager.py:229 TcosActions.py:624
 msgid "Mute"
 msgstr ""
 
-#: tcos-volume-manager.py:235 TcosActions.py:706
+#: tcos-volume-manager.py:244
+msgid "Main controls ready"
+msgstr ""
+
+#: tcos-volume-manager.py:248
+msgid "All remote controls loaded."
+msgstr ""
+
+#: tcos-volume-manager.py:258 TcosActions.py:706
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr ""
 
-#: tcos-volume-manager.py:241 TcosActions.py:712
+#: tcos-volume-manager.py:264 TcosActions.py:712
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr ""
 
-#: tcos-volume-manager.py:248 TcosActions.py:719
+#: tcos-volume-manager.py:271 TcosActions.py:719
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr ""
 
-#: tcos-volume-manager.py:252 TcosActions.py:723
+#: tcos-volume-manager.py:275 TcosActions.py:723
 #, python-format
 msgid "Muting %s channel..."
 msgstr ""
 
-#: tcos-volume-manager.py:254 TcosActions.py:725
+#: tcos-volume-manager.py:277 TcosActions.py:725
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr ""
 
-#: tcos-volume-manager.glade:87
+#: tcos-volume-manager.glade:86
 msgid "Main Channels"
 msgstr ""
 
-#: tcos-volume-manager.glade:129
+#: tcos-volume-manager.glade:128
 msgid "Secondary Channels"
 msgstr ""
 
@@ -1066,35 +1075,35 @@ msgstr ""
 msgid "Your user isn't in fuse group, ask your system administrator."
 msgstr ""
 
-#: tcos-devices.py:232
+#: tcos-devices.py:234
 msgid "usbdisk"
 msgstr ""
 
-#: tcos-devices.py:392
+#: tcos-devices.py:395
 msgid "Floppy mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:395
+#: tcos-devices.py:398
 msgid "Floppy umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:398
+#: tcos-devices.py:401
 msgid "Cdrom mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:401
+#: tcos-devices.py:404
 msgid "Cdrom umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:405
+#: tcos-devices.py:408
 msgid "Flash device mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:408
+#: tcos-devices.py:411
 msgid "Flash device umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:427
+#: tcos-devices.py:430
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1102,12 +1111,12 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: tcos-devices.py:434
+#: tcos-devices.py:437
 #, python-format
 msgid "Can't mount device %s"
 msgstr ""
 
-#: tcos-devices.py:471
+#: tcos-devices.py:474
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1115,17 +1124,17 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: tcos-devices.py:503
+#: tcos-devices.py:506
 #, python-format
 msgid "Can't umount device %s"
 msgstr ""
 
-#: tcos-devices.py:554
+#: tcos-devices.py:560
 #, python-format
 msgid "Umount %s remote device"
 msgstr ""
 
-#: tcos-devices.py:559
+#: tcos-devices.py:565
 #, python-format
 msgid ""
 "Mounting device %(device)s in \n"
@@ -1134,58 +1143,58 @@ msgid ""
 "Click on Desktop icon to secure umount."
 msgstr ""
 
-#: tcos-devices.py:577
+#: tcos-devices.py:583
 #, python-format
 msgid ""
 "Umounting device %s.\n"
 "Please wait..."
 msgstr ""
 
-#: tcos-devices.py:599
+#: tcos-devices.py:605
 msgid "Tcos device daemon"
 msgstr ""
 
-#: tcos-devices.py:627
+#: tcos-devices.py:633
 #, python-format
 msgid "Tcos Devices daemon on host %s"
 msgstr ""
 
-#: tcos-devices.py:649
+#: tcos-devices.py:655
 #, python-format
 msgid "Tcos Devices on %s host"
 msgstr ""
 
-#: tcos-devices.py:701
+#: tcos-devices.py:707
 msgid "No support for more than one cdrom, first detected will be used"
 msgstr ""
 
-#: tcos-devices.py:725 tcos-devices.py:730 tcos-devices.py:739
-#: tcos-devices.py:741
+#: tcos-devices.py:733 tcos-devices.py:738 tcos-devices.py:747
+#: tcos-devices.py:749
 msgid "Floppy"
 msgstr ""
 
-#: tcos-devices.py:728
+#: tcos-devices.py:736
 msgid "Can't mount floppy"
 msgstr ""
 
-#: tcos-devices.py:744
+#: tcos-devices.py:752
 msgid "Can't umount floppy"
 msgstr ""
 
-#: tcos-devices.py:753 tcos-devices.py:758 tcos-devices.py:767
-#: tcos-devices.py:771
+#: tcos-devices.py:761 tcos-devices.py:766 tcos-devices.py:775
+#: tcos-devices.py:779
 msgid "Cdrom"
 msgstr ""
 
-#: tcos-devices.py:756
+#: tcos-devices.py:764
 msgid "Can't mount cdrom"
 msgstr ""
 
-#: tcos-devices.py:774
+#: tcos-devices.py:782
 msgid "Can't umount cdrom"
 msgstr ""
 
-#: tcos-devices.py:874
+#: tcos-devices.py:882
 #, python-format
 msgid "Umounting %s, please wait..."
 msgstr ""
