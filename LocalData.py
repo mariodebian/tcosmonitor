@@ -332,7 +332,7 @@ class LocalData:
             return self.username
         
         
-        cmd="who |grep \"%s \" | head -1 |awk '{print $1}'" %( self.GetHostname(ip) )
+        cmd="who |grep \"%s:\" | head -1 |awk '{print $1}'" %( self.GetHostname(ip) )
         output=self.exe_cmd(cmd)
         if output != []:
             self.username=output
