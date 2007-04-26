@@ -245,6 +245,7 @@ class TcosActions:
         for user in self.ask_usernames:
             users_txt+="%s, " %(user)
             counter+=counter
+            print_debug("askfor() counter=%s" %(counter) )
             if counter % 4 == 0:
                 users_txt+="\n"
         
