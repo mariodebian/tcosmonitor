@@ -88,7 +88,7 @@ class TcosActions:
 
     def on_another_screenshot_button_click(self, widget, ip):
         print_debug ( "on_another_screenshot_button_click() __init__ ip=%s" %(ip) )
-        self.main.worker=shared.Worker(self.main, target=self.get_screenshot, args=[ip])
+        self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=[ip])
         self.main.worker.start()
         #gobject.timeout_add( 50, self.get_screenshot, ip )   
     

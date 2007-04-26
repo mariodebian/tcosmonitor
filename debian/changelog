@@ -1,3 +1,9 @@
+tcosmonitor (0.0.15.13) unstable; urgency=low
+
+  * Fix typo on on_another_screenshot() Worker => Workers
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 11 Dec 2006 16:12:48 +0100
+
 tcosmonitor (0.0.15.12) unstable; urgency=low
 
   * Add set_sensitive() to TreeView before/after updating list or 
