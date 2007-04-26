@@ -1,3 +1,10 @@
+tcosmonitor (0.1.6) unstable; urgency=low
+
+  * Add some man pages trying to make a lintian clean package.
+  * Add tcos.conf to sources to not dependes on initramfs-tools-tcos
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 11 Mar 2007 19:04:29 +0100
+
 tcosmonitor (0.1.5) unstable; urgency=low
 
   * LocalData.py:

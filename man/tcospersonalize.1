@@ -1,0 +1,35 @@
+.TH tcospersonalize 1 "Mar 11, 2007" "tcospersonalize man page"
+
+.SH NAME
+tcospersonalize \- Python GTK2 gui that allow to create single host files to configure some TCOS vars.
+
+.SH DESCRIPTION
+
+.PP
+\fBtcospersonalize\fP is a python GUI that allows to:
+ * Select remote X protocol (XMDCP, Local, rDesktop, ...)
+ * Select Xorg driver, resolution, and bitmap color.
+
+tcospersonalize is exec by root because write files into /var/lib/tcos/tftp/config
+
+.SH OPTIONS
+.B --host=xx.xx.xx.xx
+ Host that will be configured (file /var/lib/tcos/tftp/config/xx.xx.xx.xx.conf )
+
+.B --debug
+ Show verbose output when running
+
+.B --help
+ Some usage help about tcospersonalize
+
+
+.SH BUGS
+Contact Mario Izquierdo <mariodebian@gmail.com>
+
+Info about TCOS project: http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+
+.SH SEE ALSO
+tcospersonalize(1)
+
+.SH AUTHOR
+Mario Izquierdo (mariodebian) <mariodebian@gmail.com>

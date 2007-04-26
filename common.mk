@@ -11,12 +11,11 @@ ifeq ($(strip $(have_changelog)),)
 VERSION=$(shell head -1 ../debian/changelog 2>/dev/null | awk  '{gsub(/\(/,"",$$2); gsub(/\)/, "" , $$2); print $$2}' )
 endif
 
-#VERSION=$(shell head -1 debian/changelog | awk  '{gsub(/\(/,"",$$2); gsub(/\)/, "" , $$2); print $$2}' )
 
 TCOS_CONFIG_FILE=conf/tcos.conf
 have_config := $(wildcard conf/tcos.conf)
 ifeq ($(strip $(have_config)),)
-TCOS_CONFIG_FILE=/etc/tcos/tcos.conf
+TCOS_CONFIG_FILE=../conf/tcos.conf
 endif
 
 TCOS_DIR=$(shell awk -F "=" '/TCOS_DIR=/ {print $$2}' $(TCOS_CONFIG_FILE) )

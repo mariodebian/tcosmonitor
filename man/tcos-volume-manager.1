@@ -1,0 +1,38 @@
+.TH tcos-volume-manager 1 "Mar 11, 2007" "tcos-volume-manager man page"
+
+.SH NAME
+tcos-volume-manager \- Python GTK2 gui that allow to change thin client sound levels.
+
+.SH DESCRIPTION
+
+.PP
+\fBtcos-volume-manager\fP is a python GUI exec in client session startup and allows to:
+ * Read thin client sound card levels.
+ * Change (mute/unmute) levels.
+
+tcos-volume-manager use xauth with tcosxmlrpc (MIT-MAGIC-COOKIE)
+
+.SH OPTIONS
+.B [no options]
+ With no options will launch hidden GUI (systray) app.
+
+.B --host=xx.xx.xx.xx
+ Overwrite DISPLAY with this var (not work unless thin client Xorg is started with -ac)
+
+.B --debug
+ Show verbose output when running
+
+.B --help
+ Some usage help about tcos-volume-manager
+
+
+.SH BUGS
+Contact Mario Izquierdo <mariodebian@gmail.com>
+
+Info about TCOS project: http://soleup.eup.uva.es/mediawiki/index.php/TCOS
+
+.SH SEE ALSO
+tcos-volume-manager(1)
+
+.SH AUTHOR
+Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
