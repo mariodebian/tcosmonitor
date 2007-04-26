@@ -1,18 +1,17 @@
-CFLAGS=-Wall -ansi -pedantic `xmlrpc-c-config abyss-server --cflags`
-LIBS=`xmlrpc-c-config abyss-server --libs` -lcrypt -lX11
-
-DEFINES= -DBSIZE=512
-TEST_DEFINES=-DDEBUG -DBSIZE=512 -DVISIBLE_PASSWD
-
-GCC=gcc
-
-SERVER=tcosxmlrpc
-
-
 all: server tcospasswd hex2ascii
 
 
 include ../common.mk
+
+
+CFLAGS=-Wall -ansi -pedantic `xmlrpc-c-config abyss-server --cflags`
+LIBS=`xmlrpc-c-config abyss-server --libs` -lcrypt -lX11
+DEFINES= -DBSIZE=512 -DVERSION="'$(VERSION)'"
+TEST_DEFINES=-DDEBUG -DBSIZE=512 -DVISIBLE_PASSWD
+GCC=gcc
+SERVER=tcosxmlrpc
+
+
 
 
 

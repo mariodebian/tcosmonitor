@@ -34,7 +34,7 @@ http://www.elrincondelc.com/portal/modules.php?name=Forums&file=viewtopic&p=2032
 #include <xmlrpc_abyss.h>
 #include <unistd.h>
 
-#define VERSION "0.0.15"
+/*#define VERSION "0.0.15"*/
 #define BUFF_SIZE 1000
 #define HAVE_MAIN
 
