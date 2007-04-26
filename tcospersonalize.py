@@ -106,7 +106,7 @@ class TcosPersonalize:
             shared.error_msg( "You must be root to exec tcospersonalize." )
             sys.exit(1)
         
-        self.remotehost_config = os.path.join ("/tftpboot/tcos/conf", shared.remotehost + ".conf" )
+        self.remotehost_config = os.path.join ("/var/lib/tcos/tftp/conf", shared.remotehost + ".conf" )
         
         #import shared
         gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)

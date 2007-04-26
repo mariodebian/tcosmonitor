@@ -6,9 +6,10 @@ tcosmonitor (0.1.0-1) unstable; urgency=low
   * Update debhelper Build-dep
   * Move TcosMonitor desktop icon to Admin menu
   * Hide tcospersonalize menu
-  * Not igonre debhelper in tcos-tcosmonitor.postinst
+  * Not ignore debhelper in tcos-tcosmonitor.postinst
+  * Change tcospersonalize config dir to new /var/lib/tcos/tftp/config
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 18 Feb 2007 00:04:24 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 18 Feb 2007 13:34:03 +0100
 
 tcosmonitor (0.0.19.1) unstable; urgency=low
 

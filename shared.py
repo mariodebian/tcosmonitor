@@ -48,7 +48,7 @@ PACKAGE = "tcosmonitor"
 
 
 # version
-version="0.0.19.1"
+version="0.1.0"
 website="http://cls-tcos.forja.rediris.es"
 website_label=_("TcosMonitor web page")
 
