@@ -244,10 +244,10 @@ class TcosActions:
         counter=1
         for user in self.ask_usernames:
             users_txt+="%s, " %(user)
-            counter+=counter
             print_debug("askfor() counter=%s" %(counter) )
             if counter % 4 == 0:
                 users_txt+="\n"
+            counter=int(counter+1)
         
         if mode == "exec":
             self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n %s" ) %( users_txt ) )
