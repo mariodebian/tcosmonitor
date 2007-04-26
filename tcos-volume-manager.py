@@ -78,7 +78,7 @@ for o, a in opts:
 
 if shared.remotehost == "":
         print "tcos-volume-manager: Not allowed to run in local DISPLAY"
-        shared.error_msg ( _("tcos-volume-manager isn't allowed to run in local DISPLAY\nForce with --host=xx.xx.xx.xx") )
+        #shared.error_msg ( _("tcos-volume-manager isn't allowed to run in local DISPLAY\nForce with --host=xx.xx.xx.xx") )
         sys.exit(0)
 
 
