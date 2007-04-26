@@ -201,8 +201,10 @@ class TcosDevices:
         print_debug( line )
         desktop=os.path.expanduser("~/Desktop")
         data=line.split('#')
-        fslabel=data[4].split('=')[1]
-        fsvendor=data[6].split('=')[1]
+        #fslabel=data[4].split('=')[1]
+        #fsvendor=data[6].split('=')[1]
+        fslabel=self.get_value(data, "ID_FS_LABEL")
+        fsvendor=self.get_value(data, "ID_VENDOR")
         counter=1
         if fslabel != "":
             print_debug ( "get_local_mountpoint() have label...." )
@@ -384,6 +386,7 @@ class TcosDevices:
         print_debug ( "::==> get_value() searching for \"%s\"" %key )
         for uvar in data:
             if uvar.split('=')[0] == key:
+                print_debug ( "::==> get_value() FOUND key=%s value=%s" %(key, uvar.split('=')[1]) )
                 return uvar.split('=')[1]
         # return empty string if not found
         return ""
@@ -411,7 +414,7 @@ class TcosDevices:
         data=line.split('#')
         print_debug ( "add_usb() data=%s" %data )
         
-        device=self.get_value(data, "DEVICE")
+        device=self.get_value(data, "DEVNAME")
         fstype=self.get_value(data, "ID_FS_TYPE")
         #device=data[1].split('=')[1]
         #fstype=data[4]
@@ -454,7 +457,7 @@ class TcosDevices:
         data=line.split('#')
         print_debug ( "remove_usb() data=%s" %data )
         
-        device=self.get_value(data, "DEVICE")
+        device=self.get_value(data, "DEVNAME")
         fstype=self.get_value(data, "ID_FS_TYPE")
         #device=data[2].split('=')[1]
         # /dev/sda
