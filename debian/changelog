@@ -1,3 +1,10 @@
+tcosmonitor (0.1.8) unstable; urgency=low
+
+  * dbus/tcos-dbus-client.py:
+    - Add getopt support (enable exec with debug info)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 08 Apr 2007 23:07:02 +0200
+
 tcosmonitor (0.1.7) unstable; urgency=low
 
   * Change username method (use pwd class)

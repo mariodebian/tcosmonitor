@@ -3,6 +3,7 @@
 
 
 import os, sys
+import getopt
 
 host, display =  os.environ["DISPLAY"].split(':')
 if host == "":
@@ -24,6 +25,20 @@ import shared
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" %("TcosDBusServer()", txt)
+
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug"])
+except getopt.error, msg:
+    print msg
+    print "for command line options use tcos-dbus-client --help"
+    sys.exit(2)
+
+for o, a in opts:
+    if o in ("-d", "--debug"):
+        print "DEBUG ACTIVE"
+        shared.debug = True
+
 
 # check for pulseaudio server and export vars
 # FIXME FIXME
