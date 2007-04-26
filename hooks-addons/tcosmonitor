@@ -3,6 +3,10 @@
 
 stat_before
 
+# EJECT for mount/umount cdrom
+copy_exec /usr/bin/eject /usr/bin/
+
+
 # SCROT package
 copy_exec /usr/bin/scrot /usr/bin/
 mkdir -p $DESTDIR/usr/lib/imlib2/filters/

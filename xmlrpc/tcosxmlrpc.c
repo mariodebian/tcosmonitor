@@ -223,8 +223,9 @@ Info methods:\n\
 
     xmlrpc_server_abyss_add_method_w_doc("tcos.pci", &tcos_pci, NULL,
     "s:s", "Tcos, PCI data stuff. Send pci_all to get pci bus ids. (no auth needed)");
-
+/*
     fprintf(stdout, "tcosxmlrpc::main() switching to background.\n");
+*/
     xmlrpc_server_abyss_run();
 
     /* We never reach this point. */

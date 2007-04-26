@@ -36,7 +36,9 @@ tcos_login(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 
   xmlrpc_parse_value(env, in, "(ss)", &user, &pass);
 
-  fprintf(stderr, "tcosxmlrpc::tcos_login() user=\"%s\" pass=\"******\"\n", user);
+  #ifdef DEBUG
+    fprintf(stderr, "tcosxmlrpc::tcos_login() user=\"%s\" pass=\"******\"\n", user);
+  #endif
   /*fprintf(stderr, "tcosxmlrpc::tcos_login() user=\"%s\" pass=\"%s\"\n", user, pass);*/
 
 

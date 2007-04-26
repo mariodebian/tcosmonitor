@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-26 19:35+0100\n"
+"POT-Creation-Date: 2007-01-29 15:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:318
-#: tcos-devices.py:881
+#: tcos-devices.py:887
 msgid "Exiting"
 msgstr ""
 
@@ -1112,31 +1112,31 @@ msgstr ""
 msgid "usbdisk"
 msgstr ""
 
-#: tcos-devices.py:409
+#: tcos-devices.py:411
 msgid "Floppy mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:412
+#: tcos-devices.py:414
 msgid "Floppy umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:415
+#: tcos-devices.py:417
 msgid "Cdrom mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:418
+#: tcos-devices.py:420
 msgid "Cdrom umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:422
+#: tcos-devices.py:428
 msgid "Flash device mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:425
+#: tcos-devices.py:431
 msgid "Flash device umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:444
+#: tcos-devices.py:450
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1144,12 +1144,12 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: tcos-devices.py:451
+#: tcos-devices.py:457
 #, python-format
 msgid "Can't mount device %s"
 msgstr ""
 
-#: tcos-devices.py:488
+#: tcos-devices.py:494
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1157,17 +1157,17 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: tcos-devices.py:520
+#: tcos-devices.py:526
 #, python-format
 msgid "Can't umount device %s"
 msgstr ""
 
-#: tcos-devices.py:574
+#: tcos-devices.py:580
 #, python-format
 msgid "Umount %s remote device"
 msgstr ""
 
-#: tcos-devices.py:579
+#: tcos-devices.py:585
 #, python-format
 msgid ""
 "Mounting device %(device)s in \n"
@@ -1176,58 +1176,58 @@ msgid ""
 "Click on Desktop icon to secure umount."
 msgstr ""
 
-#: tcos-devices.py:597
+#: tcos-devices.py:603
 #, python-format
 msgid ""
 "Umounting device %s.\n"
 "Please wait..."
 msgstr ""
 
-#: tcos-devices.py:619
+#: tcos-devices.py:625
 msgid "Tcos device daemon"
 msgstr ""
 
-#: tcos-devices.py:647
+#: tcos-devices.py:653
 #, python-format
 msgid "Tcos Devices daemon on host %s"
 msgstr ""
 
-#: tcos-devices.py:669
+#: tcos-devices.py:675
 #, python-format
 msgid "Tcos Devices on %s host"
 msgstr ""
 
-#: tcos-devices.py:721
+#: tcos-devices.py:727
 msgid "No support for more than one cdrom, first detected will be used"
 msgstr ""
 
-#: tcos-devices.py:747 tcos-devices.py:752 tcos-devices.py:761
-#: tcos-devices.py:763
+#: tcos-devices.py:753 tcos-devices.py:758 tcos-devices.py:767
+#: tcos-devices.py:769
 msgid "Floppy"
 msgstr ""
 
-#: tcos-devices.py:750
+#: tcos-devices.py:756
 msgid "Can't mount floppy"
 msgstr ""
 
-#: tcos-devices.py:766
+#: tcos-devices.py:772
 msgid "Can't umount floppy"
 msgstr ""
 
-#: tcos-devices.py:775 tcos-devices.py:780 tcos-devices.py:789
-#: tcos-devices.py:793
+#: tcos-devices.py:781 tcos-devices.py:786 tcos-devices.py:795
+#: tcos-devices.py:799
 msgid "Cdrom"
 msgstr ""
 
-#: tcos-devices.py:778
+#: tcos-devices.py:784
 msgid "Can't mount cdrom"
 msgstr ""
 
-#: tcos-devices.py:796
+#: tcos-devices.py:802
 msgid "Can't umount cdrom"
 msgstr ""
 
-#: tcos-devices.py:896
+#: tcos-devices.py:902
 #, python-format
 msgid "Umounting %s, please wait..."
 msgstr ""

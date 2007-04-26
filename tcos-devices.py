@@ -188,7 +188,7 @@ class TcosDevices:
         
         # make a test and exit if no cookie match
         if not self.xauth.test_auth():
-            print "ERROR: Xauth cookie don't match"
+            print "tcos-devices: ERROR: Xauth cookie don't match"
             #sys.exit(1)
         
         
@@ -332,8 +332,10 @@ class TcosDevices:
             while True:
                 udev=self.xmlrpc.GetDevicesInfo(device="", mode="--getudev").split('|')
                 if "error" in " ".join(udev):
-                    print "Connection error: \"%s\" exiting..." %( " ".join(udev) )
-                    sys.exit(1)
+                    print "tcos-devices: Connection error: \"%s\" ..." %( " ".join(udev) )
+                    continue
+                    # dont exit
+                    #sys.exit(1)
                 print_debug ( "action udev=%s" %(udev) )
                 
                 # remove last
@@ -416,7 +418,11 @@ class TcosDevices:
         
     def umount_cdrom_event(self, line):
         self.show_notification (  _("Cdrom umounted. You can extract it.")  )
-        # FIXME exec eject in thin client....
+        print_debug ( "umount_cdrom_event() line=%s" %(line) )
+        data=line.split('#')
+        device=self.get_value(data, "DEVPATH").split("/")[2]
+        print_debug("umount_cdrom_event()  EJECT device %s" %(device) )
+        self.xmlrpc.GetDevicesInfo(device=device, mode="--eject")
 
     def mount_flash_event(self, line):
         self.show_notification (  _("Flash device mounted. Ready for use.")  )
@@ -628,7 +634,7 @@ Categories=GNOME;Application
         # check if running, only one per user
         status=self.exe_cmd("ps ux |grep \"tcos-devices --hidden\"|grep -c -v grep" )
         if int(status) > 1:
-            print "tcos-devices is running..."
+            print "tcos-devices: another process is running..."
             sys.exit(0)
         
         # based on http://www.burtonini.com/computing/notify.py

@@ -29,7 +29,7 @@ handle_xauth( char *cookie , char *servername)
     else
        sprintf(hostname, "%s" ,servername);
 
-    sprintf ( (char*) cmd, "xauth -f /tmp/.tmpxauth add %s:0 MIT-MAGIC-COOKIE-1 %s", hostname, cookie);
+    sprintf ( (char*) cmd, "xauth -q -f /tmp/.tmpxauth add %s:0 MIT-MAGIC-COOKIE-1 %s", hostname, cookie);
 
 #ifdef DEBUG
     fprintf( stderr, "handle_xauth() cmd=\"%s\"\n", cmd );

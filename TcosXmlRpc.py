@@ -446,7 +446,7 @@ class TcosXmlRpc:
         if mode == "--getxdrivers":
             xauth_cookie="foo"
         if xauth_cookie == None:
-            return "error: xauth cookie don't match"
+            return "GetDevicesInfo error: xauth cookie don't match"
         result=self.tc.tcos.devices(mode, " \"%s\" " %(device), \
                                    xauth_cookie, \
                                    remote_hostname ).replace('\n', '')

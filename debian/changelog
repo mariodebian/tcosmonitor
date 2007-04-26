@@ -1,8 +1,21 @@
+tcosmonitor (0.0.17.1) unstable; urgency=low
+
+  * xmlrpc/*.c:
+     - Remove tcosxmlrpc verbose messages
+  * debian/control, hooks-addons/tcosmonitor:
+     - Add /usr/bin/eject and eject cdrom from TcosDevices (daemon)
+  * tcos-devices.py:
+     - Remove sys.exit(1) from tcos-devices (retry cookie don't match)
+  * xmlrpc/sh/devicesctl.sh
+     - Add --eject method
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 29 Jan 2007 16:13:43 +0100
+
 tcosmonitor (0.0.16.2) unstable; urgency=low
 
   * Change /bin/sh to /bin/bash (solve ubuntu dash problems)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 29 Dec 2006 15:21:30 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 29 Jan 2007 16:02:30 +0100
 
 tcosmonitor (0.0.16.1) unstable; urgency=low
 

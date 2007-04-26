@@ -129,7 +129,7 @@ class TcosVolumeManager:
         
         # make a test and exit if no cookie match
         if not self.xauth.test_auth():
-            print "ERROR: Xauth cookie don't match"
+            print "tcos-volume-manager: ERROR: Xauth cookie don't match"
             #sys.exit(1)
         
         
@@ -173,6 +173,9 @@ class TcosVolumeManager:
         scrolled.remove(widget)
 
     def get_channel_info(self):
+        # retry cookie auth
+        self.xauth.test_auth()
+        
         primary_channels=[]
         secondary_channels=[]
         if self.allchannels != None:

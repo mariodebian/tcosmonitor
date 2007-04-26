@@ -139,6 +139,16 @@ if [ "$1" = "--getstatus" ]; then
 
 fi
 
+if [ "$1" = "--eject" ]; then
+ if [ "$2" != "" ]; then
+   eject /dev/$2
+ else
+   eject
+ fi
+ echo "ok"
+
+fi
+
 
 if [ "$1" = "--getcdrom" ]; then
   cdrom=$(head -3 /proc/sys/dev/cdrom/info 2>/dev/null | tail -1 | cut -f 3-)
