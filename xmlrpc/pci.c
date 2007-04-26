@@ -37,9 +37,7 @@ tcos_pci(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   /* read what info search */
   xmlrpc_parse_value(env, in, "(s#)", &pci, &len);
 
-#ifdef DEBUG
-  fprintf(stderr, "tcosxmlrpc::tcos_pci() searching for pci=\"%s\"\n", pci); 
-#endif
+  dbgtcos("tcosxmlrpc::tcos_pci() searching for pci=\"%s\"\n", pci);
 
 
   if (strcmp(pci, "") == 0 )
@@ -50,18 +48,13 @@ tcos_pci(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   else if ( strcmp(pci, "pci_all") == 0 )
   {
       fp=(FILE*)popen(PCI_ALL, "r");
-#ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_pci() reading pipe\n");
-#endif
+      dbgtcos("tcosxmlrpc::tcos_pci() reading pipe\n");
 
        if (fp == NULL)
 	return xmlrpc_build_value(env, "s", PCI_FP_ERROR );
 
       fgets( line, sizeof line, fp);
-
-#ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_pci() line=\"%s\"\n", line);
-#endif
+      dbgtcos("tcosxmlrpc::tcos_pci() line=\"%s\"\n", line);
 
       pclose(fp);
       return xmlrpc_build_value(env, "s", line );  
@@ -74,18 +67,18 @@ tcos_pci(xmlrpc_env *env, xmlrpc_value *in, void *ud)
       fgets( allpci, sizeof allpci, fp);
       pclose(fp);
       /* search pci in allpci */
-#ifdef DEBUG
-/*  fprintf(stderr, "tcosxmlrpc::tcos_pci() compare=\"%d\"\n", strstr( allpci, pci) ); */
-#endif
+
+      dbgtcos("tcosxmlrpc::tcos_pci() compare=\"%d\"\n", strstr( allpci, pci));
+
       if ( strstr( allpci, pci ) == 0 ) {
 	return xmlrpc_build_value(env, "s", PCI_UNKNOW );
       }
       else {
         /* return info about pci bus id */
 	sprintf ( (char*) pci_cmd, "lspci |grep \"%s\" | sed s/\"%s \"//g", pci, pci);
-#ifdef DEBUG
-  fprintf(stderr, "tcosxmlrpc::tcos_pci() pci_cmd=\"%s\"\n", pci_cmd); 
-#endif
+
+        dbgtcos("tcosxmlrpc::tcos_pci() pci_cmd=\"%s\"\n", pci_cmd);
+
         fp=(FILE*)popen(pci_cmd, "r");
 	fgets( line, sizeof line, fp);
         pclose(fp);

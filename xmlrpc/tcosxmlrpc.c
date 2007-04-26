@@ -40,6 +40,8 @@ http://www.elrincondelc.com/portal/modules.php?name=Forums&file=viewtopic&p=2032
 
 /* My TCOS includes */
 
+#include "debug.c"
+
 #include "login.c"
 #include "xauth.c"
 #include "info.c"
@@ -54,10 +56,7 @@ static xmlrpc_value *
 tcos_version(xmlrpc_env *env, xmlrpc_value *in, void *ud)
  {
 
-
-#ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_version() %s\n", VERSION);     
-#endif
+    dbgtcos("tcosxmlrpc::tcos_version() %s\n", VERSION);
     return xmlrpc_build_value(env, "s", VERSION);
  }
 
@@ -69,9 +68,9 @@ tcos_echo(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 
    
    xmlrpc_parse_value(env, in, "(s#)", &s, &len);
-#ifdef DEBUG
-   fprintf(stderr, "tcosxmlrpc::tcos_echo() %s\n", s);     
-#endif
+
+   dbgtcos("tcosxmlrpc::tcos_echo() %s\n", s);
+
    return xmlrpc_build_value(env, "s", s);
  }
 
@@ -89,10 +88,7 @@ tcos_status (xmlrpc_env *env, xmlrpc_value *param_array, void *user_data)
    char ret[BUFF_SIZE];
 
 
-
-#ifdef DEBUG
-   fprintf(stderr, "tcosxmlrpc::tcos_status() Init \n");
-#endif
+   dbgtcos("tcosxmlrpc::tcos_status() Init \n");
 
    /* Parse app string */
    xmlrpc_parse_value(env, param_array, "(s)", &app);
@@ -107,30 +103,22 @@ tcos_status (xmlrpc_env *env, xmlrpc_value *param_array, void *user_data)
     return xmlrpc_build_value(env, "s", login_ok );
   */
 
-#ifdef DEBUG
-   fprintf(stderr, "tcosxmlrpc::tcos_status() pidof %s\n", app);
-#endif
+   dbgtcos("tcosxmlrpc::tcos_status() pidof %s\n", app);
    
 
    snprintf( (char*) &cmd, BUFF_SIZE, "pidof %s| grep [1234567890] | wc -l" ,app);
 
-#ifdef DEBUG
-   fprintf(stderr, "tcosxmlrpc::tcos_status() exec cmd=\"%s\"\n", cmd);
-#endif
+   dbgtcos("tcosxmlrpc::tcos_status() exec cmd=\"%s\"\n", cmd);
 
    fp=(FILE*)popen(cmd, "r");
    if (env->fault_occurred)
 	return xmlrpc_build_value(env, "s", "exec error");;
 
-#ifdef DEBUG
-   fprintf(stderr, "tcosxmlrpc::tcos_status() reading from fp pointer\n");
-#endif
+   dbgtcos("tcosxmlrpc::tcos_status() reading from fp pointer\n");
 
    fscanf(fp, "%s", ret);
 
-#ifdef DEBUG
-   fprintf(stderr, "tcosxmlrpc::tcos_status() ret value=%s\n", ret);
-#endif
+   dbgtcos( "tcosxmlrpc::tcos_status() ret value=%s\n", ret);
    
    pclose(fp);
 
@@ -223,9 +211,9 @@ Info methods:\n\
 
     xmlrpc_server_abyss_add_method_w_doc("tcos.pci", &tcos_pci, NULL,
     "s:s", "Tcos, PCI data stuff. Send pci_all to get pci bus ids. (no auth needed)");
-/*
-    fprintf(stdout, "tcosxmlrpc::main() switching to background.\n");
-*/
+
+    dbgtcos("tcosxmlrpc::main() switching to background.\n");
+
     xmlrpc_server_abyss_run();
 
     /* We never reach this point. */

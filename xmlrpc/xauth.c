@@ -20,9 +20,7 @@ handle_xauth( char *cookie , char *servername)
   int found = 0, i;
   char cmd[BSIZE];
 
-#ifdef DEBUG
-  fprintf( stderr, "handle_auth() cookie=%s server=%s\n" ,cookie, servername );
-#endif
+  dbgtcos("tcosxmlrpc::handle_auth() cookie=%s server=%s\n" ,cookie, servername);
 
     if ( strcmp (servername, "") == 0 )
        gethostname(hostname, BSIZE);
@@ -31,25 +29,20 @@ handle_xauth( char *cookie , char *servername)
 
     sprintf ( (char*) cmd, "xauth -q -f /tmp/.tmpxauth add %s:0 MIT-MAGIC-COOKIE-1 %s", hostname, cookie);
 
-#ifdef DEBUG
-    fprintf( stderr, "handle_xauth() cmd=\"%s\"\n", cmd );
-#endif
+    dbgtcos("tcosxmlrpc::handle_xauth() cmd=\"%s\"\n", cmd);
 
     unlink("/tmp/.tmpxauth");
     system(cmd);
 
     setenv("XAUTHORITY", "/tmp/.tmpxauth", 1);          /* for XOpenDisplay */
 
-#ifdef DEBUG
-    fprintf ( stderr, "handle_xauth() XAUTHORITY=%s \n", getenv("XAUTHORITY")  );
-#endif
+    dbgtcos("tcosxmlrpc::handle_xauth() XAUTHORITY=%s \n", getenv("XAUTHORITY"));
+
 
     for (i = 0; i < 1; i++) {
       sprintf(displayname, "%s:%d", hostname, i);               /* displayify it */
 
-#ifdef DEBUG
-      printf( "handle_xauth() trying to connect to %s\n", displayname );
-#endif
+      dbgtcos("tcosxmlrpc::handle_xauth() trying to connect to %s\n", displayname);
 
       displ = XOpenDisplay(displayname);
 
@@ -63,15 +56,12 @@ handle_xauth( char *cookie , char *servername)
     unlink(XauFileName());                              /* delete file */
 
     if (!found) {
-#ifdef DEBUG
-      fprintf ( stderr, "error openning DISPLAY \n" );
-#endif
+      dbgtcos("error openning DISPLAY \n");
       return(XAUTH_ERROR);
     }
-  
-#ifdef DEBUG
-  fprintf ( stderr, "handle_xauth() AUTH ok.\n" );
-#endif
+
+    dbgtcos("tcosxmlrpc::handle_xauth() AUTH ok.\n");  
+
   return(XAUTH_OK);
 }
 

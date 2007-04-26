@@ -11,7 +11,8 @@
      standar libs
 
    * Thin Client daemon (tcosxmlrpc) developed in C based on
-     xmlrpc libs and abyss web server code and libs
+     xmlrpc libs and abyss web server code and libs. 
+     For debug output exec TCOS_DEBUG=1 /usr/bin/tcosxmlrpc /etc/abys.conf
 
    * Some extra tools (hex2ascii, update-tcospasswd, etc...)
 

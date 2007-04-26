@@ -1,3 +1,10 @@
+tcosmonitor (0.0.19.1) unstable; urgency=low
+
+  * xmlrpc/*:
+     - Change #ifdef DEBUG for a new function dbgtcos(); read TCOS_DEBUG env var
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu,  8 Feb 2007 18:33:04 +0100
+
 tcosmonitor (0.0.18.2) unstable; urgency=low
 
   * Downgrade initramfs-tools-tcos dependencies to >= 0.59

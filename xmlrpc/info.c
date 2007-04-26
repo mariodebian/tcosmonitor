@@ -32,9 +32,7 @@ tcos_info(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   /* read what info search */
   xmlrpc_parse_value(env, in, "(s#)", &info, &len);
 
-#ifdef DEBUG
-  fprintf(stderr, "tcosxmlrpc::tcos_info() searching for info=\"%s\"\n", info); 
-#endif
+  dbgtcos("tcosxmlrpc::tcos_info() searching for info=\"%s\"\n", info);
 
   if ( strcmp(info, "get_client") == 0 )
       fp=(FILE*)popen(GET_CLIENT, "r");
@@ -109,10 +107,6 @@ tcos_info(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   else
       return xmlrpc_build_value(env, "s", INFO_UNKNOW );
 
-#ifdef DEBUG
-/*  fprintf(stderr, "tcosxmlrpc::tcos_info() reading pipe\n"); */
-#endif
-
   if (fp == NULL)
 	return xmlrpc_build_value(env, "s", INFO_UNKNOW );
 
@@ -121,9 +115,7 @@ tcos_info(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 
   fgets( line, sizeof line, fp);
 
-#ifdef DEBUG
-/*  fprintf(stderr, "tcosxmlrpc::tcos_info() line=\"%s\"\n", line); */
-#endif
+  dbgtcos("tcosxmlrpc::tcos_info() line=\"%s\"\n", line);
 
   pclose(fp);
   return xmlrpc_build_value(env, "s", line );  

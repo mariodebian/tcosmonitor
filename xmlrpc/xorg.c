@@ -45,19 +45,15 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   if( strcmp(login_ok,  LOGIN_OK ) != 0 )
     return xmlrpc_build_value(env, "s", login_ok );
 
-#ifdef DEBUG
-  fprintf(stderr, "tcosxmlrpc::tcos_xorg() option=\"%s\" cmdline=\"%s\"\n", option, cmdline); 
-#endif
-
-
+  dbgtcos("tcosxmlrpc::tcos_xorg() option=\"%s\" cmdline=\"%s\"\n", option, cmdline);
 
   /* generate new xorg.conf */
   if ( strcmp(option, "new") == 0 )
   {
    sprintf( (char*) line, "%s %s", XORG_NEW_CONF, cmdline );
-   #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_xorg() new exec=\"%s\"\n", line);
-   #endif
+
+   dbgtcos("tcosxmlrpc::tcos_xorg() new exec=\"%s\"\n", line);
+
    if (system(line) != 0 )
       return xmlrpc_build_value(env, "s", XORG_ERROR );
    else
@@ -68,9 +64,9 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   else if ( strcmp(option, "change") == 0 )
   {
    sprintf( (char*) line, "%s %s", XORG_CHANGE_CONF, cmdline );
-   #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_xorg() change exec=\"%s\"\n", line);
-   #endif
+
+   dbgtcos("tcosxmlrpc::tcos_xorg() change exec=\"%s\"\n", line);
+
    if (system(line) != 0 )
       return xmlrpc_build_value(env, "s", XORG_ERROR );
    else
@@ -81,9 +77,9 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   else if ( strcmp(option, "rebuild") == 0 )
   {
    sprintf( (char*) line, "%s %s", XORG_REBUILD_CONF, cmdline );
-   #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_xorg() rebuild exec=\"%s\"\n", line);
-   #endif
+
+   dbgtcos("tcosxmlrpc::tcos_xorg() rebuild exec=\"%s\"\n", line);
+
    if (system(line) != 0 )
       return xmlrpc_build_value(env, "s", XORG_ERROR );
    else
@@ -92,9 +88,9 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
  
   else if ( strcmp(option, "get") == 0 )
   {
-   #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_xorg() get xorg.conf exec=\"%s\"\n", XORG_GET_CONF);
-   #endif
+
+   dbgtcos("tcosxmlrpc::tcos_xorg() get xorg.conf exec=\"%s\"\n", XORG_GET_CONF);
+
    fp=(FILE*)popen(XORG_GET_CONF, "r");
    if (fp == NULL)
       return xmlrpc_build_value(env, "s", XORG_READING_ERROR );

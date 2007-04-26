@@ -50,15 +50,11 @@ check_for_file(char *fname)
  FILE *fptemp;
  fptemp = fopen(fname,"r");
  if (!fptemp) {
-    #ifdef DEBUG
-      fprintf(stderr, "info check_for_file(): File \"%s\" not found or cant read.\n", fname);
-    #endif
+    dbgtcos("info check_for_file(): File \"%s\" not found or cant read.\n", fname);
     return 0;
  }
  else
-    #ifdef DEBUG
-      fprintf(stderr, "info check_for_file(): File \"%s\" found.\n", fname);
-    #endif
+    dbgtcos("info check_for_file(): File \"%s\" found.\n", fname);
    return 1;
 }
 
@@ -68,27 +64,19 @@ char
 {
 /* check for files in order */
    if ( check_for_file("/etc/tcospasswd") == 1 ) {
-     #ifdef DEBUG
-       fprintf(stderr, "info validate_login(): /etc/tcospasswd exists.\n");
-     #endif
+     dbgtcos("info validate_login(): /etc/tcospasswd exists.\n");
      return validate_tcos(user, pw);
    }
    else if ( check_for_file("/etc/shadow") == 1 ) {
-     #ifdef DEBUG
-       fprintf(stderr, "info validate_login(): /etc/shadow exists.\n");
-     #endif
+     dbgtcos("info validate_login(): /etc/shadow exists.\n");
      return validate_shadow(user, pw);
    }
    else if ( check_for_file("/etc/passwd") == 1 ) {
-     #ifdef DEBUG
-       fprintf(stderr, "info validate_login(): /etc/passwd exists.\n");
-     #endif
+     dbgtcos("info validate_login(): /etc/passwd exists.\n");
      return validate_passwd(user, pw);
    }
    else {
-     #ifdef DEBUG
-       fprintf(stderr, "error validate_login(): no files found.\n");
-     #endif
+     dbgtcos("error validate_login(): no files found.\n");
      return (char*) LOGIN_ERROR;
    }
 

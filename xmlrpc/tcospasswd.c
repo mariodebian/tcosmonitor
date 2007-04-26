@@ -52,29 +52,3 @@ usage()
 }
 
 
-/*
-char
-*whereis_pxes()
-{
-  FILE *fp;
-  char line[BSIZE];
-  char *tmp;
-  int i;
-
-  fp=(FILE*)popen("echo /opt/pxes*", "r");
-  #ifdef DEBUG
-      fprintf(stderr, "whereis_pxes() reading pipe\n");
-  #endif
-
-  fgets( line, sizeof(line), fp);
-  pclose(fp);
-
-  tmp="";
-  tmp=line;
-  tmp[strlen(tmp)-1]='\0';
-  #ifdef DEBUG
-      fprintf(stderr, "whereis_pxes() pxes=%s\n", tmp);
-  #endif
-  return tmp;
-}
-*/

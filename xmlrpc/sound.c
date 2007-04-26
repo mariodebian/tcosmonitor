@@ -34,9 +34,7 @@ tcos_sound(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   char hostname[BSIZE];
   int xauth_ok;
 
-   #ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_sound() Init \n");
-   #endif
+  dbgtcos("tcosxmlrpc::tcos_sound() Init \n");
 
   /* read what option and cmdline params need */
   xmlrpc_parse_value(env, in, "(ssss)", &option, &cmdline, &user, &pass);
@@ -45,10 +43,7 @@ tcos_sound(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 
   gethostname(hostname,BSIZE);
 
-   #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_sound() option=%s cmdline=%s user=%s pass=%s\n", option, cmdline, user, pass);
-   #endif
-
+  dbgtcos("tcosxmlrpc::tcos_sound() option=%s cmdline=%s user=%s pass=%s\n", option, cmdline, user, pass);
 
   if (strcmp(pass, hostname ) == 0 ) {
     /* need XAUTH first */
@@ -64,13 +59,7 @@ tcos_sound(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   }
 
 
-
-  /* LOGIN DISABLED to work with tcos-volume-manager */
-
-
-   #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_sound() exec=\"%s %s %s\"\n", SOUND_WRAPPER, option, cmdline);
-   #endif
+   dbgtcos("tcosxmlrpc::tcos_sound() exec=\"%s %s %s\"\n", SOUND_WRAPPER, option, cmdline);
 
    sprintf( (char*) mycmd, "%s %s %s", SOUND_WRAPPER, option, cmdline);
 

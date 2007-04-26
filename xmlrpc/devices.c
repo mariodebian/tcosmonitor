@@ -35,23 +35,17 @@ tcos_devices(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 
   /*char *login_ok;*/
 
-   #ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_devices() Init \n");
-   #endif
+  dbgtcos("tcosxmlrpc::tcos_devices() Init \n");
 
   /* read what option and cmdline params need */
   xmlrpc_parse_value(env, in, "(ssss)", &option, &cmdline, &cookie, &hostname);
   if (env->fault_occurred)
         return xmlrpc_build_value(env, "s", "params error");
 
-   #ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_devices() option=%s cmdline=%s \n", option, cmdline);
-   #endif
+   dbgtcos("tcosxmlrpc::tcos_devices() option=%s cmdline=%s \n", option, cmdline);
 
   if (strcmp(option, "--getxdrivers") == 0 ) {
-     #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_devices() --getxdrivers no xauth\n");
-     #endif
+     dbgtcos("tcosxmlrpc::tcos_devices() --getxdrivers no xauth\n");
   }
   else {  
     /* need XAUTH first */
@@ -60,10 +54,7 @@ tcos_devices(xmlrpc_env *env, xmlrpc_value *in, void *ud)
       return xmlrpc_build_value(env, "s", "error: xauth access denied" );
   }
 
-
-   #ifdef DEBUG
-      fprintf(stderr, "tcosxmlrpc::tcos_devices() exec=\"%s %s %s\"\n", DEVICES_WRAPPER, option, cmdline);
-   #endif
+   dbgtcos("tcosxmlrpc::tcos_devices() exec=\"%s %s %s\"\n", DEVICES_WRAPPER, option, cmdline);
 
    sprintf( (char*) mycmd, "%s %s %s", DEVICES_WRAPPER, option, cmdline);
 

@@ -45,9 +45,7 @@ tcos_screenshot(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   else
      sprintf( (char*) line, "%s", SCROT_CMD);
 
-#ifdef DEBUG
-  fprintf(stderr, "tcosxmlrpc::screenshot() exe=%s\n", line); 
-#endif
+  dbgtcos("tcosxmlrpc::screenshot() exe=%s\n", line);
 
   if (system(line) != 0 )
       return xmlrpc_build_value(env, "s", SCROT_ERROR );

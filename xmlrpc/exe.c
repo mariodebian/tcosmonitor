@@ -49,9 +49,9 @@ char
    {
      sprintf( full_path , "%s%c", full_path, line[i] );
    }
-  #ifdef DEBUG
-  fprintf(stderr, "tcosxmlrpc::get_full_path(%s)=%s\n", bin, full_path);
-  #endif
+
+  dbgtcos("tcosxmlrpc::get_full_path(%s)=%s\n", bin, full_path);
+
   pclose(fp);
   return(full_path);
 }
@@ -64,9 +64,7 @@ job_exe( char *cmd )
 
   snprintf( (char*) &job, BUFF_SIZE, "%s %s", CMD_WRAPPER, get_full_path(cmd) );
 
-  #ifdef DEBUG
-    fprintf(stderr, "xmlrpc::job_exe() exec=> \"%s\"\n", job);
-  #endif
+  dbgtcos("tcosxmlrpc::job_exe() exec=> \"%s\"\n", job);
 
 
     fp=(FILE*)popen(job, "r");
@@ -75,9 +73,7 @@ job_exe( char *cmd )
   if ( system(job) == -1 )
 	fprintf(stderr, "xmlrpc::job_exe() ERROR !!!\n");
 */
-    #ifdef DEBUG
-       fprintf(stderr, "xmlrpc::job_exe() EXEC !!!\n");
-    #endif
+    dbgtcos("tcosxmlrpc::job_exe() EXEC !!!\n");
     return;
 }
 
@@ -89,9 +85,7 @@ kill_exe( char *cmd )
 
   snprintf( (char*) &job, BUFF_SIZE, "killall %s", cmd );
 
-  #ifdef DEBUG
-    fprintf(stderr, "xmlrpc::kill_exe() exec=> \"%s\"\n", job);
-  #endif
+  dbgtcos("tcosxmlrpc::kill_exe() exec=> \"%s\"\n", job);
 
     fp=(FILE*)popen(job, "r");
     pclose(fp);
@@ -107,10 +101,7 @@ tcos_exe(xmlrpc_env *env, xmlrpc_value *in, void *ud)
      char *pass;
      char *login_ok;
 
-
-   #ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_exe() Init \n");
-   #endif
+   dbgtcos("tcosxmlrpc::tcos_exe() Init \n");
 
      xmlrpc_parse_value(env, in, "(sss)", &s, &user, &pass);
      if (env->fault_occurred)
@@ -122,14 +113,11 @@ tcos_exe(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   if( strcmp(login_ok,  LOGIN_OK ) != 0 )
     return xmlrpc_build_value(env, "s", login_ok );
 
+  dbgtcos("tcosxmlrpc::tcos_exe s=\"%s\" \n", s);
 
-   #ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_exe s=\"%s\" \n", s);
-   #endif
+  job_exe(s);
 
-     job_exe(s);
-
-     return xmlrpc_build_value(env, "s", s);
+  return xmlrpc_build_value(env, "s", s);
 }
 
 
@@ -141,9 +129,7 @@ tcos_kill(xmlrpc_env *env, xmlrpc_value *in, void *ud)
      char *pass;
      char *login_ok;
 
-   #ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_kill() Init \n");
-   #endif
+   dbgtcos("tcosxmlrpc::tcos_kill() Init \n");
 
      xmlrpc_parse_value(env, in, "(sss)", &s, &user, &pass);
      if (env->fault_occurred)
@@ -154,9 +140,7 @@ tcos_kill(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   if( strcmp(login_ok,  LOGIN_OK ) != 0 )
     return xmlrpc_build_value(env, "s", login_ok );
 
-   #ifdef DEBUG
-     fprintf(stderr, "tcosxmlrpc::tcos_kill s=\"%s\" \n", s);
-   #endif
+   dbgtcos("tcosxmlrpc::tcos_kill s=\"%s\" \n", s);
 
      kill_exe(s);
 

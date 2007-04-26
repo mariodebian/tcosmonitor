@@ -66,9 +66,7 @@ char *validate_tcos(char *user, char *pass)
   struct info *login;
   fp = fopen ("/etc/tcospasswd", "r" );
   if (fp == NULL) {
-     #ifdef DEBUG  
-       fprintf(stderr, "error validate_tcos(): file /etc/tcospasswd not exists.\n");
-     #endif
+     dbgtcos("error validate_tcos(): file /etc/tcospasswd not exists.\n");
      return (char*) LOGIN_ERROR;
   }
 
@@ -76,38 +74,28 @@ char *validate_tcos(char *user, char *pass)
   strcpy(login->line, line);
   split_login(login);
 
-
   #ifdef VISIBLE_PASSWD 
-    fprintf(stderr, "validate_tcos() user=\"%s\" pass=\"%s\"\n", login->user, login->pass);
+    dbgtcos( "validate_tcos() user=\"%s\" pass=\"%s\"\n", login->user, login->pass);
   #endif
   
-  #ifdef DEBUG
-    fprintf(stderr, "validate_tcos() check users user=\"%s\" my_user=\"%s\"\n", user, login->user);
-  #endif
+  dbgtcos( "validate_tcos() check users user=\"%s\" my_user=\"%s\"\n", user, login->user);
 
   if ( strcmp(login->user, user) != 0 ) {
-     #ifdef DEBUG  
-       fprintf(stderr, "error validate_passwd(): BAD USER.\n");
-     #endif
+     dbgtcos("error validate_passwd(): BAD USER.\n");  
      return LOGIN_NOUSER;
   }
 
   cryptpass=crypt(pass, PASS_ID );
-/*
-  #ifdef DEBUG  
-    fprintf(stderr, "info validate_passwd(): the_pass=%s my_pass=%s \n", login->pass, cryptpass);
+
+  #ifdef VISIBLE_PASSWD 
+    dbgtcos("info validate_passwd(): the_pass=%s my_pass=%s \n", login->pass, cryptpass);
   #endif
-*/
+
   if ( strcmp(login->pass, cryptpass) == 0 ) {
-     #ifdef DEBUG  
-       fprintf(stderr, "info validate_passwd(): LOGIN OK.\n");
-     #endif
+     dbgtcos("info validate_passwd(): LOGIN OK.\n");
      return LOGIN_OK;
   }
-
-  #ifdef DEBUG  
-    fprintf(stderr, "info validate_passwd(): BAD PASSWORD.\n");
-  #endif
+  dbgtcos("info validate_passwd(): BAD PASSWORD.\n");
   return LOGIN_NOPASS;
 }
 

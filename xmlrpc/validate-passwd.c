@@ -32,9 +32,7 @@ char *get_passwd( char *username )
  struct passwd *pwd;
  /*char *criptpass;*/
 
-#ifdef DEBUG
-  fprintf( stderr, "get_passwd() getting passwd from user=%s\n", username);
-#endif
+ dbgtcos("get_passwd() getting passwd from user=%s\n", username);
 
  pwd=getpwnam(username);
  if (pwd == NULL) {
@@ -60,7 +58,7 @@ char *validate_passwd(char *user, char *pass)
   cryptpass=get_passwd(user);
 
 #ifdef VISIBLE_PASSWD
-  fprintf(stderr, "info validate_passwd(): pass=%s crypt=%s.\n", crypt (pass, PASS_ID), cryptpass);
+  dbgtcos( "info validate_passwd(): pass=%s crypt=%s.\n", crypt (pass, PASS_ID), cryptpass);
 #endif
 
   if ( strcmp(crypt (pass, PASS_ID), cryptpass) == 0 )

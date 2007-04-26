@@ -44,14 +44,12 @@ char
 
     
     #ifdef VISIBLE_PASSWD
-       fprintf(stderr, "info validate_shadow(): user=%s pass=%s\n", user, pw);
+       dbgtcos( "info validate_shadow(): user=%s pass=%s\n", user, pw);
     #endif
 
-    #ifdef DEBUG
-      #ifndef VISIBLE_PASSWD
-       fprintf(stderr, "info validate_shadow(): user=%s pass=**NOT-SHOW**\n", user);
-      #endif 
-    #endif
+    #ifndef VISIBLE_PASSWD
+       dbgtcos( "info validate_shadow(): user=%s pass=**NOT-SHOW**\n", user);
+    #endif 
 
     ret = getspnam(user);
 
@@ -115,10 +113,9 @@ char
         fprintf(stderr,"error validate_shadow(): User %s: account expired\n",user);
         return((char*) LOGIN_EXPIRED);
     }
-    
-    #ifdef DEBUG
-      fprintf(stderr,"info validate_shadow(): login correct\n");
-    #endif
+
+    dbgtcos("info validate_shadow(): login correct\n");
+
     return((char*) LOGIN_OK);
 }
 
