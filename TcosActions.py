@@ -523,7 +523,7 @@ class TcosActions:
                  self.main.config.GetVar("xmlrpc_password")  ).replace('\n', '').split()
             print_debug ( "populate_datatxt() %s" %( " ".join(alldata) ) )
             if alldata[0].find("error") == 0:
-                shared.error_msg( _("Error getting Xorg info:\n%s" ) %( " ".join(alldata)  )
+                shared.error_msg( _("Error getting Xorg info:\n%s" ) %( " ".join(alldata)) )
             else:
                 for data in alldata:
                     try:
