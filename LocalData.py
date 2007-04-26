@@ -148,15 +148,15 @@ class LocalData:
                 print_debug ( "get_result(%s)=None" %(cmd) )
             return []
 
-    def sorted_copy(alist):
+    def sorted_copy(self, alist):
         # inspired by Alex Martelli
         # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52234
-        indices = map(_generate_index, alist)
+        indices = map(self._generate_index, alist)
         decorated = zip(indices, alist)
         decorated.sort()
         return [ item for index, item in decorated ]
     
-    def _generate_index(str):
+    def _generate_index(self, str):
         """
         Splits a string into alpha and numeric elements, which
         is used as an index for sorting"
