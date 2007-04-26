@@ -17,5 +17,6 @@ udev_date=$(date +%Y-%m-%d_%H:%M:%S)
   fs_type=$(get_env_var "ID_FS_TYPE")
    vendor=$(get_env_var "ID_VENDOR")
     model=$(get_env_var "ID_MODEL")
+    devpath=$(get_env_var "DEVPATH")
    
-echo "$udev_date#$id_bus#$device#$action#$label#$fs_type#$vendor#$model" >> $output_file
+echo "$udev_date#$id_bus#$device#$action#$label#$fs_type#$vendor#$model#$devpath" >> $output_file
