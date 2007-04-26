@@ -248,6 +248,8 @@ class TcosActions:
             if counter % 4 == 0:
                 users_txt+="\n"
             counter=int(counter+1)
+
+        users_txt=users_txt[:-2]
         
         if mode == "exec":
             self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n %s" ) %( users_txt ) )
