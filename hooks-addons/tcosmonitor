@@ -84,7 +84,7 @@ EOF
 chmod +x $DESTDIR/sbin/startxmlrpc
 
 # add init process
-cat << EOF > $DESTDIR/scripts/tcos-bottom/15startxmlrpc
+cat << EOF > $DESTDIR/scripts/tcos-bottom/45startxmlrpc
 #!/bin/sh
 #
 
@@ -129,10 +129,10 @@ log_end_msg
 exit 0
 
 EOF
-chmod +x $DESTDIR/scripts/tcos-bottom/15startxmlrpc
+chmod +x $DESTDIR/scripts/tcos-bottom/45startxmlrpc
 
 
-cat << EOF > $DESTDIR/scripts/tcos-bottom/16starthttpd
+cat << EOF > $DESTDIR/scripts/tcos-bottom/46starthttpd
 #!/bin/sh
 #
 
@@ -175,7 +175,7 @@ log_begin_msg "Starting httpd server"
 log_end_msg
 
 EOF
-chmod +x $DESTDIR/scripts/tcos-bottom/16starthttpd
+chmod +x $DESTDIR/scripts/tcos-bottom/46starthttpd
 
 chmod +x $DESTDIR/sbin/*.sh
 

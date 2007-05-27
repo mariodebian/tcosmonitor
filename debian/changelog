@@ -1,3 +1,13 @@
+tcosmonitor (0.1.9) unstable; urgency=low
+
+  * xmlrpc/sh/soundctl.sh:
+    - Remove FORCE of aumix and OSS, use amixer if available
+    - Make a more robust and better script
+  * hooks-addons/tcosmonitor:
+    - Move start scripts from 15,16 to 45,46 (startx before)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 26 May 2007 18:36:19 +0200
+
 tcosmonitor (0.1.8) unstable; urgency=low
 
   * dbus/tcos-dbus-client.py:

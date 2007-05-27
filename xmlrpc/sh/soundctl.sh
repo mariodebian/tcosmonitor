@@ -1,35 +1,6 @@
 #!/bin/sh
-# Sound volume control
+# TCOS Sound volume control
 
-# amixer commands:
-#
-#Available options:
-#  -h,--help       this help
-#  -c,--card N     select the card
-#  -D,--device N   select the device, default 'default'
-#  -d,--debug      debug mode
-#  -n,--nocheck    do not perform range checking
-#  -v,--version    print version of this program
-#  -q,--quiet      be quiet
-#  -i,--inactive   show also inactive controls
-#  -a,--abstract L select abstraction level (none or basic)
-#  -s,--stdin      Read and execute commands from stdin sequentially
-#
-#Available commands:
-#  scontrols       show all mixer simple controls
-#  scontents       show contents of all mixer simple controls (default command)
-#  sset sID P      set contents for one mixer simple control
-#  sget sID        get contents for one mixer simple control
-#  controls        show all controls for given card
-#  contents        show contents of all controls for given card
-#  cset cID P      set control contents for one control
-#  cget cID        get control contents for one control
-
-
-# aumix commands
-# 
-# aumix -q print all channels info
-# aumix -v 80% (set master to 90%)
 
 CMD="amixer -c 0 "
 
@@ -46,8 +17,8 @@ else
 fi
 
 # for debug force OSS
-TCOS_OSS=1
-MIXER="aumix"
+#TCOS_OSS=1
+#MIXER="aumix"
 #####################
 
 get_controls() {
@@ -124,7 +95,7 @@ set_mute() {
  if [ $TCOS_OSS ]; then
     set_level "$1" "0"
   else
-    $MIXER  set $2 mute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g
+    $MIXER  set $1 mute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g
   fi
 }
 
@@ -136,7 +107,7 @@ set_unmute() {
  if [ $TCOS_OSS ]; then
     set_level "$1" "$unmute_level"
   else
-    $MIXER set $2 unmute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g
+    $MIXER set $1 unmute| grep "^  Front"| head -1 | awk '{print $6}'| sed s/"\["//g| sed s/"\]"//g
   fi
 }
 
@@ -144,34 +115,7 @@ read_line() {
 head -$1 /tmp/soundctl | tail -1
 }
 
-if [ "$1" = "--showcontrols" ]; then
- output=$(get_controls)
- need_parse="1"
-fi
-
-if [ "$1" = "--getlevel" ]; then
- output=$(get_level "$2")
-fi
-
-
-if [ "$1" = "--setlevel" ]; then
- output=$(set_level "$2" "$3")
-fi
-
-if [ "$1" = "--getmute" ]; then
- output=$(get_mute "$2")
-fi
-
-if [ "$1" = "--setmute" ]; then
- output=$(set_mute "$2")
-fi
-
-if [ "$1" = "--setunmute" ]; then
- output=$(set_unmute "$2")
-fi
-
-
-if [ "$1" = "--getserverinfo" ]; then
+get_serverinfo() {
   if [ "$(pidof pulseaudio)" = "" ]; then
     echo "error: pulseaudio not running"
     exit 1
@@ -180,7 +124,7 @@ if [ "$1" = "--getserverinfo" ]; then
   output=$(cat /tmp/soundinfo)
   rm /tmp/soundinfo
   need_parse=1
-fi
+}
 
 usage() {
   echo "Usage:"
@@ -195,7 +139,41 @@ usage() {
 }
 
 
-if [ "$1" = "" -o "$1" = "--help" ]; then
+
+for x in $1; do
+	case $x in
+	--showcontrols)
+		output=$(get_controls); need_parse="1"
+		;;
+    --getlevel)
+		output=$(get_level "$2")
+		;;
+    --setlevel)
+		output=$(set_level "$2" "$3")
+		;;
+    --getmute)
+		output=$(get_mute "$2")
+		;;
+    --setmute)
+		output=$(set_mute "$2")
+		;;
+    --setunmute)
+		output=$(set_unmute "$2")
+		;;
+    --getserverinfo)
+		get_serverinfo
+		;;
+    --help)
+		usage
+		exit 1
+		;;
+    esac
+done
+
+
+
+
+if [ "$1" = "" ]; then
   usage
   exit 1
 fi
