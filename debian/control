@@ -30,8 +30,7 @@ Description: Thin client monitor
 Package: tcos-tcosmonitor
 Architecture: any
 Depends: tcosmonitor (= ${Source-Version}) , eject,
-         initramfs-tools-tcos (>= 0.59), gentcos (>= 0.59), 
-         ${shlibs:Depends}
+         initramfs-tools-tcos (>= 0.59), ${shlibs:Depends}
 Description: Thin client monitor of TCOS networks
  TCOS, thin Client Operating System is a method to create small embedded os
  based on debian/ubuntu with normal debian kernel's.

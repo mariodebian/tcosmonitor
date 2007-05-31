@@ -183,4 +183,25 @@ tcos:
 	#debuild -uc -us; true
 	sudo dpkg -i ../tcosmonitor_*deb  ../tcos-tcosmoni*deb
 
+
+patch_dapper:
+	# PATCHING TcosMonitor in Ubuntu DAPPER
+	sed -i '/^Build/s/5.0.37.2/5.0.7ubuntu13/g' debian/control
+	sed -i '/python-support/s/0.3/0.1.1ubuntu1/g' debian/control
+	sed -i '/dh_pysupport/s/dh_pysupport/dh_python/g' debian/rules
+
+
+patch_edgy:
+	# nothing to patch
+
+patch_feisty:
+	# nothing to patch
+
+patch_etch:
+	# nothing to patch
+
+patch_unstable:
+	# nothing to patch
+
+
 .PHONY: fix-glade es.gmo tcosxmlrpc dbus udev

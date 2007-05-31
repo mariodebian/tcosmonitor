@@ -41,7 +41,7 @@ install: build
 	$(MAKE) install DESTDIR=`pwd`/debian/tmp 
 	$(MAKE) install-tcos    DESTDIR=$(CURDIR)/debian/tmp PREFIX=/usr
 
-	install -d $(DESTDIR)/usr/share/control-center-2.0/capplets/
+	install -d $(CURDIR)debian/tmp/usr/share/control-center-2.0/capplets/
 	dh_link /usr/share/applications/tcosmonitor.desktop /usr/share/control-center-2.0/capplets/tcosmonitor.desktop
 
 #	$(MAKE) install-pxes1.0 DESTDIR=`pwd`/debian/tmp
