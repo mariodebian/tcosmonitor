@@ -48,8 +48,8 @@ PACKAGE = "tcosmonitor"
 
 
 # version
-version="0.1.4"
-website="http://cls-tcos.forja.rediris.es"
+version="__VERSION__"
+website="http://www.tcosproject.org"
 website_label=_("TcosMonitor web page")
 
 

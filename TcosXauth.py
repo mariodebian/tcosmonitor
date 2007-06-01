@@ -14,8 +14,12 @@ def print_debug(txt):
 class TcosXauth:
     def __init__(self, main):
         self.main=main
+        
         self.display_host=os.environ["DISPLAY"].split(':')[0]
-        self.display_hostname=socket.gethostbyaddr(self.display_host)[0]
+        if self.display_host != "":
+            self.display_hostname=socket.gethostbyaddr(self.display_host)[0]
+        else:
+            self.display_hostname=self.display_host
         print_debug ( "__init__() display_host=%s display_hostname=%s" %(self.display_host, self.display_hostname) )
         self.cookie=None
 

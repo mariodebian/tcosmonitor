@@ -19,7 +19,6 @@ dist-clean:
 
 clean:
 	rm -f *~ *.pyc *.orig *.bak *-stamp
-	[ -x /usr/bin/dh_clean ]  && dh_clean
 	cd xmlrpc && $(MAKE) clean
 	cd lockscreen && $(MAKE) clean
 	cd po && rm -rf es/
@@ -184,23 +183,27 @@ tcos:
 	sudo dpkg -i ../tcosmonitor_*deb  ../tcos-tcosmoni*deb
 
 
-patch_dapper:
+patch_version:
+	# PATCHING VERSION
+	sed -i 's/__VERSION__/$(VERSION)/g' shared.py
+
+patch_dapper: patch_version
 	# PATCHING TcosMonitor in Ubuntu DAPPER
 	sed -i '/^Build/s/5.0.37.2/5.0.7ubuntu13/g' debian/control
 	sed -i '/python-support/s/0.3/0.1.1ubuntu1/g' debian/control
 	sed -i '/dh_pysupport/s/dh_pysupport/dh_python/g' debian/rules
 
 
-patch_edgy:
+patch_edgy: patch_version
 	# nothing to patch
 
-patch_feisty:
+patch_feisty: patch_version
 	# nothing to patch
 
-patch_etch:
+patch_etch: patch_version
 	# nothing to patch
 
-patch_unstable:
+patch_unstable: patch_version
 	# nothing to patch
 
 

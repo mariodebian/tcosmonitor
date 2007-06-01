@@ -1,3 +1,12 @@
+tcosmonitor (0.1.13) unstable; urgency=low
+
+  * TcosXauth.py:
+    - If DISPLAY is local not get hostname
+  * Makefile shared.py:
+    - Generate version from Makefile precompile patch
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 01 Jun 2007 21:00:52 +0200
+
 tcosmonitor (0.1.12) unstable; urgency=low
 
   * TcosXauth.py:
