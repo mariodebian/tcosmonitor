@@ -240,7 +240,7 @@ class TcosActions:
     
     def askfor(self, mode="mess", msg="", users=[]):
         self.ask_usernames=[]
-        if len(users) == 0:
+        if len(users) == 0 or users[0] == shared.NO_LOGIN_MSG:
             shared.error_msg( _("Clients not connected") )
             return
         else:
@@ -1148,8 +1148,17 @@ class TcosActions:
                 status=PingPort("127.0.0.1",5900).get_status()
                 if status == "CLOSED":
                     sleep(1)
+            # get vncviewer version
+            # vncviewer --version 2>&1|grep built
+            version=self.main.localdata.exe_cmd("vncviewer --version 2>&1| grep built", verbose=0)
+            if "4.1" in version:
+                args="-ViewOnly -FullScreen"
+            elif "3.3" in version:
+                args="-viewonly -fullscreen"
+            else:
+                args=""
             # exec this app
-            remote_cmd="vncviewer 127.0.0.1 -ViewOnly -FullScreen"
+            remote_cmd="vncviewer 127.0.0.1 %s" %(args)
             result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )

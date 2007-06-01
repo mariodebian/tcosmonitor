@@ -99,6 +99,7 @@ class TcosDBusServer:
 
     def connect_tcosxmlrpc(self, host):
         self.url = 'http://%s:%d/RPC2' %(host, shared.xmlremote_port)
+        print_debug ( "connect_tcosxmlrpc() url=%s" %(self.url) )
         try:
             import xmlrpclib
             self.tc = xmlrpclib.Server(self.url)
@@ -110,6 +111,7 @@ class TcosDBusServer:
         
         cmd= "uname -a"
         # try to exec something
+        print_debug("connect_tcosxmlrpc() try to exec \"%s\" " %(cmd) )
         result=self.tc.tcos.exe(cmd, self.admin, self.passwd)
         if result == cmd:
             print_debug ( "connect_tcosxmlrpc() cmd run OK." )
@@ -123,17 +125,26 @@ class TcosDBusServer:
         #FIXME, how to return error message ???
         pass
 
+    def parse_dbus_str(self, data):
+        print_debug( "parse_dbus_str() data=%s type=%s" %(data, type(data)) )
+        if type(data) == dbus.String:
+            return str(data)
+        return(data)
+            
     def new_message(self, message):
         print_debug ( "new_message() %s" %(message) )
-        self.admin, self.passwd = message[0]
+
+        self.admin = self.parse_dbus_str(message[0][0])
+        self.passwd = self.parse_dbus_str(message[0][1])
         if not self.auth():
             self.send_error_msg()
             return
         
         for user in message[1]:
+            print_debug ("new_message() loop users => user=%s" %(user) )
             if user == self.username:
-                msg_type=message[2][0]
-                msg_args=message[3][0]
+                msg_type=self.parse_dbus_str(message[2][0])
+                msg_args=self.parse_dbus_str(message[3][0])
                 print_debug ( "new_message() Ummm one message for me!!" )
                 print_debug ( "type=%s args=%s" %(msg_type, msg_args) )
                 
@@ -299,17 +310,17 @@ if __name__ == "__main__":
         
     if sys.argv[1] == "--client":
         action=TcosDBusAction(admin="root", passwd="root")
-        #result = action.do_message( ["prueba"] , "Test message from dbus interface")
-        #if not result:
-        #    print action.get_error_msg()
+        result = action.do_message( ["mario"] , "Test message from dbus interface")
+        if not result:
+            print action.get_error_msg()
             
         #result = action.do_exec( ["prueba"] , "xterm")
         #if not result:
         #    print action.get_error_msg()
             
-        result = action.do_kill( ["prueba"] , "9146")
-        if not result:
-            print action.get_error_msg()
+        #result = action.do_kill( ["mario"] , "9146")
+        #if not result:
+        #    print action.get_error_msg()
         
 
 

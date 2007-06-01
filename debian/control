@@ -10,7 +10,7 @@ XS-Python-Version: >= 2.4
 Package: tcosmonitor
 Architecture: any
 Depends:  scrot, gksu | kdesu, zenity, dbus,
-          python-dbus, python-gtk2, python-glade2, 
+          python-dbus | python2.4-dbus, python-gtk2, python-glade2, 
           python-notify, python-gnome2-extras, 
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Provides: ${python:Provides}
@@ -22,10 +22,7 @@ Description: Thin client monitor
  .
  tcosmonitor is a small pygtk app to monitor thin clients
  .
- Project pages:
- http://soleup.eup.uva.es/mediawiki/index.php/TCOS
- http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
- http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
+  Homepage: http://www.tcosproject.org
 
 Package: tcos-tcosmonitor
 Architecture: any
@@ -39,8 +36,4 @@ Description: Thin client monitor of TCOS networks
  .
  This package contain TCOS bindings to work with tcosmonitor.
  .
- Project pages:
- http://soleup.eup.uva.es/mediawiki/index.php/TCOS
- http://soleup.eup.uva.es/mediawiki/index.php/TCOS-config
- http://soleup.eup.uva.es/mediawiki/index.php/TcosMonitor
-
+  Homepage: http://www.tcosproject.org

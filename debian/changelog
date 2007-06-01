@@ -1,3 +1,16 @@
+tcosmonitor (0.1.11) unstable; urgency=low
+
+  * LocalData.py:
+    - Fix GetUsername search function (using IP add : not space)
+  * TcosActions.py:
+    - get vncviewer version to use diferent arguments
+  * TcosDBus.py:
+    - Parse dbus.String to str before calling tcosxmlrpc
+  * debian/control:
+    - Add python2.4-dbus alternative to python-dbus (for Ubuntu dapper)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 01 Jun 2007 12:34:55 +0200
+
 tcosmonitor (0.1.10) unstable; urgency=low
 
   * Remove gentcos depends
