@@ -1,3 +1,10 @@
+tcosmonitor (0.1.12) unstable; urgency=low
+
+  * TcosXauth.py:
+    - Read cookie based on DISPLAY (hostname or IP address)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 01 Jun 2007 16:44:53 +0200
+
 tcosmonitor (0.1.11) unstable; urgency=low
 
   * LocalData.py:

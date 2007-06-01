@@ -1,6 +1,7 @@
 from subprocess import Popen, PIPE, STDOUT
 import os
 import sys
+import socket
 
 
 import shared
@@ -14,7 +15,8 @@ class TcosXauth:
     def __init__(self, main):
         self.main=main
         self.display_host=os.environ["DISPLAY"].split(':')[0]
-        print_debug ( "__init__() display_host=%s" %self.display_host)
+        self.display_hostname=socket.gethostbyaddr(self.display_host)[0]
+        print_debug ( "__init__() display_host=%s display_hostname=%s" %(self.display_host, self.display_hostname) )
         self.cookie=None
 
     def init_standalone(self):
@@ -39,8 +41,9 @@ class TcosXauth:
             if len(line.split()) != 3:
                 continue
             host, ctype, cookie = line.split()
-            if host.split(':')[0] == self.display_host:
+            if host.split(':')[0] == self.display_host or host.split(':')[0] == self.display_hostname:
                 self.cookie=cookie
+                print_debug ( "read_cookie() HAVE COOKIE => %s" %(cookie) )
                 return cookie
         return None
         
@@ -48,10 +51,11 @@ class TcosXauth:
         return self.read_cookie()
         
     def get_hostname(self):
-        return self.display_host
+        return self.display_hostname
 
     def set_hostname(self, hostname):
         self.display_host=hostname
+        self.display_hostname=hostname
 
     def test_auth(self):
         cookie=self.read_cookie()
