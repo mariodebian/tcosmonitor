@@ -19,9 +19,6 @@
 */
 
 
-/*
-#define SOUND_WRAPPER "sh /home/mario/SOLEUPIX/soleupix/TcosMonitor/xmlrpc/sh/soundctl.sh "
-*/
 
 #define SOUND_WRAPPER "/sbin/soundctl.sh "
 

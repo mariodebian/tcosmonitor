@@ -18,9 +18,6 @@
 # USA.
 */
 
-/*
-#define DEVICES_WRAPPER "sh /home/mario/SOLEUPIX/soleupix/TcosMonitor/xmlrpc/sh/devicesctl.sh "
-*/
 
 #define DEVICES_WRAPPER "/sbin/devicesctl.sh "
 

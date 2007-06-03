@@ -127,9 +127,21 @@ class Initialize:
         self.main.about.set_version(shared.version)
         self.main.about.set_website(shared.website)    
         self.main.about.set_website_label(shared.website_label)
+        self.main.about.connect("response", self.on_about_response)
+        self.main.about.connect("close", self.on_about_close)
+        self.main.about.connect("delete_event", self.on_about_close)
         #self.main.about.about_dialog_set_url_hook(on_url_click)
         #gtk.about_dialog_set_url_hook(self.on_url_click)
+
+    def on_about_response(self, dialog, response, *args):
+        #http://www.async.com.br/faq/pygtk/index.py?req=show&file=faq10.013.htp
+        if response < 0:
+            dialog.hide()
+            dialog.emit_stop_by_name('response')
     
+    def on_about_close(self, widget, event=None):
+        self.main.about.hide()
+        return True
     
     def initask(self):
         self.main.ask_ip=None
