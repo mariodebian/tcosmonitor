@@ -198,7 +198,8 @@ patch_edgy: patch_version
 	# nothing to patch
 
 patch_feisty: patch_version
-	# nothing to patch
+	# PATCHING TcosMonitor in Ubuntu FEISTY
+	sed -i '/env/s/python2.4/python2.5/g' tcos-devices.py
 
 patch_etch: patch_version
 	# nothing to patch

@@ -641,6 +641,7 @@ Categories=GNOME;Application
             print "tcos-devices: another process is running..."
             sys.exit(0)
         
+        self.visible=False
         # based on http://www.burtonini.com/computing/notify.py
         import egg.trayicon
         icon = egg.trayicon.TrayIcon("TCOS")
@@ -706,6 +707,7 @@ Categories=GNOME;Application
         
         # show main window if not hidden defined
         if not shared.hidden_window:
+            self.visible=True
             self.mainwindow.show()
     
     def get_data(self, *args):
@@ -822,7 +824,11 @@ Categories=GNOME;Application
         self.cdrom_umount_button.set_sensitive(value)
         
     def on_tray_icon_press_event(self, widget, event):
-        self.mainwindow.show()
+        if self.visible:
+            self.mainwindow.hide()
+        else:
+            self.mainwindow.show()
+        self.visible = not self.visible
         return
         """
         print "tray event"

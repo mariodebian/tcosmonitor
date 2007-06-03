@@ -98,6 +98,7 @@ class TcosVolumeManager:
     def __init__(self, host):
         self.host=host
         self.name="TcosVolumeManager"
+        self.visible=False
         
         import egg.trayicon
         icon = egg.trayicon.TrayIcon("TCOS_sound")
@@ -313,11 +314,16 @@ class TcosVolumeManager:
         return False
 
     def on_tray_icon_press_event(self, widget, event):
-        self.mainwindow.show()
+        if self.visible:
+            self.mainwindow.hide()
+        else:
+            self.mainwindow.show()
+        self.visible = not self.visible
         return
     
     def mainwindow_close(self, widget, event):
         print_debug ( "mainwindow_close() closing mainwindow to systray" )
+        self.visible=False
         self.mainwindow.hide()
         return True
 
