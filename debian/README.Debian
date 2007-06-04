@@ -1,6 +1,7 @@
 tcos-monitor for Debian
 -------------------------
 
-Monitor Thin client classroom
+  * Monitor Thin client classroom
+  * After install this package you will need to regenerate TCOS images
 
  -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>, Tue, 14 Jun 2006 18:00:07 +0100

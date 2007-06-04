@@ -3,8 +3,10 @@ tcosmonitor (0.1.14.1) unstable; urgency=low
   * Initialize.py:
     - Fix AboutDialog, close and destry button for gtk > 2.10
   * Change default Homepage to http://www.tcosproject.org
+  * Remove some old packages info in debian/*
+  * Fix some package info
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 03 Jun 2007 23:30:34 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 04 Jun 2007 11:56:56 +0200
 
 tcosmonitor (0.1.14) unstable; urgency=low
 
