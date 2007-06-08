@@ -1,3 +1,11 @@
+tcosmonitor (0.1.14.2) unstable; urgency=low
+
+  * TcosXauth.py:
+    - Read xauth cookie with -n param to not resolve hostname
+    - Try (with try: except: to get hostname with socket) not xauth locks
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 08 Jun 2007 22:15:23 +0200
+
 tcosmonitor (0.1.14.1) unstable; urgency=low
 
   * Initialize.py:

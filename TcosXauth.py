@@ -16,10 +16,14 @@ class TcosXauth:
         self.main=main
         
         self.display_host=os.environ["DISPLAY"].split(':')[0]
-        if self.display_host != "":
-            self.display_hostname=socket.gethostbyaddr(self.display_host)[0]
-        else:
+        try:
+            if self.display_host != "":
+                self.display_hostname=socket.gethostbyaddr(self.display_host)[0]
+            else:
+                self.display_hostname=self.display_host
+        except:
             self.display_hostname=self.display_host
+
         print_debug ( "__init__() display_host=%s display_hostname=%s" %(self.display_host, self.display_hostname) )
         self.cookie=None
 
@@ -37,7 +41,7 @@ class TcosXauth:
             return self.cookie
         
         print_debug ( "read_cookie() exec \"xauth list\"" )
-        p = Popen("xauth list", shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
+        p = Popen("xauth -n list", shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
         readed=p.stdout.read()
         readed=readed.split('\n')[0:-1]
         print_debug ( "read_cookie() %s" %readed )
