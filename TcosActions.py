@@ -1019,8 +1019,6 @@ class TcosActions:
             
             try:
                 self.main.xmlrpc.newhost(ip)
-                if start_cmd == "":
-                    start_cmd=remote_proc
                 self.main.xmlrpc.Exe("startivs")
                 gtk.gdk.threads_enter()
                 self.main.write_into_statusbar( "Waiting for start of IVS server..." )
