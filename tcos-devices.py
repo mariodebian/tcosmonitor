@@ -642,23 +642,30 @@ Categories=GNOME;Application
             sys.exit(0)
         
         self.visible=False
-        # based on http://www.burtonini.com/computing/notify.py
-        import egg.trayicon
-        icon = egg.trayicon.TrayIcon("TCOS")
-        eventbox = gtk.EventBox()
-        icon.add(eventbox)
-        #tcos-icon-32x32.png
-        image=gtk.Image()
-        image.set_from_file (shared.IMG_DIR + "tcos-icon-32x32.png")
-        eventbox.add(image)
-        tips = gtk.Tooltips()
+        
+        if gtk.gtk_version[0] >=2 and gtk.gtk_version[1] >= 10:
+            # use gtk.status_icon
+            icon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-icon-32x32.png")
+            icon.set_tooltip( _("Tcos Devices daemon on host %s") %(self.host) )
+            icon.connect("activate", self.on_tray_icon_press_event)
+        else:
+            # based on http://www.burtonini.com/computing/notify.py
+            import egg.trayicon
+            icon = egg.trayicon.TrayIcon("TCOS")
+            eventbox = gtk.EventBox()
+            icon.add(eventbox)
+            #tcos-icon-32x32.png
+            image=gtk.Image()
+            image.set_from_file (shared.IMG_DIR + "tcos-icon-32x32.png")
+            eventbox.add(image)
+            tips = gtk.Tooltips()
+    
+            # http://www.daa.com.au/pipermail/pygtk/2005-August/010790.html
 
-        # http://www.daa.com.au/pipermail/pygtk/2005-August/010790.html
-
-        tips.set_tip(icon, ( _("Tcos Devices daemon on host %s") %(self.host) )[0:79])
-        tips.enable()
-        icon.show_all()
-        eventbox.connect("button_press_event",
+            tips.set_tip(icon, ( _("Tcos Devices daemon on host %s") %(self.host) )[0:79])
+            tips.enable()
+            icon.show_all()
+            eventbox.connect("button_press_event",
                          self.on_tray_icon_press_event)
         
         #import shared
@@ -823,44 +830,13 @@ Categories=GNOME;Application
         self.cdrom_mount_button.set_sensitive(not value)
         self.cdrom_umount_button.set_sensitive(value)
         
-    def on_tray_icon_press_event(self, widget, event):
+    def on_tray_icon_press_event(self, *args):
         if self.visible:
             self.mainwindow.hide()
         else:
             self.mainwindow.show()
         self.visible = not self.visible
         return
-        """
-        print "tray event"
-        time=event.time
-        # show a menu
-        
-        menu_list=[
-        [_("Show avalaible devices"), None, 1]
-        ]
-        
-        self.traymenu=gtk.Menu()
-        for element in menu_list:
-            if element[1] != None and os.path.isfile(shared.IMG_DIR + element[1]):
-                menu_items=gtk.ImageMenuItem(element[0], True)
-                icon = gtk.Image()
-                icon.set_from_file(shared.IMG_DIR + element[1])
-                menu_items.set_image(icon)
-            else:
-                menu_items = gtk.MenuItem(element[0])
-                self.traymenu.append(menu_items)
-              
-            menu_items.connect("activate", self.on_tray_rightclick, element[2])
-            menu_items.show()
-        self.traymenu.show_all()
-        self.traymenu.popup( None, None, None, event.button, time)
-        
-    
-    def on_tray_rightclick(self, menu_item, index):
-        print "index=%d"  %index
-        if index == 1:
-            self.mainwindow.show()
-    """
     
     def exe_cmd(self, cmd, verbose=1):
         import popen2

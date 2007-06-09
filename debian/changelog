@@ -1,3 +1,10 @@
+tcosmonitor (0.1.14.3) unstable; urgency=low
+
+  * tcos-devices.py, tcos-volume-manager.py:
+    - If gtk version is greater than 2.10 use gtk.statusicon instead of egg.trayicon
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 09 Jun 2007 17:11:33 +0200
+
 tcosmonitor (0.1.14.2) unstable; urgency=low
 
   * TcosXauth.py:

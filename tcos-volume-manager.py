@@ -100,20 +100,26 @@ class TcosVolumeManager:
         self.name="TcosVolumeManager"
         self.visible=False
         
-        import egg.trayicon
-        icon = egg.trayicon.TrayIcon("TCOS_sound")
-        eventbox = gtk.EventBox()
-        icon.add(eventbox)
-        image=gtk.Image()
-        image.set_from_file (shared.IMG_DIR + "tcos-volume-32x32.png")
-        eventbox.add(image)
-        tips = gtk.Tooltips()
-        
-        tips.set_tip(icon, ( _("Tcos Sound levels on:\n%s") %(self.host) )[0:79])
-        tips.enable()
-        icon.show_all()
-        eventbox.connect("button_press_event",
-                         self.on_tray_icon_press_event)
+        if gtk.gtk_version[0] >=2 and gtk.gtk_version[1] >= 10:
+            # use gtk.status_icon
+            icon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-volume-32x32.png")
+            icon.set_tooltip( _("Tcos Sound levels on:\n%s") %(self.host) )
+            icon.connect("activate", self.on_tray_icon_press_event)
+        else:
+            import egg.trayicon
+            icon = egg.trayicon.TrayIcon("TCOS_sound")
+            eventbox = gtk.EventBox()
+            icon.add(eventbox)
+            image=gtk.Image()
+            image.set_from_file (shared.IMG_DIR + "tcos-volume-32x32.png")
+            eventbox.add(image)
+            tips = gtk.Tooltips()
+            
+            tips.set_tip(icon, ( _("Tcos Sound levels on:\n%s") %(self.host) )[0:79])
+            tips.enable()
+            icon.show_all()
+            eventbox.connect("button_press_event",
+                             self.on_tray_icon_press_event)
         
         
         from ping import PingPort
@@ -313,7 +319,7 @@ class TcosVolumeManager:
         self.statusbar.push(context_id, msg)
         return False
 
-    def on_tray_icon_press_event(self, widget, event):
+    def on_tray_icon_press_event(self, *args):
         if self.visible:
             self.mainwindow.hide()
         else:
