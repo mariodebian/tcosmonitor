@@ -1,3 +1,10 @@
+tcosmonitor (0.1.14.4) unstable; urgency=low
+
+  * TcosXauth.py:
+    - Read DISPLAY info and search for hostname and IP address
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat,  9 Jun 2007 19:33:04 +0200
+
 tcosmonitor (0.1.14.3) unstable; urgency=low
 
   * tcos-devices.py, tcos-volume-manager.py:

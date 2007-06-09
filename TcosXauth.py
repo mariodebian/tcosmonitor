@@ -14,18 +14,23 @@ def print_debug(txt):
 class TcosXauth:
     def __init__(self, main):
         self.main=main
-        
+        self.cookie=None
+        self.get_display()
+
+    def get_display(self):
         self.display_host=os.environ["DISPLAY"].split(':')[0]
+        self.display_hostname=self.display_host
+        self.display_ip=self.display_host
+
+        # read hostname and ipaddress based on cookie hostname/ip
         try:
             if self.display_host != "":
                 self.display_hostname=socket.gethostbyaddr(self.display_host)[0]
-            else:
-                self.display_hostname=self.display_host
+                self.display_ip=socket.gethostbyaddr(self.display_host)[2][0]
         except:
-            self.display_hostname=self.display_host
+            pass
 
-        print_debug ( "__init__() display_host=%s display_hostname=%s" %(self.display_host, self.display_hostname) )
-        self.cookie=None
+        print_debug ( "get_display() display_host=%s display_hostname=%s display_ip=%s" %(self.display_host, self.display_hostname, self.display_ip) )
 
     def init_standalone(self):
         print_debug ( "init_standalone() " )
@@ -49,7 +54,8 @@ class TcosXauth:
             if len(line.split()) != 3:
                 continue
             host, ctype, cookie = line.split()
-            if host.split(':')[0] == self.display_host or host.split(':')[0] == self.display_hostname:
+            chost=host.split(':')[0]
+            if chost == self.display_host or chost == self.display_hostname or chost == self.display_ip:
                 self.cookie=cookie
                 print_debug ( "read_cookie() HAVE COOKIE => %s" %(cookie) )
                 return cookie
