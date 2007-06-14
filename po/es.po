@@ -10,17 +10,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 23:55+0100\n"
-"PO-Revision-Date: 2006-12-26 19:36+0100\n"
+"POT-Creation-Date: 2007-06-14 19:22+0200\n"
+"PO-Revision-Date: 2007-06-14 19:23+0200\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
 
-#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:321
-#: tcos-devices.py:887
+#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:337
+#: tcos-devices.py:873
 msgid "Exiting"
 msgstr "Saliendo"
 
@@ -32,7 +32,7 @@ msgstr "TcosMonitor"
 msgid "Exit TcosMonitor"
 msgstr "Salir de TcosMonitor"
 
-#: tcosmonitor.glade:43
+#: tcosmonitor.glade:43 TcosTrayIcon.py:48
 msgid "Quit"
 msgstr "Salir"
 
@@ -251,35 +251,35 @@ msgstr "Pregunta"
 msgid "<b>Run app in unknow host</b>"
 msgstr "<b>Ejecutar aplicación en equipo desconicido</b>"
 
-#: Initialize.py:306
+#: Initialize.py:318
 msgid "Hostname"
 msgstr "Equipo"
 
-#: Initialize.py:312
+#: Initialize.py:324
 msgid "Ip address"
 msgstr "Dirección IP"
 
-#: Initialize.py:318
+#: Initialize.py:330
 msgid "Username"
 msgstr "Usuario"
 
-#: Initialize.py:324
+#: Initialize.py:336
 msgid "Active"
 msgstr "Activo"
 
-#: Initialize.py:329
+#: Initialize.py:341
 msgid "Logged"
 msgstr "Logueado"
 
-#: Initialize.py:334
+#: Initialize.py:346
 msgid "Screen Blocked"
 msgstr "Bloqueado"
 
-#: Initialize.py:339
+#: Initialize.py:351
 msgid "Num of process"
 msgstr "Núm. de procesos"
 
-#: Initialize.py:345
+#: Initialize.py:357
 msgid "Time log in"
 msgstr "Tiempo dentro"
 
@@ -569,24 +569,24 @@ msgstr "TcosDBus no permitido en pantalla local."
 msgid "Seems that tcosxmlrpc isn't running on host=\"%s\""
 msgstr "Parece que tcosxmlrpc no se está ejecutando en equipo=\"%s\""
 
-#: TcosDBus.py:107
+#: TcosDBus.py:108
 msgid "tcosxmlrpc ERROR conection unavalaible."
 msgstr "tcosxmlrpc ERROR conexión no disponible"
 
-#: TcosDBus.py:118
+#: TcosDBus.py:120
 msgid "ERROR conecting to tcosxmlrpc, check username and password."
 msgstr ""
 "No se puede conectar a tcosxmlrpc, verifique el usuario y la contraseña."
 
-#: TcosDBus.py:174
+#: TcosDBus.py:185
 msgid "Message from admin"
 msgstr "Mensaje del administrador"
 
-#: TcosDBus.py:233 TcosDBus.py:248 TcosDBus.py:266 TcosDBus.py:284
+#: TcosDBus.py:244 TcosDBus.py:259 TcosDBus.py:277 TcosDBus.py:295
 msgid "User not allowed to run this dbus call."
 msgstr "Su usuario no tiene permitidas estas llamadas dbus."
 
-#: tcos-volume-manager.py:107
+#: tcos-volume-manager.py:106 tcos-volume-manager.py:118
 #, python-format
 msgid ""
 "Tcos Sound levels on:\n"
@@ -595,66 +595,66 @@ msgstr ""
 "Niveles de volumen TCOS en equipo:\n"
 "%s"
 
-#: tcos-volume-manager.py:116 tcos-devices.py:170
+#: tcos-volume-manager.py:127 tcos-devices.py:174
 #, python-format
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr "ERROR: Parece que tcosxmlrpc no se está ejecutando en %s"
 
-#: tcos-volume-manager.py:138 tcos-devices.py:197
+#: tcos-volume-manager.py:149 tcos-devices.py:201 tcos-devices-ng.py:184
 #, python-format
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr "Error conectando con tcosxmlrpc en %s"
 
-#: tcos-volume-manager.py:182
+#: tcos-volume-manager.py:193
 msgid "Loading channels info..."
 msgstr "Cargando información de canales..."
 
-#: tcos-volume-manager.py:194
+#: tcos-volume-manager.py:205
 msgid "Error loading channels info (xauth error)"
 msgstr "Error cargando información de canales (error de xauth)"
 
-#: tcos-volume-manager.py:197 tcos-volume-manager.glade:9
+#: tcos-volume-manager.py:208 tcos-volume-manager.glade:9
 msgid "Tcos Volume Manager"
 msgstr "Monitor de volumen TCOS"
 
-#: tcos-volume-manager.py:198
+#: tcos-volume-manager.py:209
 #, python-format
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr "<span size='large'><b>Mezclador de audio del equipo %s</b></span>"
 
-#: tcos-volume-manager.py:255 TcosActions.py:649
+#: tcos-volume-manager.py:266 TcosActions.py:649
 msgid "Mute"
 msgstr ""
 
-#: tcos-volume-manager.py:270
+#: tcos-volume-manager.py:281
 msgid "Main controls ready"
 msgstr "Controles principales cargados"
 
-#: tcos-volume-manager.py:274
+#: tcos-volume-manager.py:285
 msgid "All remote controls loaded."
 msgstr "Todos los controles remotos cargados."
 
-#: tcos-volume-manager.py:283 TcosActions.py:734
+#: tcos-volume-manager.py:294 TcosActions.py:734
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr "Cambiando valor del canal %(channel)s, a %(value)s%%..."
 
-#: tcos-volume-manager.py:289 TcosActions.py:740
+#: tcos-volume-manager.py:300 TcosActions.py:740
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr "Valor cambiado del canal %(channel)s, a %(value)s"
 
-#: tcos-volume-manager.py:296 TcosActions.py:747
+#: tcos-volume-manager.py:307 TcosActions.py:747
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr "Quitando enmudecido al canal %s..."
 
-#: tcos-volume-manager.py:300 TcosActions.py:751
+#: tcos-volume-manager.py:311 TcosActions.py:751
 #, python-format
 msgid "Muting %s channel..."
 msgstr "Enmudeciendo canal %s..."
 
-#: tcos-volume-manager.py:302 TcosActions.py:753
+#: tcos-volume-manager.py:313 TcosActions.py:753
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr "Estado del canal %(channel)s es \"%(newvalue)s\""
@@ -727,7 +727,7 @@ msgstr ""
 "<b>Enviar mensaje a:</b>\n"
 "%s"
 
-#: TcosActions.py:278 TcosActions.py:1155
+#: TcosActions.py:278 TcosActions.py:1162
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
@@ -1030,166 +1030,166 @@ msgstr "Esperando a que comience el servidor VNC..."
 msgid "Can't start VNC, please add X11VNC support"
 msgstr "No se pudo arrancar VNC, por favor añada soporte para X11VNC."
 
-#: TcosActions.py:1031
+#: TcosActions.py:1029
 msgid "Can't start IVS, please add iTALC support"
 msgstr "No se puede arrancar el proceso IVS. Añada soporte para iTALC"
 
-#: TcosActions.py:1052
+#: TcosActions.py:1050
 msgid "No clients connected, press refresh button."
 msgstr "No se encontraron clientes, pulse el botón actualizar."
 
-#: TcosActions.py:1057
+#: TcosActions.py:1055
 #, python-format
 msgid "Do you want to reboot the following hosts:%s?"
 msgstr "¿Quiere reiniciar los siguientes equipos: %s ?"
 
-#: TcosActions.py:1067
+#: TcosActions.py:1065
 #, python-format
 msgid "Do you want to poweroff the following hosts:%s?"
 msgstr "¿Quiere apagar los siguientes equipos: %s?"
 
-#: TcosActions.py:1077
+#: TcosActions.py:1075
 #, python-format
 msgid "Do you want to lock the following screens:%s?"
 msgstr "¿Quiere bloquear la pantalla de los siguientes equipos: %s ?"
 
-#: TcosActions.py:1088
+#: TcosActions.py:1086
 #, python-format
 msgid "Do you want to unlock the following screens:%s?"
 msgstr "¿Quiere desbloquear la pantalla de los siguientes equipos: %s ?"
 
-#: TcosActions.py:1111
+#: TcosActions.py:1109
 #, python-format
 msgid "Do you want to restart X screens:%s?"
 msgstr "¿Quiere reiniciar las sesiones X de los siguientes equipos: %s?"
 
-#: TcosActions.py:1156
+#: TcosActions.py:1163
 msgid "Running in demo mode."
 msgstr "Ejecutandose en modo demostración"
 
-#: TcosActions.py:1167
+#: TcosActions.py:1174
 msgid "Demo mode off."
 msgstr "Modo demostración desactivado."
 
-#: TcosActions.py:1183
+#: TcosActions.py:1190
 msgid "Screenshots of all hosts"
 msgstr "Captura de pantalla de todos los equipos"
 
-#: TcosActions.py:1203
+#: TcosActions.py:1210
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr "Realizando acción \"%(action)s\" en equipo %(ip)s..."
 
-#: TcosActions.py:1233 TcosActions.py:1332
+#: TcosActions.py:1240 TcosActions.py:1339
 #, python-format
 msgid "Screenshot of %s"
 msgstr "Captura de pantalla de %s"
 
-#: TcosActions.py:1245
+#: TcosActions.py:1252
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr "Acción \"%(action)s\" terminada en %(ip)s"
 
-#: TcosActions.py:1252
+#: TcosActions.py:1259
 msgid "Waiting for screenshots..."
 msgstr "Esperando a las capturas..."
 
-#: TcosActions.py:1298
+#: TcosActions.py:1305
 msgid "Trying to order terminal to do a screenshot..."
 msgstr "Intentando mandar al terminal que se haga una captura de pantalla"
 
-#: TcosActions.py:1303
+#: TcosActions.py:1310
 msgid "Can't make screenshot, connection error"
 msgstr "No se pudo hacer una captura de pantalla, error de conexión"
 
-#: TcosActions.py:1309
+#: TcosActions.py:1316
 msgid "Get another screenshot"
 msgstr "Hacer otra captura de pantalla"
 
-#: TcosActions.py:1323
+#: TcosActions.py:1330
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr "Captura de pantalla de <span style='font-style: italic'>%s</span>"
 
-#: TcosActions.py:1337
+#: TcosActions.py:1344
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr "Captura de pantalla de %s hecha."
 
-#: TcosActions.py:1356
+#: TcosActions.py:1363
 msgid "User not connected, no processes."
 msgstr "Usuario no conectado, no existen procesos."
 
-#: TcosActions.py:1365
+#: TcosActions.py:1372
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr "Procesos ejecutados por el usuario \"%s\":"
 
-#: TcosActions.py:1369
+#: TcosActions.py:1376
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 "AVISO: Hay varios procesos del sistema ocultos. Puede activarlos en la "
 "ventana de Preferencias."
 
-#: TcosActions.py:1374
+#: TcosActions.py:1381
 msgid "Pid"
 msgstr "Pid"
 
-#: TcosActions.py:1375
+#: TcosActions.py:1382
 msgid "Process command"
 msgstr "Comando del proceso"
 
-#: TcosActions.py:1382
+#: TcosActions.py:1389
 msgid "Kill this process"
 msgstr "Matar este proceso"
 
-#: TcosActions.py:1491
+#: TcosActions.py:1498
 msgid "Actions for selected host"
 msgstr "Acciones para el equipo seleccionado"
 
-#: TcosActions.py:1497
+#: TcosActions.py:1504
 #, python-format
 msgid "Actions for %s"
 msgstr "Acciones para %s"
 
-#: TcosActions.py:1533
+#: TcosActions.py:1540
 msgid "Actions for all hosts"
 msgstr "Acciones para todos los equipos"
 
-#: tcos-devices.py:165
+#: tcos-devices.py:169
 msgid "Your user isn't in fuse group, ask your system administrator."
 msgstr "Su usuario no pertenece al grupo fuse, pregunte a su administrador."
 
-#: tcos-devices.py:248
+#: tcos-devices.py:252 tcos-devices-ng.py:434
 msgid "usbdisk"
 msgstr "disco-usb"
 
-#: tcos-devices.py:411
+#: tcos-devices.py:415 tcos-devices-ng.py:241
 msgid "Floppy mounted. Ready for use."
 msgstr "Disquete montado. Listo para usar."
 
-#: tcos-devices.py:414
+#: tcos-devices.py:418 tcos-devices-ng.py:243
 msgid "Floppy umounted. You can extract it."
 msgstr "Disquete desmontado. Ahora puede extraerlo."
 
-#: tcos-devices.py:417
+#: tcos-devices.py:421 tcos-devices-ng.py:259
 msgid "Cdrom mounted. Ready for use."
 msgstr "Cdrom montado. Listo para usar."
 
-#: tcos-devices.py:420
+#: tcos-devices.py:424 tcos-devices-ng.py:262
 msgid "Cdrom umounted. You can extract it."
 msgstr "Cdrom desmontado. Ahora puede extraerlo."
 
-#: tcos-devices.py:428
+#: tcos-devices.py:432
 msgid "Flash device mounted. Ready for use."
 msgstr "Dispositivo flash montado.Listo para usar."
 
-#: tcos-devices.py:431
+#: tcos-devices.py:435
 msgid "Flash device umounted. You can extract it."
 msgstr "Dispositivo flash desmontado. Ahora puede extraerlo."
 
-#: tcos-devices.py:450
+#: tcos-devices.py:454 tcos-devices-ng.py:513
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1200,12 +1200,12 @@ msgstr ""
 "Dispositivo USB conectado %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: tcos-devices.py:457
+#: tcos-devices.py:461
 #, python-format
 msgid "Can't mount device %s"
 msgstr "No se pudo montar el dispositivo %s"
 
-#: tcos-devices.py:494
+#: tcos-devices.py:498 tcos-devices-ng.py:516
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1216,17 +1216,17 @@ msgstr ""
 "Dispositivo USB desconectado %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: tcos-devices.py:526
+#: tcos-devices.py:530
 #, python-format
 msgid "Can't umount device %s"
 msgstr "No se pudo desmontar el dispositivo %s"
 
-#: tcos-devices.py:580
+#: tcos-devices.py:584
 #, python-format
 msgid "Umount %s remote device"
 msgstr "Desmontar dispositivo %s remoto"
 
-#: tcos-devices.py:585
+#: tcos-devices.py:589
 #, python-format
 msgid ""
 "Mounting device %(device)s in \n"
@@ -1239,7 +1239,7 @@ msgstr ""
 "Por favor, espere\n"
 "Pulse en el icono del escritorio para extracción segura."
 
-#: tcos-devices.py:603
+#: tcos-devices.py:607 tcos-devices-ng.py:397
 #, python-format
 msgid ""
 "Umounting device %s.\n"
@@ -1248,58 +1248,146 @@ msgstr ""
 "Desmontando dispositivo %s.\n"
 "Por favor, espere..."
 
-#: tcos-devices.py:625
+#: tcos-devices.py:629 tcos-devices-ng.py:158
 msgid "Tcos device daemon"
 msgstr "Gestor de dispositivos TCOS"
 
-#: tcos-devices.py:653
+#: tcos-devices.py:649 tcos-devices.py:665
 #, python-format
 msgid "Tcos Devices daemon on host %s"
 msgstr "Gestor de dispositivos TCOS en equipo %s"
 
-#: tcos-devices.py:675
+#: tcos-devices.py:687
 #, python-format
 msgid "Tcos Devices on %s host"
 msgstr "Gestor de dispositivos TCOS en equipo %s"
 
-#: tcos-devices.py:727
+#: tcos-devices.py:740
 msgid "No support for more than one cdrom, first detected will be used"
 msgstr "No hay soporte para más de un cdrom, se usará el primero."
 
-#: tcos-devices.py:753 tcos-devices.py:758 tcos-devices.py:767
-#: tcos-devices.py:769
+#: tcos-devices.py:766 tcos-devices.py:771 tcos-devices.py:780
+#: tcos-devices.py:782 tcos-devices-ng.py:227 tcos-devices-ng.py:451
+#: tcos-devices-ng.py:457 tcos-devices-ng.py:462
 msgid "Floppy"
 msgstr "Disquete"
 
-#: tcos-devices.py:756
+#: tcos-devices.py:769 tcos-devices-ng.py:455
 msgid "Can't mount floppy"
 msgstr "No se pudo montar el disquete"
 
-#: tcos-devices.py:772
+#: tcos-devices.py:785 tcos-devices-ng.py:465
 msgid "Can't umount floppy"
 msgstr "No se pudo desmontar el disquete"
 
-#: tcos-devices.py:781 tcos-devices.py:786 tcos-devices.py:795
-#: tcos-devices.py:799
+#: tcos-devices.py:794 tcos-devices.py:799 tcos-devices.py:808
+#: tcos-devices.py:812
 msgid "Cdrom"
 msgstr "Cdrom"
 
-#: tcos-devices.py:784
+#: tcos-devices.py:797 tcos-devices-ng.py:480
 msgid "Can't mount cdrom"
 msgstr "No se pudo montar el cdrom"
 
-#: tcos-devices.py:802
+#: tcos-devices.py:815 tcos-devices-ng.py:495
 msgid "Can't umount cdrom"
 msgstr "No se pudo desmontar el cdrom"
 
-#: tcos-devices.py:902
+#: tcos-devices.py:888
 #, python-format
 msgid "Umounting %s, please wait..."
 msgstr "Desmontando %s, por favor, espere..."
 
-#: tcos-devices.glade:9
+#: tcos-devices-ng.py:202
+#, python-format
+msgid "Cdrom device %s"
+msgstr "Dispositivo cdrom %s"
+
+#: tcos-devices-ng.py:205
+msgid "Mount Cdrom"
+msgstr "Montar cdrom"
+
+#: tcos-devices-ng.py:206
+msgid "Umount Cdrom"
+msgstr "Desmontar cdrom"
+
+#: tcos-devices-ng.py:215
+msgid "No floppy detected"
+msgstr "No se ha detectado disquete"
+
+#: tcos-devices-ng.py:230 tcos-devices.glade:194
+msgid "Mount Floppy"
+msgstr "Montar disquete"
+
+#: tcos-devices-ng.py:231 tcos-devices.glade:272
+msgid "Umount Floppy"
+msgstr "Desmontar disquete"
+
+#: tcos-devices-ng.py:382
+#, python-format
+msgid ""
+"Mounting device %(device)s in \n"
+"%(mnt_point)s\n"
+"Please wait..."
+msgstr ""
+"Montando dispositivo %(device)s en\n"
+"%(mnt_point)s\n"
+"Por favor, espere..."
+
+#: tcos-devices-ng.py:474 tcos-devices-ng.py:482 tcos-devices-ng.py:492
+#, python-format
+msgid "Cdrom_%s"
+msgstr "Cdrom_%s"
+
+#: tcos-devices-ng.py:538
+#, python-format
+msgid "USB device %s"
+msgstr "Dispositivo USB %s"
+
+#: tcos-devices-ng.py:541
+#, python-format
+msgid "Mount USB device %s"
+msgstr "Montar dispositivo USB %s"
+
+#: tcos-devices-ng.py:542
+#, python-format
+msgid "Umount USB device %s"
+msgstr "Desmontar dispositivo USB %s"
+
+#: tcos-devices-ng.py:556 tcos-devices-ng.py:596
+#, python-format
+msgid "Error, can't mount device %s"
+msgstr "Error, no se pudo montar el dispositivo %s"
+
+#: tcos-devices-ng.py:620
+#, python-format
+msgid "USB device %s umounted. You can extract it."
+msgstr "Dispositivo USB %s desmontado. Ahora puede extraerlo."
+
+#: tcos-devices-ng.py:623
+#, python-format
+msgid "USB device %s mounted. Ready for use."
+msgstr "Dispositivo USB %s montado.Listo para usar."
+
+#: TcosTrayIcon.py:58
+msgid "TcosDevices"
+msgstr "Dispositivos TCOS"
+
+#: TcosTrayIcon.py:165 TcosTrayIcon.py:179 tcos-devices.glade:9
 msgid "Tcos Devices"
 msgstr "Dispositivos TCOS"
+
+#: TcosTrayIcon.py:225
+msgid "Usb flash"
+msgstr "Memoria USB flash"
+
+#: TcosTrayIcon.py:227
+msgid "Mount USB1"
+msgstr "Montar USB1"
+
+#: TcosTrayIcon.py:228
+msgid "Umount USB1"
+msgstr "Desmontar USB1"
 
 #: tcos-devices.glade:68
 msgid "Hide"
@@ -1308,14 +1396,6 @@ msgstr "Ocultar"
 #: tcos-devices.glade:118
 msgid "<b>Floppy status:</b>"
 msgstr "<b>Estado del disquete:</b>"
-
-#: tcos-devices.glade:194
-msgid "Mount Floppy"
-msgstr "Montar disquete"
-
-#: tcos-devices.glade:272
-msgid "Umount Floppy"
-msgstr "Desmontar disquete"
 
 #: tcos-devices.glade:336
 msgid "<b>CDROM status:</b>"
@@ -1345,9 +1425,6 @@ msgstr "Desmontar CDROM"
 #~ msgid "No cdrom detected. Click on refresh button."
 #~ msgstr "No se encontró cdrom. Pulse el botón actualizar."
 
-#~ msgid "No cdrom detected."
-#~ msgstr "No se ha detectado ningún cdrom."
-
 #~ msgid "Enable kill X with Ctrl+Alt+Backspace"
 #~ msgstr "Habilitar matar Xorg con Ctrl+Alt+Backspace"
 
@@ -1362,9 +1439,6 @@ msgstr "Desmontar CDROM"
 
 #~ msgid "Show main window"
 #~ msgstr "Mostrar ventana principal"
-
-#~ msgid "Mounted devices"
-#~ msgstr "Dispositivos montados"
 
 #~ msgid ""
 #~ "tcos-devices isn't allowed to run in local DISPLAY\n"

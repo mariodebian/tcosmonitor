@@ -1,6 +1,10 @@
 #!/bin/sh
 # TCOS Sound volume control
 
+if [ ! -e /dev/dsp ] && [ ! -d /proc/asound ]; then
+  echo "error: not soundcard"
+  exit 1
+fi
 
 CMD="amixer -c 0 "
 

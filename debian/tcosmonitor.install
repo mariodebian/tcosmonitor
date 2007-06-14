@@ -4,9 +4,9 @@ usr/bin/tcospersonalize
 usr/bin/tcos-volume-manager
 usr/bin/tcos-dbus-client
 usr/bin/tcos-devices
-etc/xdg/autostart/*
+usr/bin/tcos-devices-ng
 etc/dbus-1/system.d/tcosmonitor.conf
-etc/X11/Xsession.d/81tcos-dbus-client
+etc/X11/Xsession.d/81tcos-utils
 usr/sbin/*
 usr/share/locale/*
 usr/share/tcosmonitor/*.py

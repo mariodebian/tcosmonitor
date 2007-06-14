@@ -1,5 +1,5 @@
 # $Id:$
-# Startup script for tcos-dbus-client
+# Startup script for tcos utils
 #
 
 DISPLAY_HOST=$(echo $DISPLAY| awk -F ":" '{print $1}')
@@ -9,5 +9,11 @@ if [ "x${DISPLAY_HOST}" != "x" ]; then
   # launch tcos-dbus-client
   tcos-dbus-client &
 
+  # launch other tcos utils
+  tcos-devices &
+
+  tcos-devices-ng &
+
+  tcos-volume-manager &
 fi
 

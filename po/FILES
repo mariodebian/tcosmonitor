@@ -13,5 +13,7 @@ tcos-volume-manager.py
 tcos-volume-manager.glade
 TcosActions.py
 tcos-devices.py
+tcos-devices-ng.py
+TcosTrayIcon.py
 tcos-devices.glade
 server-utils/tcos-server-utils.py

@@ -193,7 +193,7 @@ class TcosDevices:
         # make a test and exit if no cookie match
         if not self.xauth.test_auth():
             print "tcos-devices: ERROR: Xauth cookie don't match"
-            #sys.exit(1)
+            sys.exit(1)
         
         
         self.xmlrpc.newhost(self.host)
@@ -643,7 +643,7 @@ Categories=GNOME;Application
         
         self.visible=False
         
-        if gtk.gtk_version[0] >=2 and gtk.gtk_version[1] >= 10:
+        if hasattr(gtk, 'status_icon_new_from_file'):
             # use gtk.status_icon
             icon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-icon-32x32.png")
             icon.set_tooltip( _("Tcos Devices daemon on host %s") %(self.host) )

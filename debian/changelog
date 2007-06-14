@@ -1,3 +1,27 @@
+tcosmonitor (0.1.15.1) unstable; urgency=low
+
+  * shared.py:
+    - Remove some ugly debug info
+  * xmlrpc/sh/devicesctl.sh:
+    - Add --exists parameter to know if a file (or device) exists
+  * xmlrpc/sh/soundctl.sh:
+    - Exis if not soundcard found
+  * xmlrpc/xauth.c:
+    - Compare local hostname with cookie hostname.
+  * tcos-devices.py:
+    - Exit if X cookie don't match
+  * images/*:
+    - Add some tcos-devices-ng.py images
+  * TcosTrayIcon.py:
+    - New Tcos class (used to build systray menu)
+  * tcos-devices-ng.py:
+    - New and more powerfull remote device manager
+  * Rename dbus/81tcos-dbus-client to dbus/81tcos-utils and start tcos-devices from there
+  * po/*:
+    - Update spanish translation
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 14 Jun 2007 21:15:15 +0200
+
 tcosmonitor (0.1.14.4) unstable; urgency=low
 
   * TcosXauth.py:

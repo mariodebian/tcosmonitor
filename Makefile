@@ -80,7 +80,6 @@ install:
 	install -d $(DESTDIR)/$(PREFIX)/bin
 	install -d $(DESTDIR)/$(PREFIX)/sbin
 	install -d $(DESTDIR)/$(TCOS_BINS)
-	install -d $(DESTDIR)/etc/xdg/autostart
 	install -d $(DESTDIR)/etc/tcos/
 	
 
@@ -105,23 +104,25 @@ install:
 	install -m 644 TcosXmlRpc.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosConf.py    $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosDBus.py    $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
-	install -m 644 TcosActions.py    $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosActions.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosXauth.py    $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
-	install -m 644 ping.py        $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
-	install -m 644 htmltextview.py        $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 ping.py         $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 htmltextview.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosTrayIcon.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 
 	install -m 755 tcosmonitor.py           $(DESTDIR)/$(PREFIX)/bin/tcosmonitor
 	install -m 755 tcospersonalize.py       $(DESTDIR)/$(PREFIX)/bin/tcospersonalize
 	install -m 755 tcos-volume-manager.py   $(DESTDIR)/$(PREFIX)/bin/tcos-volume-manager
 	install -m 755 tcos-devices.py          $(DESTDIR)/$(PREFIX)/bin/tcos-devices
+	install -m 755 tcos-devices-ng.py       $(DESTDIR)/$(PREFIX)/bin/tcos-devices-ng
 
 	install -m 755 server-utils/tcos-server-utils.py          $(DESTDIR)/$(PREFIX)/sbin/tcos-server-utils
 
-	install -m 644 tcos-devices-daemon.desktop      $(DESTDIR)/etc/xdg/autostart/
-	install -m 644 tcos-devices-autostart.desktop   $(DESTDIR)/etc/xdg/autostart/
-	install -m 644 tcos-devices.desktop             $(DESTDIR)$(PREFIX)/share/applications/
-	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)$(PREFIX)/share/applications/
-	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)/etc/xdg/autostart/
+#	install -m 644 tcos-devices-daemon.desktop      $(DESTDIR)/etc/xdg/autostart/
+#	install -m 644 tcos-devices-autostart.desktop   $(DESTDIR)/etc/xdg/autostart/
+#	install -m 644 tcos-devices.desktop             $(DESTDIR)$(PREFIX)/share/applications/
+#	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)$(PREFIX)/share/applications/
+#	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)/etc/xdg/autostart/
 
 	# locales
 	install -d $(DESTDIR)/$(PREFIX)/share/locale/es/LC_MESSAGES/

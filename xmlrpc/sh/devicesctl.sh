@@ -164,6 +164,15 @@ if [ "$1" = "--getxdrivers" ]; then
   need_parse=1
 fi
 
+if [ "$1" = "--exists" ]; then
+  if [ -e "$2" ]; then
+    output=1
+  else
+    output=0
+  fi
+  need_parse=0
+fi
+
 
 
 usage() {

@@ -22,10 +22,23 @@ handle_xauth( char *cookie , char *servername)
 
   dbgtcos("tcosxmlrpc::handle_auth() cookie=%s server=%s\n" ,cookie, servername);
 
+    /*
     if ( strcmp (servername, "") == 0 )
        gethostname(hostname, BSIZE);
     else
        sprintf(hostname, "%s" ,servername);
+    */
+
+    /* read my hostname */
+    gethostname(hostname, BSIZE);
+    dbgtcos("tcosxmlrpc::handle_xauth() gethostname=%s\n", hostname);
+
+
+    /* compare with cookie hostname */
+    if (strcmp (servername, hostname) != 0 ) {
+       dbgtcos("tcosxmlrpc::handle_xauth() ERROR servername != hostname");
+       return(XAUTH_ERROR);
+    }
 
     sprintf ( (char*) cmd, "xauth -q -f /tmp/.tmpxauth add %s:0 MIT-MAGIC-COOKIE-1 %s", hostname, cookie);
 
@@ -83,7 +96,7 @@ tcos_xauth(xmlrpc_env *env, xmlrpc_value *in, void *ud)
    /* need login first */
   xauth_ok=handle_xauth(cookie,hostname);
   if( xauth_ok != XAUTH_OK )
-    return xmlrpc_build_value(env, "s", "xauth: access denied" );
+    return xmlrpc_build_value(env, "s", "xauth: error access denied" );
 
   return xmlrpc_build_value(env, "s", "xauth: access OK " );
 }

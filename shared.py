@@ -405,21 +405,22 @@ class Workers:
         self.args=args
         
         if not self.dog:
-            print_debug ( "worker() no other jobs job=%s args=%s" %(self.target, self.args) )
+            #print_debug ( "worker() no other jobs job=%s args=%s" %(self.target, self.args) )
             self.th=Thread(target=self.target, args=(self.args) )
             self.__stop=True
             return
         
         if self.main.worker_running == True:
-            print_debug ( "worker() other jobs pending NO START job=%s args=%s" %(self.target, self.args) )
+            #print_debug ( "worker() other jobs pending NO START job=%s args=%s" %(self.target, self.args) )
+            pass
         else:
-            print_debug ( "worker() no other jobs job=%s args=%s" %(self.target, self.args) )
+            #print_debug ( "worker() no other jobs job=%s args=%s" %(self.target, self.args) )
             self.th=Thread(target=self.target, args=(self.args) )
             self.__stop=True
     
     def start_watch_dog(self, dog_thread):
         if not self.dog:
-            print_debug ( "start_watch_dog() dog DISABLED" )
+            #print_debug ( "start_watch_dog() dog DISABLED" )
             return
         print_debug ( "start_watch_dog() starting watch dog..." )
         watch_dog=Thread(target=self.watch_dog, args=([dog_thread]) )

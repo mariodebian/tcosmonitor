@@ -100,7 +100,7 @@ class TcosVolumeManager:
         self.name="TcosVolumeManager"
         self.visible=False
         
-        if gtk.gtk_version[0] >=2 and gtk.gtk_version[1] >= 10:
+        if hasattr(gtk, 'status_icon_new_from_file'):
             # use gtk.status_icon
             icon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-volume-32x32.png")
             icon.set_tooltip( _("Tcos Sound levels on:\n%s") %(self.host) )

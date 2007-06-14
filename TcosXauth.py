@@ -34,6 +34,7 @@ class TcosXauth:
 
     def init_standalone(self):
         print_debug ( "init_standalone() " )
+        self.get_display()
         self.name="TcosXauth"
         import TcosConf
         import TcosXmlRpc
@@ -76,11 +77,11 @@ class TcosXauth:
         if cookie == None:
             print_debug ( "test_auth() Can't read cookie" )
             return
-        self.xmlrpc.newhost(self.display_host)
+        self.xmlrpc.newhost(self.display_hostname)
         if not self.xmlrpc.connected:
             print_debug ( "test_auth() No connection" )
             return
-        returned = self.xmlrpc.tc.tcos.xauth(cookie, self.display_host)
+        returned = self.xmlrpc.tc.tcos.xauth(cookie, self.display_hostname)
         if "OK" in returned: return True
         elif "error" in returned: return False
 
