@@ -25,7 +25,6 @@ import gtk
 import os
 from gettext import gettext as _
 
-MENU_DATA=os.path.expanduser("~/.tcos-devices")
 
 import shared
 

@@ -31,6 +31,20 @@ from gettext import gettext as _
 import time
 import socket
 
+# check for local DISPLAY
+shared.remotehost, display =  os.environ["DISPLAY"].split(':')
+action = ""
+
+if shared.remotehost == "":
+    print "tcos-devices-ng: Not allowed to run in local DISPLAY"
+    sys.exit(0)
+
+if len(shared.remotehost.split('.')) == 4:
+    # we have an ip
+    try:
+        shared.remotehost=socket.gethostbyaddr(shared.remotehost)[0]
+    except:
+        pass
 
 if not os.path.isfile("shared.py"):
         sys.path.append('/usr/share/tcosmonitor')
@@ -58,6 +72,7 @@ gtk.gdk.threads_init()
 
 
 
+
 def usage():
     print "tcos-devices help:"
     print ""
@@ -74,15 +89,6 @@ except getopt.error, msg:
     print "for command line options use tcos-devices --help"
     sys.exit(2)
 
-shared.remotehost, display =  os.environ["DISPLAY"].split(':')
-action = ""
-
-if len(display.split('.')) == 4:
-    try:
-        # we have an ip
-        shared.remotehost=socket.gethostbyaddr(shared.remotehost)[0]
-    except:
-        pass
 
 # process options
 for o, a in opts:
@@ -94,9 +100,6 @@ for o, a in opts:
         usage()
         sys.exit()
 
-if shared.remotehost == "":
-    print "tcos-devices: Not allowed to run in local DISPLAY"
-    sys.exit(0)
 
 
 
@@ -133,17 +136,6 @@ class TcosDevicesNG:
         
         # register quit event
         self.systray.register_action("quit", lambda w: self.exit() )
-
-        
-        # start udev_daemon in new thread
-        #self.udev_daemon=TcosUdev(self)
-        #self.udev_daemon.start()
-        
-        #self.worker_running=False
-        #self.worker=shared.Workers(self, target=self.udev_daemon, args=[])
-        #self.worker.start()
-        
-        #self.udev_daemon()
         
         self.udev_events={ 
         "insert":       {"ID_BUS":  "usb",         "ACTION":"add"}, 
@@ -157,12 +149,6 @@ class TcosDevicesNG:
         }
     
     def show_notification(self, msg, urgency=pynotify.URGENCY_CRITICAL):
-        #print args
-        #msg=args[0][0]
-        #if len(args[0])< 2:
-        #    urgency=pynotify.URGENCY_CRITICAL
-        #else:
-        #    urgency=args[1]
         pynotify.init("Multi Action Test")
         n = pynotify.Notification( _("Tcos device daemon") , msg )
         n.set_urgency(urgency)
@@ -185,7 +171,7 @@ class TcosDevicesNG:
         
         # make a test and exit if no cookie match
         if not self.xauth.test_auth():
-            print "tcos-devices: ERROR: Xauth cookie don't match"
+            print "tcos-devices-ng: ERROR: Xauth cookie don't match"
             sys.exit(1)
         
         self.xmlrpc.newhost(self.host)
@@ -283,15 +269,6 @@ class TcosDevicesNG:
         self.systray.update_status("cdrom_%s"%dev, "cdrom_%s_mount"%dev, not ismounted)
         self.systray.update_status("cdrom_%s"%dev, "cdrom_%s_umount"%dev, ismounted)
 
-
-    def udev_daemon_start(self):
-        while True:
-            try:
-                self.udev_daemon()
-                time.sleep(3)
-            except:
-                log ("EE: udev_daemon Unexpected error: %s" %sys.exc_info()[0] )
-                pass
 
     def udev_daemon(self):
         start1=time.time()

@@ -3,7 +3,7 @@ Section: gnome
 Priority: optional
 Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
 Build-Depends: debhelper (>= 5.0.37.2), libxmlrpc-c3, libxmlrpc-c3-dev, libxau-dev,
-               libxaw-headers, libxaw7-dev, python, python-support (>= 0.3)
+               libxaw-headers, libxaw7-dev, imlib11-dev, python, python-support (>= 0.3)
 Standards-Version: 3.7.2
 XS-Python-Version: >= 2.4
 

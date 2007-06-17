@@ -1,5 +1,5 @@
-# this file copy tcosxmlrpc server into initramfs
-# and add startup scripts of tcosxmlrpc server
+# this file copies tcosxmlrpc server into initramfs
+# and adds startup scripts of tcosxmlrpc server
 
 stat_before
 
@@ -14,7 +14,7 @@ mkdir -p $DESTDIR/usr/lib/imlib2/loaders/
 cpifexists /usr/lib/imlib2/loaders/png.so        /usr/lib/imlib2/loaders/
 cpifexists /usr/lib/imlib2/loaders/gif.so        /usr/lib/imlib2/loaders/
 
-# screnshot script and webserver
+# screenshot script and webserver
 cpifexists ${TCOS_BINS}/screenshot.sh     /sbin/
 cpifexists ${TCOS_BINS}/useallmodules.sh  /sbin/
 cpifexists ${TCOS_BINS}/devicesctl.sh  /sbin/
@@ -32,9 +32,13 @@ cpifexists /usr/share/tcosmonitor/xmlrpc/050_tcos_devices.rules  /etc/udev/rules
 
 
 # tcosxmlrpc utils
-
 cpifexists ${TCOS_BINS}/tcosxmlrpc  /usr/bin/
 cpifexists ${TCOS_BINS}/lockscreen  /usr/bin/
+
+# copy locked image
+mkdir -p ${DESTDIR}/usr/share/tcosmonitor/xmlrpc
+cp /usr/share/tcosmonitor/xmlrpc/locked.png ${DESTDIR}/usr/share/tcosmonitor/xmlrpc/
+
 
 copy_exec /sbin/start-stop-daemon  /sbin/
 cpifexists ${TCOS_BINS}/getinfo.sh       /sbin/

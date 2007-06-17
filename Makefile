@@ -162,6 +162,7 @@ install-tcos:
 	install -d $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/
 
 	install -m 755 lockscreen/lockscreen $(DESTDIR)/$(TCOS_BINS)/lockscreen
+	install -m 644 lockscreen/locked.png $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/locked.png
 
 	# install tcos hooks
 	install -d $(DESTDIR)$(TCOS_DIR)/hooks-addons/
