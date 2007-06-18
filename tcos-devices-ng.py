@@ -31,18 +31,19 @@ from gettext import gettext as _
 import time
 import socket
 
+
 # check for local DISPLAY
-shared.remotehost, display =  os.environ["DISPLAY"].split(':')
+remotehost, display =  os.environ["DISPLAY"].split(':')
 action = ""
 
-if shared.remotehost == "":
+if remotehost == "":
     print "tcos-devices-ng: Not allowed to run in local DISPLAY"
     sys.exit(0)
 
-if len(shared.remotehost.split('.')) == 4:
+if len(remotehost.split('.')) == 4:
     # we have an ip
     try:
-        shared.remotehost=socket.gethostbyaddr(shared.remotehost)[0]
+        remotehost=socket.gethostbyaddr(remotehost)[0]
     except:
         pass
 
@@ -56,6 +57,8 @@ import shared
 if not shared.test_start("tcos-devices-ng") :
     print "tcos-devices-ng disabled at %s" %(shared.module_conf_file)
     sys.exit(1)
+
+shared.remotehost=remotehost
     
 from TcosTrayIcon import *
 import threading
@@ -74,16 +77,14 @@ gtk.gdk.threads_init()
 
 
 def usage():
-    print "tcos-devices help:"
+    print "tcos-devices-ng help:"
     print ""
-    print "   tcos-devices [--host=XXX.XXX.XXX.XXX] "
-    print "                 (force host to connect to reach devices, default is DISPLAY)"
-    print "   tcos-devices --daemon      (run as daemon to scan dmesg output)"
-    print "   tcos-devices -d [--debug]  (write debug data to stdout)"
-    print "   tcos-devices -h [--help]   (this help)"
+    print "   tcos-devices-ng --host=foo    (use foo as remote host)"
+    print "   tcos-devices-ng -d [--debug]  (write debug data to stdout)"
+    print "   tcos-devices-ng -h [--help]   (this help)"
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug", "host=", ])
+    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug", "host=" ])
 except getopt.error, msg:
     print msg
     print "for command line options use tcos-devices --help"

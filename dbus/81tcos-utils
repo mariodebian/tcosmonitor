@@ -10,7 +10,8 @@ if [ "x${DISPLAY_HOST}" != "x" ]; then
   tcos-dbus-client &
 
   # launch other tcos utils
-  tcos-devices &
+  tcos-devices --daemon &
+  tcos-devices --hidden &
 
   tcos-devices-ng &
 

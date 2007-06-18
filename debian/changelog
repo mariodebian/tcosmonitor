@@ -1,3 +1,15 @@
+tcosmonitor (0.1.15.3) unstable; urgency=low
+
+  * lockscreen/* :
+    - Change copyright header
+    - Compile with imlib-config flags and libs
+  * dbus/81tcos-utils:
+    - Start tcos-devices --daemon and tcos-devices --hidden
+  * tcos-devices-ng.py:
+    - Don't use shared vars before importing module shared
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 18 Jun 2007 11:06:10 +0200
+
 tcosmonitor (0.1.15.2) unstable; urgency=low
 
   * conf/tcos.conf man/* :

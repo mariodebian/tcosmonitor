@@ -1,7 +1,9 @@
 PROGRAMS = lockscreen
 SOURCES = lockscreen2.c
 LOCKSCREEN_FILE=/usr/share/tcosmonitor/xmlrpc/locked.png
-LDADD = -Wall -DLOCKSCREEN_IMAGE=\"$(LOCKSCREEN_FILE)\" -L/usr/lib/ -lXaw -lImlib -lX11 -lXext -ljpeg -lpng
+LIBS=$(shell imlib-config --libs)
+CFLAGS=$(shell imlib-config --cflags)
+LDADD = -Wall -DLOCKSCREEN_IMAGE=\"$(LOCKSCREEN_FILE)\" -lXaw $(LIBS) $(CFLAGS)
 
 
 all: compile
