@@ -125,7 +125,7 @@ if [ "$1" = "--umount" ]; then
       output="error: umounting device"
     fi
   else
-    output=$"error: need something to umount"
+    output="error: need something to umount"
   fi
 fi
 
@@ -173,6 +173,11 @@ if [ "$1" = "--exists" ]; then
   need_parse=0
 fi
 
+if [ "$1" = "--gethdd" ]; then
+  hdd=$(grep -e ext3 -e vfat /etc/fstab | awk '{print $1}' | sed 's/\/dev\///g')
+  for item in $hdd; do output="$output$item|"; done
+  need_parse=0
+fi
 
 
 usage() {

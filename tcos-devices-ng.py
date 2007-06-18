@@ -132,6 +132,7 @@ class TcosDevicesNG:
         self.desktop=self.get_desktop()
         self.getremote_cdroms()
         self.getremote_floppy()
+        self.getremote_hdd()
         
         self.quitting=False
         
@@ -205,6 +206,32 @@ class TcosDevicesNG:
             self.systray.register_action("cdrom_%s_mount" %cdrom, self.cdrom, "mount", cdrom )
             self.systray.register_action("cdrom_%s_umount" %cdrom, self.cdrom, "umount", cdrom )
 
+    def getremote_hdd(self):
+        self.hdd_devices=self.xmlrpc.GetDevicesInfo(device="", mode="--gethdd").split('|')
+        self.hdd_devices=self.hdd_devices[0:-1]
+        print_debug ( "getremote_hdd() hdd=%s" %(self.hdd_devices) )
+        for hdd in self.hdd_devices:
+            # get device status
+            hdd_status= self.xmlrpc.GetDevicesInfo(device="/dev/%s" %hdd, mode="--getstatus").replace('\n','')
+            if hdd_status == "0":
+                mount=True
+                umount=False
+            else:
+                mount=False
+                umount=True
+            self.systray.register_device("hdd_%s"%hdd, 
+                            _("Disk partition %s" %hdd), 
+                            "hdd_mount.png", True, 
+                            {
+                        "hdd_%s_mount" %hdd: [ _("Mount disk partition"),  "hdd_mount.png", mount,  None, "/dev/%s"%hdd],
+                        "hdd_%s_umount"%hdd: [ _("Umount disk partition"), "hdd_umount.png", umount, None, "/dev/%s"%hdd]
+                            }, 
+                            "/dev/%s"%(hdd))
+            self.systray.register_action("hdd_%s_mount" %hdd, self.hdd, "mount", hdd )
+            self.systray.register_action("hdd_%s_umount" %hdd, self.hdd, "umount", hdd )
+
+
+
     def getremote_floppy(self):
         have_floppy=self.xmlrpc.GetDevicesInfo(device="/dev/fd0", mode="--exists").replace('\n','')
         if have_floppy == "0":
@@ -248,6 +275,29 @@ class TcosDevicesNG:
         self.systray.items["floppy"][1]="floppy%s.png"%n
         self.systray.update_status("floppy", "floppy_mount", not ismounted)
         self.systray.update_status("floppy", "floppy_umount", ismounted)
+
+    def update_hdd(self, *args):
+        if len(args) > 0:
+            if args[0] == "mount":
+                self.show_notification (  _("Hard disk partition mounted. Ready for use.")  )
+                return
+            elif args[0] == "umount":
+                self.show_notification (  _("Hard disk partition umounted.")  )
+                return
+            else:
+                dev=args[0]
+        hdd_status=self.xmlrpc.GetDevicesInfo(device="/dev/%s"%dev, mode="--getstatus").replace('\n','')
+        if hdd_status == "0":
+            ismounted=False
+            n=1
+        else:
+            ismounted=True
+            n=2
+        print_debug ("update_hdd() hdd ismounted=%s" %ismounted)
+        self.systray.update_status("hdd_%s"%dev, "hdd_%s_mount"%dev, not ismounted)
+        self.systray.update_status("hdd_%s"%dev, "hdd_%s_umount"%dev, ismounted)
+
+
 
     def update_cdrom(self, *args):
         if len(args) > 0:
@@ -326,12 +376,18 @@ class TcosDevicesNG:
             self.usb(data)
         
         if data.has_key("DEVPATH") and "/block/hd" in data["DEVPATH"]:
-            self.update_cdrom(data["ACTION"])
+            if len(data["DEVPATH"].split('/')):
+                # we have a hdd
+                self.update_hdd(data["ACTION"])
+            else:
+                # we have a cdrom
+                self.update_cdrom(data["ACTION"])
             
         if data.has_key("DEVPATH") and "/block/fd" in data["DEVPATH"]:
             self.update_floppy(data["ACTION"])
         
         if data.has_key("DEVPATH") and "/block/sd" in data["DEVPATH"]:
+            # FIXME SATA devices not detected as HDD
             self.update_usb(data)
 
 
@@ -485,6 +541,41 @@ class TcosDevicesNG:
             # change status
             self.update_cdrom(cdrom_device)
             return
+
+
+    def hdd(self, *args):
+        action=args[0][0]
+        hdd_device=args[0][1]
+        desktop=os.path.expanduser("~/Desktop")
+        local_mount_point=os.path.join(desktop, _("Disk_%s" %hdd_device) )
+        absdev="/dev/%s"%hdd_device
+        
+        if action == "mount":
+            print_debug ( "hdd() remote_mnt=%s device=%s" %("/mnt/%s"%hdd_device, hdd_device) )
+            if not self.mounter_remote(absdev, "", mode="--mount"):
+                self.show_notification (  _("Can't mount hard disk partition")  )
+                return
+            self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s" %hdd_device), mode="mount")
+            
+            # change status
+            self.update_hdd(hdd_device)
+            self.launch_desktop_filemanager(local_mount_point)
+            return
+            
+        if action == "umount":
+            print_debug ( "hdd() remote_mnt=%s device=%s" %("/mnt/%s"%hdd_device, hdd_device) )
+        
+            self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s" %hdd_device), mode="umount")
+            
+            if not self.mounter_remote(absdev, "", mode="--umount"):
+                self.show_notification (  _("Can't umount hard disk partition")  )
+                return
+            
+            # change status
+            self.update_hdd(hdd_device)
+            return
+
+
 
     def usb(self, *args):
         data=args[0]
@@ -677,7 +768,7 @@ class TcosDevicesNG:
     def get_desktop(self):    
         is_gnome=self.exe_cmd("ps ux |grep gnome-panel  |grep -c -v grep"  )
         is_kde = self.exe_cmd("ps ux |grep   startkde   |grep -c -v grep"  )
-        is_xfce= self.exe_cmd("ps ux |grep xfce4-session|grep -c -v grep"  )
+        is_xfce= self.exe_cmd("ps ux |grep xfce4-panel  |grep -c -v grep"  )
         if int(is_gnome) > 0:
             return "gnome"
         elif int(is_kde) > 0:

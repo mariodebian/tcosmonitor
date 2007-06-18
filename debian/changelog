@@ -1,3 +1,16 @@
+tcosmonitor (0.1.15.4) unstable; urgency=low
+
+  * xmlrpc/sh/devicesctl.sh:
+    - Add --gethdd param and return ext3 or vfat devices in /etc/fstab
+  * tcos-devices-ng.py:
+    - Read hdd device partitions in thin client and put in menu
+  * images/hdd_*mount.png:
+    - Add hdd icons
+  * po/*:
+    - Update translations (new hdd strings)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 18 Jun 2007 18:52:00 +0200
+
 tcosmonitor (0.1.15.3) unstable; urgency=low
 
   * lockscreen/* :
