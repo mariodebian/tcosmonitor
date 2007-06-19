@@ -32,6 +32,8 @@ import time
 import socket
 
 
+CONF_FILE="~/.tcos-devices-ng.conf"
+
 # check for local DISPLAY
 remotehost, display =  os.environ["DISPLAY"].split(':')
 action = ""
@@ -123,7 +125,9 @@ class TcosDevicesNG:
         self.host=shared.remotehost
         self.name="TcosDevicesNG"
         self.mounted={}
+        self.mntconf={}
         self.username=get_username()
+        self.loadconf()
         
         self.systray=TcosTrayIcon()
         self.systray.status=True
@@ -150,10 +154,34 @@ class TcosDevicesNG:
         "umount-flash": {"DEVPATH": "/block/sd*",   "ACTION":"umount"}
         }
     
+    def loadconf(self):
+        print_debug ( "loadconf() __init__" )
+        conf=os.path.expanduser(CONF_FILE)
+        if os.path.isfile(conf):
+            print_debug ("loadconf() found conf file %s" %conf)
+            f=open(conf, "r")
+            data=f.readlines()
+            f.close()
+            for line in data:
+                if line == '\n': continue
+                if line.find('#') == 0: continue
+                line=line.replace('\n', '')
+                if "=" in line:
+                    try:
+                        self.mntconf["%s"%line.split('=')[0]] = line.split('=')[1]
+                    except:
+                        pass
+        print_debug( "loadconf mntconf=%s" %self.mntconf )
+        return
+    
     def show_notification(self, msg, urgency=pynotify.URGENCY_CRITICAL):
-        pynotify.init("Multi Action Test")
-        n = pynotify.Notification( _("Tcos device daemon") , msg )
+        pynotify.init("tcos-devices-ng")
+        image_uri="file://" + os.path.abspath(shared.IMG_DIR) + "/tcos-devices-32x32.png"
+        n = pynotify.Notification( _("Tcos device daemon") , msg, image_uri )
         n.set_urgency(urgency)
+        # don't attach to status icon with multiple notifications
+        #if hasattr(pynotify.Notification, 'attach_to_status_icon'):
+        #    n.attach_to_status_icon(self.systray.statusIcon)
         n.set_category("device")
         n.set_timeout(15000) # 15 sec
         if not n.show():
@@ -196,8 +224,8 @@ class TcosDevicesNG:
                 mount=False
                 umount=True
             self.systray.register_device("cdrom_%s"%cdrom, 
-                            _("Cdrom device %s" %cdrom), 
-                            "cdrom_mount.png", True, 
+                            _("Cdrom device %s" ) %cdrom, 
+                            "cdrom.png", True, 
                             {
                         "cdrom_%s_mount" %cdrom: [ _("Mount Cdrom"),  "cdrom_mount.png", mount,  None, "/dev/%s"%cdrom],
                         "cdrom_%s_umount"%cdrom: [ _("Umount Cdrom"), "cdrom_umount.png", umount, None, "/dev/%s"%cdrom]
@@ -220,7 +248,7 @@ class TcosDevicesNG:
                 mount=False
                 umount=True
             self.systray.register_device("hdd_%s"%hdd, 
-                            _("Disk partition %s" %hdd), 
+                            _("Disk partition %s") %hdd, 
                             "hdd_mount.png", True, 
                             {
                         "hdd_%s_mount" %hdd: [ _("Mount disk partition"),  "hdd_mount.png", mount,  None, "/dev/%s"%hdd],
@@ -376,7 +404,7 @@ class TcosDevicesNG:
             self.usb(data)
         
         if data.has_key("DEVPATH") and "/block/hd" in data["DEVPATH"]:
-            if len(data["DEVPATH"].split('/')):
+            if len(data["DEVPATH"].split('/')) > 3:
                 # we have a hdd
                 self.update_hdd(data["ACTION"])
             else:
@@ -446,8 +474,16 @@ class TcosDevicesNG:
         
         #fslabel=self.get_value(data, "ID_FS_LABEL")
         #fsvendor=self.get_value(data, "ID_VENDOR")
-        fslabel=data['ID_FS_LABEL']
-        fsvendor=data['ID_VENDOR']
+        if data.has_key("ID_FS_LABEL"):
+            fslabel=data['ID_FS_LABEL']
+        else:
+            fslabel=""
+            
+        if data.has_key("ID_VENDOR"):
+            fsvendor=data['ID_VENDOR']
+        else:
+            fsvendor=""
+            
         counter=1
         if fslabel != "":
             print_debug ( "get_local_mountpoint() have label...." )
@@ -491,7 +527,10 @@ class TcosDevicesNG:
         action=action[0]
         print_debug("floppy call %s" %action)
         desktop=os.path.expanduser("~/Desktop")
-        local_mount_point=os.path.join(desktop, _("Floppy") )
+        if self.mntconf.has_key("fd0"):
+            local_mount_point=os.path.join(desktop, self.mntconf['fd0'] )
+        else:
+            local_mount_point=os.path.join(desktop, _("Floppy") )
         
         if action == "mount":
             if not self.mounter_remote("/dev/fd0", "", mode="--mount"):
@@ -514,7 +553,13 @@ class TcosDevicesNG:
         action=args[0][0]
         cdrom_device=args[0][1]
         desktop=os.path.expanduser("~/Desktop")
-        local_mount_point=os.path.join(desktop, _("Cdrom_%s" %cdrom_device) )
+        
+        if self.mntconf.has_key(cdrom_device):
+            local_mount_point=os.path.join(desktop, self.mntconf[cdrom_device] )
+        else:
+            local_mount_point=os.path.join(desktop, _("Cdrom_%s") %cdrom_device )
+            
+        
         absdev="/dev/%s"%cdrom_device
         
         if action == "mount":
@@ -522,7 +567,7 @@ class TcosDevicesNG:
             if not self.mounter_remote(absdev, "", mode="--mount"):
                 self.show_notification (  _("Can't mount cdrom")  )
                 return
-            self.mounter_local(local_mount_point, "/mnt/%s"%cdrom_device, device=absdev, label=_("Cdrom_%s" %cdrom_device), mode="mount")
+            self.mounter_local(local_mount_point, "/mnt/%s"%cdrom_device, device=absdev, label=_("Cdrom_%s")  %cdrom_device, mode="mount")
             
             # change status
             self.update_cdrom(cdrom_device)
@@ -532,7 +577,7 @@ class TcosDevicesNG:
         if action == "umount":
             print_debug ( "cdrom() remote_mnt=%s device=%s" %("/mnt/%s"%cdrom_device, cdrom_device) )
         
-            self.mounter_local(local_mount_point, "/mnt/%s"%cdrom_device, device=absdev, label=_("Cdrom_%s" %cdrom_device), mode="umount")
+            self.mounter_local(local_mount_point, "/mnt/%s"%cdrom_device, device=absdev, label=_("Cdrom_%s") %cdrom_device, mode="umount")
             
             if not self.mounter_remote(absdev, "", mode="--umount"):
                 self.show_notification (  _("Can't umount cdrom")  )
@@ -547,7 +592,13 @@ class TcosDevicesNG:
         action=args[0][0]
         hdd_device=args[0][1]
         desktop=os.path.expanduser("~/Desktop")
-        local_mount_point=os.path.join(desktop, _("Disk_%s" %hdd_device) )
+        
+        if self.mntconf.has_key(hdd_device):
+            local_mount_point=os.path.join(desktop, self.mntconf[hdd_device] )
+        else:
+            local_mount_point=os.path.join(desktop, _("Disk_%s")  %hdd_device )
+         
+        
         absdev="/dev/%s"%hdd_device
         
         if action == "mount":
@@ -555,7 +606,7 @@ class TcosDevicesNG:
             if not self.mounter_remote(absdev, "", mode="--mount"):
                 self.show_notification (  _("Can't mount hard disk partition")  )
                 return
-            self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s" %hdd_device), mode="mount")
+            self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s")  %hdd_device, mode="mount")
             
             # change status
             self.update_hdd(hdd_device)
@@ -565,7 +616,7 @@ class TcosDevicesNG:
         if action == "umount":
             print_debug ( "hdd() remote_mnt=%s device=%s" %("/mnt/%s"%hdd_device, hdd_device) )
         
-            self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s" %hdd_device), mode="umount")
+            self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s") %hdd_device, mode="umount")
             
             if not self.mounter_remote(absdev, "", mode="--umount"):
                 self.show_notification (  _("Can't umount hard disk partition")  )
@@ -580,6 +631,8 @@ class TcosDevicesNG:
     def usb(self, *args):
         data=args[0]
         if type(data) == type( () ): data=args[0][0]
+        
+        print_debug("usb() data=%s" %data)
         
         device=data['DEVNAME']
         action=data['ACTION']
@@ -610,30 +663,35 @@ class TcosDevicesNG:
             # add to menu
             devid=device.split('/')[2]
             remote_mnt="/mnt/%s" %(devid)
-            if action == "add":
-                ##########################################
-                self.systray.register_device("usb_%s"%devid, 
-                                _("USB device %s" %devid), 
-                                "usb%s.png"%n, True, 
-                                {
-                            "usb_%s_mount" %devid: [ _("Mount USB device %s" %(devid)),  "usb_mount.png", mount,  None, device],
-                            "usb_%s_umount" %devid: [ _("Umount USB device %s" %(devid)), "usb_umount.png", not mount, None, device]
-                                }, 
-                                device)
-                
-                self.systray.register_action("usb_%s_mount" %devid , self.usb, {
-                                        "DEVNAME": device, "ACTION": "mount", "ID_FS_TYPE": fstype
-                                                                                } 
-                                            )
-                self.systray.register_action("usb_%s_umount" %devid , self.usb, {
-                                        "DEVNAME": device, "ACTION": "umount", "ID_FS_TYPE": fstype
-                                                                                }
-                                             )
+            if action == "add" or action == "mount":
+                if action == "add":
+                    ###########     add USB  device    ############
+                    self.systray.register_device("usb_%s"%devid, 
+                                    _("USB device %s") %devid, 
+                                    "usb%s.png"%n, True, 
+                                    {
+                                "usb_%s_mount" %devid: [ _("Mount USB device %s") %(devid),  "usb_mount.png", mount,  None, device],
+                                "usb_%s_umount" %devid: [ _("Umount USB device %s") %(devid), "usb_umount.png", not mount, None, device]
+                                    }, 
+                                    device)
+                    
+                    self.systray.register_action("usb_%s_mount" %devid , self.usb, {
+                                            "DEVNAME": device, "ACTION": "mount", "ID_FS_TYPE": fstype
+                                                                                    } 
+                                                )
+                    self.systray.register_action("usb_%s_umount" %devid , self.usb, {
+                                            "DEVNAME": device, "ACTION": "umount", "ID_FS_TYPE": fstype
+                                                                                    }
+                                                 )
+                    ###############################################
                 
                 if not self.mounter_remote(device, fstype, "--mount"):
                     self.show_notification (  _("Error, can't mount device %s") %(device)  )
                     return
                 
+                if device in self.mounted:
+                    data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
+                    data['ID_VENDOR']=os.path.basename(self.mounted[device])
                 
                 local_mount_point = self.get_local_mountpoint(data)
                 label = os.path.basename(local_mount_point)
@@ -647,7 +705,7 @@ class TcosDevicesNG:
                 ##########################################
                 
                 
-            if action == "remove" or action == "umount":
+            elif action == "remove" or action == "umount":
                 if action == "remove":
                     print_debug ("usb() UNREGISTER SERVICE")
                     self.systray.unregister_device("usb_%s"%devid)
@@ -678,10 +736,10 @@ class TcosDevicesNG:
                     print_debug ( "error loading device status" )
                 
                 
-                if device in self.mounted:
-                    del self.mounted[device]
-                else:
-                    print_debug ( "remove_usb() devive=%s not in self.mounted dictionary" )
+                #if device in self.mounted:
+                #    del self.mounted[device]
+                #else:
+                #    print_debug ( "remove_usb() devive=%s not in self.mounted dictionary" )
         
 
     def update_usb(self, *args):
@@ -696,10 +754,10 @@ class TcosDevicesNG:
             devid=data['DEVPATH'].split('/')[2]
         
         if action ==  "umount":
-            self.show_notification (  _("USB device %s umounted. You can extract it." %(device))  )
+            self.show_notification (  _("USB device %s umounted. You can extract it.") %(devid)  )
             
         if action ==  "mount":
-            self.show_notification (  _("USB device %s mounted. Ready for use." %(device))  )
+            self.show_notification (  _("USB device %s mounted. Ready for use.") %(devid)  )
         
         usb_status=self.xmlrpc.GetDevicesInfo(device, mode="--getstatus").replace('\n','')
         if usb_status == "0":
@@ -809,10 +867,28 @@ class TcosDevicesNG:
             if verbose == 1:
                 print_debug ( "get_result(%s)=None" %(cmd) )
             return []
+
+    def umount_all(self):
+        mounted=self.exe_cmd("grep ^ltspfs /proc/mounts |grep user_id=%s | awk '{print $2}'" %os.getuid())
+        if type(mounted) == type(""):
+            print_debug( "umount_all() umounting %s..." %mounted )
+            self.exe_cmd("fusermount -u %s" %mounted)
+            # delete dir
+            os.rmdir(mounted)
+        else:
+            for mount in mounted:
+                print_debug( "umount_all() umounting %s..." %mount )
+                self.exe_cmd("fusermount -u %s" %mount)
+                # delete dir
+                os.rmdir(mount)
+            
+            
+
   
     def exit(self):
         print_debug ( "FIXME do some thing before quiting..." )
         # say udev_daemon loop to quit
+        self.umount_all()
         self.quitting=True
         self.mainloop.quit()
     
@@ -839,6 +915,7 @@ if __name__ == "__main__":
     while True:
         try:
             if app.quitting: break
+            if app.desktop == "": app.desktop=app.get_desktop()
             app.udev_daemon()
             time.sleep(3)
         except KeyboardInterrupt:

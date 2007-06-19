@@ -1,3 +1,18 @@
+tcosmonitor (0.1.16) unstable; urgency=low
+
+  * xmlrpc/sh/devicesctl.sh:
+    - Fix typo in include header
+  * images/*cdrom*
+    - new image based on gnome theme
+  * tcos-devices-ng.py:
+    - Fix translation strings (vars go outside _('%s')%var )
+    - Add umount_all function called from exit
+    - Fix USB device remount
+    - Allow to specify mounts points with a new conf file ~/.tcos-devices-ng.conf
+  * Add new man page: man/tcos-devices-ng.1
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 19 Jun 2007 18:34:18 +0200
+
 tcosmonitor (0.1.15.5) unstable; urgency=low
 
   * xmlrpc/sh/devicesctl.sh:

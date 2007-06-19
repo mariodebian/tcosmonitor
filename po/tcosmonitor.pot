@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-18 18:47+0200\n"
+"POT-Creation-Date: 2007-06-19 15:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -563,7 +563,7 @@ msgstr ""
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr ""
 
-#: tcos-volume-manager.py:149 tcos-devices.py:201 tcos-devices-ng.py:181
+#: tcos-volume-manager.py:149 tcos-devices.py:201 tcos-devices-ng.py:207
 #, python-format
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr ""
@@ -1108,23 +1108,23 @@ msgstr ""
 msgid "Your user isn't in fuse group, ask your system administrator."
 msgstr ""
 
-#: tcos-devices.py:252 tcos-devices-ng.py:477
+#: tcos-devices.py:252 tcos-devices-ng.py:503
 msgid "usbdisk"
 msgstr ""
 
-#: tcos-devices.py:415 tcos-devices-ng.py:264
+#: tcos-devices.py:415 tcos-devices-ng.py:290
 msgid "Floppy mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:418 tcos-devices-ng.py:266
+#: tcos-devices.py:418 tcos-devices-ng.py:292
 msgid "Floppy umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:421 tcos-devices-ng.py:305
+#: tcos-devices.py:421 tcos-devices-ng.py:331
 msgid "Cdrom mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:424 tcos-devices-ng.py:308
+#: tcos-devices.py:424 tcos-devices-ng.py:334
 msgid "Cdrom umounted. You can extract it."
 msgstr ""
 
@@ -1136,7 +1136,7 @@ msgstr ""
 msgid "Flash device umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:454 tcos-devices-ng.py:591
+#: tcos-devices.py:454 tcos-devices-ng.py:632
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1149,7 +1149,7 @@ msgstr ""
 msgid "Can't mount device %s"
 msgstr ""
 
-#: tcos-devices.py:498 tcos-devices-ng.py:594
+#: tcos-devices.py:498 tcos-devices-ng.py:635
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1176,14 +1176,14 @@ msgid ""
 "Click on Desktop icon to secure umount."
 msgstr ""
 
-#: tcos-devices.py:607 tcos-devices-ng.py:440
+#: tcos-devices.py:607 tcos-devices-ng.py:466
 #, python-format
 msgid ""
 "Umounting device %s.\n"
 "Please wait..."
 msgstr ""
 
-#: tcos-devices.py:629 tcos-devices-ng.py:155
+#: tcos-devices.py:629 tcos-devices-ng.py:179
 msgid "Tcos device daemon"
 msgstr ""
 
@@ -1202,16 +1202,16 @@ msgid "No support for more than one cdrom, first detected will be used"
 msgstr ""
 
 #: tcos-devices.py:766 tcos-devices.py:771 tcos-devices.py:780
-#: tcos-devices.py:782 tcos-devices-ng.py:250 tcos-devices-ng.py:494
-#: tcos-devices-ng.py:500 tcos-devices-ng.py:505
+#: tcos-devices.py:782 tcos-devices-ng.py:276 tcos-devices-ng.py:523
+#: tcos-devices-ng.py:529 tcos-devices-ng.py:534
 msgid "Floppy"
 msgstr ""
 
-#: tcos-devices.py:769 tcos-devices-ng.py:498
+#: tcos-devices.py:769 tcos-devices-ng.py:527
 msgid "Can't mount floppy"
 msgstr ""
 
-#: tcos-devices.py:785 tcos-devices-ng.py:508
+#: tcos-devices.py:785 tcos-devices-ng.py:537
 msgid "Can't umount floppy"
 msgstr ""
 
@@ -1220,11 +1220,11 @@ msgstr ""
 msgid "Cdrom"
 msgstr ""
 
-#: tcos-devices.py:797 tcos-devices-ng.py:523
+#: tcos-devices.py:797 tcos-devices-ng.py:558
 msgid "Can't mount cdrom"
 msgstr ""
 
-#: tcos-devices.py:815 tcos-devices-ng.py:538
+#: tcos-devices.py:815 tcos-devices-ng.py:573
 msgid "Can't umount cdrom"
 msgstr ""
 
@@ -1233,53 +1233,53 @@ msgstr ""
 msgid "Umounting %s, please wait..."
 msgstr ""
 
-#: tcos-devices-ng.py:199
+#: tcos-devices-ng.py:225
 #, python-format
 msgid "Cdrom device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:202
+#: tcos-devices-ng.py:228
 msgid "Mount Cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:203
+#: tcos-devices-ng.py:229
 msgid "Umount Cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:223
+#: tcos-devices-ng.py:249
 #, python-format
 msgid "Disk partition %s"
 msgstr ""
 
-#: tcos-devices-ng.py:226
+#: tcos-devices-ng.py:252
 msgid "Mount disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:227
+#: tcos-devices-ng.py:253
 msgid "Umount disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:238
+#: tcos-devices-ng.py:264
 msgid "No floppy detected"
 msgstr ""
 
-#: tcos-devices-ng.py:253 tcos-devices.glade:194
+#: tcos-devices-ng.py:279 tcos-devices.glade:194
 msgid "Mount Floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:254 tcos-devices.glade:272
+#: tcos-devices-ng.py:280 tcos-devices.glade:272
 msgid "Umount Floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:282
+#: tcos-devices-ng.py:308
 msgid "Hard disk partition mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices-ng.py:285
+#: tcos-devices-ng.py:311
 msgid "Hard disk partition umounted."
 msgstr ""
 
-#: tcos-devices-ng.py:425
+#: tcos-devices-ng.py:451
 #, python-format
 msgid ""
 "Mounting device %(device)s in \n"
@@ -1287,50 +1287,50 @@ msgid ""
 "Please wait..."
 msgstr ""
 
-#: tcos-devices-ng.py:517 tcos-devices-ng.py:525 tcos-devices-ng.py:535
+#: tcos-devices-ng.py:550 tcos-devices-ng.py:560 tcos-devices-ng.py:570
 #, python-format
 msgid "Cdrom_%s"
 msgstr ""
 
-#: tcos-devices-ng.py:550 tcos-devices-ng.py:558 tcos-devices-ng.py:568
+#: tcos-devices-ng.py:589 tcos-devices-ng.py:599 tcos-devices-ng.py:609
 #, python-format
 msgid "Disk_%s"
 msgstr ""
 
-#: tcos-devices-ng.py:556
+#: tcos-devices-ng.py:597
 msgid "Can't mount hard disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:571
+#: tcos-devices-ng.py:612
 msgid "Can't umount hard disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:616
+#: tcos-devices-ng.py:657
 #, python-format
 msgid "USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:619
+#: tcos-devices-ng.py:660
 #, python-format
 msgid "Mount USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:620
+#: tcos-devices-ng.py:661
 #, python-format
 msgid "Umount USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:634 tcos-devices-ng.py:675
+#: tcos-devices-ng.py:675 tcos-devices-ng.py:716
 #, python-format
 msgid "Error, can't mount device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:699
+#: tcos-devices-ng.py:740
 #, python-format
 msgid "USB device %s umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices-ng.py:702
+#: tcos-devices-ng.py:743
 #, python-format
 msgid "USB device %s mounted. Ready for use."
 msgstr ""

@@ -1,0 +1,54 @@
+.TH tcos-devices-ng 1 "Jun 19, 2007" "tcos-devices-ng man page"
+
+.SH NAME
+tcos-devices-ng \- Python GTK2 systray app that allow to access thin client filesystems and devices easyly.
+
+.SH DESCRIPTION
+
+.PP
+\fBtcos-devices-ng\fP is a python systray app exec in client session startup and allows to:
+ * Mount / umount floppy cdrom
+ * Detect USB devices and mount automatically (udev events)
+ * Mount / umount hard disk partitions (of the thin client)
+
+tcos-devices-ng use xauth with tcosxmlrpc (MIT-MAGIC-COOKIE)
+
+.SH OPTIONS
+.B [no options]
+ With no options will launch in normal mode.
+
+.B --host=xx.xx.xx.xx
+ Overwrite DISPLAY with this var (doesn't work unless thin client Xorg is started with -ac)
+
+.B --debug
+ Show verbose output when running
+
+.B --help
+ Some usage help about tcos-devices-ng
+
+.SH OPTIONAL CONFIGURATION
+
+You can create a conf file in user home (~/.tcos-devices-ng.conf) with this content:
+
+   hdc=myCdrom
+   hdd=cdWriter
+   hda1=winData
+   hda2=debianData
+
+When mounting a device will search in this file an if device exists 
+use value as mount point
+
+.B Please only use numbers and letters in mount point (not spaces).
+
+ ex: for hda1 /home/USERNAME/Desktop/winData
+
+.SH BUGS
+Contact Mario Izquierdo <mariodebian@gmail.com>
+
+Homepage: http://www.tcosproject.org
+
+.SH SEE ALSO
+tcos-devices-ng(1)
+
+.SH AUTHOR
+Mario Izquierdo (mariodebian) <mariodebian@gmail.com>

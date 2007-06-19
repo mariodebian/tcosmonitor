@@ -1,7 +1,7 @@
 #!/bin/sh
 # Devices remote control
 
-. /conf/tcos-run-functions.sh
+. /conf/tcos-run-functions
 
 tmp_file=/tmp/devicesctl
 

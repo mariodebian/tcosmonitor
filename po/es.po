@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-18 18:47+0200\n"
+"POT-Creation-Date: 2007-06-19 15:06+0200\n"
 "PO-Revision-Date: 2007-06-18 18:48+0200\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:337
 #: tcos-devices.py:873
@@ -600,7 +600,7 @@ msgstr ""
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr "ERROR: Parece que tcosxmlrpc no se está ejecutando en %s"
 
-#: tcos-volume-manager.py:149 tcos-devices.py:201 tcos-devices-ng.py:181
+#: tcos-volume-manager.py:149 tcos-devices.py:201 tcos-devices-ng.py:207
 #, python-format
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr "Error conectando con tcosxmlrpc en %s"
@@ -1161,23 +1161,23 @@ msgstr "Acciones para todos los equipos"
 msgid "Your user isn't in fuse group, ask your system administrator."
 msgstr "Su usuario no pertenece al grupo fuse, pregunte a su administrador."
 
-#: tcos-devices.py:252 tcos-devices-ng.py:477
+#: tcos-devices.py:252 tcos-devices-ng.py:503
 msgid "usbdisk"
 msgstr "disco-usb"
 
-#: tcos-devices.py:415 tcos-devices-ng.py:264
+#: tcos-devices.py:415 tcos-devices-ng.py:290
 msgid "Floppy mounted. Ready for use."
 msgstr "Disquete montado. Listo para usar."
 
-#: tcos-devices.py:418 tcos-devices-ng.py:266
+#: tcos-devices.py:418 tcos-devices-ng.py:292
 msgid "Floppy umounted. You can extract it."
 msgstr "Disquete desmontado. Ahora puede extraerlo."
 
-#: tcos-devices.py:421 tcos-devices-ng.py:305
+#: tcos-devices.py:421 tcos-devices-ng.py:331
 msgid "Cdrom mounted. Ready for use."
 msgstr "Cdrom montado. Listo para usar."
 
-#: tcos-devices.py:424 tcos-devices-ng.py:308
+#: tcos-devices.py:424 tcos-devices-ng.py:334
 msgid "Cdrom umounted. You can extract it."
 msgstr "Cdrom desmontado. Ahora puede extraerlo."
 
@@ -1189,7 +1189,7 @@ msgstr "Dispositivo flash montado.Listo para usar."
 msgid "Flash device umounted. You can extract it."
 msgstr "Dispositivo flash desmontado. Ahora puede extraerlo."
 
-#: tcos-devices.py:454 tcos-devices-ng.py:591
+#: tcos-devices.py:454 tcos-devices-ng.py:632
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1205,7 +1205,7 @@ msgstr ""
 msgid "Can't mount device %s"
 msgstr "No se pudo montar el dispositivo %s"
 
-#: tcos-devices.py:498 tcos-devices-ng.py:594
+#: tcos-devices.py:498 tcos-devices-ng.py:635
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1239,7 +1239,7 @@ msgstr ""
 "Por favor, espere\n"
 "Pulse en el icono del escritorio para extracción segura."
 
-#: tcos-devices.py:607 tcos-devices-ng.py:440
+#: tcos-devices.py:607 tcos-devices-ng.py:466
 #, python-format
 msgid ""
 "Umounting device %s.\n"
@@ -1248,7 +1248,7 @@ msgstr ""
 "Desmontando dispositivo %s.\n"
 "Por favor, espere..."
 
-#: tcos-devices.py:629 tcos-devices-ng.py:155
+#: tcos-devices.py:629 tcos-devices-ng.py:179
 msgid "Tcos device daemon"
 msgstr "Gestor de dispositivos TCOS"
 
@@ -1267,16 +1267,16 @@ msgid "No support for more than one cdrom, first detected will be used"
 msgstr "No hay soporte para más de un cdrom, se usará el primero."
 
 #: tcos-devices.py:766 tcos-devices.py:771 tcos-devices.py:780
-#: tcos-devices.py:782 tcos-devices-ng.py:250 tcos-devices-ng.py:494
-#: tcos-devices-ng.py:500 tcos-devices-ng.py:505
+#: tcos-devices.py:782 tcos-devices-ng.py:276 tcos-devices-ng.py:523
+#: tcos-devices-ng.py:529 tcos-devices-ng.py:534
 msgid "Floppy"
 msgstr "Disquete"
 
-#: tcos-devices.py:769 tcos-devices-ng.py:498
+#: tcos-devices.py:769 tcos-devices-ng.py:527
 msgid "Can't mount floppy"
 msgstr "No se pudo montar el disquete"
 
-#: tcos-devices.py:785 tcos-devices-ng.py:508
+#: tcos-devices.py:785 tcos-devices-ng.py:537
 msgid "Can't umount floppy"
 msgstr "No se pudo desmontar el disquete"
 
@@ -1285,11 +1285,11 @@ msgstr "No se pudo desmontar el disquete"
 msgid "Cdrom"
 msgstr "Cdrom"
 
-#: tcos-devices.py:797 tcos-devices-ng.py:523
+#: tcos-devices.py:797 tcos-devices-ng.py:558
 msgid "Can't mount cdrom"
 msgstr "No se pudo montar el cdrom"
 
-#: tcos-devices.py:815 tcos-devices-ng.py:538
+#: tcos-devices.py:815 tcos-devices-ng.py:573
 msgid "Can't umount cdrom"
 msgstr "No se pudo desmontar el cdrom"
 
@@ -1298,53 +1298,53 @@ msgstr "No se pudo desmontar el cdrom"
 msgid "Umounting %s, please wait..."
 msgstr "Desmontando %s, por favor, espere..."
 
-#: tcos-devices-ng.py:199
+#: tcos-devices-ng.py:225
 #, python-format
 msgid "Cdrom device %s"
 msgstr "Dispositivo cdrom %s"
 
-#: tcos-devices-ng.py:202
+#: tcos-devices-ng.py:228
 msgid "Mount Cdrom"
 msgstr "Montar cdrom"
 
-#: tcos-devices-ng.py:203
+#: tcos-devices-ng.py:229
 msgid "Umount Cdrom"
 msgstr "Desmontar cdrom"
 
-#: tcos-devices-ng.py:223
+#: tcos-devices-ng.py:249
 #, python-format
 msgid "Disk partition %s"
 msgstr "Partición del disco %s"
 
-#: tcos-devices-ng.py:226
+#: tcos-devices-ng.py:252
 msgid "Mount disk partition"
 msgstr "Montar partición"
 
-#: tcos-devices-ng.py:227
+#: tcos-devices-ng.py:253
 msgid "Umount disk partition"
 msgstr "Desmontar partición"
 
-#: tcos-devices-ng.py:238
+#: tcos-devices-ng.py:264
 msgid "No floppy detected"
 msgstr "No se ha detectado disquete"
 
-#: tcos-devices-ng.py:253 tcos-devices.glade:194
+#: tcos-devices-ng.py:279 tcos-devices.glade:194
 msgid "Mount Floppy"
 msgstr "Montar disquete"
 
-#: tcos-devices-ng.py:254 tcos-devices.glade:272
+#: tcos-devices-ng.py:280 tcos-devices.glade:272
 msgid "Umount Floppy"
 msgstr "Desmontar disquete"
 
-#: tcos-devices-ng.py:282
+#: tcos-devices-ng.py:308
 msgid "Hard disk partition mounted. Ready for use."
 msgstr "Partición montada. Lista para usar."
 
-#: tcos-devices-ng.py:285
+#: tcos-devices-ng.py:311
 msgid "Hard disk partition umounted."
 msgstr "Partición desmontada."
 
-#: tcos-devices-ng.py:425
+#: tcos-devices-ng.py:451
 #, python-format
 msgid ""
 "Mounting device %(device)s in \n"
@@ -1355,50 +1355,50 @@ msgstr ""
 "%(mnt_point)s\n"
 "Por favor, espere..."
 
-#: tcos-devices-ng.py:517 tcos-devices-ng.py:525 tcos-devices-ng.py:535
+#: tcos-devices-ng.py:550 tcos-devices-ng.py:560 tcos-devices-ng.py:570
 #, python-format
 msgid "Cdrom_%s"
 msgstr "Cdrom_%s"
 
-#: tcos-devices-ng.py:550 tcos-devices-ng.py:558 tcos-devices-ng.py:568
+#: tcos-devices-ng.py:589 tcos-devices-ng.py:599 tcos-devices-ng.py:609
 #, python-format
 msgid "Disk_%s"
 msgstr "Disco_%s"
 
-#: tcos-devices-ng.py:556
+#: tcos-devices-ng.py:597
 msgid "Can't mount hard disk partition"
 msgstr "No se pudo montar la partición"
 
-#: tcos-devices-ng.py:571
+#: tcos-devices-ng.py:612
 msgid "Can't umount hard disk partition"
 msgstr "No se pudo desmontar la partición"
 
-#: tcos-devices-ng.py:616
+#: tcos-devices-ng.py:657
 #, python-format
 msgid "USB device %s"
 msgstr "Dispositivo USB %s"
 
-#: tcos-devices-ng.py:619
+#: tcos-devices-ng.py:660
 #, python-format
 msgid "Mount USB device %s"
 msgstr "Montar dispositivo USB %s"
 
-#: tcos-devices-ng.py:620
+#: tcos-devices-ng.py:661
 #, python-format
 msgid "Umount USB device %s"
 msgstr "Desmontar dispositivo USB %s"
 
-#: tcos-devices-ng.py:634 tcos-devices-ng.py:675
+#: tcos-devices-ng.py:675 tcos-devices-ng.py:716
 #, python-format
 msgid "Error, can't mount device %s"
 msgstr "Error, no se pudo montar el dispositivo %s"
 
-#: tcos-devices-ng.py:699
+#: tcos-devices-ng.py:740
 #, python-format
 msgid "USB device %s umounted. You can extract it."
 msgstr "Dispositivo USB %s desmontado. Ahora puede extraerlo."
 
-#: tcos-devices-ng.py:702
+#: tcos-devices-ng.py:743
 #, python-format
 msgid "USB device %s mounted. Ready for use."
 msgstr "Dispositivo USB %s montado.Listo para usar."
