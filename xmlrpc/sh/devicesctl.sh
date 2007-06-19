@@ -1,6 +1,8 @@
 #!/bin/sh
 # Devices remote control
 
+. /conf/tcos-run-functions.sh
+
 tmp_file=/tmp/devicesctl
 
 output=""
@@ -14,34 +16,7 @@ read_line() {
 }
 
 get_fs_type() {
-    type=$($FDISK -l /dev/$1 |grep ^/dev | awk '{if ($2 == "*") {print $6};}{if ($2 != "*") {print $5};}')
-    case "$type" in
-      83)
-       output="ext3"
-       ;;
-      82)
-       output="swap"
-       ;;
-      b)
-       output="vfat"
-       ;;
-      c)
-       output="vfat"
-       ;;
-      e)
-       output="vfat"
-       ;;
-      f)
-       output="extended"
-       ;;
-      7)
-       output="ntfs"
-       ;;
-
-      *)
-       output="unknow"
-       ;;
-  esac
+  output=$(get_filesystem $1 | awk '{print $2}')
   echo $output
 }
 
@@ -174,7 +149,7 @@ if [ "$1" = "--exists" ]; then
 fi
 
 if [ "$1" = "--gethdd" ]; then
-  hdd=$(grep -e ext3 -e vfat /etc/fstab | awk '{print $1}' | sed 's/\/dev\///g')
+  hdd=$(grep ^/dev /etc/fstab | grep -v -e swap -e iso9660 | awk '{print $1}' | sed 's/\/dev\///g')
   for item in $hdd; do output="$output$item|"; done
   need_parse=0
 fi
@@ -186,9 +161,17 @@ usage() {
   echo "       $0  --showlocaldisks        ( return all devices )"
   echo "       $0  --getsize  DEVICE       ( return size of DEVICE )"
   echo "       $0  --getparts DEVICE       ( return partittions of DEVICE )"
+  echo "       $0  --gettype DEVICE        ( return DEVICE type )"
+  echo "       $0  --getudev               ( return udev block events log )"
   echo "       $0  --getdmesg              ( return last lines of dmesg )"
+  echo "       $0  --mount  DEVICE         ( mount DEVICE )"
+  echo "       $0  --umount  DEVICE        ( umount DEVICE )"
+  echo "       $0  --getstatus DEVICE      ( return 1 if mounted or 0 if not mounted )"
+  echo "       $0  --eject                 ( eject cdrom device )"
   echo "       $0  --getcdrom              ( return all cdrom devices )"
   echo "       $0  --getxdrivers           ( return all xorg drivers found )"
+  echo "       $0  --exists  ARG           ( return 1 if exists 0 if not )"
+  echo "       $0  --gethdd                ( return all hard disk partitions )"
 }
 
 
