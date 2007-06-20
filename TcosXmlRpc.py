@@ -452,14 +452,18 @@ class TcosXmlRpc:
             xauth_cookie="foo"
         if xauth_cookie == None:
             return "GetDevicesInfo error: xauth cookie don't match"
-        result=self.tc.tcos.devices(mode, " \"%s\" " %(device), \
-                                   xauth_cookie, \
-                                   remote_hostname ).replace('\n', '')
-        if "error" in result:
-            print_debug ( "GetDevicesInfo(): ERROR, result contains error string!!!\n%s" %(result))
-            return result
-        else:
-            return result
+        # don't fail if timeout
+        try:
+            result=self.tc.tcos.devices(mode, " \"%s\" " %(device), \
+                                       xauth_cookie, \
+                                       remote_hostname ).replace('\n', '')
+            if "error" in result:
+                print_debug ( "GetDevicesInfo(): ERROR, result contains error string!!!\n%s" %(result))
+                return result
+            else:
+                return result
+        except:
+            return ""
 
     def lockscreen(self):
         if self.isPortListening(self.ip, shared.xmlremote_port):

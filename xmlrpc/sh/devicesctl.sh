@@ -51,7 +51,7 @@ fi
 
 if [ "$1" = "--gettype" ]; then
   if [ "$2" != "" ]; then
-    output=$(get_fs_type $1)
+    output=$(get_fs_type $2)
   else
     output="error: need a device!!"
   fi
@@ -76,9 +76,15 @@ if [ "$1" = "--mount" ]; then
       fs=""
       if [ "$3" != "" ]; then
          fs=" -t $3 "
+      else
+         fs=" -t $(get_fs_type $2) "
       fi
       mkdir -p /mnt/$mnt
-      mount $2 $fs /mnt/$mnt 2>/dev/null
+      if [ "$(get_fs_type $2)" = "ntfs-3g" ]; then
+        /sbin/mount.ntfs-3g $2 /mnt/$mnt
+      else
+        mount $fs $2 /mnt/$mnt 2>/dev/null
+      fi
       if [ $? = 0 ]; then
         output="/mnt/$mnt"
       else

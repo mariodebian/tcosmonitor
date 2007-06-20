@@ -1,3 +1,14 @@
+tcosmonitor (0.1.16.1) unstable; urgency=low
+
+  * xmlrpc/sh/devicesctl.sh:
+    - Add support to mount NTFS with ntfs-3g driver
+  * tcos-devices-ng.py:
+    - Mount ntfs-3g in a thread (fuse mounts exec a process)
+  * TcosXmlRpc.py:
+    - Don't fail in GetDevicesInfo (use try--except)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 20 Jun 2007 15:14:16 +0200
+
 tcosmonitor (0.1.16) unstable; urgency=low
 
   * xmlrpc/sh/devicesctl.sh:

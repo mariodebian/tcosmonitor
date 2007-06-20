@@ -433,6 +433,17 @@ class TcosDevicesNG:
         import socket
         socket.setdefaulttimeout(15)
         
+        type=self.xmlrpc.GetDevicesInfo(device=device, mode="--gettype").replace('\n','')
+        if type == "ntfs-3g" and mode == "--mount":
+            print_debug ( "mounter_remote() Ummm mounting a NTFS-3G, creating a thread" )
+            # create a thread
+            try:
+                ntfs_3g=threading.Thread(target=self.xmlrpc.GetDevicesInfo, args=(device,mode) )
+                ntfs_3g.start()
+                return True
+            except:
+                return True
+        
         mount=self.xmlrpc.GetDevicesInfo(device=device, mode=mode)
         if mount != mnt_point:
             print_debug ( "mount_remote() mount failed, retry with filesystem")
