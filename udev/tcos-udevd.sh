@@ -16,6 +16,15 @@ get_env_var() {
    action=$(get_env_var "ACTION")
     label=$(get_env_var "ID_FS_LABEL")
   fs_type=$(get_env_var "ID_FS_TYPE")
+
+if [ "$fs_type" = "ID_FS_TYPE=" ]; then
+  . /conf/tcos-run-functions
+  fs=$(get_filesystem ${device#DEVNAME=}| awk '{print $2}')
+  if [ "$fs" != "auto" ]; then
+     fs_type="ID_FS_TYPE=$fs"
+  fi
+fi
+
    vendor=$(get_env_var "ID_VENDOR")
     model=$(get_env_var "ID_MODEL")
   devpath=$(get_env_var "DEVPATH")

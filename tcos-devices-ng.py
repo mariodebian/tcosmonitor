@@ -849,14 +849,21 @@ class TcosDevicesNG:
 
     def launch_desktop_filemanager(self, path=""):
         if self.desktop == "gnome":
-            os.system("nautilus %s" %(path) )
+            cmd="nautilus %s" %(path)
         elif self.desktop == "kde":
-            os.system("konqueror %s" %(path) )
+            cmd="konqueror %s" %(path)
         elif self.desktop == "xfce4":
-            os.system("Thunar %s" %(path) )
+            cmd="Thunar %s" %(path)
         else:
             print_debug (  "launch_desktop_filemanager() unknow desktop, not launching filemanager" )
-            
+            return
+        # exe filemanager in a new thread to not freeze status icon
+        filemanager=threading.Thread(target=self.exec_filemanager, args=[cmd] )
+        filemanager.start()
+        return
+
+    def exec_filemanager(self, *args):
+        os.system(args[0])         
 
     
     def exe_cmd(self, cmd, verbose=1):
