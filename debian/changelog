@@ -1,3 +1,10 @@
+tcosmonitor (0.1.16.2) unstable; urgency=low
+
+  * udev/tcos-udevd.sh:
+    - Force udev to save ID_FS_TYPE in disk, not only partitions
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 20 Jun 2007 21:18:12 +0200
+
 tcosmonitor (0.1.16.1) unstable; urgency=low
 
   * xmlrpc/sh/devicesctl.sh:
