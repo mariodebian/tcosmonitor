@@ -1,3 +1,10 @@
+tcosmonitor (0.1.17.2) unstable; urgency=low
+
+  * xmlrpc/Makefile xmlrpc/var/etc/abyss.conf:
+    - Set correct paths for tcos-standalone and tcos thin client
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 27 Jun 2007 23:54:22 +0200
+
 tcosmonitor (0.1.17.1) unstable; urgency=low
 
   * New package tcos-standalone (Use tcosmonitor with not standalone hosts)

@@ -69,8 +69,12 @@ install:
 	install -m 644 var/etc/httpd2.conf $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
 	install -m 644 var/etc/mime.types  $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
 
+
 	install -m 644 var/etc/abyss.conf  $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
-	sed -i 's/__TCOS_PATH__//g' $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/abyss.conf
+	sed -i 's|__TCOS_ROOT__|/|g' $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/abyss.conf
+	sed -i 's|__TCOS_WWW__|/var/www|g' $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/abyss.conf
+	sed -i 's|__TCOS_LOG__|/var/log|g' $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/abyss.conf
+	sed -i 's|__TCOS_ETC__|/etc|g' $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/abyss.conf
 
 	# standalone package
 	install -d $(DESTDIR)/$(TCOS_STANDALONE_DIR)
@@ -78,9 +82,12 @@ install:
 	install -d $(DESTDIR)/$(TCOS_STANDALONE_DIR)/www
 	install -d $(DESTDIR)/$(TCOS_STANDALONE_DIR)/log
 
-
 	install -m 644 var/etc/abyss.conf       $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf
-	sed -i 's|__TCOS_PATH__|$(TCOS_STANDALONE_DIR)|g' $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf
+	sed -i 's|__TCOS_ROOT__|$(TCOS_STANDALONE_DIR)|g' $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf
+	sed -i 's|__TCOS_WWW__|$(TCOS_STANDALONE_DIR)/www|g' $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf
+	sed -i 's|__TCOS_LOG__|$(TCOS_STANDALONE_DIR)/log|g' $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf
+	sed -i 's|__TCOS_ETC__|$(TCOS_STANDALONE_DIR)/etc|g' $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf
+
 	install -m 644 var/etc/mime.types       $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/
 
 	install -m 644 var/etc/httpd2.conf $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/httpd.conf
