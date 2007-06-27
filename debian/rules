@@ -28,7 +28,7 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	-$(MAKE) clean
+	$(MAKE) clean
 
 	dh_clean 
 
@@ -63,6 +63,7 @@ binary-arch: build install
 	dh_installexamples
 	dh_install --sourcedir=`pwd`/debian/tmp --list-missing
 	dh_installman
+	dh_installinit
 	dh_link
 	dh_strip
 	dh_compress

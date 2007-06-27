@@ -20,7 +20,7 @@
 
 
 
-#define SOUND_WRAPPER "/sbin/soundctl.sh "
+#define SOUND_WRAPPER TCOS_PATH"/soundctl.sh "
 
 #define SOUND_GET_CONTROLS    SOUND_WRAPPER " --showcontrols"
 #define SOUND_GET_LEVEL       SOUND_WRAPPER " --getlevel "

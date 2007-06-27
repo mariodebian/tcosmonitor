@@ -24,7 +24,12 @@
 IFCONFIG="busybox ifconfig"
 IFDEV="eth0"
 KVER=$(uname -r)
-
+TCOS_CONF=/conf/tcos.conf
+STANDALONE=0
+if [ ! -e ${TCOS_CONF} ]; then
+ TCOS_CONF=/var/lib/tcos/standalone/etc/tcos.conf
+ STANDALONE=1
+fi
 
 usage() {
   echo "getinfo.sh help"
@@ -53,8 +58,12 @@ awk '/^MODULES/ { gsub(")", "", $1) ; print $1}' $0
 }
 
 get_type() {
-if [ -f /conf/tcos.conf ]; then
- echo "tcos"
+if [ -f ${TCOS_CONF} ]; then
+ if [ "${STANDALONE}" = "0" ]; then
+   echo "tcos"
+ else
+   echo "standalone"
+ fi
 elif [ -f /var/run/pxes/env ]; then
   echo "pxes"
 elif [ -f /etc/lts.conf ]; then
@@ -189,11 +198,11 @@ LANG=C date
 ;;
 
 TCOS_GENERATION_DATE)
-grep ^TCOS_DATE /conf/tcos.conf| awk -F "=" '{print $2}' | sed s/'"'//g
+grep ^TCOS_DATE ${TCOS_CONF}| awk -F "=" '{print $2}' | sed s/'"'//g
 ;;
 
 TCOS_VERSION)
-grep ^TCOS_VERSION /conf/tcos.conf| awk -F "=" '{print $2}' |sed s/'"'//g
+grep ^TCOS_VERSION ${TCOS_CONF}| awk -F "=" '{print $2}' |sed s/'"'//g
 ;;
 
 TCOS_UPTIME)

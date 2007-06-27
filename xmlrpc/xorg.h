@@ -18,7 +18,7 @@
 # USA.
 */
 
-#define XORGCFG "/sbin/configurexorg"
+#define XORGCFG TCOS_PATH"/configurexorg"
 #define XORG_CONF "/etc/X11/xorg.conf"
 
 #define XORG_NEW_CONF   XORGCFG" --newsettings --outputfile="XORG_CONF

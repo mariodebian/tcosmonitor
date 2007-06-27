@@ -21,6 +21,9 @@ server = xmlrpclib.Server(server_url);
 result = server.tcos.version("")
 print "PYTHON::version is=%s" %(result)
 
+result = server.tcos.info("get_client")
+print "PYTHON::get_client is=%s" %(result)
+
 print server.tcos.screenshot("10", "root", "root")
 
 sys.exit(0)

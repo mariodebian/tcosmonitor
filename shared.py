@@ -202,8 +202,11 @@ allhost_menuitems=[
  [ _("Exec same app in all connected users") , "menu_exec.png" ] ,#action=6
  [ _("Send a text message to all connected users") , "menu_msg.png" ], #action=7
  [ _("Enter demo mode, all connected users see my screen") , "menu_remote.png" ], #action=8
- [ _("Exit demo mode") , "menu_remote.png" ], #action=9
- [ _("Capture All clients screens") , "menu_screenshot.png" ] #action=10
+ [ _("Exit demo mode") , "menu_remote.png" ],                     #action=9
+ [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=10
+ [ _("Video broadcast") , "menu_remote.png" ],                    #action=11
+ [ _("Stop Video broadcast") , "menu_remote.png" ],               #action=12
+ [ _("Send files") , "menu_remote.png" ]                          #action=13
  ]
 
 

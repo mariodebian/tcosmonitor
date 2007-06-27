@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+echo "TCOS_DATE=$(LC_ALL=C LC_MESSSAGES=C date)" > /var/lib/tcos/standalone/etc/tcos.conf
+echo "TCOS_VERSION=$2" >> /var/lib/tcos/standalone/etc/tcos.conf
+
+
+#DEBHELPER#

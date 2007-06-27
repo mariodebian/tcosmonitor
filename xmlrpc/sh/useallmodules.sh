@@ -21,6 +21,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA.
 
+if [ ! -e /conf/tcos.conf ]; then
+   echo -n "error running in standalone"
+   exit 1
+fi
+
 . /scripts/functions
 
 . /conf/tcos.conf

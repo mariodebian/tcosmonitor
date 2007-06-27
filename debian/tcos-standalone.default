@@ -1,0 +1,5 @@
+#
+#  put 1 to start tcosxmlrpc-standalone
+#
+
+TCOS_STANDALONE_START=0

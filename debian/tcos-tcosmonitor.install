@@ -1,3 +1,5 @@
+usr/sbin/tcospasswd
+usr/sbin/update-tcospasswd
 usr/lib/tcos/tcos-udevd.sh
 usr/lib/tcos/tcosxmlrpc
 usr/lib/tcos/lockscreen
@@ -8,5 +10,9 @@ usr/lib/tcos/getinfo.sh
 usr/lib/tcos/useallmodules.sh
 usr/lib/tcos/devicesctl.sh
 usr/share/initramfs-tools-tcos/hooks-addons/tcosmonitor
-usr/share/tcosmonitor/xmlrpc/*
+usr/share/tcosmonitor/xmlrpc/httpd2.conf
+usr/share/tcosmonitor/xmlrpc/mime.types
+usr/share/tcosmonitor/xmlrpc/abyss.conf
+usr/share/tcosmonitor/xmlrpc/050_tcos_devices.rules
+usr/share/tcosmonitor/xmlrpc/locked.png
 

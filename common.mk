@@ -22,7 +22,7 @@ TCOS_DIR=$(shell awk -F "=" '/TCOS_DIR=/ {print $$2}' $(TCOS_CONFIG_FILE) )
 TFTP_DIR=$(shell awk -F "=" '/TFTP_DIR=/ {print $$2}' $(TCOS_CONFIG_FILE) )
 TCOS_CONF=$(shell awk -F "=" '/TCOS_CONF=/ {print $$2}' $(TCOS_CONFIG_FILE) )
 TCOS_BINS=$(shell awk -F "=" '/TCOS_BINS=/ {print $$2}' $(TCOS_CONFIG_FILE) )
-
+TCOS_STANDALONE_DIR=/var/lib/tcos/standalone
 
 
 TCOS_XMLRPC_DIR=$(PREFIX)/share/tcosmonitor/xmlrpc/
@@ -77,6 +77,7 @@ test:
 	@echo TCOS_DIR=$(TCOS_DIR)
 	@echo TCOS_BINS=$(TCOS_BINS)
 	@echo TCOS_XMLRPC_DIR=$(TCOS_XMLRPC_DIR)
+	@echo TCOS_STANDALONE_DIR=$(TCOS_STANDALONE_DIR)
 	@echo DBUS_CONF=$(DBUS_CONF)
 	@echo x11_CONF=$(X11_CONF)
 	@echo

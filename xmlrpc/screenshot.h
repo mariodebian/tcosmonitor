@@ -20,7 +20,7 @@
 
 /* xmlrpc methods to screenshot thin client display */
 
-#define SCROT_CMD "/sbin/screenshot.sh"
+#define SCROT_CMD TCOS_PATH"/screenshot.sh"
 
 #define SCROT_ERROR "error: screenshot command error"
 #define SCROT_OK "ok"

@@ -1,3 +1,19 @@
+tcosmonitor (0.1.17.1) unstable; urgency=low
+
+  * New package tcos-standalone (Use tcosmonitor with not standalone hosts)
+  * xmlrpc/*.h:
+    - Add TCOS_PATH define to tcosxmlrpc, to allow running external tools from other paths
+  * xmlrpc/sh/*:
+    - Ad conditions to exec or not some tools.
+  * TcosTrayIcon.py:
+    - Remove StatusIcon declaration (break at gtk < 2.10)
+  * Add support of standalone mode in TcoaActions.py
+  * TcosActions.py:
+    - patch to start/stop video broadcast (vidal_joshur at gva dot es)
+    - patch to send files with rsync (vidal_joshur at gva dot es)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 27 Jun 2007 20:10:18 +0200
+
 tcosmonitor (0.1.16.2) unstable; urgency=low
 
   * udev/tcos-udevd.sh:

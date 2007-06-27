@@ -70,7 +70,7 @@ elif [ "$_arq" = "PXES" ]; then
   fpass=$(echo /opt/pxes*)/stock/dist/etc/tcospasswd
 
 elif [ "$_arq" = "TCOS" ]; then
-  fpass=/etc/tcos/tcospasswd
+  fpass=/etc/tcospasswd
 else
   echo "Error: Arquitecture: ${_arq} not supported, please use LTSP, PXES, or TCOS"
   exit 1

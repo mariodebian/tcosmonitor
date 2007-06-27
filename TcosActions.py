@@ -363,6 +363,9 @@ class TcosActions:
         
             elif tcos_vars["get_client"] == "ltsp":
                 self.datatxt.insert_block( _("LTSP info") , image=shared.IMG_DIR + "ltsp_logo.png" )
+            
+            elif tcos_vars["get_client"] == "standalone":
+                self.datatxt.insert_block( _("Standalone info") , image=shared.IMG_DIR + "standalone.png" )
         
             else:
                 self.datatxt.insert_block( _("Unknow client info")  )
@@ -406,7 +409,7 @@ class TcosActions:
             tcos_vars["modules_loaded"]=self.main.xmlrpc.ReadInfo("modules_loaded")
             tcos_vars["modules_notfound"]=self.main.xmlrpc.ReadInfo("modules_notfound")
             
-            if tcos_vars["modules_notfound"] != "OK":
+            if tcos_vars["modules_notfound"] != "OK" and tcos_vars["get_client"] == "tcos":
                 
                 blabel=_("Force download and mount all modules")
                 self.main.action_button=gtk.Button( label=blabel )
@@ -470,7 +473,7 @@ class TcosActions:
         
         
         
-        if self.main.config.GetVar("processinfo") == 1:
+        if self.main.config.GetVar("processinfo") == 1 and tcos_vars["get_client"] != "standalone":
             info_percent+=percent_step
             self.update_progressbar( info_percent )
             
@@ -533,7 +536,7 @@ class TcosActions:
              ] )
             
             
-        if self.main.config.GetVar("xorginfo") == 1:
+        if self.main.config.GetVar("xorginfo") == 1 and tcos_vars["get_client"] != "standalone":
             info_percent+=percent_step
             self.update_progressbar( info_percent )
         
@@ -1179,6 +1182,130 @@ class TcosActions:
             self.main.worker=shared.Workers(self.main, None, None)
             self.main.worker.set_for_all_action(self.action_for_clients,\
                                                     allclients, "screenshot" )
+
+        if action == 11:
+            # action sent by vidal_joshur at gva dot es
+            # start video broadcast mode
+            # search for connected users
+            
+            connected_users=[]
+            for client in allclients:
+                if self.main.localdata.IsLogged(client):
+                   connected_users.append(self.main.localdata.GetUsername(client))            
+            
+            
+            dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
+                               None,
+                               gtk.FILE_CHOOSER_ACTION_OPEN,
+                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+            dialog.set_default_response(gtk.RESPONSE_OK)
+            self.folder = self._folder = os.environ['HOME']
+            dialog.set_current_folder(self.folder)
+            filter = gtk.FileFilter()
+            filter.set_name("All files")
+            filter.add_pattern("*")
+            dialog.add_filter(filter)
+
+            response = dialog.run()
+            if response == gtk.RESPONSE_OK:
+                
+                #self.main.exe_cmd("route add -net 239.255.255.0/24 gw 192.168.126.105 &")
+                self.main.exe_cmd( "vlc file://%s --sout '#standard{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename() ) 
+                self.main.exe_cmd("vlc udp://@239.255.255.0:1234 --no-x11-shm--no-xvideo-shm")  
+
+                
+                # exec this app on client
+                remote_cmd="vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm --fullscreen"
+                result = self.main.dbus_action.do_exec( connected_users ,remote_cmd )
+                if not result:
+                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+                self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
+            
+            dialog.destroy()
+                                                    
+        if action == 12:
+            # action sent by vidal_joshur at gva dot es
+            # stop video broadcast mode
+            # search for connected users
+            
+            connected_users=[]
+            for client in allclients:
+                if self.main.localdata.IsLogged(client):
+                    connected_users.append(self.main.localdata.GetUsername(client))            
+            result = self.main.dbus_action.do_killall( connected_users , "vlc" )
+   
+                
+            self.main.exe_cmd("killall vlc") 
+            self.main.write_into_statusbar( _("Video broadcast stoped.") )
+
+
+        if action == 13:
+            # action sent by vidal_joshur at gva dot es
+            # envio ficheros
+            # search for connected users
+            connected_users=[]
+            for client in allclients:
+                if self.main.localdata.IsLogged(client):
+                   connected_users.append(self.main.localdata.GetUsername(client))
+            
+            
+            
+            dialog = gtk.FileChooserDialog( _("Select file or files..."),
+                               None,
+                               gtk.FILE_CHOOSER_ACTION_OPEN,
+                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+            dialog.set_default_response(gtk.RESPONSE_OK)
+            #dialog.set_select_multiple(select_multiple)
+            dialog.set_select_multiple(True)
+            self.folder = self._folder = os.environ['HOME']
+            dialog.set_current_folder(self.folder)
+            filter = gtk.FileFilter()
+            filter.set_name("All files")
+            filter.add_pattern("*")
+            dialog.add_filter(filter)
+            
+            
+            response = dialog.run()
+            
+            if response == gtk.RESPONSE_OK:
+                
+                filenames = dialog.get_filenames()
+                # Crear carpeta profesor en desktop del cliente
+                remote_cmd="mkdir -p $HOME/Desktop/" + _("Teacher")
+                
+                result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+                
+                if not result:
+                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+                    self.main.write_into_statusbar( _("Creating destination folder.") )
+                else:
+                    rsync_filenames = ""
+                    basenames = ""
+                    for filename in filenames:
+                        rsync_filenames += "%s " %(filename)
+                        #Obtener solo los nombres de ficheros
+                        basenames+="%s\n" %( os.path.basename(filename) )
+                        
+                    # Mandar archivos
+                    remote_cmd = "rsync -avx %s $HOME/Desktop/%s" %(rsync_filenames , _("Teacher"))
+                   
+                    result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+                    
+                    if not result:
+                        shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                    else:
+                        # Mandar mensaje aviso a los clientes con los nombres de ficheros
+                        result = self.main.dbus_action.do_message(connected_users ,
+                             _("Teacher has sent some files to %s folder:\n\n%s") %( _("Teacher"),basenames ) )
+                        if not result:
+                            shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                        
+                    self.main.write_into_statusbar( _("Send files.") )
+            dialog.destroy()
+
+
         
         crono(start1, "menu_event[%d]=\"%s\"" %(action, shared.allhost_menuitems[action] ) )
 

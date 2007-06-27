@@ -21,7 +21,13 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA.
 
-_www=/var/www
+if [ -e /conf/tcos-run-functions ]; then
+  _www=/var/www
+else
+  _www=/var/lib/tcos/standalone/www
+fi
+
+
 _tmp=/tmp/screenshot
 _port=8081
 _thumb_size=65
@@ -41,21 +47,15 @@ scrot 'capture.png' -t $_thumb_size
 mkdir -p $_www
 
 
-# start httpd in init scripts !!!!
-#httpd_running=$(ps aux|grep httpd|grep -v grep | wc -l)
-#if [ $httpd_running -lt 1 ]; then
-#  starthttpd
-#fi
-
 mv *png $_www
 
 cd /
 rm -rf $_tmp
 
-cd /var/www
+cd $_www
 _files=$(ls *png)
 
-cat << EOF > /var/www/index.html
+cat << EOF > $_www/index.html
 <html>
 <head>
 <title>Screenshots</title>
@@ -65,12 +65,13 @@ cat << EOF > /var/www/index.html
 <br><br>
 EOF
 for _file in $_files; do
- #echo "<a href=\"$_file\">  <img src=\"$_file\">  </a><br>" >> /var/www/index.html
- echo "<a href=\"$_file\">$_file</a><br>" >> /var/www/index.html
+ #echo "<a href=\"$_file\">  <img src=\"$_file\">  </a><br>" >> $_www/index.html
+ echo "<a href=\"$_file\">$_file</a><br>" >> $_www/index.html
 done
 
-cat << EOF >> /var/www/index.html
+cat << EOF >> $_www/index.html
 </body>
 </html>
 EOF
 
+exit 0

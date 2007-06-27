@@ -1,7 +1,13 @@
 #!/bin/sh
 # Devices remote control
 
-. /conf/tcos-run-functions
+if [ -e /conf/tcos-run-functions ]; then
+  . /conf/tcos-run-functions
+else
+  echo -n "error running in standalone"
+  exit 1
+fi
+
 
 tmp_file=/tmp/devicesctl
 
@@ -16,7 +22,7 @@ read_line() {
 }
 
 get_fs_type() {
-  output=$(get_filesystem $1 | awk '{print $2}')
+  output=$(get_filesystem $1 --only)
   echo $output
 }
 

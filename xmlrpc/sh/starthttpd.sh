@@ -20,20 +20,29 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA.
 
+if [ -e /conf/tcos-run-functions ]; then
+  _www=/var/www
+  _conf=/etc/httpd2.conf
+  _log=/var/log
+else
+  _www=/var/lib/tcos/standalone/www
+  _conf=/var/lib/tcos/standalone/etc/httpd.conf
+  _log=/var/lib/tcos/standalone/log
+fi
+
+
 _port=8081
-_www=/var/www
-_conf=/etc/httpd2.conf
 
 mkdir -p ${_www}
-mkdir -p /var/log
+mkdir -p ${_log}
 
-echo "starting httpd..." >> /tmp/httpd.log
+echo "starting httpd..." >> ${_log}/httpd.log
 
 if [ -f /bin/busybox-static ]; then
-  echo "PXES/LTSP running..." >> /tmp/httpd.log
-  busybox-new httpd -p ${_port} -h ${_www} -c ${_conf}  &
+  echo "PXES/LTSP/Standalone running..." >> ${_log}/httpd.log
+  busybox-static httpd -p ${_port} -h ${_www} -c ${_conf}  &
 else
-  echo "TCOS  running..." >> /tmp/httpd.log
+  echo "TCOS  running..." >> ${_log}/httpd.log
   busybox httpd -p ${_port} -h ${_www} -c ${_conf} &
 fi
 

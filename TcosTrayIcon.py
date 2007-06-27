@@ -42,7 +42,7 @@ class TcosTrayIcon:
     def __init__(self):
         self.actions={}
         self.args={}
-        self.statusIcon = gtk.StatusIcon()
+        #self.statusIcon = gtk.StatusIcon()
         self.menu=gtk.Menu()
         self.items={ "quit": [_("Quit"), "menu_kill.png", True, None]  }
         

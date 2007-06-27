@@ -11,11 +11,10 @@ Package: tcosmonitor
 Architecture: any
 Depends:  scrot, gksu | kdesu, zenity, dbus,
           python-dbus | python2.4-dbus, python-gtk2, python-glade2, 
-          python-notify, python-gnome2-extras, 
+          python-notify, python-gnome2-extras, tcos-tcosmonitor (= ${Source-Version})
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
-Suggests: tcos-tcosmonitor
 Description: Thin client monitor
  TCOS, thin Client Operating System is a method to create small embedded os
  based on debian/ubuntu with normal debian kernel's.
@@ -26,8 +25,7 @@ Description: Thin client monitor
 
 Package: tcos-tcosmonitor
 Architecture: any
-Depends: tcosmonitor (= ${Source-Version}) , eject,
-         initramfs-tools-tcos (>= 0.59), ${shlibs:Depends}
+Depends: eject, ${shlibs:Depends}
 Description: Thin client monitor of TCOS networks
  TCOS, thin Client Operating System is a method to create small embedded os
  based on debian/ubuntu with normal debian kernel's.
@@ -35,5 +33,20 @@ Description: Thin client monitor of TCOS networks
  tcosmonitor is a small pygtk app to monitor thin clients
  .
  This package contain TCOS bindings to work with tcosmonitor.
+ .
+  Homepage: http://www.tcosproject.org
+
+Package: tcos-standalone
+Architecture: any
+Depends:  scrot, gksu | kdesu, zenity, dbus, lsb-base (>= 3.0-6),
+          python-dbus | python2.4-dbus, python-gtk2, python-glade2,
+          python-notify, python-gnome2-extras, tcos-tcosmonitor (= ${Source-Version})
+          ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Description: Thin client monitor of TCOS networks
+ TCOS, thin Client Operating System is a method to create small embedded os
+ based on debian/ubuntu with normal debian kernel's.
+ .
+ tcos-standalone are the utilities to take control of a installed 
+ host with tcosmonitor
  .
   Homepage: http://www.tcosproject.org

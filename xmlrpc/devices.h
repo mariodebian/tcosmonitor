@@ -19,7 +19,7 @@
 */
 
 
-#define DEVICES_WRAPPER "/sbin/devicesctl.sh "
+#define DEVICES_WRAPPER TCOS_PATH"/devicesctl.sh "
 
 
 
