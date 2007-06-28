@@ -17,10 +17,9 @@ get_env_var() {
     label=$(get_env_var "ID_FS_LABEL")
   fs_type=$(get_env_var "ID_FS_TYPE")
 
-if [ "$fs_type" = "ID_FS_TYPE=" ]; then
-  . /conf/tcos-run-functions
-  fs=$(get_filesystem ${device#DEVNAME=}| awk '{print $2}')
-  if [ "$fs" != "auto" ]; then
+if [ "$fs_type" = "ID_FS_TYPE=" ] || [ "$fs_type" = "" ]; then
+  fs=$(get_filesystem ${device#DEVNAME=})
+  if [ "$fs" != "auto" ] && [ "$fs" != "" ] && [ "$fs" != "unknow" ] ; then
      fs_type="ID_FS_TYPE=$fs"
   fi
 fi
