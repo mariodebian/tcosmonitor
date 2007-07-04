@@ -3,8 +3,11 @@ tcosmonitor (0.1.18.0) unstable; urgency=low
   * Remove pyexamples dir
   * xmlrpc/sh/restartx.sh:
     - call restartxorg instead of killing X
+  * tcos-devices-ng:
+    - Allot to disable floppy cdroms or hdd from conf file
+      (disable_floppy=1, disable_cdroms=1, disable_hdd=1)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 04 Jul 2007 18:00:51 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 04 Jul 2007 22:09:49 +0200
 
 tcosmonitor (0.1.17.2) unstable; urgency=low
 

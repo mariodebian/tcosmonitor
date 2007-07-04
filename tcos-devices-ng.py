@@ -134,9 +134,24 @@ class TcosDevicesNG:
         
         self.initremote()
         self.desktop=self.get_desktop()
-        self.getremote_cdroms()
-        self.getremote_floppy()
-        self.getremote_hdd()
+        
+        ######## read floppys #############
+        if self.mntconf.has_key("disable_floppy") and self.mntconf['disable_floppy'] == "1" :
+            print_debug("__init__() floppy disabled from CONF_FILE")    
+        else:
+            self.getremote_floppy()
+        
+        ######## read cdroms #############
+        if self.mntconf.has_key("disable_cdroms") and self.mntconf['disable_cdroms'] == "1" :
+            print_debug("__init__() cdroms disabled from CONF_FILE")    
+        else:
+            self.getremote_cdroms()
+        
+        ######## read hard disk #############
+        if self.mntconf.has_key("disable_hdd") and self.mntconf['disable_hdd'] == "1" :
+            print_debug("__init__() hdd disabled from CONF_FILE")    
+        else:
+            self.getremote_hdd()
         
         self.quitting=False
         

@@ -42,6 +42,20 @@ use value as mount point
 
  ex: for hda1 /home/USERNAME/Desktop/winData
 
+.SH DISABLE SOME DEVICES
+
+Put into ~/.tcos-devices-ng.conf something like this:
+
+    # disable floppy
+    disable_floppy=1
+    
+    #disable all cdroms
+    disable_cdroms=1
+    
+    #disable hard disk partitions
+    disable_hdd=1
+
+
 .SH BUGS
 Contact Mario Izquierdo <mariodebian@gmail.com>
 
