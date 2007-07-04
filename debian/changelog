@@ -1,3 +1,11 @@
+tcosmonitor (0.1.18.0) unstable; urgency=low
+
+  * Remove pyexamples dir
+  * xmlrpc/sh/restartx.sh:
+    - call restartxorg instead of killing X
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 04 Jul 2007 18:00:51 +0200
+
 tcosmonitor (0.1.17.2) unstable; urgency=low
 
   * xmlrpc/Makefile xmlrpc/var/etc/abyss.conf:

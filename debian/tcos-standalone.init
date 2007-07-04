@@ -16,7 +16,8 @@
 # Do NOT "set -e"
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
+PATH=/usr/lib/tcos:/sbin:/usr/sbin:/bin:/usr/bin
+
 DESC="TcosXMLRPC standalone"
 NAME=tcosxmlrpc-standalone
 DAEMON=/usr/lib/tcos/$NAME

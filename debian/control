@@ -9,7 +9,7 @@ XS-Python-Version: >= 2.4
 
 Package: tcosmonitor
 Architecture: any
-Depends:  scrot, gksu | kdesu, zenity, dbus,
+Depends:  scrot, gksu | kdebase-bin, zenity, dbus,
           python-dbus | python2.4-dbus, python-gtk2, python-glade2, 
           python-notify, python-gnome2-extras, tcos-tcosmonitor (= ${Source-Version})
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
@@ -38,8 +38,8 @@ Description: Thin client monitor of TCOS networks
 
 Package: tcos-standalone
 Architecture: any
-Depends:  scrot, gksu | kdesu, zenity, dbus, lsb-base (>= 3.0-6),
-          python-dbus | python2.4-dbus, python-gtk2, python-glade2,
+Depends:  scrot, gksu | kdebase-bin, zenity, dbus, lsb-base (>= 3.0-6), busybox, 
+          python-dbus | python2.4-dbus, python-gtk2, python-glade2, x11vnc,
           python-notify, python-gnome2-extras, tcos-tcosmonitor (= ${Source-Version})
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Description: Thin client monitor of TCOS networks

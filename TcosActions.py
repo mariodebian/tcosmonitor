@@ -1211,8 +1211,8 @@ class TcosActions:
             if response == gtk.RESPONSE_OK:
                 
                 #self.main.exe_cmd("route add -net 239.255.255.0/24 gw 192.168.126.105 &")
-                self.main.exe_cmd( "vlc file://%s --sout '#standard{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename() ) 
-                self.main.exe_cmd("vlc udp://@239.255.255.0:1234 --no-x11-shm--no-xvideo-shm")  
+                self.main.exe_cmd( ("vlc file://%s --sout '#standard{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename()) ) 
+                self.main.exe_cmd( "vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm" )  
 
                 
                 # exec this app on client

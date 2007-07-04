@@ -24,7 +24,8 @@ print "PYTHON::version is=%s" %(result)
 result = server.tcos.info("get_client")
 print "PYTHON::get_client is=%s" %(result)
 
-print server.tcos.screenshot("10", "root", "root")
+print "PYTHON devicesctl.sh =%s" %(server.tcos.exe("soundctl.sh --showcontrols", "root", "root"))
+#print server.tcos.screenshot("10", "root", "root")
 
 sys.exit(0)
 
