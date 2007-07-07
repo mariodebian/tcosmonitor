@@ -60,6 +60,8 @@ if [ ${tcos} ]; then
 echo "  * TCOS"
 fi
 
+echo "  * STANDALONE"
+
 echo -n "              : "
 read _arq
 
@@ -71,12 +73,15 @@ elif [ "$_arq" = "PXES" ]; then
 
 elif [ "$_arq" = "TCOS" ]; then
   fpass=/etc/tcospasswd
+
+elif [ "$_arq" = "STANDALONE" ]; then
+  fpass=/etc/tcospasswd
 else
-  echo "Error: Arquitecture: ${_arq} not supported, please use LTSP, PXES, or TCOS"
+  echo "Error: Arquitecture: ${_arq} not supported, please write LTSP, PXES, TCOS or STANDALONE"
   exit 1
 fi
 
-echo -n "Username: "
+echo -n "Username (usually root): "
 read _username
 
 string="$_username:$(make_passwd)"
@@ -95,7 +100,7 @@ read _ans
 if [ "${_ans}" != "n" ]; then
   echo ${string} > ${fpass}
   echo ""
-  echo "In case of PXES or TCOS, please update the"
+  echo "In case of PXES or TCOS (not STANDALONE), please update the"
   echo "boot image with pxesconfig or gentcos."
   echo "Done."
   exit 0

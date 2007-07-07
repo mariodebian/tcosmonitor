@@ -2,6 +2,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
+#    TcosMonitor version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.
@@ -356,6 +357,20 @@ class TcosXmlRpc:
         else:
             return result
 
+    def GetUser(self):
+        if not self.connected:
+            print_debug ( "GetUser() NO CONNECTION" )
+            return shared.NO_LOGIN_MSG
+        result=self.tc.tcos.who("get_user").replace('\n', '')
+        if result.find('error') == 0:
+            print_debug ( "GetUser(\"get_user\"): ERROR, result contains error string %s!!!" %result )
+            return shared.NO_LOGIN_MSG
+        elif result == "":
+            print_debug("GetUser() no user connected")
+            return shared.NO_LOGIN_MSG
+        else:
+            return result
+    
     def GetSoundChannels(self):
         """
         Exec soundctl.sh with some of these args

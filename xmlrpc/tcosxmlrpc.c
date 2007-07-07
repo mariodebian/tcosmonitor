@@ -45,6 +45,7 @@ http://www.elrincondelc.com/portal/modules.php?name=Forums&file=viewtopic&p=2032
 #include "login.c"
 #include "xauth.c"
 #include "info.c"
+#include "who.c"
 #include "pci.c"
 #include "exe.c"
 #include "screenshot.c"
@@ -208,6 +209,9 @@ Info methods:\n\
 * network_rx\n\
 * network_tx\n\
 * modules_loaded");
+
+    xmlrpc_server_abyss_add_method_w_doc("tcos.who", &tcos_who, NULL,
+    "s:s", "Tcos, WHO. Return username connected at :0. (no auth needed)");
 
     xmlrpc_server_abyss_add_method_w_doc("tcos.pci", &tcos_pci, NULL,
     "s:s", "Tcos, PCI data stuff. Send pci_all to get pci bus ids. (no auth needed)");

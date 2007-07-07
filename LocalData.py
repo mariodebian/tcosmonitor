@@ -372,6 +372,9 @@ class LocalData:
         
         self.username=shared.NO_LOGIN_MSG
         
+        if self.main.xmlrpc.ReadInfo("get_client") == "standalone":
+            return self.main.xmlrpc.GetUser()
+        
         if not self.IsActive(ip):
             print_debug ( "GetUsername(%s) not active, returning NO_LOGIN_MSG" %(ip) )
             return shared.NO_LOGIN_MSG

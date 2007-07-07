@@ -1,4 +1,4 @@
-/*xorg.h common headers  2006-09-09 14:22:40 mariodebian $
+/*who.h common headers  2006-09-09 14:22:40 mariodebian $
 #
 # This file is part of tcosxmlrpc.
 #
@@ -18,20 +18,16 @@
 # USA.
 */
 
-#define XORGCFG TCOS_PATH"/configurexorg"
-#define XORG_CONF "/etc/X11/xorg.conf"
+/* xmlrpc methods to export thin client info */
 
-#define XORG_NEW_CONF   XORGCFG" --newsettings --outputfile="XORG_CONF
-#define XORG_CHANGE_CONF   XORGCFG" --changesettings --outputfile="XORG_CONF" "
-#define XORG_GET_CONF      XORGCFG" --getsettings "
-#define XORG_REBUILD_CONF   XORGCFG" --newsettings --downloadagain --restartxorg --outputfile="XORG_CONF" "
+#define GET_USER "who | awk '($2 ~ /:0/) {print $1}'"
 
-/* FIXME */
-#define XORG_MONITOR_NAME "grep \"Monitor name\"  /var/log/Xorg.0.log | awk -F \": \" '{print $3}'"
 
 /* messages */
-#define XORG_OK "ok"
-#define XORG_ERROR "error: Command return error"
-#define XORG_UNKNOW_OPTION "error: Unknow option for "XORGCFG
-#define XORG_READING_ERROR "error: Error reading pipe"
+#define WHO_UNKNOW "error: Unknow user"
+#define WHO_ERROR  "error: who returned error"
+
+
+FILE *popen(const char *orden, const char *tipo);
+int pclose(FILE *flujo);
 
