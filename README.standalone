@@ -21,3 +21,45 @@
 
  You can add this rules to your firewall or put into /etc/rc.local
 
+2.- Configure user and password
+
+  It's posible to work with standard *nix auth but for better security it's
+  recomended to use a standalone autentication.
+
+  In standalone host make this:
+
+  # update-tcospasswd
+
+    Arquitecture to update password:
+
+     * TCOS
+     * STANDALONE
+              : STANDALONE
+    Username (usually root): root
+   TCOS Password: 
+   I will write this file:
+     /etc/tcospasswd
+          Continue? [Y/n] Y
+
+
+  In TcosMonitor you will need to put same user and password than here.
+
+3.- Activate
+
+  Change TCOS_STANDALONE_START=1
+
+4.- Search for hosts.
+
+  In TcosMonitor you need to configure discover method with ping 
+  (netstat don't work)
+
+  You can make a small trick to get a standalone host with netstat:
+
+
+  #!/bin/sh
+
+  while [ 1 ]; do
+    telnet SERVER_IP 6000
+  done 
+
+  Put this script at user session start.
