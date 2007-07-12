@@ -10,6 +10,7 @@
 
 
 import os
+import sys
 import re
 from threading import Thread
 import socket
@@ -140,6 +141,7 @@ class PingPort:
     def __init__(self, host, port, timeout=1):
         self.host=host
         self.port=int(port)
+        print_debug("PingPort() host=%s port=%d" %(host,self.port) )
         if self.host == "":
             print_debug ( "PingPort()  need host to connect" )
             self.status = "CLOSED"
@@ -151,7 +153,7 @@ class PingPort:
         print_debug( "PingPort()::__init__(host=%s, port=%d timeout=%f)" %(self.host, self.port, timeout) )        
         try:
             # connect to the given host:port
-	        self.sd.connect((host, port))
+	        self.sd.connect((self.host, self.port))
         except socket.error:
             # set the CLOSED flag
             self.status = "CLOSED"
@@ -173,8 +175,9 @@ class PingPort:
 
 
 if __name__ == '__main__':
+    shared.debug=True
     #for i in range(20):
     #    PingPort("192.168.0.3", i+100).get_status()
-    PingPort("192.168.0.5", 6000, 0.5).get_status()
-    PingPort("192.168.0.1", 6000, 0.5).get_status()
-    PingPort("192.168.0.3", 6000, 0.5).get_status()
+    #PingPort("192.168.0.5", 6000, 0.5).get_status()
+    #PingPort("192.168.0.1", 6000, 0.5).get_status()
+    PingPort(sys.argv[1], sys.argv[2], 0.5).get_status()
