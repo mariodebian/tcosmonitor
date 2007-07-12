@@ -1,0 +1,23 @@
+        ============================================
+
+                README for TCOS Standalone mode
+
+        ============================================
+
+
+1.- Security
+
+  If you activate standalone mode you will expose 8080 and 8081 ports
+  to anybody, if your network is untrusted please block all uncomming
+  connections to these ports, (with iptables for example)
+
+  For example if your server (when tcosmonitor gui runs) is 192.168.0.254:
+
+   iptables -A INPUT -p tcp -s 192.168.0.254 --destination-port 8080 --syn -j ACCEPT
+   iptables -A INPUT -p tcp -s 0/0 -d 0/0 --destination-port 8080 --syn -j DROP
+
+   iptables -A INPUT -p tcp -s 192.168.0.254 --destination-port 8081 --syn -j ACCEPT
+   iptables -A INPUT -p tcp -s 0/0 -d 0/0 --destination-port 8081 --syn -j DROP
+
+ You can add this rules to your firewall or put into /etc/rc.local
+

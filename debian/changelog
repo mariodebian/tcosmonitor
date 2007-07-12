@@ -5,8 +5,13 @@ tcosmonitor (0.1.19.0) unstable; urgency=low
     - Add new method: dbus
   * *.py:
     - Add dbus support (not work at 100% yet)
+    - Fix some minor bugs
+  * debian/tcos-standalone.init:
+    - Don't fail at stop
+  * README.standalone
+    - Add some standalone info
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 12 Jul 2007 09:45:55 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 12 Jul 2007 15:19:39 +0200
 
 tcosmonitor (0.1.18.1) unstable; urgency=low
 

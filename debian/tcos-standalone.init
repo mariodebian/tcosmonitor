@@ -76,7 +76,7 @@ do_stop()
 	#   1 if daemon was already stopped
 	#   2 if daemon could not be stopped
 	#   other if a failure occurred
-        killall $(basename $DAEMON) 2> /dev/null || return 2
+        killall $(basename $DAEMON) 2> /dev/null
 	return 0
         # clean www data
         rm -f ${DAEMON_WWW}/*

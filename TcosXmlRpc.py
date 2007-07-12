@@ -396,11 +396,11 @@ class TcosXmlRpc:
             return ""
     
     
-    def DBus(self, admin, passwd, action, data):
+    def DBus(self, action, data):
         username=self.GetStandalone("get_user")
         remote_user=self.main.config.GetVar("xmlrpc_username")
         remote_passwd=self.main.config.GetVar("xmlrpc_password")
-        cmd="--auth='%s:%s' --type=%s --text='%s' --username=%s" %(admin, passwd, action, data, username )
+        cmd="--auth='%s:%s' --type=%s --text='%s' --username=%s" %(remote_user, remote_passwd, action, data, username )
         print_debug ("DBus() cmd=%s" %(cmd) )
         return self.tc.tcos.dbus(cmd, remote_user, remote_passwd).replace('\n', '')
         

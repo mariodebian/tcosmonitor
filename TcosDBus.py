@@ -244,7 +244,7 @@ class TcosDBusAction:
         print_debug ( "do_exec() users=%s app=%s" %(users,app) )
         
         if self.main.xmlrpc.IsStandalone():
-            return self.main.xmlrpc.DBus(self.admin, self.passwd, action="exec", data=app)
+            return self.main.xmlrpc.DBus("exec", app)
         
         if not self.connection:
             print_debug ( self.error )
@@ -263,7 +263,7 @@ class TcosDBusAction:
         print_debug ( "do_message() users=%s text=%s" %(users, text) )
         
         if self.main.xmlrpc.IsStandalone():
-            return self.main.xmlrpc.DBus(self.admin, self.passwd, action="mess", data=text)
+            return self.main.xmlrpc.DBus("mess", text)
         
         if not self.connection:
             print_debug ( self.error )
@@ -282,7 +282,7 @@ class TcosDBusAction:
         print_debug ( "do_kill() users=%s pid=%s" %(users, pid) )
         
         if self.main.xmlrpc.IsStandalone():
-            return self.main.xmlrpc.DBus(self.admin, self.passwd, action="kill", data=text)
+            return self.main.xmlrpc.DBus("kill", text)
         
         
         if not self.connection:
@@ -303,6 +303,10 @@ class TcosDBusAction:
 
     def do_killall(self, users, proc=""):
         print_debug ( "do_kill() users=%s proc=%s" %(users, proc) )
+        
+        if self.main.xmlrpc.IsStandalone():
+            return self.main.xmlrpc.DBus("killall", proc)
+        
         if not self.connection:
             print_debug ( self.error )
             return False

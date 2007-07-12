@@ -227,7 +227,8 @@ class LocalData:
             output=self.exe_cmd(cmd)
             for xhost in output:
                 host=xhost.split(':', 1)[0]
-                if host != "" and host != "0.0.0.0" and host != "127.0.0.1":
+                #if host != "" and host != "0.0.0.0" and host != "127.0.0.1":
+                if host != "" and host != "0.0.0.0":
                     if host not in self.allclients:
                         self.allclients.append(host)
             # sort list

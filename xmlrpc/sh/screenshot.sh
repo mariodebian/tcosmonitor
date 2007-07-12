@@ -21,10 +21,16 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA.
 
+export DISPLAY=:0
+
+
 if [ -e /conf/tcos-run-functions ]; then
   _www=/var/www
 else
   _www=/var/lib/tcos/standalone/www
+  user=$(who | awk '($2 ~ /:0/) {print $1}')
+  if [ "$user" = "root" ]; then exit 1 fi
+  export XAUTHORITY=/home/$user/.Xauthority
 fi
 
 
@@ -36,7 +42,6 @@ if [ "$1" != "" ]; then
   _thumb_size=$1
 fi
 
-export DISPLAY=:0
 
 rm -rf $_tmp
 mkdir $_tmp

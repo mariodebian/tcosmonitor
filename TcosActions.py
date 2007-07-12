@@ -277,6 +277,11 @@ class TcosActions:
         for user in usernames:
             if user.find(":") != -1:
                 # we have a standalone user...
+                usern, ip = user.split(":")
+                self.main.xmlrpc.newhost(ip)
+                self.main.xmlrpc.DBus(self.ask_mode, arg)
+                usernames.remove(user)
+                continue
                 
         if self.ask_mode == "exec":
             result = self.main.dbus_action.do_exec( usernames , arg )
@@ -990,25 +995,35 @@ class TcosActions:
 
 
     def start_vnc(self, ip):
-        self.main.xmlrpc.newhost(ip)
-        # check if remote proc is running
-        if not self.main.xmlrpc.GetStatus("x11vnc"):
+        if self.main.xmlrpc.IsStandalone(ip):
+            self.main.xmlrpc.DBus("killall", "x11vnc")
+            sleep(1)
+            self.main.xmlrpc.DBus("exec", "x11vnc -forever -shared -noshm")
             gtk.gdk.threads_enter()
-            self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
+            self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
             gtk.gdk.threads_leave()
+            sleep(5)
             
-            try:
-                self.main.xmlrpc.newhost(ip)
-                self.main.xmlrpc.Exe("startvnc")
+        #self.main.xmlrpc.newhost(ip)
+        # check if remote proc is running
+        else:
+            if not self.main.xmlrpc.GetStatus("x11vnc"):
                 gtk.gdk.threads_enter()
-                self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
+                self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
                 gtk.gdk.threads_leave()
-                sleep(5)
-            except:
-                gtk.gdk.threads_enter()
-                shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
-                gtk.gdk.threads_leave()
-                return
+                
+                try:
+                    self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.Exe("startvnc")
+                    gtk.gdk.threads_enter()
+                    self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
+                    gtk.gdk.threads_leave()
+                    sleep(5)
+                except:
+                    gtk.gdk.threads_enter()
+                    shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
+                    gtk.gdk.threads_leave()
+                    return
                 
         cmd = "vncviewer " + ip
         print_debug ( "start_process() threading \"%s\"" %(cmd) )
