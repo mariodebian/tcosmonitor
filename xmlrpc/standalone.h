@@ -1,4 +1,4 @@
-/*who.h common headers  2006-09-09 14:22:40 mariodebian $
+/*standalone.h common headers  2006-09-09 14:22:40 mariodebian $
 #
 # This file is part of tcosxmlrpc.
 #
@@ -20,12 +20,20 @@
 
 /* xmlrpc methods to export thin client info */
 
-#define GET_USER "who | awk '($2 ~ /:0/) {print $1}'"
-
+#define STANDALONE_USER    "who | awk '($2 ~ /:0/) {print $1}'"
+#define STANDALONE_PROCESS "ps aux |grep -c \"^$(who | awk '($2 ~ /:0/) {print $1}') \""
 
 /* messages */
-#define WHO_UNKNOW "error: Unknow user"
-#define WHO_ERROR  "error: who returned error"
+#define STANDALONE_UNKNOW "error: Unknow user"
+#define STANDALONE_ERROR  "error: who returned error"
+
+
+/* dbus */
+#define DBUS_HANDLER TCOS_PATH "/tcos-dbus-helper"
+
+#define DBUS_ERROR "error: dbus error"
+#define DBUS_OK    "ok"
+
 
 
 FILE *popen(const char *orden, const char *tipo);

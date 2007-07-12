@@ -18,3 +18,11 @@ if [ "x${DISPLAY_HOST}" != "x" ]; then
   tcos-volume-manager &
 fi
 
+
+
+if [ -e /etc/default/tcos-standalone ]; then
+  . /etc/default/tcos-standalone
+  if [ "${TCOS_STANDALONE_START}" = "1" ]; then
+   tcos-dbus-client --only-local &
+  fi
+fi

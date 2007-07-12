@@ -45,7 +45,7 @@ http://www.elrincondelc.com/portal/modules.php?name=Forums&file=viewtopic&p=2032
 #include "login.c"
 #include "xauth.c"
 #include "info.c"
-#include "who.c"
+#include "standalone.c"
 #include "pci.c"
 #include "exe.c"
 #include "screenshot.c"
@@ -210,8 +210,11 @@ Info methods:\n\
 * network_tx\n\
 * modules_loaded");
 
-    xmlrpc_server_abyss_add_method_w_doc("tcos.who", &tcos_who, NULL,
-    "s:s", "Tcos, WHO. Return username connected at :0. (no auth needed)");
+    xmlrpc_server_abyss_add_method_w_doc("tcos.standalone", &tcos_standalone, NULL,
+    "s:s", "Tcos, Standalone. Return standalone values (no auth needed)");
+
+    xmlrpc_server_abyss_add_method_w_doc("tcos.dbus", &tcos_dbus, NULL,
+    "s:s", "Tcos, DBus. Exe with a wrapper some dbus events (auth needed)");
 
     xmlrpc_server_abyss_add_method_w_doc("tcos.pci", &tcos_pci, NULL,
     "s:s", "Tcos, PCI data stuff. Send pci_all to get pci bus ids. (no auth needed)");

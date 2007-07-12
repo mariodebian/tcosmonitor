@@ -107,7 +107,17 @@ echo $(head -$1 /tmp/ps.aux | tail -1)
 }
 
 get_process() {
-ps aux > /tmp/ps.aux
+if [ $STANDALONE = 1 ]; then
+  user=$(who | awk '($2 ~ /:0/) {print $1}')
+  if [ "$user" = "root" ]; then
+    echo "PID COMMAND" > /tmp/ps.aux
+    echo "66000 User root not allowed to show process" >> /tmp/ps.aux
+  else
+    LANG=C ps U ${user} -o pid,command > /tmp/ps.aux
+  fi
+else
+  ps aux > /tmp/ps.aux
+fi
 num_lines=$(cat /tmp/ps.aux | wc -l)
 for i in $(seq 1 $num_lines); do
   echo -n "$(get_line $i)|"

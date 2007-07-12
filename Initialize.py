@@ -2,6 +2,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
+#    TcosMonitor version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.

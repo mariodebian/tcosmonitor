@@ -1,13 +1,8 @@
 #!/usr/bin/make -f
 
+#export DH_VERBOSE=1
 
-CFLAGS = -Wall -g
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
 
 configure: configure-stamp
 configure-stamp:
@@ -38,11 +33,16 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	$(MAKE) install DESTDIR=`pwd`/debian/tmp 
-	$(MAKE) install-tcos    DESTDIR=$(CURDIR)/debian/tmp PREFIX=/usr
+	$(MAKE) install         DESTDIR=$(CURDIR)/debian/tcosmonitor PREFIX=/usr
+	$(MAKE) install-tcos    DESTDIR=$(CURDIR)/debian/tcosmonitor PREFIX=/usr
 
-	install -d $(CURDIR)/debian/tmp/usr/share/control-center-2.0/capplets/
+	install -m 644 $(CURDIR)/debian/tcos-standalone.default $(CURDIR)/debian/tcosmonitor/etc/default/tcos-standalone
+
+	install -m 644 $(CURDIR)/debian/tcos-standalone.init $(CURDIR)/debian/tcosmonitor/etc/init.d/tcos-standalone
+
 	dh_link /usr/share/applications/tcosmonitor.desktop /usr/share/control-center-2.0/capplets/tcosmonitor.desktop
+
+	find $(CURDIR)/debian/tcosmonitor -name ".svn" | xargs rm -f --
 
 # old rules for generating not supported packages,
 # don't delete because you can need it
@@ -63,7 +63,8 @@ binary-arch: build install
 	dh_installchangelogs 
 	dh_installdocs
 	dh_installexamples
-	dh_install --sourcedir=`pwd`/debian/tmp --list-missing
+#	dh_install --sourcedir=`pwd`/debian/tcosmonitor --list-missing
+	dh_install
 	dh_installman
 	dh_installinit
 	dh_link

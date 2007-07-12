@@ -273,6 +273,11 @@ class TcosActions:
                 
     def exe_app_in_client_display(self, arg):
         usernames=self.ask_usernames
+        print_debug("exe_app_in_client_display() usernames=%s" %usernames)
+        for user in usernames:
+            if user.find(":") != -1:
+                # we have a standalone user...
+                
         if self.ask_mode == "exec":
             result = self.main.dbus_action.do_exec( usernames , arg )
             if not result:
@@ -1123,14 +1128,18 @@ class TcosActions:
             connected_users=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsername(client))
+                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                    print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
+                print_debug("connected_users=%s" %connected_users)
             self.askfor(mode="exec", users=connected_users)
         
         if action == 7:
             connected_users=[]
             for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsername(client))
+                if self.main.localdata.IsLogged(client):                  
+                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                    print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
+                print_debug("connected_users=%s" %connected_users)
             self.askfor(mode="mess", users=connected_users)
         
         if action == 8:
@@ -1140,6 +1149,8 @@ class TcosActions:
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
                     connected_users.append(self.main.localdata.GetUsername(client))
+                    print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
+                # FIXME not work with standalone
             # start x11vnc in local 
             self.main.exe_cmd("x11vnc -shared -noshm -viewonly -forever -allow 127.0.0.1")
             
@@ -1490,11 +1501,22 @@ class TcosActions:
             print_debug ("get_user_processes(%s) NOT LOGGED" %ip)
             shared.info_msg( _("User not connected, no processes.") )
             return
-        username=self.main.localdata.GetUsername(ip)
-        cmd="LANG=C ps U \"%s\" -o pid,command" %(username)
-        print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
-        process=self.main.localdata.exe_cmd(cmd, verbose=0)
         
+        username=self.main.localdata.GetUsername(ip)
+        
+        if self.main.xmlrpc.IsStandalone():
+            tmp=self.main.xmlrpc.ReadInfo("get_process")
+            if tmp != "":
+                process=tmp.split('|')[0:-1]
+            else:
+                process=["PID COMMAND", "66000 NO process found"]
+        else:    
+            
+            cmd="LANG=C ps U \"%s\" -o pid,command" %(username)
+            print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
+            process=self.main.localdata.exe_cmd(cmd, verbose=0)
+        
+        #print_debug("get_user_processes() proc=%s" %(process))
         
         self.main.datatxt.clean()
         self.main.datatxt.insert_block(   _("Running processes for user \"%s\": " ) %(username), image=shared.IMG_DIR + "info_proc.png"  )

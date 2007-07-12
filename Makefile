@@ -188,6 +188,19 @@ tcos:
 patch_version:
 	# PATCHING VERSION
 	sed -i 's/__VERSION__/$(VERSION)/g' shared.py
+	sed -i 's/__VERSION__/$(VERSION)/g' Initialize.py
+	sed -i 's/__VERSION__/$(VERSION)/g' LocalData.py
+	sed -i 's/__VERSION__/$(VERSION)/g' ping.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosActions.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosConf.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosDBus.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosXauth.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosXmlRpc.py
+	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices-ng.py
+	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices.py
+	sed -i 's/__VERSION__/$(VERSION)/g' tcos-volume-manager.py
+	sed -i 's/__VERSION__/$(VERSION)/g' tcosmonitor.py
+	sed -i 's/__VERSION__/$(VERSION)/g' server-utils/tcos-server-utils.py
 
 patch_dapper: patch_version
 	# PATCHING TcosMonitor in Ubuntu DAPPER
@@ -195,23 +208,34 @@ patch_dapper: patch_version
 	sed -i '/python-support/s/0.3/0.1.1ubuntu1/g' debian/control
 	sed -i '/dh_pysupport/s/dh_pysupport/dh_python/g' debian/rules
 
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-volume-manager.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' server-utils/tcos-server-utils.py
 
 patch_edgy: patch_version
-	# nothing to patch
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-volume-manager.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' server-utils/tcos-server-utils.py
 
 patch_feisty: patch_version
-	# PATCHING TcosMonitor in Ubuntu FEISTY
-	sed -i '/env/s/python2.4/python2.5/g' tcos-devices.py
 
 patch_gutsy: patch_version
-	# PATCHING TcosMonitor in Ubuntu GUTSY
-	sed -i '/env/s/python2.4/python2.5/g' tcos-devices.py
 
 patch_etch: patch_version
-	# nothing to patch
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-volume-manager.py
+	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' server-utils/tcos-server-utils.py
 
 patch_unstable: patch_version
-	# nothing to patch
 
 
 .PHONY: fix-glade es.gmo tcosxmlrpc dbus udev

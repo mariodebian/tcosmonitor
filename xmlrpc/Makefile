@@ -65,6 +65,7 @@ install:
 	install -m 755 sh/getinfo.sh       $(DESTDIR)/$(TCOS_BINS)/
 	install -m 755 sh/useallmodules.sh $(DESTDIR)/$(TCOS_BINS)/
 	install -m 755 sh/devicesctl.sh    $(DESTDIR)/$(TCOS_BINS)/
+	install -m 755 sh/tcos-dbus.py     $(DESTDIR)/$(TCOS_BINS)/tcos-dbus-helper
 
 	install -m 644 var/etc/httpd2.conf $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
 	install -m 644 var/etc/mime.types  $(DESTDIR)/$(PREFIX)/share/tcosmonitor/xmlrpc/
@@ -81,6 +82,7 @@ install:
 	install -d $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc
 	install -d $(DESTDIR)/$(TCOS_STANDALONE_DIR)/www
 	install -d $(DESTDIR)/$(TCOS_STANDALONE_DIR)/log
+
 
 	install -m 644 var/etc/abyss.conf       $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf
 	sed -i 's|__TCOS_ROOT__|$(TCOS_STANDALONE_DIR)|g' $(DESTDIR)/$(TCOS_STANDALONE_DIR)/etc/abyss-standalone.conf

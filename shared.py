@@ -2,6 +2,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
+#    TcosMonitor version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.
@@ -31,6 +32,7 @@ from gettext import bindtextdomain, textdomain
 from locale import setlocale, LC_ALL
 
 have_display=False
+allow_local_display=False
 
 # import if DISPLAY is defined
 if "DISPLAY" in os.environ:

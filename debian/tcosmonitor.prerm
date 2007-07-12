@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+if [ "x${1}" = "xpurge" ]; then
+
+	if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+		invoke-rc.d tcos-standalone stop
+	else
+		/etc/init.d/tcos-standalone stop
+	fi
+
+fi
+
+
+#DEBHELPER#

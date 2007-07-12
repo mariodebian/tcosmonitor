@@ -1,9 +1,9 @@
-#!/usr/bin/env python2.4
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
-#    tcos-devices version 0.0.15
+#    tcos-devices version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.

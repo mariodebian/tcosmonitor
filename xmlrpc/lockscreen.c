@@ -36,8 +36,11 @@ tcos_lockscreen(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   if( strcmp(login_ok,  LOGIN_OK ) != 0 )
     return xmlrpc_build_value(env, "s", login_ok );
 
-
+#if TCOS_PATH != "/sbin"
+  job_exe(TCOS_PATH"/lockscreen");
+#else
   job_exe("lockscreen");
+#endif
   return xmlrpc_build_value(env, "s", "OK" );  
 }
 

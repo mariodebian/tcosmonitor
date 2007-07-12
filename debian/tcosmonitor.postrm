@@ -9,7 +9,10 @@ if [ "x${1}" = "xpurge" ]; then
     echo "Deleting tcosmonitor hook"
     rm -f ${tcos_dir}/hook-addons/tcosmonitor
   fi
+
+  update-rc.d tcos-standalone remove >/dev/null
 fi
+
 
 
 #DEBHELPER#

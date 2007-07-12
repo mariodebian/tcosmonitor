@@ -2,6 +2,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
+#    TcosMonitor version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.
@@ -55,7 +56,7 @@ class TcosDBusServer:
     def auth(self):
         print_debug ( "self.admin=%s self.passwd=%s" %(self.admin, self.passwd) )
         if not self.admin or not self.passwd:
-            self.error_msg=_("Need admin and passwd data to do this action")
+            #self.error_msg=_("Need admin and passwd data to do this action")
             print_debug ( "Need admin and passwd data to do this action" )
             return False
         
@@ -72,10 +73,17 @@ class TcosDBusServer:
         #
         #
         
-        if self.host == "":
+        if self.host == "" and not shared.allow_local_display:
             self.error_msg=_("TcosDBus not allowed in local display")
             print_debug ( "auth() not allowed in local display" )
             return False
+        
+        # for standalone use hostname as self.host
+        if self.host == "":
+            import socket
+            self.host=socket.gethostname()
+            
+        
         
         # check if tcosxmlrpc is running
         from ping import PingPort
@@ -109,7 +117,7 @@ class TcosDBusServer:
             print_debug("connect_tcosxmlrpc() ERROR conection unavalaible !!!")
             return False
         
-        cmd= "uname -a"
+        cmd= "uname"
         # try to exec something
         print_debug("connect_tcosxmlrpc() try to exec \"%s\" " %(cmd) )
         result=self.tc.tcos.exe(cmd, self.admin, self.passwd)
@@ -206,13 +214,14 @@ class TcosDBusClient(dbus.service.Object):
         pass
 
 class TcosDBusAction:
-    def __init__(self, admin="", passwd=""):
+    def __init__(self, main, admin="", passwd=""):
         print_debug ("TcosDBusAction() starting action...")
         self.admin=admin
         self.passwd=passwd
         self.connection = False
         self.error = None
         self.done = False
+        self.main=main
         try:
             system_bus = dbus.SystemBus()
         except:
@@ -233,6 +242,10 @@ class TcosDBusAction:
         
     def do_exec(self, users, app):
         print_debug ( "do_exec() users=%s app=%s" %(users,app) )
+        
+        if self.main.xmlrpc.IsStandalone():
+            return self.main.xmlrpc.DBus(self.admin, self.passwd, action="exec", data=app)
+        
         if not self.connection:
             print_debug ( self.error )
             return False
@@ -248,6 +261,10 @@ class TcosDBusAction:
         
     def do_message(self, users, text=""):
         print_debug ( "do_message() users=%s text=%s" %(users, text) )
+        
+        if self.main.xmlrpc.IsStandalone():
+            return self.main.xmlrpc.DBus(self.admin, self.passwd, action="mess", data=text)
+        
         if not self.connection:
             print_debug ( self.error )
             return False
@@ -263,6 +280,11 @@ class TcosDBusAction:
     
     def do_kill(self, users, pid="0"):
         print_debug ( "do_kill() users=%s pid=%s" %(users, pid) )
+        
+        if self.main.xmlrpc.IsStandalone():
+            return self.main.xmlrpc.DBus(self.admin, self.passwd, action="kill", data=text)
+        
+        
         if not self.connection:
             print_debug ( self.error )
             return False

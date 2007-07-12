@@ -5,6 +5,13 @@ It was created by Mario Izquierdo (mariodebian)
        mariodebian@gmail.com
 
 
+TcosDbus.py class
+        Based on dbus bindings of Student-Control-Center of Ubuntu [1]
+           GPL Copyright Holder: Oliver Grawert <ogra@ubuntu.com>
+
+[1] http://people.ubuntu.com/~ogra/bzr-archive/student-control-panel-0.1/
+
+
 License of TcosMonitor:
 
    This package is free software; you can redistribute it and/or modify
@@ -23,10 +30,3 @@ License of TcosMonitor:
 
 On Debian systems, the complete text of the GNU General
 Public License can be found in `/usr/share/common-licenses/GPL'.
-
-
-    TcosDbus.py class
-        Based on dbus bindings of Student-Control-Center of Ubuntu [1]
-           GPL Copyright Holder: Oliver Grawert <ogra@ubuntu.com>
-
-[1] http://people.ubuntu.com/~ogra/bzr-archive/student-control-panel-0.1/

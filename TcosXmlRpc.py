@@ -357,20 +357,53 @@ class TcosXmlRpc:
         else:
             return result
 
-    def GetUser(self):
-        if not self.connected:
-            print_debug ( "GetUser() NO CONNECTION" )
-            return shared.NO_LOGIN_MSG
-        result=self.tc.tcos.who("get_user").replace('\n', '')
-        if result.find('error') == 0:
-            print_debug ( "GetUser(\"get_user\"): ERROR, result contains error string %s!!!" %result )
-            return shared.NO_LOGIN_MSG
-        elif result == "":
-            print_debug("GetUser() no user connected")
-            return shared.NO_LOGIN_MSG
+    def IsStandalone(self, ip=None):
+        if not ip:
+            print_debug("IsStandalone() WARNING using old IP: %s" %self.ip)
         else:
-            return result
+            self.newhost(ip)
+        
+        if not self.connected:
+            print_debug("IsStandalone() NO CONNECTION")
+            return False
+        
+        print_debug("IsStandalone() ip=%s" %self.ip)
+        
+        if self.ReadInfo("get_client") == "standalone":
+            return True
+        return False
     
+
+    def GetStandalone(self, item):
+        if item == "get_user":
+            if not self.connected:
+                print_debug ( "GetStandalone() NO CONNECTION" )
+                return shared.NO_LOGIN_MSG
+            result=self.tc.tcos.standalone("get_user").replace('\n', '')
+            if result.find('error') == 0:
+                print_debug ( "GetStandalone(\"get_user\"): ERROR, result contains error string %s!!!" %result )
+                return shared.NO_LOGIN_MSG
+            elif result == "":
+                print_debug("GetStandalone() no user connected")
+                return shared.NO_LOGIN_MSG
+            else:
+                return result
+                
+        elif item == "get_process":
+            return self.tc.tcos.standalone("get_process").replace('\n', '')
+            
+        else:
+            return ""
+    
+    
+    def DBus(self, admin, passwd, action, data):
+        username=self.GetStandalone("get_user")
+        remote_user=self.main.config.GetVar("xmlrpc_username")
+        remote_passwd=self.main.config.GetVar("xmlrpc_password")
+        cmd="--auth='%s:%s' --type=%s --text='%s' --username=%s" %(admin, passwd, action, data, username )
+        print_debug ("DBus() cmd=%s" %(cmd) )
+        return self.tc.tcos.dbus(cmd, remote_user, remote_passwd).replace('\n', '')
+        
     def GetSoundChannels(self):
         """
         Exec soundctl.sh with some of these args

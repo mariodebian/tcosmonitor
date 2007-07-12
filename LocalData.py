@@ -2,6 +2,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
+#    TcosMonitor version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.
@@ -356,6 +357,13 @@ class LocalData:
         self.add_to_cache( ip, 1 , self.hostname )
         return self.hostname
 
+    def GetUsernameAndHost(self,ip):
+        if self.main.xmlrpc.IsStandalone(ip=ip):
+            return "%s:%s" %(self.GetUsername(ip), ip)
+        else:
+            return "%s" %(self.GetUsername(ip) )
+    
+    
     def GetUsername(self, ip):
         """
         read username
@@ -372,8 +380,11 @@ class LocalData:
         
         self.username=shared.NO_LOGIN_MSG
         
-        if self.main.xmlrpc.ReadInfo("get_client") == "standalone":
-            return self.main.xmlrpc.GetUser()
+        if self.main.xmlrpc.IsStandalone(ip=ip):
+            print_debug("GetUsername(%s) standalone" %ip)
+            return self.main.xmlrpc.GetStandalone("get_user")
+        
+        print_debug("GetUsername(%s) NO standalone" %ip)
         
         if not self.IsActive(ip):
             print_debug ( "GetUsername(%s) not active, returning NO_LOGIN_MSG" %(ip) )
@@ -441,6 +452,10 @@ class LocalData:
             
         if self.username == shared.NO_LOGIN_MSG:
             return "---"
+        
+        if self.main.xmlrpc.IsStandalone():
+            return self.main.xmlrpc.GetStandalone("get_process")
+        
         
         #cmd=" ps aux|grep \"^%s \"| wc -l" %(self.username)
         cmd=" ps aux|grep -c \"^%s \"" %(self.username)

@@ -1,10 +1,13 @@
 # -*- encoding: UTF-8 -*-
-#  Based on 
-# Filename: ping.py
-# Discripion:
-# Author(s): yetist
-# Version:
-# URL: http://www.osprg.org/modules/newbb/viewtopic.php?forum=3&post_id=487
+#  pingip based on 
+#   Filename: ping.py
+#    Discripion:
+#    Author(s): yetist
+#    Version:
+#    URL: http://www.osprg.org/modules/newbb/viewtopic.php?forum=3&post_id=487
+#
+# 
+
 
 import os
 import re
@@ -111,6 +114,7 @@ class Ping:
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
+# TcosMonitor version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.

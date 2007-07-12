@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.4
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
@@ -167,7 +167,7 @@ class TcosMonitor:
         
         if not shared.dbus_disabled:
             from TcosDBus import TcosDBusAction
-            self.dbus_action=TcosDBusAction(admin=self.config.GetVar("xmlrpc_username"),
+            self.dbus_action=TcosDBusAction(self, admin=self.config.GetVar("xmlrpc_username"),
                                   passwd=self.config.GetVar("xmlrpc_password")  )
         
         
