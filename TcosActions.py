@@ -48,7 +48,6 @@ class TcosActions:
         print_debug ( "__init__()" )
         self.main=main
         self.model=self.main.init.model
-        #self.update_hostlist()
 
 
     ############################################################################    
@@ -90,8 +89,7 @@ class TcosActions:
     def on_another_screenshot_button_click(self, widget, ip):
         print_debug ( "on_another_screenshot_button_click() __init__ ip=%s" %(ip) )
         self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=[ip])
-        self.main.worker.start()
-        #gobject.timeout_add( 50, self.get_screenshot, ip )   
+        self.main.worker.start()   
     
     def on_rightclickmenuone_click(self, menu, number):
         print_debug ( "on_rightclickmenuone_click() => onehost_menuitems[%d]=%s" \
@@ -172,8 +170,6 @@ class TcosActions:
                 return
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
             # populate_list in a thread
-            #gobject.timeout_add( 50, self.actions.populate_hostlist, allclients )
-            
             self.main.worker=shared.Workers(self.main, self.populate_hostlist, [allclients] )
             self.main.worker.start()
             return
@@ -280,31 +276,29 @@ class TcosActions:
                 usern, ip = user.split(":")
                 self.main.xmlrpc.newhost(ip)
                 self.main.xmlrpc.DBus(self.ask_mode, arg)
-                usernames.remove(user)
-                continue
-                
-        if self.ask_mode == "exec":
-            result = self.main.dbus_action.do_exec( usernames , arg )
-            if not result:
-                shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-            else:
-                self.main.ask.hide()
-                self.main.ask_entry.set_text("")
-        elif self.ask_mode == "mess":
-            result = self.main.dbus_action.do_message( usernames , arg)
-            if not result:
-                shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-            else:
-                self.main.ask.hide()
-                self.main.ask_entry.set_text("")
-                
+            else:   
+                # we have a thin client user
+                if self.ask_mode == "exec":
+                    result = self.main.dbus_action.do_exec( usernames , arg )
+                    if not result:
+                        shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                    else:
+                        self.main.ask.hide()
+                        self.main.ask_entry.set_text("")
+                elif self.ask_mode == "mess":
+                    result = self.main.dbus_action.do_message( usernames , arg)
+                    if not result:
+                        shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                    
+                        
+        self.main.ask.hide()
+        self.main.ask_entry.set_text("")                
         dbus_action=None
         self.ask_mode=None
         return 
 
     def set_progressbar(self, txt, number, show_percent=True):
         percent=int(number*100)
-        #print_debug( "set_progressbar() set porc=%f percent=%d%%" %(number, percent) )
         if show_percent:
             self.main.progressbar.set_text("%s (%d %%)" %(txt, percent))
         else:
@@ -383,8 +377,6 @@ class TcosActions:
         
             tcos_vars["hostname"]=self.main.localdata.GetHostname(ip)
             tcos_vars["version"]=self.main.xmlrpc.GetVersion()
-
-            #print_debug("tcos version: %s" %(tcos_vars["version"]) )
 
             if not tcos_vars["version"]:
                 tcos_vars["version"]=_("unknow")
@@ -635,14 +627,11 @@ class TcosActions:
                     volumebutton=None
                     # only show channel in list
                     if not channel in shared.sound_only_channels:
-                        #print "not show channel=%s" %(channel)
                         continue
                     txt="""
                     <div style='text-align:center; background-color:#f3d160 ; margin-left: 25%%; margin-right: 25%%'>
                     <span style='font-size: 120%%'>%s: </span>
                     """ %(channel)
-                    #tcos_sound_vars[channel+"_level"]=self.main.xmlrpc.GetSoundInfo(channel, mode="--getlevel")
-                    #tcos_sound_vars[channel+"_mute"]=self.main.xmlrpc.GetSoundInfo(channel, mode="--getmute")
                     
                     
                     value=self.main.xmlrpc.GetSoundInfo(channel, mode="--getlevel")
@@ -730,7 +719,6 @@ class TcosActions:
         self.datatxt.display()
         self.update_progressbar( 1 )
         self.main.progressbar.hide()
-        #self.main.write_into_statusbar( "" )
         
         if shared.disable_textview_on_update: self.main.tabla.set_sensitive(True)
         
@@ -766,7 +754,6 @@ class TcosActions:
             newvalue=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setmute")
         self.main.write_into_statusbar( _("Status of %(channel)s channel, is \"%(newvalue)s\""  )\
          %{"channel":channel, "newvalue":newvalue} )
-        #self.main.write_into_statusbar( _("Changed mute status of %s channel, to %s" %(channel, newvalue) ) )
         
     def populate_hostlist(self, clients):
         print_debug ( "populate_hostlist() init" )
@@ -925,14 +912,10 @@ class TcosActions:
             
         if action == 8:
             # screenshot !!!
-            #Thread( target=self.get_screenshot, args=([self.main.selected_ip]) ).start()
             self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=[self.main.selected_ip])
             self.main.worker.start()
-            #gobject.timeout_add( 50, self.get_screenshot, self.main.selected_ip )
-            #self.get_screenshot(self.main.selected_ip)
         
         if action == 9:
-            
             # give a remote xterm throught SSH
             pass_msg=_("Enter password of remote thin client (if asked for it)")
             cmd="xterm -e \"echo '%s'; ssh root@%s\"" %(pass_msg, self.main.selected_ip)
@@ -959,32 +942,37 @@ class TcosActions:
         if action == 11:
             # reset xorg
             # Ask for it
-            msg=_("Do you want to restart Xorg of %s?" ) %(self.main.selected_ip)
-            if shared.ask_msg ( msg ):
-                self.main.xmlrpc.Exe("restartx")
-                self.refresh_client_info(self.main.selected_ip)
+            client_type = self.main.xmlrpc.ReadInfo("get_client")
+            if client_type == "tcos":
+                msg=_("Do you want to restart Xorg of %s?" ) %(self.main.selected_ip)
+                if shared.ask_msg ( msg ):
+                    self.main.xmlrpc.Exe("restartx")
+                    self.refresh_client_info(self.main.selected_ip)
+            else:
+                shared.info_msg( _("%s is not supported to restart Xorg!") %(client_type) )
                 
         if action == 12:
             # restart xorg with new settings
             # thin client must download again XXX.XXX.XXX.XXX.conf and rebuild xorg.conf
-            msg=_( "Restart X session of %s with new config?" ) %(self.main.selected_ip)
-            if shared.ask_msg ( msg ):
-                #self.main.xmlrpc.login()
-                # see xmlrpc/xorg.h, rebuild will download and sed xorg.conf.tpl
-                self.main.xmlrpc.tc.tcos.xorg("rebuild", "--restartxorg", \
-                    self.main.xmlrpc.username, \
-                    self.main.xmlrpc.password  )
-                # send killall Xorg && startx
-                #self.main.xmlrpc.Exe("restartx")
-                self.refresh_client_info(self.main.selected_ip)
+            client_type = self.main.xmlrpc.ReadInfo("get_client")
+            if client_type == "tcos":
+                msg=_( "Restart X session of %s with new config?" ) %(self.main.selected_ip)
+                if shared.ask_msg ( msg ):
+                    # see xmlrpc/xorg.h, rebuild will download and sed xorg.conf.tpl
+                    self.main.xmlrpc.tc.tcos.xorg("rebuild", "--restartxorg", \
+                        self.main.xmlrpc.username, \
+                        self.main.xmlrpc.password  )
+                    self.refresh_client_info(self.main.selected_ip)
+            else:
+                shared.info_msg( _("%s is not supported to restart Xorg!") %(client_type) )
         
         if action == 13:
             # exec app
-            self.askfor(mode="exec", users=[self.main.localdata.GetUsername(self.main.selected_ip)])
+            self.askfor(mode="exec", users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)])
             
         if action == 14:
             # send message
-            self.askfor(mode="mess", users=[self.main.localdata.GetUsername(self.main.selected_ip)] )
+            self.askfor(mode="mess", users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)] )
             
         if action == 15:
             print_debug ("menu_event_one() show running apps" )
@@ -1069,7 +1057,6 @@ class TcosActions:
         allclients_txt=""
         for client in allclients:
             allclients_txt+="\n %s" %(client)
-        #print self.main.localdata.allclients
         if len(self.main.localdata.allclients) == 0:
             shared.info_msg ( _("No clients connected, press refresh button.") )
             return
@@ -1145,7 +1132,6 @@ class TcosActions:
                 if self.main.localdata.IsLogged(client):
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
                     print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
-                print_debug("connected_users=%s" %connected_users)
             self.askfor(mode="exec", users=connected_users)
         
         if action == 7:
@@ -1154,7 +1140,6 @@ class TcosActions:
                 if self.main.localdata.IsLogged(client):                  
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
                     print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
-                print_debug("connected_users=%s" %connected_users)
             self.askfor(mode="mess", users=connected_users)
         
         if action == 8:
@@ -1163,11 +1148,10 @@ class TcosActions:
             connected_users=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsername(client))
+                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
                     print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
-                # FIXME not work with standalone
             # start x11vnc in local 
-            self.main.exe_cmd("x11vnc -shared -noshm -viewonly -forever -allow 127.0.0.1")
+            self.main.exe_cmd("x11vnc -shared -noshm -viewonly -forever")
             
             # need to wait for start, PingPort loop
             from ping import PingPort
@@ -1176,6 +1160,7 @@ class TcosActions:
                 status=PingPort("127.0.0.1",5900).get_status()
                 if status == "CLOSED":
                     sleep(1)
+            
             # get vncviewer version
             # vncviewer --version 2>&1|grep built
             version=self.main.localdata.exe_cmd("vncviewer --version 2>&1| grep built", verbose=0)
@@ -1185,7 +1170,18 @@ class TcosActions:
                 args="-viewonly -fullscreen"
             else:
                 args=""
+            
             # exec this app
+            for user in connected_users:
+                if user.find(":") != -1:
+                    # we have a standalone user...
+                    usern, ip = user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    server=self.main.xmlrpc.GetStandalone("get_server")
+                    standalone_cmd="vncviewer %s %s" %(server, args)
+                    self.main.xmlrpc.DBus("exec", standalone_cmd )
+                    connected_users.remove(user)
+                    
             remote_cmd="vncviewer 127.0.0.1 %s" %(args)
             result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
             if not result:
@@ -1196,7 +1192,16 @@ class TcosActions:
             connected_users=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsername(client))
+                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+            
+            for user in connected_users:
+                if user.find(":") != -1:
+                    # we have a standalone user...
+                    usern, ip = user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.DBus("killall", "vncviewer" )
+                    connected_users.remove(user)
+                    
             result = self.main.dbus_action.do_killall( connected_users , "vncviewer" )
             
             # kill my x11vnc server
@@ -1218,7 +1223,7 @@ class TcosActions:
             connected_users=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                   connected_users.append(self.main.localdata.GetUsername(client))            
+                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))            
             
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
@@ -1244,6 +1249,15 @@ class TcosActions:
                 
                 # exec this app on client
                 remote_cmd="vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm --fullscreen"
+                
+                for user in connected_users:
+                    if user.find(":") != -1:
+                        # we have a standalone user...
+                        usern, ip = user.split(":")
+                        self.main.xmlrpc.newhost(ip)
+                        self.main.xmlrpc.DBus("exec", remote_cmd )
+                        connected_users.remove(user)
+                    
                 result = self.main.dbus_action.do_exec( connected_users ,remote_cmd )
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -1260,6 +1274,15 @@ class TcosActions:
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
                     connected_users.append(self.main.localdata.GetUsername(client))            
+            
+            for user in connected_users:
+                if user.find(":") != -1:
+                    # we have a standalone user...
+                    usern, ip = user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.DBus("killall", "vlc" )
+                    connected_users.remove(user)
+            
             result = self.main.dbus_action.do_killall( connected_users , "vlc" )
    
                 
@@ -1274,7 +1297,7 @@ class TcosActions:
             connected_users=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                   connected_users.append(self.main.localdata.GetUsername(client))
+                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))
             
             
             
@@ -1302,6 +1325,13 @@ class TcosActions:
                 # Crear carpeta profesor en desktop del cliente
                 remote_cmd="mkdir -p $HOME/Desktop/" + _("Teacher")
                 
+                for user in connected_users:
+                    if user.find(":") != -1:
+                        # we have a standalone user...
+                        # FIXME FIXME
+                        # BUT rsync don't will work "out of box" in this way
+                        connected_users.remove(user)
+                
                 result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
                 
                 if not result:
@@ -1325,7 +1355,7 @@ class TcosActions:
                     else:
                         # Mandar mensaje aviso a los clientes con los nombres de ficheros
                         result = self.main.dbus_action.do_message(connected_users ,
-                             _("Teacher has sent some files to %s folder:\n\n%s") %( _("Teacher"),basenames ) )
+                             _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
                         if not result:
                             shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
                         
@@ -1348,7 +1378,6 @@ class TcosActions:
             
         gtk.gdk.threads_enter()
         self.main.progressbar.show()
-        #self.main.progressbutton.show()
         gtk.gdk.threads_leave()
         
         for ip in allhost:
@@ -1365,7 +1394,6 @@ class TcosActions:
             gtk.gdk.threads_leave()
         
             self.main.xmlrpc.newhost(ip)
-            #self.main.xmlrpc.login()
             try:
                 if action == "unlockscreen":
                     self.main.xmlrpc.unlockscreen()
@@ -1380,14 +1408,9 @@ class TcosActions:
                     self.change_lockscreen(ip)
                     gtk.gdk.threads_leave()
                 elif action == "screenshot":
-                    #self.main.worker=shared.Workers(self.main,\
-                    #    target=self.main.xmlrpc.screenshot, \
-                    #    args=[ self.main.config.GetVar("miniscrot_size") ])
                     self.main.xmlrpc.screenshot( self.main.config.GetVar("miniscrot_size") ) 
                     
                     url="http://%s:%s/capture-thumb.png" %(ip, shared.httpd_port)
-                    #self.main.datatxt.insert_html( "<div><img src='%s' alt=''/>\n" %(url) )
-                    #self.main.datatxt.insert_html( "%s </div>" %(ip))
                     hostname=self.main.localdata.GetHostname(ip)
                     self.main.datatxt.insert_html( 
                      "<span style='background-color:#f3d160'>" +
@@ -1411,10 +1434,8 @@ class TcosActions:
         gtk.gdk.threads_enter()
         if action == "screenshot": 
             self.set_progressbar( _("Waiting for screenshots...") , 1 )
-            #sleep(5)
             self.main.datatxt.display()
         self.main.progressbar.hide()
-        #self.main.progressbutton.hide()
         gtk.gdk.threads_leave()     
         return
         
@@ -1447,8 +1468,6 @@ class TcosActions:
     def get_screenshot(self, ip):
         # PingPort class put timeout very low to have more speed
         # get_screenshot need more time
-        #import socket
-        #socket.setdefaulttimeout(shared.socket_default_timeout)
         
         print_debug ("get_screenshot() INIT")
         # make screenshot
@@ -1513,13 +1532,12 @@ class TcosActions:
         print_debug( "get_user_processes(%s) __init__" %ip )
         #check user is connected
         if not self.main.localdata.IsLogged(ip):
-            print_debug ("get_user_processes(%s) NOT LOGGED" %ip)
             shared.info_msg( _("User not connected, no processes.") )
             return
         
         username=self.main.localdata.GetUsername(ip)
         
-        if self.main.xmlrpc.IsStandalone():
+        if self.main.xmlrpc.IsStandalone(ip):
             tmp=self.main.xmlrpc.ReadInfo("get_process")
             if tmp != "":
                 process=tmp.split('|')[0:-1]
@@ -1530,8 +1548,6 @@ class TcosActions:
             cmd="LANG=C ps U \"%s\" -o pid,command" %(username)
             print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
             process=self.main.localdata.exe_cmd(cmd, verbose=0)
-        
-        #print_debug("get_user_processes() proc=%s" %(process))
         
         self.main.datatxt.clean()
         self.main.datatxt.insert_block(   _("Running processes for user \"%s\": " ) %(username), image=shared.IMG_DIR + "info_proc.png"  )
@@ -1546,7 +1562,6 @@ class TcosActions:
         <br/><div style='margin-left: 135px; margin-right: 200px;background-color:#ead196;color:blue'>""" + _("Pid") + "\t" 
         + "\t" + _("Process command") +"</div>" )
         
-        #self.main.datatxt.insert_html("<div>")
         
         counter=0
         self.main.kill_proc_buttons=None
@@ -1564,7 +1579,6 @@ class TcosActions:
             if int(self.main.config.GetVar("systemprocess")) == 0:
                 for hidden in shared.system_process:
                     if hidden in name:
-                        #print_debug ( "get_user_processes() hidden process, not show \"%s\"" %(name) )
                         is_hidden=True
             
             if is_hidden:
@@ -1584,8 +1598,6 @@ class TcosActions:
             """ %(counter, blabel, pid, name) ) 
             counter+=1
         
-        #print counter    
-        #self.main.datatxt.insert_html("</div>")
         self.main.datatxt.display()
         return
     
@@ -1597,11 +1609,8 @@ class TcosActions:
     def refresh_client_info2(self, model, path, iter, args):
         ip = args[0]
         print_debug ( "refresh_client_info2()  ip=%s model_ip=%s" %(ip, model.get_value(iter, 1)) )
-        #print ip
-        #print model.get_value(iter, 1)
         # update data if ip is the same.
         if model.get_value(iter, 1) == ip:
-            #sleep(2)
             self.set_client_data(ip, model, iter)
             
             

@@ -64,7 +64,6 @@ class LocalData:
         self.num_process=None
         self.time_login=None
         self.allhostdata=[]
-        #self.cache_timeout=shared.cache_timeout
         self.cache_timeout=self.main.config.GetVar("cache_timeout")
     
     def newhost(self, host):
@@ -84,18 +83,18 @@ class LocalData:
             self.allhostdata [ ip, hostname, username, numprocess() , timelogged() , isLogged(bool), time() ]
                                 0      1        2         3              4              5              6
         """
-        print_debug ( "cache(ip=\"%s\" [ %s ])" %(ip, num) )
+        #print_debug ( "cache(ip=\"%s\" [ %s ])" %(ip, num) )
         for i in range(len(self.allhostdata)):
             if self.allhostdata[i][0] == ip:
-                print_debug ( "cache() %s cached from %s secs" %(ip, float(time() - self.allhostdata[i][6])) )
+                #print_debug ( "cache() %s cached from %s secs" %(ip, float(time() - self.allhostdata[i][6])) )
                 if time() - self.allhostdata[i][6] < self.cache_timeout:
-                    print_debug ( "cache() IS CACHED" )
-                    print_debug ( "cache() %s" %(self.allhostdata[i]) )
+                    #print_debug ( "cache() IS CACHED" )
+                    #print_debug ( "cache() %s" %(self.allhostdata[i]) )
                     return self.allhostdata[i][num]
                 else:
                     #clean cache
-                    print_debug ( "cache() DELETE OLD CACHE" )
-                    print_debug ( self.allhostdata )
+                    #print_debug ( "cache() DELETE OLD CACHE" )
+                    #print_debug ( self.allhostdata )
                     self.allhostdata.pop(i)
                     print_debug ( self.allhostdata )
                     return None
@@ -106,7 +105,7 @@ class LocalData:
         print_debug ( "add_to_cache(\"%s\", \"%s\", \"%s\")" %(ip, num, value) )
         
         if self.cache(ip, num) != None:
-            print_debug ( "add_to_cache() already cached" )
+            #print_debug ( "add_to_cache() already cached" )
             return
         
         new=True
@@ -197,12 +196,7 @@ class LocalData:
         if method == "ping":
             interface=self.main.config.GetVar("network_interface")
             print_debug ( "GetAllClients() using method \"ping\" in interface %s" %(interface) )
-            """
-            ping=Ping(self.main)
-            ss=ping.get_ip_address(interface)
-            dd=ping.ping_iprange(ss)
-            return dd
-            """
+            
             ping=Ping(self.main)
             ss=ping.get_ip_address(interface)
             
@@ -218,18 +212,19 @@ class LocalData:
             self.allclients=[]
             self.hostname=None
             #read this command output
-            #cmd="netstat -putan 2>/dev/null | grep \":6000\"| awk '{print $5}'"
             cmd="netstat -putan 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
-            #print_debug ( "GetAllClients() exec=\"%s\"" %(cmd) )
-            #(stdout, stdin) = popen2.popen2(cmd)
-            #stdin.close()
-            #output = stdout.readlines()
+            
             output=self.exe_cmd(cmd)
+            
+            #avoid to have a spimple string
+            if type(output) == type(""):
+                output=[output]
+            
             for xhost in output:
                 host=xhost.split(':', 1)[0]
-                #if host != "" and host != "0.0.0.0" and host != "127.0.0.1":
                 if host != "" and host != "0.0.0.0":
                     if host not in self.allclients:
+                        print(host)
                         self.allclients.append(host)
             # sort list
             self.allclients.sort()
@@ -249,16 +244,14 @@ class LocalData:
         try:
             xip=ip.split('.')
             if len(xip) != 4:
-                print_debug ( "ipValid() len != 4" )
-                return false
+                #print_debug ( "ipValid() len != 4" )
+                return False
             for block in xip:
                 if int(block) < 0 or int(block) >= 255:
                     print_debug ( "ipValid() block < 0 or >= 255 %s" %(block) )
-                    return false
-            #print_debug ( "ipValid(\"%s\") TRUE" %(ip) )
+                    return False
             return True
         except:
-            #print_debug ( "ipValid(\"%s\") EXCEPTION" %(ip) )
             return False
         
         
@@ -290,7 +283,7 @@ class LocalData:
         except:
             pass
         
-        #read hostnam from /etc/hosts
+        #read hostname from /etc/hosts
         fd=file("/etc/hosts", 'r')
         allfile=fd.read()
         allfile=allfile.split('\n')
@@ -460,7 +453,7 @@ class LocalData:
         
         #cmd=" ps aux|grep \"^%s \"| wc -l" %(self.username)
         cmd=" ps aux|grep -c \"^%s \"" %(self.username)
-        print_debug ("GetNumProcess() exec=%s" %(cmd) )
+        #print_debug ("GetNumProcess() exec=%s" %(cmd) )
         process=self.exe_cmd(cmd)
         
         print_debug ("GetNumProcess() process=%s" %(process) )

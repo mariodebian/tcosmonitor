@@ -65,13 +65,6 @@ class Initialize:
         
         self.main.updating=True
         
-        #self.initabout()
-        #self.initask()
-        #self.initbuttons()
-        #self.initpref()
-        #self.populate_pref()
-        #self.init_progressbar()
-        
         self.searching=False  # boolean True thread running False not running
 
         self.main.statusbar=self.ui.get_widget('statusbar')

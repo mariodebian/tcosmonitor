@@ -18,12 +18,12 @@ import fcntl
 import struct
 from gettext import gettext as _
 
+if "DISPLAY" in os.environ:
+    if os.environ["DISPLAY"] != "":
+        import gtk
+
+
 import shared
-
-#if "DISPLAY" in os.environ:
-#    if os.environ["DISPLAY"] != "":
-#        import gtk
-
 
 def print_debug(txt):
     if shared.debug:

@@ -48,7 +48,6 @@ class TcosConf:
         
         # reset memory data
         self.data=""
-        #print_debug("reset() reset self.conf...")
         self.vars=None
         self.vars=[]
         
@@ -58,18 +57,13 @@ class TcosConf:
         else:
             print_debug ( "__init__() not opening conf file" )
         
-        #self.CheckConfFile()
-        #
-        #print self.vars
         
     def reset(self):
         print_debug("reset() reset data...")
         # reset memory data
         self.data=""
-        #print_debug("reset() reset self.conf...")
         self.vars=None
         self.vars=[]
-        #print_debug("reset() reset self.vars...")
         self.OpenFile()
     
     def OpenFile(self):
@@ -91,7 +85,6 @@ class TcosConf:
             return
         for i in range( len(conf) ):
             if conf[i].find("#") != 0:
-                #print_debug ( "OpenFile() conf=" + conf[i] )
                 (var,value)=conf[i].split("=", 1)
                 self.vars.append([var,value])
         return
@@ -105,7 +98,6 @@ class TcosConf:
         print_debug ( "CreateConfFile()" )
         # save this into file
         fd=file(shared.config_file, 'w')
-        #fd.write("[main]\n")
         for item in shared.DefaultConfig:
             key=item[0]
             value=item[1]
@@ -225,7 +217,6 @@ class TcosConf:
         return value
             
     def GetAllNetworkInterfaces(self):
-        #print_debug ( "GetAllNetInterfaces() init" )
         self.allnetworkinterfaces=None
         self.allnetworkinterfaces=[]
         d="/sys/class/net/"

@@ -28,10 +28,12 @@ if [ -e /conf/tcos-run-functions ]; then
   _www=/var/www
 else
   _www=/var/lib/tcos/standalone/www
-  user=$(who | awk '($2 ~ /:0/) {print $1}')
-  if [ "$user" = "root" ]; then exit 1 fi
+  user=$(who | awk '{ if ($2 == ":0") print $1 }')
+  if [ "$user" = "root" ]; then echo "error: root not allowed"; exit 1; fi
   export XAUTHORITY=/home/$user/.Xauthority
 fi
+
+[ -d $_www ]  && rm -f $_www/*.png
 
 
 _tmp=/tmp/screenshot
@@ -50,14 +52,11 @@ cd $_tmp
 scrot 'capture.png' -t $_thumb_size
 
 mkdir -p $_www
-
-
 mv *png $_www
 
-cd /
+cd $_www
 rm -rf $_tmp
 
-cd $_www
 _files=$(ls *png)
 
 cat << EOF > $_www/index.html

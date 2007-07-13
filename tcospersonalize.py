@@ -3,7 +3,7 @@
 ##########################################################################
 # TcosPersonalize writen by MarioDebian <mariodebian@gmail.com>
 #
-#    TcosPersonalize version 0.0.15
+#    TcosPersonalize version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 # All rights reserved.
@@ -96,6 +96,7 @@ for o, a in opts:
 class TcosPersonalize:
     def __init__(self):
         print_debug ( "__init__()" )
+        self.name="TcosPersonalize"
         # exit if no host
         if shared.remotehost == None:
             usage()
@@ -106,7 +107,7 @@ class TcosPersonalize:
             shared.error_msg( "You must be root to exec tcospersonalize." )
             sys.exit(1)
         
-        self.remotehost_config = os.path.join ("/var/lib/tcos/tftp/conf", shared.remotehost + ".conf" )
+        self.remotehost_config = os.path.join ("/var/lib/tcos/tftp/conf/", shared.remotehost + ".conf" )
         
         #import shared
         gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
@@ -387,7 +388,10 @@ class TcosPersonalize:
         gtk.main_quit()
 
     def run (self):
-        gtk.main ()
+        try:
+            gtk.main()
+        except KeyboardInterrupt:
+            self.salirse(True)
 
 
 if __name__ == '__main__':

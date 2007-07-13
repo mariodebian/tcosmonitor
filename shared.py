@@ -41,8 +41,6 @@ if "DISPLAY" in os.environ:
         import pygtk
         pygtk.require('2.0')
         import gtk
-        #from gtk import *
-        #import gtk.glade
 
 # program name to use in gettext .mo
 PACKAGE = "tcosmonitor"
@@ -62,13 +60,11 @@ debug=False
 tcos_config_file="./tcos.conf"
 
 # if exec from svn or sources dir
-#if os.path.isfile('./tcosmonitor.py'):
-if os.path.isdir('.svn'):
+if os.path.isdir('./debian') and  os.path.isdir('./xmlrpc'):
     LOCALE_DIR = "./po/"
     GLADE_DIR = "./"
     IMG_DIR = "./images/"
     tcos_config_file="./tcos.conf"
-    #print "TcosMonitor not installed, exec in SVN place"
 else:
     tcos_config_file="/etc/tcos/tcos.conf"
     GLADE_DIR = "/usr/share/tcosmonitor/"
@@ -120,8 +116,6 @@ textdomain( PACKAGE )
 module_conf_file="/etc/tcos/tcosmonitor.conf"
 
 httpd_port=8081
-# not used anymore
-httpd_system_info="system-info.xml"
 
 xmlremote_port=8080
 xmlremote_url="/RPC2"
@@ -132,7 +126,7 @@ sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux", "vol", "pcm", 
 
 cache_timeout=20
 
-wait_between_many_host=0.2
+wait_between_many_host=0.1
 socket_default_timeout=15
 
 dbus_disabled=False
@@ -140,7 +134,6 @@ dbus_disabled=False
 disable_textview_on_update=False
 
 
-#NO_LOGIN_MSG=_("login manager")
 NO_LOGIN_MSG="----"
 
 ##
@@ -150,6 +143,7 @@ NO_LOGIN_MSG="----"
 appslist=[
 'xterm', 
 'firefox', 
+'iceweasel',
 'gimp', 
 'oowriter', 
 'oocalc', 
@@ -164,8 +158,10 @@ appslist=[
 'nautilus',
 'konqueror',
 'beep-media-player',
+'audacious',
 'tcos-volume-manager',
-'tcos-devices'
+'tcos-devices',
+'tcos-devices-ng'
 ]
 
 ###
@@ -190,9 +186,6 @@ onehost_menuitems=[
  [ _("Show running apps of this client") , "menu_proc.png" ], #action=15
  ]
 
-# add download all modules into modules info
-# [ _("Debug: Use allmodules.squashfs") , "menu_exec.png" ],   #action=14
-# [ _("Run installer"), "menu_configure.png" ] ,               #action=11
 
 allhost_menuitems=[
  [ _("Reboot all clients"), "menu_reboot.png"] ,                  #action=0
@@ -391,7 +384,6 @@ if have_display:
             if line.find('#') == 0: continue
             line=line.replace('\n', '')
             if "=" in line:
-                #print "%s is %s" %(line.split('=')[0], line.split('=')[1])
                 if line.split('=')[0] == module:
                     if line.split('=')[1] == "0":
                         return False

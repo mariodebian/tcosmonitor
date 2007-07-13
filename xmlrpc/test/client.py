@@ -14,6 +14,7 @@ def howmany():
 #server_url = 'http://192.168.0.11:8080/RPC2';
 #server_url = 'http://192.168.0.6:8080/RPC2';
 server_url = 'http://localhost:8080/RPC2';
+server_url = 'http://192.168.0.100:8080/RPC2';
 
 server = xmlrpclib.Server(server_url);
 
@@ -24,11 +25,14 @@ print "PYTHON::version is=%s" %(result)
 #result = server.tcos.info("get_client")
 #print "PYTHON::get_client is=%s" %(result)
 
-result = server.tcos.standalone("get_user")
-print "PYTHON::get_user is=%s" %(result)
+result = server.tcos.standalone("get_server")
+print "PYTHON::get_server is=%s" %(result)
 
-result = server.tcos.dbus("--auth='root:root' --type='exec' --text='xterm' --username='mario'", "root", "root")
-print "PYTHON::dbus is=%s" %(result)
+#result = server.tcos.info("get_process")
+#print "PYTHON::get_process is=%s" %(result)
+
+#result = server.tcos.dbus("--auth='root:root' --type='exec' --text='xterm' --username='mario'", "root", "root")
+#print "PYTHON::dbus is=%s" %(result)
 
 #result = server.tcos.standalone("get_process")
 #print "PYTHON::get_process is=%s" %(result)

@@ -37,7 +37,7 @@
 #include <Imlib.h>
 
 #ifndef LOCKSCREEN_IMAGE
-#define LOCKSCREEN_IMAGE "/usr/share/lockscreen/lockscreen.png"
+#define LOCKSCREEN_IMAGE "/usr/share/tcosmonitor/xmlrpc/lockscreen.png"
 #endif
 
 

@@ -48,13 +48,13 @@ if [ $# -lt 1 ]; then
 fi
 
 show_vars() {
-awk '/^CPU/ { gsub(")", "", $1) ; print $1}' $0
-awk '/^RAM/ { gsub(")", "", $1) ; print $1}' $0
-awk '/^SWAP/ { gsub(")", "", $1) ; print $1}' $0
-awk '/^TCOS/ { gsub(")", "", $1) ; print $1}' $0
-awk '/^KERNEL/ { gsub(")", "", $1) ; print $1}' $0
-awk '/^NET/ { gsub(")", "", $1) ; print $1}' $0
-awk '/^MODULES/ { gsub(")", "", $1) ; print $1}' $0
+awk '/^CPU/     { gsub("\)", "", $1) ; print $1}' $0 2>/dev/null
+awk '/^RAM/     { gsub("\)", "", $1) ; print $1}' $0 2>/dev/null
+awk '/^SWAP/    { gsub("\)", "", $1) ; print $1}' $0 2>/dev/null
+awk '/^TCOS/    { gsub("\)", "", $1) ; print $1}' $0 2>/dev/null
+awk '/^KERNEL/  { gsub("\)", "", $1) ; print $1}' $0 2>/dev/null
+awk '/^NET/     { gsub("\)", "", $1) ; print $1}' $0 2>/dev/null
+awk '/^MODULES/ { gsub("\)", "", $1) ; print $1}' $0 2>/dev/null
 }
 
 get_type() {
@@ -107,8 +107,8 @@ echo $(head -$1 /tmp/ps.aux | tail -1)
 }
 
 get_process() {
-if [ $STANDALONE = 1 ]; then
-  user=$(who | awk '($2 ~ /:0/) {print $1}')
+if [ "$STANDALONE" = "1" ]; then
+  user=$(who | awk '{ if ($2 == ":0") print $1 }')
   if [ "$user" = "root" ]; then
     echo "PID COMMAND" > /tmp/ps.aux
     echo "66000 User root not allowed to show process" >> /tmp/ps.aux

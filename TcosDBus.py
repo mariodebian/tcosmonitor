@@ -56,7 +56,6 @@ class TcosDBusServer:
     def auth(self):
         print_debug ( "self.admin=%s self.passwd=%s" %(self.admin, self.passwd) )
         if not self.admin or not self.passwd:
-            #self.error_msg=_("Need admin and passwd data to do this action")
             print_debug ( "Need admin and passwd data to do this action" )
             return False
         
@@ -67,7 +66,7 @@ class TcosDBusServer:
         print_debug( "host=\"%s\" display=\"%s\"" %(self.host, self.display) )
         
         #  FIXME
-        #  to TEST and DEBUG
+        #  to TEST and DEBUG uncomment this
         #
         #self.host="tcos11"
         #
@@ -130,7 +129,7 @@ class TcosDBusServer:
             return False
 
     def send_error_msg(self):
-        #FIXME, how to return error message ???
+        #FIXME, how to return error message with dbus???
         pass
 
     def parse_dbus_str(self, data):
@@ -190,11 +189,11 @@ class TcosDBusServer:
         
     def user_msg(self, txt):
         print_debug ( "user_msg() %s" %(txt) )
+        # use pynotify better???
         subprocess.Popen(['zenity', '--info', '--text=' + txt + ' ', '--title='+_("Message from admin")])
         return
     
     def start(self):
-        #iface.connect_to_signal('hello_signal', new_message)
         self.bus.add_signal_receiver(self.new_message,
                         signal_name='GotSignal',
                         dbus_interface='com.consoltux.TcosMonitor.Comm',
@@ -243,9 +242,6 @@ class TcosDBusAction:
     def do_exec(self, users, app):
         print_debug ( "do_exec() users=%s app=%s" %(users,app) )
         
-        if self.main.xmlrpc.IsStandalone():
-            return self.main.xmlrpc.DBus("exec", app)
-        
         if not self.connection:
             print_debug ( self.error )
             return False
@@ -261,9 +257,6 @@ class TcosDBusAction:
         
     def do_message(self, users, text=""):
         print_debug ( "do_message() users=%s text=%s" %(users, text) )
-        
-        if self.main.xmlrpc.IsStandalone():
-            return self.main.xmlrpc.DBus("mess", text)
         
         if not self.connection:
             print_debug ( self.error )
@@ -281,15 +274,10 @@ class TcosDBusAction:
     def do_kill(self, users, pid="0"):
         print_debug ( "do_kill() users=%s pid=%s" %(users, pid) )
         
-        if self.main.xmlrpc.IsStandalone():
-            return self.main.xmlrpc.DBus("kill", text)
-        
-        
         if not self.connection:
             print_debug ( self.error )
             return False
         
-        #self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["kill"] , [pid] ])
         try:
             print_debug ( "send signal" )
             self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["kill"] , [pid] ])
@@ -311,7 +299,6 @@ class TcosDBusAction:
             print_debug ( self.error )
             return False
         
-        #self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["kill"] , [pid] ])
         try:
             print_debug ( "send signal" )
             self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["killall"] , [proc] ])

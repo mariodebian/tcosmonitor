@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-27 17:44+0200\n"
+"POT-Creation-Date: 2007-07-13 11:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: tcosmonitor.py:228 tcospersonalize.py:386 tcos-volume-manager.py:337
+#: tcosmonitor.py:228 tcospersonalize.py:387 tcos-volume-manager.py:337
 #: tcos-devices.py:873
 msgid "Exiting"
 msgstr ""
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Network info"
 msgstr ""
 
-#: tcosmonitor.glade:1211 TcosActions.py:543
+#: tcosmonitor.glade:1211 TcosActions.py:554
 msgid "Xorg info"
 msgstr ""
 
@@ -222,231 +222,231 @@ msgstr ""
 msgid "<b>Run app in unknow host</b>"
 msgstr ""
 
-#: Initialize.py:318
+#: Initialize.py:312
 msgid "Hostname"
 msgstr ""
 
-#: Initialize.py:324
+#: Initialize.py:318
 msgid "Ip address"
 msgstr ""
 
-#: Initialize.py:330
+#: Initialize.py:324
 msgid "Username"
 msgstr ""
 
-#: Initialize.py:336
+#: Initialize.py:330
 msgid "Active"
 msgstr ""
 
-#: Initialize.py:341
+#: Initialize.py:335
 msgid "Logged"
 msgstr ""
 
-#: Initialize.py:346
+#: Initialize.py:340
 msgid "Screen Blocked"
 msgstr ""
 
-#: Initialize.py:351
+#: Initialize.py:345
 msgid "Num of process"
 msgstr ""
 
-#: Initialize.py:357
+#: Initialize.py:351
 msgid "Time log in"
 msgstr ""
 
-#: LocalData.py:37 LocalData.py:56 TcosActions.py:379
+#: LocalData.py:38 LocalData.py:57 TcosActions.py:390
 msgid "unknow"
 msgstr ""
 
-#: ping.py:64
+#: ping.py:68
 #, python-format
 msgid "Ping to %s..."
 msgstr ""
 
-#: ping.py:73
+#: ping.py:77
 msgid "Waiting for pings..."
 msgstr ""
 
-#: ping.py:85
+#: ping.py:89
 msgid "No host found"
 msgstr ""
 
-#: ping.py:92 TcosActions.py:172
+#: ping.py:96 TcosActions.py:173
 #, python-format
 msgid "Found %d hosts"
 msgstr ""
 
-#: shared.py:53
+#: shared.py:55
 msgid "TcosMonitor web page"
 msgstr ""
 
-#: shared.py:173
+#: shared.py:175
 msgid "Refresh terminal info"
 msgstr ""
 
-#: shared.py:174
+#: shared.py:176
 msgid "Clean info about terminal"
 msgstr ""
 
-#: shared.py:175
+#: shared.py:177
 msgid "Reboot"
 msgstr ""
 
-#: shared.py:176
+#: shared.py:178
 msgid "Poweroff"
 msgstr ""
 
-#: shared.py:177
+#: shared.py:179
 msgid "Lock screen"
 msgstr ""
 
-#: shared.py:178
+#: shared.py:180
 msgid "Unlock screen"
 msgstr ""
 
-#: shared.py:179
+#: shared.py:181
 msgid "Connect to remote screen (iTALC)"
 msgstr ""
 
-#: shared.py:180
+#: shared.py:182
 msgid "Connect to remote screen (VNC)"
 msgstr ""
 
-#: shared.py:181
+#: shared.py:183
 msgid "Screenshot"
 msgstr ""
 
-#: shared.py:182
+#: shared.py:184
 msgid "Give a remote xterm"
 msgstr ""
 
-#: shared.py:183
+#: shared.py:185
 msgid "Configure this host"
 msgstr ""
 
-#: shared.py:184
+#: shared.py:186
 msgid "Logout client"
 msgstr ""
 
-#: shared.py:185
+#: shared.py:187
 msgid "Restart X session with new settings"
 msgstr ""
 
-#: shared.py:186
+#: shared.py:188
 msgid "Exec app on user display"
 msgstr ""
 
-#: shared.py:187
+#: shared.py:189
 msgid "Send a text message to user"
 msgstr ""
 
-#: shared.py:188
+#: shared.py:190
 msgid "Show running apps of this client"
 msgstr ""
 
-#: shared.py:196
+#: shared.py:198
 msgid "Reboot all clients"
 msgstr ""
 
-#: shared.py:197
+#: shared.py:199
 msgid "Poweroff all clients"
 msgstr ""
 
-#: shared.py:198
+#: shared.py:200
 msgid "Lock all screens"
 msgstr ""
 
-#: shared.py:199
+#: shared.py:201
 msgid "Unlock all screens"
 msgstr ""
 
-#: shared.py:200
+#: shared.py:202
 msgid "Logout clients"
 msgstr ""
 
-#: shared.py:201
+#: shared.py:203
 msgid "Restart X session of all clients"
 msgstr ""
 
-#: shared.py:202
+#: shared.py:204
 msgid "Exec same app in all connected users"
 msgstr ""
 
-#: shared.py:203
+#: shared.py:205
 msgid "Send a text message to all connected users"
 msgstr ""
 
-#: shared.py:204
+#: shared.py:206
 msgid "Enter demo mode, all connected users see my screen"
 msgstr ""
 
-#: shared.py:205
+#: shared.py:207
 msgid "Exit demo mode"
 msgstr ""
 
-#: shared.py:206
+#: shared.py:208
 msgid "Capture All clients screens"
 msgstr ""
 
-#: shared.py:207
+#: shared.py:209
 msgid "Video broadcast"
 msgstr ""
 
-#: shared.py:208
+#: shared.py:210
 msgid "Stop Video broadcast"
 msgstr ""
 
-#: shared.py:209
+#: shared.py:211
 msgid "Send files"
 msgstr ""
 
-#: shared.py:353
+#: shared.py:355
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr ""
 
-#: shared.py:365
+#: shared.py:367
 #, python-format
 msgid "INFO: %s"
 msgstr ""
 
-#: shared.py:376
+#: shared.py:378
 #, python-format
 msgid "ERROR: %s"
 msgstr ""
 
-#: TcosXmlRpc.py:73 TcosXmlRpc.py:75
+#: TcosXmlRpc.py:74 TcosXmlRpc.py:76
 msgid ""
 "Username or password are empty,\n"
 "please edit in preferences dialog!"
 msgstr ""
 
-#: tcospersonalize.py:102
+#: tcospersonalize.py:103
 msgid ""
 "Need a host to configure!!!\n"
 "Try exec:\n"
 " tcospersonalize --host=XXX.XXX.XXX.XXX"
 msgstr ""
 
-#: tcospersonalize.py:152
+#: tcospersonalize.py:153
 msgid "host: "
 msgstr ""
 
-#: tcospersonalize.py:353
+#: tcospersonalize.py:354
 msgid "Host down, can't connect to tcosxmlrpc."
 msgstr ""
 
-#: tcospersonalize.py:361
+#: tcospersonalize.py:362
 #, python-format
 msgid "New %d drivers loaded from terminal."
 msgstr ""
 
-#: tcospersonalize.py:379
+#: tcospersonalize.py:380
 #, python-format
 msgid "Really delete config of %s?"
 msgstr ""
 
-#: tcospersonalize.py:382
+#: tcospersonalize.py:383
 msgid "Deleted!"
 msgstr ""
 
@@ -454,7 +454,7 @@ msgstr ""
 msgid "<b>unknow host</b>"
 msgstr ""
 
-#: tcospersonalize.glade:103 TcosActions.py:579
+#: tcospersonalize.glade:103 TcosActions.py:590
 msgid "Enable mouse wheel"
 msgstr ""
 
@@ -462,23 +462,23 @@ msgstr ""
 msgid "Disable Ctrl + Alt + Backspace (for kill Xorg)"
 msgstr ""
 
-#: tcospersonalize.glade:146 TcosActions.py:571
+#: tcospersonalize.glade:146 TcosActions.py:582
 msgid "Xorg Resolution"
 msgstr ""
 
-#: tcospersonalize.glade:208 TcosActions.py:573
+#: tcospersonalize.glade:208 TcosActions.py:584
 msgid "Xorg Color depth"
 msgstr ""
 
-#: tcospersonalize.glade:253 TcosActions.py:567
+#: tcospersonalize.glade:253 TcosActions.py:578
 msgid "X Session Type"
 msgstr ""
 
-#: tcospersonalize.glade:299 TcosActions.py:575
+#: tcospersonalize.glade:299 TcosActions.py:586
 msgid "DPMS energy monitor control"
 msgstr ""
 
-#: tcospersonalize.glade:326 TcosActions.py:569
+#: tcospersonalize.glade:326 TcosActions.py:580
 msgid "Xorg Driver"
 msgstr ""
 
@@ -518,11 +518,11 @@ msgstr ""
 msgid "Addons"
 msgstr ""
 
-#: tcospersonalize.glade:648 TcosActions.py:589
+#: tcospersonalize.glade:648 TcosActions.py:600
 msgid "X Horiz sync"
 msgstr ""
 
-#: tcospersonalize.glade:676 TcosActions.py:591
+#: tcospersonalize.glade:676 TcosActions.py:602
 msgid "X Vert sync"
 msgstr ""
 
@@ -534,32 +534,28 @@ msgstr ""
 msgid "Delete Config"
 msgstr ""
 
-#: TcosDBus.py:58
-msgid "Need admin and passwd data to do this action"
-msgstr ""
-
-#: TcosDBus.py:76
+#: TcosDBus.py:77
 msgid "TcosDBus not allowed in local display"
 msgstr ""
 
-#: TcosDBus.py:87
+#: TcosDBus.py:95
 #, python-format
 msgid "Seems that tcosxmlrpc isn't running on host=\"%s\""
 msgstr ""
 
-#: TcosDBus.py:108
+#: TcosDBus.py:116
 msgid "tcosxmlrpc ERROR conection unavalaible."
 msgstr ""
 
-#: TcosDBus.py:120
+#: TcosDBus.py:128
 msgid "ERROR conecting to tcosxmlrpc, check username and password."
 msgstr ""
 
-#: TcosDBus.py:185
+#: TcosDBus.py:193
 msgid "Message from admin"
 msgstr ""
 
-#: TcosDBus.py:244 TcosDBus.py:259 TcosDBus.py:277 TcosDBus.py:295
+#: TcosDBus.py:257 TcosDBus.py:276 TcosDBus.py:299 TcosDBus.py:321
 msgid "User not allowed to run this dbus call."
 msgstr ""
 
@@ -575,7 +571,7 @@ msgstr ""
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr ""
 
-#: tcos-volume-manager.py:149 tcos-devices.py:201 tcos-devices-ng.py:209
+#: tcos-volume-manager.py:149 tcos-devices.py:201 tcos-devices-ng.py:224
 #, python-format
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr ""
@@ -597,7 +593,7 @@ msgstr ""
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr ""
 
-#: tcos-volume-manager.py:266 TcosActions.py:652
+#: tcos-volume-manager.py:266 TcosActions.py:663
 msgid "Mute"
 msgstr ""
 
@@ -609,27 +605,27 @@ msgstr ""
 msgid "All remote controls loaded."
 msgstr ""
 
-#: tcos-volume-manager.py:294 TcosActions.py:737
+#: tcos-volume-manager.py:294 TcosActions.py:748
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr ""
 
-#: tcos-volume-manager.py:300 TcosActions.py:743
+#: tcos-volume-manager.py:300 TcosActions.py:754
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr ""
 
-#: tcos-volume-manager.py:307 TcosActions.py:750
+#: tcos-volume-manager.py:307 TcosActions.py:761
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr ""
 
-#: tcos-volume-manager.py:311 TcosActions.py:754
+#: tcos-volume-manager.py:311 TcosActions.py:765
 #, python-format
 msgid "Muting %s channel..."
 msgstr ""
 
-#: tcos-volume-manager.py:313 TcosActions.py:756
+#: tcos-volume-manager.py:313 TcosActions.py:767
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr ""
@@ -646,520 +642,520 @@ msgstr ""
 msgid "Secondary Channels"
 msgstr ""
 
-#: TcosActions.py:60 TcosActions.py:68 TcosActions.py:76
+#: TcosActions.py:61 TcosActions.py:69 TcosActions.py:77
 msgid "PulseAudio apps need /dev/shm."
 msgstr ""
 
-#: TcosActions.py:80
+#: TcosActions.py:81
 msgid "Are you sure sou want to stop this process?"
 msgstr ""
 
-#: TcosActions.py:84
+#: TcosActions.py:85
 #, python-format
 msgid ""
 "Error while killing app:\n"
 "Reason: %s"
 msgstr ""
 
-#: TcosActions.py:148
+#: TcosActions.py:149
 msgid "New settings saved."
 msgstr ""
 
-#: TcosActions.py:158
+#: TcosActions.py:159
 msgid "Searching for connected hosts..."
 msgstr ""
 
-#: TcosActions.py:167
+#: TcosActions.py:168
 msgid "Not connected hosts found."
 msgstr ""
 
-#: TcosActions.py:212
+#: TcosActions.py:213
 #, python-format
 msgid "Error connecting to tcosxmlrpc in %s"
 msgstr ""
 
-#: TcosActions.py:244
+#: TcosActions.py:245
 msgid "Clients not connected"
 msgstr ""
 
-#: TcosActions.py:262
+#: TcosActions.py:263
 #, python-format
 msgid ""
 "<b>Exec app in user(s) screen(s):</b>\n"
 "%s"
 msgstr ""
 
-#: TcosActions.py:264
+#: TcosActions.py:265
 #, python-format
 msgid ""
 "<b>Send a message to:</b>\n"
 "%s"
 msgstr ""
 
-#: TcosActions.py:278 TcosActions.py:1165 TcosActions.py:1294
+#: TcosActions.py:289 TcosActions.py:1192 TcosActions.py:1324
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
 "Reason: %s"
 msgstr ""
 
-#: TcosActions.py:285 TcosActions.py:1300
+#: TcosActions.py:296 TcosActions.py:1330
 #, python-format
 msgid ""
 "Error while send message:\n"
 "Reason: %s"
 msgstr ""
 
-#: TcosActions.py:339
+#: TcosActions.py:350
 #, python-format
 msgid "Connecting with %s to retrieve some info..."
 msgstr ""
 
-#: TcosActions.py:359
+#: TcosActions.py:370
 msgid "Tcos info"
 msgstr ""
 
-#: TcosActions.py:362
+#: TcosActions.py:373
 msgid "PXES info"
 msgstr ""
 
-#: TcosActions.py:365
+#: TcosActions.py:376
 msgid "LTSP info"
 msgstr ""
 
-#: TcosActions.py:368
+#: TcosActions.py:379
 msgid "Standalone info"
 msgstr ""
 
-#: TcosActions.py:371
+#: TcosActions.py:382
 msgid "Unknow client info"
 msgstr ""
 
-#: TcosActions.py:382
+#: TcosActions.py:393
 msgid "Hostname: "
 msgstr ""
 
-#: TcosActions.py:383
+#: TcosActions.py:394
 msgid "Ip address: "
 msgstr ""
 
-#: TcosActions.py:384
+#: TcosActions.py:395
 msgid "TcosXmlRpc version: "
 msgstr ""
 
-#: TcosActions.py:393
+#: TcosActions.py:404
 msgid "Tcos image version: "
 msgstr ""
 
-#: TcosActions.py:394
+#: TcosActions.py:405
 msgid "Tcos image date: "
 msgstr ""
 
-#: TcosActions.py:395
+#: TcosActions.py:406
 msgid "Date of thin client: "
 msgstr ""
 
-#: TcosActions.py:396
+#: TcosActions.py:407
 msgid "Uptime: "
 msgstr ""
 
-#: TcosActions.py:405
+#: TcosActions.py:416
 msgid "Kernel info"
 msgstr ""
 
-#: TcosActions.py:414
+#: TcosActions.py:425
 msgid "Force download and mount all modules"
 msgstr ""
 
-#: TcosActions.py:425
+#: TcosActions.py:436
 msgid "None"
 msgstr ""
 
-#: TcosActions.py:428
+#: TcosActions.py:439
 msgid "Kernel version: "
 msgstr ""
 
-#: TcosActions.py:429
+#: TcosActions.py:440
 msgid "Kernel complete version: "
 msgstr ""
 
-#: TcosActions.py:430
+#: TcosActions.py:441
 msgid "Loaded Modules: "
 msgstr ""
 
-#: TcosActions.py:431
+#: TcosActions.py:442
 msgid "Modules not found: "
 msgstr ""
 
-#: TcosActions.py:445
+#: TcosActions.py:456
 msgid "Cpu info: "
 msgstr ""
 
-#: TcosActions.py:452
+#: TcosActions.py:463
 msgid "Cpu model: "
 msgstr ""
 
-#: TcosActions.py:453
+#: TcosActions.py:464
 msgid "Cpu vendor: "
 msgstr ""
 
-#: TcosActions.py:454
+#: TcosActions.py:465
 msgid "Cpu speed: "
 msgstr ""
 
-#: TcosActions.py:463
+#: TcosActions.py:474
 msgid "PCI buses: "
 msgstr ""
 
-#: TcosActions.py:480
+#: TcosActions.py:491
 msgid "Process running: "
 msgstr ""
 
-#: TcosActions.py:491
+#: TcosActions.py:502
 msgid "Ram info: "
 msgstr ""
 
-#: TcosActions.py:498
+#: TcosActions.py:509
 msgid "Total Ram: "
 msgstr ""
 
-#: TcosActions.py:499
+#: TcosActions.py:510
 msgid "Free RAM: "
 msgstr ""
 
-#: TcosActions.py:500
+#: TcosActions.py:511
 msgid "Active RAM: "
 msgstr ""
 
-#: TcosActions.py:503
+#: TcosActions.py:514
 msgid "Swap info: "
 msgstr ""
 
-#: TcosActions.py:509
+#: TcosActions.py:520
 msgid "Swap enabled: "
 msgstr ""
 
-#: TcosActions.py:510
+#: TcosActions.py:521
 msgid "Total Swap: "
 msgstr ""
 
-#: TcosActions.py:511
+#: TcosActions.py:522
 msgid "Used Swap: "
 msgstr ""
 
-#: TcosActions.py:520
+#: TcosActions.py:531
 msgid "Network info: "
 msgstr ""
 
-#: TcosActions.py:530
+#: TcosActions.py:541
 msgid "Network hostname: "
 msgstr ""
 
-#: TcosActions.py:531
+#: TcosActions.py:542
 msgid "Network IP: "
 msgstr ""
 
-#: TcosActions.py:532
+#: TcosActions.py:543
 msgid "Network MASK: "
 msgstr ""
 
-#: TcosActions.py:533
+#: TcosActions.py:544
 msgid "Network MAC: "
 msgstr ""
 
-#: TcosActions.py:534
+#: TcosActions.py:545
 msgid "Data received(rx): "
 msgstr ""
 
-#: TcosActions.py:535
+#: TcosActions.py:546
 msgid "Data send(tx): "
 msgstr ""
 
-#: TcosActions.py:552
+#: TcosActions.py:563
 #, python-format
 msgid ""
 "Error getting Xorg info:\n"
 "%s"
 msgstr ""
 
-#: TcosActions.py:562
+#: TcosActions.py:573
 msgid "enabled"
 msgstr ""
 
-#: TcosActions.py:564
+#: TcosActions.py:575
 msgid "disabled"
 msgstr ""
 
-#: TcosActions.py:577
+#: TcosActions.py:588
 msgid "Disable kill X with Ctrl+Alt+Backspace"
 msgstr ""
 
-#: TcosActions.py:581
+#: TcosActions.py:592
 msgid "Refresh rate"
 msgstr ""
 
-#: TcosActions.py:583
+#: TcosActions.py:594
 msgid "Xorg font server"
 msgstr ""
 
-#: TcosActions.py:585
+#: TcosActions.py:596
 msgid "Mouse device"
 msgstr ""
 
-#: TcosActions.py:587
+#: TcosActions.py:598
 msgid "Mouse protocol"
 msgstr ""
 
-#: TcosActions.py:603
+#: TcosActions.py:614
 msgid "PulseAudio Sound server is running"
 msgstr ""
 
-#: TcosActions.py:620
+#: TcosActions.py:631
 msgid "Remote Sound Mixer"
 msgstr ""
 
-#: TcosActions.py:684
+#: TcosActions.py:695
 msgid "PulseAudio Control"
 msgstr ""
 
-#: TcosActions.py:689
+#: TcosActions.py:700
 msgid "PulseAudio Meter"
 msgstr ""
 
-#: TcosActions.py:694
+#: TcosActions.py:705
 msgid "PulseAudio Manager"
 msgstr ""
 
-#: TcosActions.py:698
+#: TcosActions.py:709
 msgid "PulseAudio utils: "
 msgstr ""
 
-#: TcosActions.py:704
+#: TcosActions.py:715
 msgid "PulseAudio stats"
 msgstr ""
 
-#: TcosActions.py:777
+#: TcosActions.py:788
 msgid "Searching info of hosts..."
 msgstr ""
 
-#: TcosActions.py:799
+#: TcosActions.py:810
 #, python-format
 msgid "Connecting to %s..."
 msgstr ""
 
-#: TcosActions.py:881
+#: TcosActions.py:892
 #, python-format
 msgid "Do you want to reboot %s?"
 msgstr ""
 
-#: TcosActions.py:887
+#: TcosActions.py:898
 #, python-format
 msgid "Do you want to poweroff %s?"
 msgstr ""
 
-#: TcosActions.py:894 TcosActions.py:901
+#: TcosActions.py:905 TcosActions.py:912
 msgid ""
 "Can't connect to tcosxmlrpc.\n"
 "Please verify user and password in prefences!"
 msgstr ""
 
-#: TcosActions.py:926
+#: TcosActions.py:937
 msgid "Enter password of remote thin client (if asked for it)"
 msgstr ""
 
-#: TcosActions.py:939
+#: TcosActions.py:950
 #, python-format
 msgid "%s is not supported to personalize!"
 msgstr ""
 
-#: TcosActions.py:951
+#: TcosActions.py:962
 #, python-format
 msgid "Do you want to restart Xorg of %s?"
 msgstr ""
 
-#: TcosActions.py:959
+#: TcosActions.py:970
 #, python-format
 msgid "Restart X session of %s with new config?"
 msgstr ""
 
-#: TcosActions.py:991
+#: TcosActions.py:1003 TcosActions.py:1019
+msgid "Waiting for start of VNC server..."
+msgstr ""
+
+#: TcosActions.py:1012
 #, python-format
 msgid "Connecting with %s to start VNC support"
 msgstr ""
 
-#: TcosActions.py:998
-msgid "Waiting for start of VNC server..."
-msgstr ""
-
-#: TcosActions.py:1003
+#: TcosActions.py:1024
 msgid "Can't start VNC, please add X11VNC support"
 msgstr ""
 
-#: TcosActions.py:1032
+#: TcosActions.py:1053
 msgid "Can't start IVS, please add iTALC support"
 msgstr ""
 
-#: TcosActions.py:1053
+#: TcosActions.py:1074
 msgid "No clients connected, press refresh button."
 msgstr ""
 
-#: TcosActions.py:1058
+#: TcosActions.py:1079
 #, python-format
 msgid "Do you want to reboot the following hosts:%s?"
 msgstr ""
 
-#: TcosActions.py:1068
+#: TcosActions.py:1089
 #, python-format
 msgid "Do you want to poweroff the following hosts:%s?"
 msgstr ""
 
-#: TcosActions.py:1078
+#: TcosActions.py:1099
 #, python-format
 msgid "Do you want to lock the following screens:%s?"
 msgstr ""
 
-#: TcosActions.py:1089
+#: TcosActions.py:1110
 #, python-format
 msgid "Do you want to unlock the following screens:%s?"
 msgstr ""
 
-#: TcosActions.py:1112
+#: TcosActions.py:1133
 #, python-format
 msgid "Do you want to restart X screens:%s?"
 msgstr ""
 
-#: TcosActions.py:1166
+#: TcosActions.py:1193
 msgid "Running in demo mode."
 msgstr ""
 
-#: TcosActions.py:1177
+#: TcosActions.py:1204
 msgid "Demo mode off."
 msgstr ""
 
-#: TcosActions.py:1196
+#: TcosActions.py:1224
 msgid "Select audio/video file.."
 msgstr ""
 
-#: TcosActions.py:1221 TcosActions.py:1278
+#: TcosActions.py:1249 TcosActions.py:1308
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
 "Reason:%s"
 msgstr ""
 
-#: TcosActions.py:1222
+#: TcosActions.py:1250
 msgid "Running in broadcast video transmission."
 msgstr ""
 
-#: TcosActions.py:1238
+#: TcosActions.py:1267
 msgid "Video broadcast stoped."
 msgstr ""
 
-#: TcosActions.py:1251
+#: TcosActions.py:1281
 msgid "Select file or files..."
 msgstr ""
 
-#: TcosActions.py:1273 TcosActions.py:1289 TcosActions.py:1298
+#: TcosActions.py:1303 TcosActions.py:1319 TcosActions.py:1328
 msgid "Teacher"
 msgstr ""
 
-#: TcosActions.py:1279
+#: TcosActions.py:1309
 msgid "Creating destination folder."
 msgstr ""
 
-#: TcosActions.py:1298
+#: TcosActions.py:1328
 #, python-format
 msgid ""
-"Teacher has sent some files to %s folder:\n"
+"Teacher has sent some files to %(teacher)s folder:\n"
 "\n"
-"%s"
+"%(basenames)s"
 msgstr ""
 
-#: TcosActions.py:1302
+#: TcosActions.py:1332
 msgid "Send files."
 msgstr ""
 
-#: TcosActions.py:1314
+#: TcosActions.py:1344
 msgid "Screenshots of all hosts"
 msgstr ""
 
-#: TcosActions.py:1334
+#: TcosActions.py:1364
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr ""
 
-#: TcosActions.py:1364 TcosActions.py:1463
+#: TcosActions.py:1394 TcosActions.py:1493
 #, python-format
 msgid "Screenshot of %s"
 msgstr ""
 
-#: TcosActions.py:1376
+#: TcosActions.py:1406
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr ""
 
-#: TcosActions.py:1383
+#: TcosActions.py:1413
 msgid "Waiting for screenshots..."
 msgstr ""
 
-#: TcosActions.py:1429
+#: TcosActions.py:1459
 msgid "Trying to order terminal to do a screenshot..."
 msgstr ""
 
-#: TcosActions.py:1434
+#: TcosActions.py:1464
 msgid "Can't make screenshot, connection error"
 msgstr ""
 
-#: TcosActions.py:1440
+#: TcosActions.py:1470
 msgid "Get another screenshot"
 msgstr ""
 
-#: TcosActions.py:1454
+#: TcosActions.py:1484
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr ""
 
-#: TcosActions.py:1468
+#: TcosActions.py:1498
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr ""
 
-#: TcosActions.py:1487
+#: TcosActions.py:1517
 msgid "User not connected, no processes."
 msgstr ""
 
-#: TcosActions.py:1496
+#: TcosActions.py:1537
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr ""
 
-#: TcosActions.py:1500
+#: TcosActions.py:1541
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 
-#: TcosActions.py:1505
+#: TcosActions.py:1546
 msgid "Pid"
 msgstr ""
 
-#: TcosActions.py:1506
+#: TcosActions.py:1547
 msgid "Process command"
 msgstr ""
 
-#: TcosActions.py:1513
+#: TcosActions.py:1554
 msgid "Kill this process"
 msgstr ""
 
-#: TcosActions.py:1622
+#: TcosActions.py:1663
 msgid "Actions for selected host"
 msgstr ""
 
-#: TcosActions.py:1628
+#: TcosActions.py:1669
 #, python-format
 msgid "Actions for %s"
 msgstr ""
 
-#: TcosActions.py:1664
+#: TcosActions.py:1705
 msgid "Actions for all hosts"
 msgstr ""
 
@@ -1167,23 +1163,23 @@ msgstr ""
 msgid "Your user isn't in fuse group, ask your system administrator."
 msgstr ""
 
-#: tcos-devices.py:252 tcos-devices-ng.py:524
+#: tcos-devices.py:252 tcos-devices-ng.py:539
 msgid "usbdisk"
 msgstr ""
 
-#: tcos-devices.py:415 tcos-devices-ng.py:292
+#: tcos-devices.py:415 tcos-devices-ng.py:307
 msgid "Floppy mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:418 tcos-devices-ng.py:294
+#: tcos-devices.py:418 tcos-devices-ng.py:309
 msgid "Floppy umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:421 tcos-devices-ng.py:333
+#: tcos-devices.py:421 tcos-devices-ng.py:348
 msgid "Cdrom mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices.py:424 tcos-devices-ng.py:336
+#: tcos-devices.py:424 tcos-devices-ng.py:351
 msgid "Cdrom umounted. You can extract it."
 msgstr ""
 
@@ -1195,7 +1191,7 @@ msgstr ""
 msgid "Flash device umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices.py:454 tcos-devices-ng.py:655
+#: tcos-devices.py:454 tcos-devices-ng.py:670
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1208,7 +1204,7 @@ msgstr ""
 msgid "Can't mount device %s"
 msgstr ""
 
-#: tcos-devices.py:498 tcos-devices-ng.py:658
+#: tcos-devices.py:498 tcos-devices-ng.py:673
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1235,14 +1231,14 @@ msgid ""
 "Click on Desktop icon to secure umount."
 msgstr ""
 
-#: tcos-devices.py:607 tcos-devices-ng.py:479
+#: tcos-devices.py:607 tcos-devices-ng.py:494
 #, python-format
 msgid ""
 "Umounting device %s.\n"
 "Please wait..."
 msgstr ""
 
-#: tcos-devices.py:629 tcos-devices-ng.py:180
+#: tcos-devices.py:629 tcos-devices-ng.py:195
 msgid "Tcos device daemon"
 msgstr ""
 
@@ -1261,16 +1257,16 @@ msgid "No support for more than one cdrom, first detected will be used"
 msgstr ""
 
 #: tcos-devices.py:766 tcos-devices.py:771 tcos-devices.py:780
-#: tcos-devices.py:782 tcos-devices-ng.py:278 tcos-devices-ng.py:544
-#: tcos-devices-ng.py:550 tcos-devices-ng.py:555
+#: tcos-devices.py:782 tcos-devices-ng.py:293 tcos-devices-ng.py:559
+#: tcos-devices-ng.py:565 tcos-devices-ng.py:570
 msgid "Floppy"
 msgstr ""
 
-#: tcos-devices.py:769 tcos-devices-ng.py:548
+#: tcos-devices.py:769 tcos-devices-ng.py:563
 msgid "Can't mount floppy"
 msgstr ""
 
-#: tcos-devices.py:785 tcos-devices-ng.py:558
+#: tcos-devices.py:785 tcos-devices-ng.py:573
 msgid "Can't umount floppy"
 msgstr ""
 
@@ -1279,11 +1275,11 @@ msgstr ""
 msgid "Cdrom"
 msgstr ""
 
-#: tcos-devices.py:797 tcos-devices-ng.py:579
+#: tcos-devices.py:797 tcos-devices-ng.py:594
 msgid "Can't mount cdrom"
 msgstr ""
 
-#: tcos-devices.py:815 tcos-devices-ng.py:594
+#: tcos-devices.py:815 tcos-devices-ng.py:609
 msgid "Can't umount cdrom"
 msgstr ""
 
@@ -1292,53 +1288,53 @@ msgstr ""
 msgid "Umounting %s, please wait..."
 msgstr ""
 
-#: tcos-devices-ng.py:227
+#: tcos-devices-ng.py:242
 #, python-format
 msgid "Cdrom device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:230
+#: tcos-devices-ng.py:245
 msgid "Mount Cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:231
+#: tcos-devices-ng.py:246
 msgid "Umount Cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:251
+#: tcos-devices-ng.py:266
 #, python-format
 msgid "Disk partition %s"
 msgstr ""
 
-#: tcos-devices-ng.py:254
+#: tcos-devices-ng.py:269
 msgid "Mount disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:255
+#: tcos-devices-ng.py:270
 msgid "Umount disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:266
+#: tcos-devices-ng.py:281
 msgid "No floppy detected"
 msgstr ""
 
-#: tcos-devices-ng.py:281 tcos-devices.glade:194
+#: tcos-devices-ng.py:296 tcos-devices.glade:194
 msgid "Mount Floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:282 tcos-devices.glade:272
+#: tcos-devices-ng.py:297 tcos-devices.glade:272
 msgid "Umount Floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:310
+#: tcos-devices-ng.py:325
 msgid "Hard disk partition mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices-ng.py:313
+#: tcos-devices-ng.py:328
 msgid "Hard disk partition umounted."
 msgstr ""
 
-#: tcos-devices-ng.py:464
+#: tcos-devices-ng.py:479
 #, python-format
 msgid ""
 "Mounting device %(device)s in \n"
@@ -1346,50 +1342,50 @@ msgid ""
 "Please wait..."
 msgstr ""
 
-#: tcos-devices-ng.py:571 tcos-devices-ng.py:581 tcos-devices-ng.py:591
+#: tcos-devices-ng.py:586 tcos-devices-ng.py:596 tcos-devices-ng.py:606
 #, python-format
 msgid "Cdrom_%s"
 msgstr ""
 
-#: tcos-devices-ng.py:610 tcos-devices-ng.py:620 tcos-devices-ng.py:630
+#: tcos-devices-ng.py:625 tcos-devices-ng.py:635 tcos-devices-ng.py:645
 #, python-format
 msgid "Disk_%s"
 msgstr ""
 
-#: tcos-devices-ng.py:618
+#: tcos-devices-ng.py:633
 msgid "Can't mount hard disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:633
+#: tcos-devices-ng.py:648
 msgid "Can't umount hard disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:681
+#: tcos-devices-ng.py:696
 #, python-format
 msgid "USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:684
+#: tcos-devices-ng.py:699
 #, python-format
 msgid "Mount USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:685
+#: tcos-devices-ng.py:700
 #, python-format
 msgid "Umount USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:700 tcos-devices-ng.py:744
+#: tcos-devices-ng.py:715 tcos-devices-ng.py:759
 #, python-format
 msgid "Error, can't mount device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:768
+#: tcos-devices-ng.py:783
 #, python-format
 msgid "USB device %s umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices-ng.py:771
+#: tcos-devices-ng.py:786
 #, python-format
 msgid "USB device %s mounted. Ready for use."
 msgstr ""

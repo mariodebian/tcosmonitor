@@ -10,8 +10,9 @@ tcosmonitor (0.1.19.0) unstable; urgency=low
     - Don't fail at stop
   * README.standalone
     - Add some standalone info
+  * More changes to support standalone mode
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 12 Jul 2007 15:19:39 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 13 Jul 2007 19:48:07 +0200
 
 tcosmonitor (0.1.18.1) unstable; urgency=low
 

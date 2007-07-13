@@ -36,8 +36,8 @@ cpifexists ${TCOS_BINS}/tcosxmlrpc  /usr/bin/
 cpifexists ${TCOS_BINS}/lockscreen  /usr/bin/
 
 # copy locked image
-mkdir -p ${DESTDIR}/usr/share/tcosmonitor/xmlrpc
-cp /usr/share/tcosmonitor/xmlrpc/locked.png ${DESTDIR}/usr/share/tcosmonitor/xmlrpc/
+mkdir -p ${DESTDIR}/usr/share/tcosmonitor/xmlrpc/
+cp /usr/share/tcosmonitor/xmlrpc/lockscreen.png ${DESTDIR}/usr/share/tcosmonitor/xmlrpc/
 
 
 copy_exec /sbin/start-stop-daemon  /sbin/

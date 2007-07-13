@@ -40,6 +40,9 @@ tcos_standalone(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   else if ( strcmp(info, "get_process") == 0 )
       fp=(FILE*)popen(STANDALONE_PROCESS, "r");
 
+  else if ( strcmp(info, "get_server") == 0 )
+      fp=(FILE*)popen(STANDALONE_SERVER, "r");
+
   /* default method = error */
   else
       return xmlrpc_build_value(env, "s", STANDALONE_UNKNOW );
@@ -47,7 +50,7 @@ tcos_standalone(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   if (fp == NULL)
 	return xmlrpc_build_value(env, "s", STANDALONE_UNKNOW );
 
-  /* put error into line var */
+  /* put error into line */
   strcpy(line, STANDALONE_ERROR);
 
   fgets( line, sizeof line, fp);

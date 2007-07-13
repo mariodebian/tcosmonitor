@@ -66,12 +66,9 @@ class TcosXmlRpc:
             self.username=self.main.config.GetVar("xmlrpc_username")
             self.password=self.main.config.GetVar("xmlrpc_password")
             
-            print_debug ( "__init__() login=%s pass=%s" %(self.username, self.password) )
-            
             if self.username == "" or self.password == "":
                 # warn empty username and password 
                 if self.main.name == "TcosMonitor":
-                    print _("Username or password are empty,\nplease edit in preferences dialog!")
                     gtk.gdk.threads_enter()
                     shared.error_msg( _("Username or password are empty,\nplease edit in preferences dialog!") )
                     gtk.gdk.threads_leave()
@@ -124,7 +121,6 @@ class TcosXmlRpc:
                         return self.ports[i][2]
                     else:
                         print_debug ( "cache() delete old cache" )
-                        #print self.ports
                         self.ports.pop(i)
                         print_debug ( self.ports )
                         return None
@@ -148,8 +144,6 @@ class TcosXmlRpc:
             return True
         if port == None:
             return True
-        #if not self.isLive(ip):
-        #    return False
         
         from ping import PingPort
         status=PingPort(ip,port).get_status()
@@ -158,30 +152,7 @@ class TcosXmlRpc:
             return True
         else:
             return False
-        """
-        cmd="echoping -h / %s:%s 2>&1" %(ip, port)
-        print_debug ( "isPortListening() cmd=%s" %(cmd) )
-        listen=os.popen(cmd, "r")
-        for line in listen.readlines():
-            #print line
-            if "404" in line:
-                print_debug ( "isPortListening() 404 found" )
-                self.ports.append( [ip, port, True, time()] )
-                return True
-                
-            if "Elapsed" in line:
-                print_debug ( "isPortListening() Elapsed found" )
-                self.ports.append( [ip, port, True, time()] )
-                return True
-                
-            if "refused" in line:
-                print_debug ( "isPortListening() Connection refused" )
-                self.ports.append( [ip, port, False, time()] )
-                return False
-            
-        # if unknow return False but don't cache
-        return False
-        """
+        
                 
     def newhost(self, ip):
         print_debug ( "newhost(%s)" %(ip) )
@@ -195,7 +166,7 @@ class TcosXmlRpc:
         else:
             cached=self.cache(ip, shared.xmlremote_port)
         
-        print_debug ( "cached=%s" %(cached) )
+        print_debug ( "nwehost() cached=%s" %(cached) )
         
         if cached == None:
             if not self.isPortListening(ip, shared.xmlremote_port):
@@ -204,10 +175,9 @@ class TcosXmlRpc:
                     
         self.url = 'http://%s:%d/RPC2' %(self.ip, shared.xmlremote_port)
         try:
-            # set min socket timeout
+            # set min socket timeout to 2 secs
             socket.setdefaulttimeout(2)
             self.tc = xmlrpclib.Server(self.url)
-            #echo=self.tc.tcos.echo("test")
             self.connected=True
             # save socket default timeout
             socket.setdefaulttimeout(shared.socket_default_timeout)
@@ -219,40 +189,11 @@ class TcosXmlRpc:
     def login(self):
         print_debug ( "\n\nDELETE ME\n\n" )
         return
-        """
-        if not self.isPortListening(self.ip, shared.xmlremote_port):
-            self.connected=False
-            return
-        self.username=self.main.config.GetVar("xmlrpc_username")
-        self.password=self.main.config.GetVar("xmlrpc_password")
-        if self.url == None:
-            print_debug ("login() no host!!!"  )
-            shared.error_msg( _("No host specified") )
-            return False
         
-        print_debug ("login() url=%s user=%s pass=******" \
-                                %(self.url, self.username) )
-        try:
-            auth=self.tc.tcos.login(self.username, self.password)
-        except:
-            auth="ko"
-            print_debug("login() ERROR conection unavalaible !!!")
-            self.main.write_into_statusbar( _("Can't login, connection unavalaible") )
-        if auth == "ok":
-            self.logged=True
-            return True
-        else:
-            self.logged=False
-            return False
-        """
     def logout(self):
         print_debug ( "\n\nDELETE ME\n\n" )
         return
-        """
-        if self.logged:
-            self.tc.tcos.logout()
-            self.logged=False
-        """
+        
     def GetVersion(self):
         if not self.connected:
             print_debug ("GetVersion() Error, NO CONNECTION!!")
@@ -261,10 +202,6 @@ class TcosXmlRpc:
             return self.version
         try:
             self.version=self.tc.tcos.version()
-            #print_debug("tcos version \"%s\"" %(self.version) )
-            #mayor, med, minor = self.version.split('.')
-            #if int(minor) < 10:
-            #    shared.info_msg ( "Please update tcosxmlrpc terminal version, need 0.0.11, have %s" %(self.version) )
             return self.version
         except:
             return None
@@ -279,13 +216,9 @@ class TcosXmlRpc:
             print_debug ("Exe() Error, NO CONNECTION!!")
             return None
         
-        print_debug ("Exe(): user=\"%s\" pass=\"%s\" " \
-           %(self.main.config.GetVar("xmlrpc_username"), self.main.config.GetVar("xmlrpc_password")) )
+        print_debug ("Exe(): user=\"%s\" pass=\"******\" " \
+           %(self.main.config.GetVar("xmlrpc_username") ) )
         
-        #self.login ()
-        #if not self.logged:
-        #    print_debug ("Exe() Error, NO LOGGED!!")
-        #    return None
         self.tc.tcos.exe(cmd,\
          self.main.config.GetVar("xmlrpc_username"),\
           self.main.config.GetVar("xmlrpc_password"))
@@ -299,10 +232,6 @@ class TcosXmlRpc:
             print_debug ("Kill() Error, NO CONNECTION!!")
             return None
         
-        #self.login ()
-        #if not self.logged:
-        #    print_debug ("Kill() Error, NO LOGGED!!")
-        #    return None
         self.tc.tcos.kill(app,\
          self.main.config.GetVar("xmlrpc_username"), \
          self.main.config.GetVar("xmlrpc_password"))
@@ -319,10 +248,6 @@ class TcosXmlRpc:
             print_debug ("GetStatus() Error, NO CONNECTION!!")
             return None
         
-        #if not self.logged:
-        #    print_debug ("GetStatus() Error, NOT LOGGED!!")
-        #    return None
-        
         status=self._ParseResult( self.tc.tcos.status(cmd) )
         if status == "1":
             print_debug ("GetStatus() %s is running" %(cmd) )
@@ -337,7 +262,6 @@ class TcosXmlRpc:
             return txt
             
         if txt.find("error") == 0:
-            #shared.info_msg ( "Error from tcosxmlrpc:\n\n%s" %(txt) )
             return None
         else:
             return txt
@@ -352,7 +276,6 @@ class TcosXmlRpc:
         result=self.tc.tcos.info(string).replace('\n', '')
         if result.find('error') == 0:
             print_debug ( "ReadInfo(%s): ERROR, result contains error string!!!" %string )
-            #self.main.write_into_statusbar( "ERROR: %s" %(result) )
             return ""
         else:
             return result
@@ -381,16 +304,17 @@ class TcosXmlRpc:
                 return shared.NO_LOGIN_MSG
             result=self.tc.tcos.standalone("get_user").replace('\n', '')
             if result.find('error') == 0:
-                print_debug ( "GetStandalone(\"get_user\"): ERROR, result contains error string %s!!!" %result )
                 return shared.NO_LOGIN_MSG
             elif result == "":
-                print_debug("GetStandalone() no user connected")
                 return shared.NO_LOGIN_MSG
             else:
                 return result
                 
         elif item == "get_process":
             return self.tc.tcos.standalone("get_process").replace('\n', '')
+        
+        elif item == "get_server":
+            return self.tc.tcos.standalone("get_server").replace('\n', '')
             
         else:
             return ""
@@ -421,11 +345,12 @@ class TcosXmlRpc:
             if user == None:
                 print_debug ( "GetSoundChannels() error loading cookie info" )
                 return None
+            print_debug ( "GetSoundChannels() cookie=%s hostname=%s" %(user, passwd) )
         else:
             user=self.main.config.GetVar("xmlrpc_username")
             passwd=self.main.config.GetVar("xmlrpc_password")
 
-        print_debug ( "GetSoundChannels() user=%s passwd=%s" %(user, passwd) )
+        
 
         if not self.connected:
             print_debug ( "GetSoundChannels() NO CONNECTION" )
@@ -447,14 +372,16 @@ class TcosXmlRpc:
         mode = "--getmute"
         mode = "--getserverinfo"
         """
-        #print_debug ( "GetSoundInfo(\"%s\", \"%s\")" %(channel, mode) )
-        #if channel == "":
-        #    return None
         user=self.main.config.GetVar("xmlrpc_username")
         passwd=self.main.config.GetVar("xmlrpc_password")
+        
         if self.main.name == "TcosVolumeManager":
             user=self.main.xauth.get_cookie()
             passwd=self.main.xauth.get_hostname()
+            if user == None:
+                print_debug ( "GetSoundInfo() error loading cookie info" )
+                return None
+            print_debug ( "GetSoundInfo() cookie=%s hostname=%s" %(user, passwd) )
 
         if not self.connected:
             print_debug ( "GetSoundInfo() NO CONNECTION" )
@@ -464,7 +391,6 @@ class TcosXmlRpc:
 
         if result.find('error') == 0:
             print_debug ( "GetSoundInfo(): ERROR, result contains error string!!!\n%s" %(result))
-            #self.main.write_into_statusbar( "ERROR: %s" %(result) )
             return ""
         else:
             return result
@@ -473,18 +399,23 @@ class TcosXmlRpc:
         if channel == "":
             return None
         if not self.connected:
-            print_debug ( "GetSoundInfo() NO CONNECTION" )
+            print_debug ( "SetSound() NO CONNECTION" )
             return None
         user=self.main.config.GetVar("xmlrpc_username")
         passwd=self.main.config.GetVar("xmlrpc_password")
+        
         if self.main.name == "TcosVolumeManager":
             user=self.main.xauth.get_cookie()
             passwd=self.main.xauth.get_hostname()
+            if user == None:
+                print_debug ( "SetSound() error loading cookie info" )
+                return None
+            print_debug ( "SetSound() cookie=%s hostname=%s" %(user, passwd) )
 
         result=self.tc.tcos.sound(mode, " \"%s\" \"%s\" " %(channel,value), user, passwd).replace('\n', '')
 
         if result.find('error') == 0:
-            print_debug ( "GetSoundInfo(): ERROR, result contains error string!!!\n%s" %(result))
+            print_debug ( "SetSound(): ERROR, result contains error string!!!\n%s" %(result))
             #self.main.write_into_statusbar( "ERROR: %s" %(result) )
             return ""
         else:
@@ -513,9 +444,9 @@ class TcosXmlRpc:
         except:
             return ""
 
-    def lockscreen(self):
+    def lockscreen(self, ip=None):
+        if ip: self.newhost(ip)
         if self.isPortListening(self.ip, shared.xmlremote_port):
-            #self.login ()
             self.tc.tcos.exe("lockscreen", \
              self.main.config.GetVar("xmlrpc_username"), \
              self.main.config.GetVar("xmlrpc_password"))
@@ -523,9 +454,9 @@ class TcosXmlRpc:
             return True
         return False
         
-    def unlockscreen(self):
+    def unlockscreen(self, ip=None):
+        if ip: self.newhost(ip)
         if self.isPortListening(self.ip, shared.xmlremote_port):
-            #self.login ()
             self.tc.tcos.kill("lockscreen",\
              self.main.config.GetVar("xmlrpc_username"), \
              self.main.config.GetVar("xmlrpc_password"))
@@ -533,7 +464,8 @@ class TcosXmlRpc:
             return True
         return False
 
-    def status_lockscreen(self):
+    def status_lockscreen(self, ip=None):
+        if ip: self.newhost(ip)
         if self.isPortListening(self.ip, shared.xmlremote_port):
             #self.login ()
             result=self._ParseResult(self.GetStatus("lockscreen"))

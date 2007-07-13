@@ -162,7 +162,7 @@ install-tcos:
 	install -d $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/
 
 	install -m 755 lockscreen/lockscreen $(DESTDIR)/$(TCOS_BINS)/lockscreen
-	install -m 644 lockscreen/locked.png $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/locked.png
+	install -m 644 lockscreen/lockscreen.png $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/lockscreen.png
 
 	# install tcos hooks
 	install -d $(DESTDIR)$(TCOS_DIR)/hooks-addons/
@@ -200,6 +200,7 @@ patch_version:
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-volume-manager.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcosmonitor.py
+	sed -i 's/__VERSION__/$(VERSION)/g' tcospersonalize.py
 	sed -i 's/__VERSION__/$(VERSION)/g' server-utils/tcos-server-utils.py
 
 patch_dapper: patch_version
