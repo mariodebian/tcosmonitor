@@ -19,7 +19,7 @@ server:
 	$(GCC) $(DEFINES) -o $(SERVER) $(CFLAGS) $(LIBS) $(SERVER).c -DTCOS_PATH=\"/sbin\"
 
 standalone:
-	$(GCC) $(DEFINES) -o $(STANDALONE) $(CFLAGS) $(LIBS) $(SERVER).c -DTCOS_PATH=\"$(TCOS_BINS)\"
+	$(GCC) $(DEFINES) -o $(STANDALONE) $(CFLAGS) $(LIBS) $(SERVER).c -DTCOS_PATH=\"$(TCOS_BINS)\" -DIS_STANDALONE=1
 
 debug:
 	$(GCC) $(TEST_DEFINES) -o $(SERVER) $(CFLAGS) $(LIBS) $(SERVER).c

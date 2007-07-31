@@ -447,7 +447,7 @@ class TcosXmlRpc:
     def lockscreen(self, ip=None):
         if ip: self.newhost(ip)
         if self.isPortListening(self.ip, shared.xmlremote_port):
-            self.tc.tcos.exe("lockscreen", \
+            self.tc.tcos.lockscreen( \
              self.main.config.GetVar("xmlrpc_username"), \
              self.main.config.GetVar("xmlrpc_password"))
              
@@ -457,7 +457,7 @@ class TcosXmlRpc:
     def unlockscreen(self, ip=None):
         if ip: self.newhost(ip)
         if self.isPortListening(self.ip, shared.xmlremote_port):
-            self.tc.tcos.kill("lockscreen",\
+            self.tc.tcos.unlockscreen(\
              self.main.config.GetVar("xmlrpc_username"), \
              self.main.config.GetVar("xmlrpc_password"))
              

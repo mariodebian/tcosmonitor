@@ -18,8 +18,11 @@
 # USA.
 */
 
-#define DISPLAY "DISPLAY=:0"
-
+#ifdef IS_STANDALONE
+ #define DISPLAY "DISPLAY=:0 XAUTHORITY=/home/$("STANDALONE_USER")/.Xauthority"
+#else
+ #define DISPLAY "DISPLAY=:0"
+#endif
 /*
 #define CMD_WRAPPER DISPLAY" /sbin/start-stop-daemon --start --quiet --background --exec "
 */

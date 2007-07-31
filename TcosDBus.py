@@ -292,9 +292,6 @@ class TcosDBusAction:
     def do_killall(self, users, proc=""):
         print_debug ( "do_kill() users=%s proc=%s" %(users, proc) )
         
-        if self.main.xmlrpc.IsStandalone():
-            return self.main.xmlrpc.DBus("killall", proc)
-        
         if not self.connection:
             print_debug ( self.error )
             return False

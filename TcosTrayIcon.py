@@ -39,12 +39,15 @@ def crono(start, txt):
 
 
 class TcosTrayIcon:
-    def __init__(self):
+    def __init__(self, quit=True):
         self.actions={}
         self.args={}
         #self.statusIcon = gtk.StatusIcon()
         self.menu=gtk.Menu()
-        self.items={ "quit": [_("Quit"), "menu_kill.png", True, None]  }
+        if quit:
+            self.items={ "quit": [_("Quit"), "menu_kill.png", True, None]  }
+        else:
+            self.items={}
         
         self.InitMenu()
         self.InitStatusIcon()

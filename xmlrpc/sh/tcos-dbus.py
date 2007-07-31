@@ -49,11 +49,9 @@ for o, a in opts:
         admin, passwd = a.split(":")
 
 
-if  username and (type in ["mess", "exec", "kill"]) and text :
+if  username and (type in ["mess", "exec", "kill", "killall"]) and text :
     response=dbus_iface.GotSignal([ [admin, passwd], [username] , [type] , [text] ])
     print "ok"
 else:
     print "error: need more arguments..."
 
-#dbus_iface.GotSignal([ ["mario"] , ["exec"] , ["xterm"] ])
-#dbus_iface.GotSignal([ ["mario"] , ["mess"] , ["Test message from dbus interface"] ])

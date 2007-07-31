@@ -11,8 +11,11 @@ tcosmonitor (0.1.19.0) unstable; urgency=low
   * README.standalone
     - Add some standalone info
   * More changes to support standalone mode
+  * README.rsync:
+    - Add some info to standalone users to make work rsync file tranfers
+  * Many patches of vidal_joshur at gva dot es
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 13 Jul 2007 19:48:07 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 31 Jul 2007 18:13:04 +0200
 
 tcosmonitor (0.1.18.1) unstable; urgency=low
 

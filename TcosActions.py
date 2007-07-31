@@ -77,14 +77,19 @@ class TcosActions:
 
     def on_kill_button_click(self, widget, pid, username):
         print_debug ( "on_kill_button_click() FIXME pid=%s username=%s" %(pid, username) )
-        if shared.ask_msg ( _("Are you sure sou want to stop this process?") ):
+        if shared.ask_msg ( _("Are you sure you want to stop this process?") ):
             print_debug ( "KILL KILL KILL" )
-            result = self.main.dbus_action.do_kill( [username] , str(pid) )
-            if not result:
-                shared.error_msg ( _("Error while killing app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+            if username.find(":") != -1 :
+                usern, ip = username.split(":")
+                self.main.xmlrpc.newhost(ip)
+                self.main.xmlrpc.DBus("kill", strd(pid) )
             else:
-                print_debug ( "on_kill_button_click() KILLED ;)" )
-                self.get_user_processes(self.main.selected_ip)  
+                result = self.main.dbus_action.do_kill( [username] , str(pid) )
+                if not result:
+                    shared.error_msg ( _("Error while killing app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                else:
+                    print_debug ( "on_kill_button_click() KILLED ;)" )
+            self.get_user_processes(self.main.selected_ip)  
 
     def on_another_screenshot_button_click(self, widget, ip):
         print_debug ( "on_another_screenshot_button_click() __init__ ip=%s" %(ip) )
@@ -1243,7 +1248,7 @@ class TcosActions:
             if response == gtk.RESPONSE_OK:
                 
                 #self.main.exe_cmd("route add -net 239.255.255.0/24 gw 192.168.126.105 &")
-                self.main.exe_cmd( ("vlc file://%s --sout '#standard{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename()) ) 
+                self.main.exe_cmd( ("vlc file://%s --sout '#std{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename()) ) 
                 self.main.exe_cmd( "vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm" )  
 
                 
@@ -1273,7 +1278,7 @@ class TcosActions:
             connected_users=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsername(client))            
+                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
             
             for user in connected_users:
                 if user.find(":") != -1:
@@ -1287,7 +1292,7 @@ class TcosActions:
    
                 
             self.main.exe_cmd("killall vlc") 
-            self.main.write_into_statusbar( _("Video broadcast stoped.") )
+            self.main.write_into_statusbar( _("Video broadcast stopped.") )
 
 
         if action == 13:
@@ -1316,8 +1321,16 @@ class TcosActions:
             filter.add_pattern("*")
             dialog.add_filter(filter)
             
+            confirm = None
+            import popen2
+            p = popen2.Popen3("mkdir /tmp/tcos_share")
+            p.wait()
+
+            if not os.path.isdir("/tmp/tcos_share"):
+                shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
+                return
             
-            response = dialog.run()
+            reponse = dialog.run()
             
             if response == gtk.RESPONSE_OK:
                 
@@ -1325,41 +1338,46 @@ class TcosActions:
                 # Crear carpeta profesor en desktop del cliente
                 remote_cmd="mkdir -p $HOME/Desktop/" + _("Teacher")
                 
-                for user in connected_users:
-                    if user.find(":") != -1:
-                        # we have a standalone user...
-                        # FIXME FIXME
-                        # BUT rsync don't will work "out of box" in this way
-                        connected_users.remove(user)
-                
                 result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
-                    self.main.write_into_statusbar( _("Creating destination folder.") )
+                    self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
-                    rsync_filenames = ""
+                    rsync_filenames_client = ""
+                    rsync_filenames_server = ""
                     basenames = ""
                     for filename in filenames:
-                        rsync_filenames += "%s " %(filename)
-                        #Obtener solo los nombres de ficheros
-                        basenames+="%s\n" %( os.path.basename(filename) )
-                        
-                    # Mandar archivos
-                    remote_cmd = "rsync -avx %s $HOME/Desktop/%s" %(rsync_filenames , _("Teacher"))
-                   
-                    result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+                        rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename) )
+                        rsync_filenames_server += "%s " %( filename )
+                        basenames += "%s\n" %( os.path.basename(filename) )
                     
-                    if not result:
-                        shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-                    else:
-                        # Mandar mensaje aviso a los clientes con los nombres de ficheros
-                        result = self.main.dbus_action.do_message(connected_users ,
-                             _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
-                        if not result:
-                            shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                    p = popen2.Popen3("rm -f /tmp/tcos_share/*")
+                    p.wait()
+
+                    p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                    p.wait()
+
+                    for users in connected_users:
+                        if user.find(":") != -1:
+                            usern, ip=user.split(":")
+                            server=self.main.xmlrpc.GetStandalone("get_server")
+                            standalone_cmd = "rsync -avx %s::\"%s\"$HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
+                            self.main.xmlrpc.DBus("exec", remote_cmd )
+                            self.main.xmlrpc.DBus("exec", standalone_cmd )
+                            self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+                            connected_users.remove(user)
+                        else:
+                            result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+
+                            if not result:
+                                shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                            else:
+                                # Mandar mensaje aviso a los clientes con los nombres de ficheros
+                                result = self.main.dbus_action.do_message(connected_users ,
+                                     _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
                         
-                    self.main.write_into_statusbar( _("Send files.") )
+                    self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
 
 
@@ -1535,16 +1553,16 @@ class TcosActions:
             shared.info_msg( _("User not connected, no processes.") )
             return
         
-        username=self.main.localdata.GetUsername(ip)
         
         if self.main.xmlrpc.IsStandalone(ip):
+            username=self.main.localdata.GetUsernameAndHost(ip)
             tmp=self.main.xmlrpc.ReadInfo("get_process")
             if tmp != "":
                 process=tmp.split('|')[0:-1]
             else:
                 process=["PID COMMAND", "66000 NO process found"]
         else:    
-            
+            username=self.main.localdata.GetUsername(ip)
             cmd="LANG=C ps U \"%s\" -o pid,command" %(username)
             print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
             process=self.main.localdata.exe_cmd(cmd, verbose=0)

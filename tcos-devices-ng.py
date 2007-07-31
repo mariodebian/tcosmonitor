@@ -129,7 +129,12 @@ class TcosDevicesNG:
         self.username=get_username()
         self.loadconf()
         
-        self.systray=TcosTrayIcon()
+        ######## read floppys #############
+        if self.mntconf.has_key("disable_quit") and self.mntconf['disable_quit'] == "1" :
+            self.systray=TcosTrayIcon(quit=False)
+        else:
+            self.systray=TcosTrayIcon(quit=True)
+
         self.systray.status=True
         
         self.initremote()
