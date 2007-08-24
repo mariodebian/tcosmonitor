@@ -3,8 +3,10 @@ tcosmonitor (0.1.20.1) unstable; urgency=low
   * Delete all standalone screenshots on tcos-standalone stop
   * udev/tcos-udevd.sh:
     - Call get_filesystem with --only argument
+  * xmlrpc/tcosxmlrpc.c xmlrpc/Makefile:
+    - Update to build with new 1.06 libxmlrpc headers
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 24 Aug 2007 15:36:18 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 24 Aug 2007 17:35:08 +0200
 
 tcosmonitor (0.1.19.1) unstable; urgency=low
 

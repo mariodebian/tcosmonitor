@@ -31,7 +31,13 @@ http://www.elrincondelc.com/portal/modules.php?name=Forums&file=viewtopic&p=2032
 #include <string.h>
 #include <stdlib.h>
 #include <xmlrpc.h>
-#include <xmlrpc_abyss.h>
+
+#if XMLRPC_VERSION == 0-9
+    #include <xmlrpc_abyss.h>
+#else
+    #include <xmlrpc_server_abyss.h>
+#endif
+
 #include <unistd.h>
 
 /*#define VERSION "0.0.15"*/
