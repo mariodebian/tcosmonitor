@@ -84,7 +84,7 @@ class TcosXauth:
             chost=host.split(':')[0]
             if chost == self.display_host or chost == self.display_hostname or chost == self.display_ip:
                 self.cookie=cookie
-                print_debug ( "read_cookie() HAVE COOKIE => %s" %(cookie) )
+                print_debug ( "read_cookie() chost=%s HAVE COOKIE => %s" %(chost, cookie) )
                 return cookie
         return None
         

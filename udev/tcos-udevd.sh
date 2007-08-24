@@ -18,7 +18,7 @@ get_env_var() {
   fs_type=$(get_env_var "ID_FS_TYPE")
 
 if [ "$fs_type" = "ID_FS_TYPE=" ] || [ "$fs_type" = "" ]; then
-  fs=$(get_filesystem ${device#DEVNAME=})
+  fs=$(get_filesystem ${device#DEVNAME=} --only)
   if [ "$fs" != "auto" ] && [ "$fs" != "" ] && [ "$fs" != "unknow" ] ; then
      fs_type="ID_FS_TYPE=$fs"
   fi
@@ -27,7 +27,7 @@ fi
    vendor=$(get_env_var "ID_VENDOR")
     model=$(get_env_var "ID_MODEL")
   devpath=$(get_env_var "DEVPATH")
-   
+
 echo "$id_bus#$device#$action#$label#$fs_type#$vendor#$model#$devpath" >> $output_file
 
 exit 0
