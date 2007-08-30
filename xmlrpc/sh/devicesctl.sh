@@ -22,7 +22,7 @@ read_line() {
 }
 
 get_fs_type() {
-  output=$(get_filesystem $1 --only)
+  output=$(get_filesystem "$1" --only)
   echo $output
 }
 

@@ -18,8 +18,8 @@ get_env_var() {
   fs_type=$(get_env_var "ID_FS_TYPE")
 
 if [ "$fs_type" = "ID_FS_TYPE=" ] || [ "$fs_type" = "" ]; then
-  fs=$(get_filesystem ${device#DEVNAME=} --only)
-  if [ "$fs" != "auto" ] && [ "$fs" != "" ] && [ "$fs" != "unknow" ] ; then
+  fs=$(get_filesystem "${device#DEVNAME=}" --only)
+  if [ "$fs" != "auto" ] && [ "$fs" != "" ] && [ "$fs" != "unknow" ] && [ "$fs" != "error, need device" ] ; then
      fs_type="ID_FS_TYPE=$fs"
   fi
 fi
