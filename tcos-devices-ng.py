@@ -347,16 +347,19 @@ class TcosDevicesNG:
 
 
 
-    def update_cdrom(self, *args):
-        if len(args) > 0:
-            if args[0] == "mount":
-                self.show_notification (  _("Cdrom mounted. Ready for use.")  )
+    def update_cdrom(self, dev, action=None):
+        if action == "mount" or action == "umount":
+            devtype=self.xmlrpc.GetDevicesInfo(device=dev, mode="--cdaudio")
+            if action == "mount":
+                if devtype == "1":
+                    self.show_notification ( _("Audio cdrom mounted., you can listen music opening wav files.") )
+                else:
+                    self.show_notification (  _("Cdrom mounted. Ready for use.")  )
                 return
-            elif args[0] == "umount":
+            elif action == "umount":
                 self.show_notification (  _("Cdrom umounted. You can extract it.")  )
                 return
-            else:
-                dev=args[0]
+            
         cdrom_status=self.xmlrpc.GetDevicesInfo(device="/dev/%s"%dev, mode="--getstatus").replace('\n','')
         if cdrom_status == "0":
             ismounted=False
@@ -429,7 +432,7 @@ class TcosDevicesNG:
                 self.update_hdd(data["ACTION"])
             else:
                 # we have a cdrom
-                self.update_cdrom(data["ACTION"])
+                self.update_cdrom(data['DEVNAME'], action=data["ACTION"])
             
         if data.has_key("DEVPATH") and "/block/fd" in data["DEVPATH"]:
             self.update_floppy(data["ACTION"])

@@ -26,7 +26,11 @@ get_fs_type() {
   echo $output
 }
 
-
+is_cdrom() {
+  # receive hdc hda (without /dev/)
+  cdrom=$(head -3 /proc/sys/dev/cdrom/info 2>/dev/null | tail -1 | cut -f 3- | grep -c $1)
+  echo $cdrom
+}
 
 
 if [ "$1" = "--showlocaldisks" ]; then
@@ -79,6 +83,7 @@ fi
 if [ "$1" = "--mount" ]; then
   if [ "$2" != "" ]; then
       mnt=$(basename $2)
+      cdrom=$(is_cdrom $mnt)
       fs=""
       if [ "$3" != "" ]; then
          fs=" -t $3 "
@@ -86,6 +91,17 @@ if [ "$1" = "--mount" ]; then
          fs=" -t $(get_fs_type $2) "
       fi
       mkdir -p /mnt/$mnt
+      if [ "$cdrom" = 1 ]; then
+        mount -t $(cd_type /dev/$mnt) -o ro $2 /mnt/$mnt 2> /dev/null
+        if [ $? = 0 ]; then
+          output="/mnt/$mnt"
+        else
+          output="error: mounting device"
+        fi
+        echo -n $output
+        return
+      fi
+      ###############
       if [ "$(get_fs_type $2)" = "ntfs-3g" ]; then
         /sbin/mount.ntfs-3g $2 /mnt/$mnt
       else
@@ -105,7 +121,7 @@ fi
 if [ "$1" = "--umount" ]; then
   if [ "$2" != "" ]; then
     mnt=$(basename $2)
-    umount /mnt/$mnt
+    umount /mnt/$mnt 2>/dev/null
     if [ $? = 0 ]; then
       output="/mnt/$mnt"
     else
@@ -143,6 +159,15 @@ if [ "$1" = "--getcdrom" ]; then
   need_parse=0
 fi
 
+if [ "$1" = "--cdaudio" ]; then
+  type=$(cd_type $2)
+  if [ "$type" = "cdfs" ]; then
+    output=1
+  else
+    output=0
+  fi
+  need_parse=0
+fi
 
 if [ "$1" = "--getxdrivers" ]; then
   if [ -d /usr/lib/xorg/modules/drivers/ ]; then
@@ -181,6 +206,7 @@ usage() {
   echo "       $0  --getstatus DEVICE      ( return 1 if mounted or 0 if not mounted )"
   echo "       $0  --eject                 ( eject cdrom device )"
   echo "       $0  --getcdrom              ( return all cdrom devices )"
+  echo "       $0  --cdaudio  DEVICE       ( return 1 if cdaudio, 0 if not )"
   echo "       $0  --getxdrivers           ( return all xorg drivers found )"
   echo "       $0  --exists  ARG           ( return 1 if exists 0 if not )"
   echo "       $0  --gethdd                ( return all hard disk partitions )"
