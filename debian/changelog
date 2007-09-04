@@ -1,3 +1,12 @@
+tcosmonitor (0.1.21.2) unstable; urgency=low
+
+  * *.py:
+    - Remove wrong copyright line, thanks to Quiron.
+  * xmlrpc/login.c:
+    - Compare with strcmp instead of ==
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 04 Sep 2007 11:05:01 +0200
+
 tcosmonitor (0.1.21.1) unstable; urgency=low
 
   * Fix some call to get_filesystem

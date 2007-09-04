@@ -27,7 +27,7 @@ tcos_lockscreen(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   char *login_ok;
   
    /* Parse app string */
-   xmlrpc_parse_value(env, param_array, "(ss)", &user, &pass);
+   xmlrpc_parse_value(env, in, "(ss)", &user, &pass);
    if (env->fault_occurred)
         return xmlrpc_build_value(env, "s", "params error");
 
@@ -36,11 +36,12 @@ tcos_lockscreen(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   if( strcmp(login_ok,  LOGIN_OK ) != 0 )
     return xmlrpc_build_value(env, "s", login_ok );
 
-#if TCOS_PATH != "/sbin"
-  job_exe(TCOS_PATH"/lockscreen");
-#else
-  job_exe("lockscreen");
-#endif
+  if ( strcmp(TCOS_PATH, "/sbin" ) )
+    job_exe(TCOS_PATH"/lockscreen");
+
+  else
+    job_exe("lockscreen");
+
   return xmlrpc_build_value(env, "s", "OK" );  
 }
 
@@ -52,7 +53,7 @@ tcos_unlockscreen(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   char *login_ok;
 
    /* Parse app string */
-   xmlrpc_parse_value(env, param_array, "(ss)", &user, &pass);
+   xmlrpc_parse_value(env, in, "(ss)", &user, &pass);
    if (env->fault_occurred)
         return xmlrpc_build_value(env, "s", "params error");
 
@@ -61,7 +62,7 @@ tcos_unlockscreen(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   if( strcmp(login_ok,  LOGIN_OK ) != 0 )
     return xmlrpc_build_value(env, "s", login_ok );
 
-  job_exe("killall lockscreen");
+  system("killall lockscreen");
   return xmlrpc_build_value(env, "s", "OK" );  
 }
 

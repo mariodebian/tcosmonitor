@@ -32,4 +32,6 @@
 
 #define CMD_WRAPPER DISPLAY" /sbin/start-stop-daemon -q -S -b -x "
 
+/*#define CMD_WRAPPER DISPLAY" /bin/daemonize "*/
+
 

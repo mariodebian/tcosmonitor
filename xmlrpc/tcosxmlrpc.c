@@ -56,6 +56,7 @@ http://www.elrincondelc.com/portal/modules.php?name=Forums&file=viewtopic&p=2032
 #include "xorg.c"
 #include "sound.c"
 #include "devices.c"
+#include "lockscreen.c"
 
 static xmlrpc_value *
 tcos_version(xmlrpc_env *env, xmlrpc_value *in, void *ud)
@@ -180,6 +181,12 @@ int main (int argc, char **argv)
 
     xmlrpc_server_abyss_add_method_w_doc("tcos.xauth", &tcos_xauth, NULL,
     "ss:s", "Tcos, authenticate with X cookies.");
+
+    xmlrpc_server_abyss_add_method_w_doc("tcos.lockscreen", &tcos_lockscreen, NULL,
+    "ss:s", "Tcos, exec lockscreen to block thin client.");
+
+    xmlrpc_server_abyss_add_method_w_doc("tcos.unlockscreen", &tcos_unlockscreen, NULL,
+    "ss:s", "Tcos, kill lockscreen to unblock thin client.");
 
 /* DEPRECATED METHOD
     xmlrpc_server_abyss_add_method_w_doc("tcos.update_system_info", &tcos_update_system_info, NULL,

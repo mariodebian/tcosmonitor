@@ -64,6 +64,9 @@ job_exe( char *cmd )
 
   snprintf( (char*) &job, BUFF_SIZE, "%s %s", CMD_WRAPPER, get_full_path(cmd) );
 
+/* using daemonize don't work yet */
+/*  snprintf( (char*) &job, BUFF_SIZE, "%s '%s'", CMD_WRAPPER, cmd );*/
+
   dbgtcos("tcosxmlrpc::job_exe() exec=> \"%s\"\n", job);
 
 
