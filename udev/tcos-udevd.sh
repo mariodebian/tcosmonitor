@@ -13,6 +13,14 @@ get_env_var() {
 
    id_bus=$(get_env_var "ID_BUS")
    device=$(get_env_var "DEVNAME")
+
+if [ $(echo $DEVNAME | grep -c "/dev/loop") != 0 ]; then
+   exit 0
+fi
+if [ $(echo $DEVNAME | grep -c "/dev/ram") != 0 ]; then
+   exit 0
+fi
+
    action=$(get_env_var "ACTION")
     label=$(get_env_var "ID_FS_LABEL")
   fs_type=$(get_env_var "ID_FS_TYPE")

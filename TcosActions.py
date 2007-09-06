@@ -982,6 +982,158 @@ class TcosActions:
             print_debug ("menu_event_one() show running apps" )
             self.get_user_processes(self.main.selected_ip)
             
+            
+        if action == 16:
+            # action sent by vidal_joshur at gva dot es
+            # start video broadcast mode
+            # search for connected users
+            
+            users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
+            
+            dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
+                               None,
+                               gtk.FILE_CHOOSER_ACTION_OPEN,
+                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+            dialog.set_default_response(gtk.RESPONSE_OK)
+            self.folder = self._folder = os.environ['HOME']
+            dialog.set_current_folder(self.folder)
+            filter = gtk.FileFilter()
+            filter.set_name("All files")
+            filter.add_pattern("*")
+            dialog.add_filter(filter)
+
+            response = dialog.run()
+            if response == gtk.RESPONSE_OK:
+                
+                #self.main.exe_cmd("route add -net 239.255.255.0/24 gw 192.168.126.105 &")
+                self.main.exe_cmd( ("vlc file://%s --sout '#std{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename()) ) 
+                self.main.exe_cmd( "vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm" )  
+
+                
+                # exec this app on client
+                remote_cmd="vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm --fullscreen"
+                
+                for user in users:
+                    if user.find(":") != -1:
+                        # we have a standalone user...
+                        usern, ip = user.split(":")
+                        self.main.xmlrpc.newhost(ip)
+                        self.main.xmlrpc.DBus("exec", remote_cmd )
+                        users.remove(user)
+                    
+                result = self.main.dbus_action.do_exec( users ,remote_cmd )
+                if not result:
+                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+                self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
+            
+            dialog.destroy()
+                                                    
+        if action == 17:
+            # action sent by vidal_joshur at gva dot es
+            # stop video broadcast mode
+            # search for connected users
+            
+            users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
+            
+            for user in users:
+                if user.find(":") != -1:
+                    # we have a standalone user...
+                    usern, ip = user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.DBus("killall", "vlc" )
+                    users.remove(user)
+            
+            result = self.main.dbus_action.do_killall( users , "vlc" )
+   
+                
+            self.main.exe_cmd("killall vlc") 
+            self.main.write_into_statusbar( _("Video broadcast stopped.") )
+
+
+        if action == 18:
+            # action sent by vidal_joshur at gva dot es
+            # envio ficheros
+            # search for connected users
+            users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
+            
+            
+            dialog = gtk.FileChooserDialog( _("Select file or files..."),
+                               None,
+                               gtk.FILE_CHOOSER_ACTION_OPEN,
+                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+            dialog.set_default_response(gtk.RESPONSE_OK)
+            #dialog.set_select_multiple(select_multiple)
+            dialog.set_select_multiple(True)
+            self.folder = self._folder = os.environ['HOME']
+            dialog.set_current_folder(self.folder)
+            filter = gtk.FileFilter()
+            filter.set_name("All files")
+            filter.add_pattern("*")
+            dialog.add_filter(filter)
+            
+            confirm = None
+            import popen2
+            p = popen2.Popen3("mkdir /tmp/tcos_share")
+            p.wait()
+
+            if not os.path.isdir("/tmp/tcos_share"):
+                shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
+                return
+            
+            reponse = dialog.run()
+            
+            if response == gtk.RESPONSE_OK:
+                
+                filenames = dialog.get_filenames()
+                # Crear carpeta profesor en desktop del cliente
+                remote_cmd="mkdir -p $HOME/Desktop/" + _("Teacher")
+                
+                rsync_filenames_client = ""
+                rsync_filenames_server = ""
+                basenames = ""
+                for filename in filenames:
+                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename) )
+                    rsync_filenames_server += "%s " %( filename )
+                    basenames += "%s\n" %( os.path.basename(filename) )
+                
+                p = popen2.Popen3("rm -f /tmp/tcos_share/*")
+                p.wait()
+
+                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                p.wait()
+                
+                for users in users:
+                    if user.find(":") != -1:
+                        usern, ip=user.split(":")
+                        server=self.main.xmlrpc.GetStandalone("get_server")
+                        standalone_cmd = "rsync -avx %s::\"%s\"$HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
+                        self.main.xmlrpc.DBus("exec", remote_cmd )
+                        self.main.xmlrpc.DBus("exec", standalone_cmd )
+                        self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+                        users.remove(user)
+                
+                
+                result = self.main.dbus_action.do_exec( users , remote_cmd )
+                
+                if not result:
+                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+                    self.main.write_into_statusbar( _("Error creating destination folder.") )
+                else:
+                    # Sent files to standalone
+                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
+                    
+                    result = self.main.dbus_action.do_exec( users , remote_cmd )
+                    if not result:
+                        shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                    else:
+                        result = self.main.dbus_action.do_message(users ,
+                                _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
+                        
+                self.main.write_into_statusbar( _("Files sent.") )
+            dialog.destroy()
+            
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
 
@@ -1337,50 +1489,50 @@ class TcosActions:
                 # Crear carpeta profesor en desktop del cliente
                 remote_cmd="mkdir -p $HOME/Desktop/" + _("Teacher")
                 
+                rsync_filenames_client = ""
+                rsync_filenames_server = ""
+                basenames = ""
+                for filename in filenames:
+                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename) )
+                    rsync_filenames_server += "%s " %( filename )
+                    basenames += "%s\n" %( os.path.basename(filename) )
+                
+                p = popen2.Popen3("rm -f /tmp/tcos_share/*")
+                p.wait()
+
+                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                p.wait()
+                
+                for users in connected_users:
+                    if user.find(":") != -1:
+                        usern, ip=user.split(":")
+                        server=self.main.xmlrpc.GetStandalone("get_server")
+                        standalone_cmd = "rsync -avx %s::\"%s\"$HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
+                        self.main.xmlrpc.DBus("exec", remote_cmd )
+                        self.main.xmlrpc.DBus("exec", standalone_cmd )
+                        self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+                        connected_users.remove(user)
+                
+                
                 result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                     self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
-                    rsync_filenames_client = ""
-                    rsync_filenames_server = ""
-                    basenames = ""
-                    for filename in filenames:
-                        rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename) )
-                        rsync_filenames_server += "%s " %( filename )
-                        basenames += "%s\n" %( os.path.basename(filename) )
+                    # Sent files to standalone
+                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
                     
-                    p = popen2.Popen3("rm -f /tmp/tcos_share/*")
-                    p.wait()
-
-                    p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
-                    p.wait()
-
-                    for users in connected_users:
-                        if user.find(":") != -1:
-                            usern, ip=user.split(":")
-                            server=self.main.xmlrpc.GetStandalone("get_server")
-                            standalone_cmd = "rsync -avx %s::\"%s\"$HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
-                            self.main.xmlrpc.DBus("exec", remote_cmd )
-                            self.main.xmlrpc.DBus("exec", standalone_cmd )
-                            self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
-                            connected_users.remove(user)
-                        else:
-                            result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
-
-                            if not result:
-                                shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-                            else:
-                                # Mandar mensaje aviso a los clientes con los nombres de ficheros
-                                result = self.main.dbus_action.do_message(connected_users ,
-                                     _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
+                    result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+                    if not result:
+                        shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+                    else:
+                        result = self.main.dbus_action.do_message(connected_users ,
+                                _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
                         
-                    self.main.write_into_statusbar( _("Files sent.") )
+                self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
 
-
-        
         crono(start1, "menu_event[%d]=\"%s\"" %(action, shared.allhost_menuitems[action] ) )
 
 

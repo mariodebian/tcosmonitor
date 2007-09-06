@@ -181,8 +181,11 @@ onehost_menuitems=[
  [ _("Logout client"),  "menu_restartx.png" ] ,               #action=11
  [ _("Restart X session with new settings"), "menu_newconf.png" ] , #action=12
  [ _("Exec app on user display") , "menu_exec.png" ] ,        #action=13
- [ _("Send a text message to user") , "menu_msg.png" ] ,     #action=14
+ [ _("Send a text message to user") , "menu_msg.png" ] ,      #action=14
  [ _("Show running apps of this client") , "menu_proc.png" ], #action=15
+ [ _("Video broadcast") , None ],                             #action=16
+ [ _("Stop vide broadcast") , None ],                         #action=17
+ [ _("Send files") , None ],                                  #action=18
  ]
 
 

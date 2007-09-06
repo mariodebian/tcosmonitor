@@ -54,9 +54,12 @@ class Ping:
     def ping_iprange(self, selfip):
         pinglist = []
         reachip =[]
+        server_ips=self.get_server_ips()
         for i in range(1,255):
             iprange=selfip.split(".")[:-1]
             ip=".".join(iprange)+"."+str(i)
+            if ip in server_ips:
+                continue
             #print "ping to %s" %(ip)
             if self.main.worker.is_stoped():
                 # this is a stop thread var
@@ -111,6 +114,15 @@ class Ping:
             0x8915,  # SIOCGIFADDR
             struct.pack('256s', ifname[:15])
         )[20:24])
+
+
+    def get_server_ips(self):
+        IPS=[]
+        for dev in os.listdir("/sys/class/net"):
+            if not dev in ["lo", "sit0"]:
+               IPS.append(self.get_ip_address(dev))
+        return IPS
+
 
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
@@ -179,4 +191,6 @@ if __name__ == '__main__':
     #    PingPort("192.168.0.3", i+100).get_status()
     #PingPort("192.168.0.5", 6000, 0.5).get_status()
     #PingPort("192.168.0.1", 6000, 0.5).get_status()
-    PingPort(sys.argv[1], sys.argv[2], 0.5).get_status()
+    #PingPort(sys.argv[1], sys.argv[2], 0.5).get_status()
+    app=Ping(None)
+    print app.get_server_ips()
