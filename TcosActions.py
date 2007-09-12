@@ -854,6 +854,22 @@ class TcosActions:
         self.main.worker.set_finished()
         crono(start1, "populate_host_list(ALL)" )
         return
+
+
+    def doaction_onthisclient(self, action, ip):
+        # return True if an exec action
+        # return False if can not
+        # get $DISPLAY
+        host, dnum =  os.environ["DISPLAY"].split(':')
+        if host == "": return True
+        debug("doaction_onthisclient() host=%s ip=%s action=%s" %(host, ip, action) )
+        # convert to IP
+        host=socket.gethostbyname(host)
+        if self.main.config.GetVar("blockactioninthishost") == "1" and host == socket.gethostbyname(ip):
+            # dangerous actions
+            if action in [2, 3, 4, 6, 7, 11, 12, "poweroff", "reboot", "lockscreen", "restartx"]:
+                return False
+        return True
     
     def menu_event_one(self, action):
         start1=time()
@@ -863,6 +879,12 @@ class TcosActions:
             return
         self.main.selected_host=model.get_value(iter,0)
         self.main.selected_ip=model.get_value(iter, 1)
+        
+        if not self.doaction_onthisclient(action, self.main.selected_ip):
+            # show a msg
+            shared.info_msg ( _("Can't exec this action because you are connected at this host!") )
+            return
+        
         if action == 0:
             # refresh terminal
             # call to read remote info
@@ -905,7 +927,7 @@ class TcosActions:
             self.change_lockscreen(self.main.selected_ip)
         
         if action == 6:
-            # start vnc
+            # start ivs
             self.main.worker=shared.Workers(self.main, target=self.start_ivs, args=([self.main.selected_ip]) )
             self.main.worker.start()
             
@@ -1108,7 +1130,7 @@ class TcosActions:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx %s::\"%s\"$HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
+                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1507,7 +1529,7 @@ class TcosActions:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx %s::\"%s\"$HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
+                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1550,6 +1572,11 @@ class TcosActions:
         gtk.gdk.threads_leave()
         
         for ip in allhost:
+            if not self.doaction_onthisclient(action, ip):
+                # show a msg
+                debug( _("Can't exec this action because you are connected at this host!") )
+                continue
+            
             percent=float( allhost.index(ip)/len(allhost) )
             
             print_debug ( "doing %s in %s, percent complete=%f"\

@@ -101,7 +101,8 @@ DefaultConfig=[
 ["xorginfo", 0, "int"], 
 ["soundserverinfo", 0, "int"], 
 ["systemprocess", 0, "int"], 
-["tcosmonitorversion", version, "str"]
+["tcosmonitorversion", version, "str"],
+["blockactioninthishost", 1, "int"]
 ]
 # method ping is list 0 of combo_scan_method
 

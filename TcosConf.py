@@ -170,6 +170,7 @@ class TcosConf:
         self.read_checkbox(self.main.pref_populatelistatstartup, "populate_list_at_startup")
         self.read_checkbox(self.main.pref_cybermode, "work_as_cyber_mode")
         self.read_checkbox(self.main.pref_systemprocess, "systemprocess")
+        self.read_checkbox(self.main.pref_blockactioninthishost, "blockactioninthishost")
             
         if self.main.pref_combo_scan_method.get_active() == 0:
             self.SetVar("scan_network_method", "netstat")

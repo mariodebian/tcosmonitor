@@ -1,3 +1,12 @@
+tcosmonitor (0.1.21.5) unstable; urgency=low
+
+  * Added option for no exec dangerous actions if TcosMonitor run in a thin client DISPLAY
+    (Closes: #4)
+  * Update spanish translation
+  * Fix no space in rsync command (patch by vidal_joshur at gva dot es)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 11 Sep 2007 21:14:23 +0200
+
 tcosmonitor (0.1.21.4) unstable; urgency=low
 
   * tcosmonitor.glade AUTHORS:
