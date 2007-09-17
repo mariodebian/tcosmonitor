@@ -120,7 +120,12 @@ class Ping:
         IPS=[]
         for dev in os.listdir("/sys/class/net"):
             if not dev in ["lo", "sit0"]:
-               IPS.append(self.get_ip_address(dev))
+               print_debug ( "get_server_ips() add interface %s" %dev )
+               try:
+                   ip=self.get_ip_address(dev)
+                   IPS.append(ip)
+               except:
+                   pass
         return IPS
 
 

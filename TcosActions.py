@@ -81,7 +81,7 @@ class TcosActions:
             if username.find(":") != -1 :
                 usern, ip = username.split(":")
                 self.main.xmlrpc.newhost(ip)
-                self.main.xmlrpc.DBus("kill", strd(pid) )
+                self.main.xmlrpc.DBus("kill", str(pid) )
             else:
                 result = self.main.dbus_action.do_kill( [username] , str(pid) )
                 if not result:
@@ -273,26 +273,30 @@ class TcosActions:
                 
     def exe_app_in_client_display(self, arg):
         usernames=self.ask_usernames
+        newusernames=[]
         print_debug("exe_app_in_client_display() usernames=%s" %usernames)
         for user in usernames:
             if user.find(":") != -1:
                 # we have a standalone user...
                 usern, ip = user.split(":")
+                print_debug("exe_app_in_client_display() STANDALONE username=%s ip=%s" %(usern, ip))
                 self.main.xmlrpc.newhost(ip)
                 self.main.xmlrpc.DBus(self.ask_mode, arg)
-            else:   
-                # we have a thin client user
-                if self.ask_mode == "exec":
-                    result = self.main.dbus_action.do_exec( usernames , arg )
-                    if not result:
-                        shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-                    else:
-                        self.main.ask.hide()
-                        self.main.ask_entry.set_text("")
-                elif self.ask_mode == "mess":
-                    result = self.main.dbus_action.do_message( usernames , arg)
-                    if not result:
-                        shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+            else:
+                newusernames.append(user)
+   
+        # we have a thin client user
+        if self.ask_mode == "exec":
+            result = self.main.dbus_action.do_exec( newusernames , arg )
+            if not result:
+                shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+            else:
+                self.main.ask.hide()
+                self.main.ask_entry.set_text("")
+        elif self.ask_mode == "mess":
+            result = self.main.dbus_action.do_message( newusernames , arg)
+            if not result:
+                shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
                     
                         
         self.main.ask.hide()
@@ -862,7 +866,7 @@ class TcosActions:
         # get $DISPLAY
         host, dnum =  os.environ["DISPLAY"].split(':')
         if host == "": return True
-        debug("doaction_onthisclient() host=%s ip=%s action=%s" %(host, ip, action) )
+        print_debug("doaction_onthisclient() host=%s ip=%s action=%s" %(host, ip, action) )
         # convert to IP
         host=socket.gethostbyname(host)
         if self.main.config.GetVar("blockactioninthishost") == "1" and host == socket.gethostbyname(ip):
@@ -1104,7 +1108,7 @@ class TcosActions:
                 shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
                 return
             
-            reponse = dialog.run()
+            response = dialog.run()
             
             if response == gtk.RESPONSE_OK:
                 
@@ -1126,7 +1130,7 @@ class TcosActions:
                 p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
                 
-                for users in users:
+                for user in users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
                         server=self.main.xmlrpc.GetStandalone("get_server")
@@ -1503,7 +1507,7 @@ class TcosActions:
                 shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
                 return
             
-            reponse = dialog.run()
+            response = dialog.run()
             
             if response == gtk.RESPONSE_OK:
                 
@@ -1525,7 +1529,7 @@ class TcosActions:
                 p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
                 
-                for users in connected_users:
+                for user in connected_users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
                         server=self.main.xmlrpc.GetStandalone("get_server")
@@ -1574,7 +1578,7 @@ class TcosActions:
         for ip in allhost:
             if not self.doaction_onthisclient(action, ip):
                 # show a msg
-                debug( _("Can't exec this action because you are connected at this host!") )
+                print_debug( _("Can't exec this action because you are connected at this host!") )
                 continue
             
             percent=float( allhost.index(ip)/len(allhost) )

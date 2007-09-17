@@ -1,3 +1,17 @@
+tcosmonitor (0.1.22.1) unstable; urgency=low
+
+  * TcosXmlrpc.py, TcosXauth.py:
+    - Encapsulate self.tc.tcos into try...except to avoid problems
+      with host with 8080 port listening
+  * ping.py:
+    - Encapsulate get_server_ips with try...except to avoid problems with ifaces
+      not configured.
+  * TcosActions.py:
+    - Fixed important bug, exec dbus apps number_of_clients^2 times :(
+    - Fix minor typos in vidal_joshur code
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 14 Sep 2007 19:57:45 +0200
+
 tcosmonitor (0.1.21.5) unstable; urgency=low
 
   * Added option for no exec dangerous actions if TcosMonitor run in a thin client DISPLAY

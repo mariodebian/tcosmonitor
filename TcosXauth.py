@@ -106,7 +106,10 @@ class TcosXauth:
         if not self.xmlrpc.connected:
             print_debug ( "test_auth() No connection" )
             return
-        returned = self.xmlrpc.tc.tcos.xauth(cookie, self.display_hostname)
+        try:
+            returned = self.xmlrpc.tc.tcos.xauth(cookie, self.display_hostname)
+        except:
+            returned = "error"
         if "OK" in returned: return True
         elif "error" in returned: return False
 
