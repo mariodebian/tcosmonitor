@@ -41,9 +41,9 @@ tcos_screenshot(xmlrpc_env *env, xmlrpc_value *in, void *ud)
     return xmlrpc_build_value(env, "s", login_ok );
 
   if ( strlen(size) > 0)
-     sprintf( (char*) line, "%s %s", SCROT_CMD, size);
+     snprintf( (char*) line, BSIZE, "%s %s", SCROT_CMD, size);
   else
-     sprintf( (char*) line, "%s", SCROT_CMD);
+     snprintf( (char*) line, BSIZE, "%s", SCROT_CMD);
 
   dbgtcos("tcosxmlrpc::screenshot() exe=%s\n", line);
 

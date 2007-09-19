@@ -51,7 +51,7 @@ tcos_standalone(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 	return xmlrpc_build_value(env, "s", STANDALONE_UNKNOW );
 
   /* put error into line */
-  strcpy(line, STANDALONE_ERROR);
+  strncpy(line, STANDALONE_ERROR, BSIZE);
 
   fgets( line, sizeof line, fp);
 
@@ -85,7 +85,7 @@ tcos_dbus(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 
   dbgtcos("tcosxmlrpc::tcos_dbus() searching for dbus=\"%s\"\n", dbus);
 
-  sprintf( cmd, "%s %s", DBUS_HANDLER, dbus);
+  snprintf( cmd, BSIZE, "%s %s", DBUS_HANDLER, dbus);
 
   dbgtcos("tcosxmlrpc::tcosdbus() exe=\"%s\"\n", cmd);
 
@@ -95,7 +95,7 @@ tcos_dbus(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 	return xmlrpc_build_value(env, "s", DBUS_ERROR );
 
   /* put error into line var */
-  strcpy(line, DBUS_ERROR);
+  strncpy(line, DBUS_ERROR, BSIZE);
 
   fgets( line, sizeof line, fp);
 

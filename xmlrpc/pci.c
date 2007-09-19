@@ -31,7 +31,7 @@ tcos_pci(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   size_t *len;
 
   /* put error msg into line var */
-  strcpy(line, PCI_ERROR);
+  strncpy(line, PCI_ERROR, BSIZE);
 
 
   /* read what info search */
@@ -75,7 +75,7 @@ tcos_pci(xmlrpc_env *env, xmlrpc_value *in, void *ud)
       }
       else {
         /* return info about pci bus id */
-	sprintf ( (char*) pci_cmd, "lspci |grep \"%s\" | sed s/\"%s \"//g", pci, pci);
+	snprintf ( (char*) pci_cmd, BSIZE, "lspci |grep \"%s\" | sed s/\"%s \"//g", pci, pci);
 
         dbgtcos("tcosxmlrpc::tcos_pci() pci_cmd=\"%s\"\n", pci_cmd);
 

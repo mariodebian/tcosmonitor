@@ -13,7 +13,7 @@ ifneq ($(NEW_XMLRPC),)
 endif
 
 XMLRPC_VERSION=$(shell xmlrpc-c-config --version | awk -F"." '{print $$1"-"$$2}')
-CFLAGS=-Wall -ansi -pedantic `xmlrpc-c-config abyss-server --cflags`
+CFLAGS=-Wall -O2 -ansi -pedantic `xmlrpc-c-config abyss-server --cflags`
 LIBS=`xmlrpc-c-config abyss-server --libs` -lcrypt -lX11
 DEFINES= -DBSIZE=512 -DVERSION=\"$(VERSION)\" -DXMLRPC_INC=$(XMLRPC_INC)
 TEST_DEFINES=-DDEBUG -DVERSION=\"$(VERSION)\" -DBSIZE=512 -DVISIBLE_PASSWD -DXMLRPC_INC=$(XMLRPC_INC)
@@ -38,10 +38,10 @@ debug:
 
 
 validate-tcos:
-	$(GCC) $(DEFINES) -o validate-tcos $(CFLAGS) $(LIBS) validate-tcos.c
+	$(GCC) $(DEFINES) -o validate-tcos $(CFLAGS) $(LIBS) validate-tcos.c -DVISIBLE_PASSWD
 
 tcospasswd:
-	$(GCC) $(DEFINES) -o tcospasswd tcospasswd.c -lcrypt
+	$(GCC) $(DEFINES) -o tcospasswd tcospasswd.c -lcrypt -O2
 
 
 clean:

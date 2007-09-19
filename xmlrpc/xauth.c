@@ -11,6 +11,8 @@
 
 #include "xauth.h"
 
+int snprintf(char *str, size_t size, const char *format, ...);
+
 int
 handle_xauth( char *cookie , char *servername)
 {
@@ -26,7 +28,7 @@ handle_xauth( char *cookie , char *servername)
     if ( strcmp (servername, "") == 0 )
        gethostname(hostname, BSIZE);
     else
-       sprintf(hostname, "%s" ,servername);
+       snprintf(hostname, BSIZE, "%s" ,servername);
     */
 
     /* read my hostname */
@@ -40,7 +42,7 @@ handle_xauth( char *cookie , char *servername)
        return(XAUTH_ERROR);
     }
 
-    sprintf ( (char*) cmd, "xauth -q -f /tmp/.tmpxauth add %s:0 MIT-MAGIC-COOKIE-1 %s", hostname, cookie);
+    snprintf ( (char*) cmd, BSIZE, "xauth -q -f /tmp/.tmpxauth add %s:0 MIT-MAGIC-COOKIE-1 %s", hostname, cookie);
 
     dbgtcos("tcosxmlrpc::handle_xauth() cmd=\"%s\"\n", cmd);
 
@@ -53,7 +55,7 @@ handle_xauth( char *cookie , char *servername)
 
 
     for (i = 0; i < 1; i++) {
-      sprintf(displayname, "%s:%d", hostname, i);               /* displayify it */
+      snprintf(displayname, BSIZE, "%s:%d", hostname, i);               /* displayify it */
 
       dbgtcos("tcosxmlrpc::handle_xauth() trying to connect to %s\n", displayname);
 

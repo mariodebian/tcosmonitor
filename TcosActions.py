@@ -1127,14 +1127,14 @@ class TcosActions:
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
                 p.wait()
 
-                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip().replace(" ", "\ ") ) )
                 p.wait()
                 
                 for user in users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
+                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip().replace(" ", "\ ") , _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1148,7 +1148,7 @@ class TcosActions:
                     self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
                     # Sent files to standalone
-                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
+                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip().replace(" ", "\ ") , _("Teacher") )
                     
                     result = self.main.dbus_action.do_exec( users , remote_cmd )
                     if not result:
@@ -1526,14 +1526,14 @@ class TcosActions:
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
                 p.wait()
 
-                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip().replace(" ", "\ ") ) )
                 p.wait()
                 
                 for user in connected_users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip() , _("Teacher") )
+                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip().replace(" ", "\ ")  , _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1547,7 +1547,7 @@ class TcosActions:
                     self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
                     # Sent files to standalone
-                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
+                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip().replace(" ", "\ "), _("Teacher") )
                     
                     result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
                     if not result:

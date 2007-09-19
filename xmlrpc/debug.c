@@ -36,7 +36,7 @@
 /* variable argument list */
 #include <stdarg.h>
 
-
+#ifndef HAVE_DEBUG
 void dbgtcos( const char *format_str, ... ) {
   if ( getenv("TCOS_DEBUG") == NULL) return;
   if ( strcmp(getenv("TCOS_DEBUG"), "1" ) == 0  ) {
@@ -46,7 +46,8 @@ void dbgtcos( const char *format_str, ... ) {
     vfprintf(stderr, format_str , ap);
   }
 }
-
+#define HAVE_DEBUG 1
+#endif
 /*
 #ifndef HAVE_MAIN
 int main( int argc, char **argv ) {

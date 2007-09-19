@@ -111,7 +111,7 @@ tcos_info(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 	return xmlrpc_build_value(env, "s", INFO_UNKNOW );
 
   /* put error into line var */
-  strcpy(line, INFO_ERROR);
+  strncpy(line, INFO_ERROR, BSIZE);
 
   fgets( line, sizeof line, fp);
 

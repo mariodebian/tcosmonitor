@@ -1,3 +1,16 @@
+tcosmonitor (0.1.22.2) unstable; urgency=low
+
+  * TcosActions.py:
+    - Escape spaces in rsync commands
+  * xmlrpc/*.[ch]
+    - Change strcpy => strncpy or sprintf => snprintf
+  * xmlrpc/validate-tcos.c:
+    - Initialize and get mem in struct info *login and free when unused.
+  * xmlrpc/Makefile:
+    - Compiles with -O2 flags
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 19 Sep 2007 22:55:32 +0200
+
 tcosmonitor (0.1.22.1.0) unstable; urgency=low
 
   * xmlrpc/validate*

@@ -21,6 +21,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define _GNU_SOURCE
 #include <string.h>
@@ -64,7 +65,7 @@ char *validate_tcos(char *user, char *pass)
   char *cryptpass;
   FILE *fp;
   char line[BSIZE];
-  struct info *login;
+  struct info *login=malloc(sizeof(struct info));
   fp = fopen ("/etc/tcospasswd", "r" );
   if (fp == NULL) {
      dbgtcos("error validate_tcos(): file /etc/tcospasswd not exists.\n");
@@ -72,13 +73,13 @@ char *validate_tcos(char *user, char *pass)
   }
 
   fgets( line, sizeof line, fp);
-  strcpy(login->line, line);
+  strncpy(login->line, line, BSIZE);
   split_login(login);
 
   #ifdef VISIBLE_PASSWD 
     dbgtcos( "validate_tcos() user=\"%s\" pass=\"%s\"\n", login->user, login->pass);
   #endif
-  
+
   dbgtcos( "validate_tcos() check users user=\"%s\" my_user=\"%s\"\n", user, login->user);
 
   if ( strcmp(login->user, user) != 0 ) {
@@ -94,9 +95,11 @@ char *validate_tcos(char *user, char *pass)
 
   if ( strcmp(login->pass, cryptpass) == 0 ) {
      dbgtcos("info validate_passwd(): LOGIN OK.\n");
+     free(login);
      return LOGIN_OK;
   }
   dbgtcos("info validate_passwd(): BAD PASSWORD.\n");
+  free(login);
   return LOGIN_NOPASS;
 }
 

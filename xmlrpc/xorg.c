@@ -50,7 +50,7 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   /* generate new xorg.conf */
   if ( strcmp(option, "new") == 0 )
   {
-   sprintf( (char*) line, "%s %s", XORG_NEW_CONF, cmdline );
+   snprintf( (char*) line, BSIZE, "%s %s", XORG_NEW_CONF, cmdline );
 
    dbgtcos("tcosxmlrpc::tcos_xorg() new exec=\"%s\"\n", line);
 
@@ -63,7 +63,7 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   /* change xorg.conf */
   else if ( strcmp(option, "change") == 0 )
   {
-   sprintf( (char*) line, "%s %s", XORG_CHANGE_CONF, cmdline );
+   snprintf( (char*) line, BSIZE, "%s %s", XORG_CHANGE_CONF, cmdline );
 
    dbgtcos("tcosxmlrpc::tcos_xorg() change exec=\"%s\"\n", line);
 
@@ -76,7 +76,7 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
   /* rebuild xorg.conf */
   else if ( strcmp(option, "rebuild") == 0 )
   {
-   sprintf( (char*) line, "%s %s", XORG_REBUILD_CONF, cmdline );
+   snprintf( (char*) line, BSIZE, "%s %s", XORG_REBUILD_CONF, cmdline );
 
    dbgtcos("tcosxmlrpc::tcos_xorg() rebuild exec=\"%s\"\n", line);
 
@@ -96,7 +96,7 @@ tcos_xorg(xmlrpc_env *env, xmlrpc_value *in, void *ud)
       return xmlrpc_build_value(env, "s", XORG_READING_ERROR );
 
    /* put error msg into line var */
-   strcpy(line, XORG_ERROR);
+   strncpy(line, XORG_ERROR, BSIZE);
 
    fgets( line, sizeof line, fp);
    if (env->fault_occurred)

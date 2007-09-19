@@ -19,7 +19,7 @@
 */
 
 #include <stdio.h>
-int snprintf(char *str, size_t size, const char *format, ...);
+/*int snprintf(char *str, size_t size, const char *format, ...);*/
 
 #include "exe.h"
 
@@ -35,8 +35,8 @@ char
   char line[BSIZE];
   char cmd[BSIZE];
   /* clear string */
-  strcpy(full_path, "");
-  sprintf( cmd, "which %s", bin);
+  strncpy(full_path, "", BSIZE);
+  snprintf( cmd, BSIZE, "which %s", bin);
   fp =(FILE*) popen(cmd, "r");
   if(fp == NULL)
   {
@@ -47,7 +47,7 @@ char
 
   for (i = 0; i < strlen(line)-1; i++)
    {
-     sprintf( full_path , "%s%c", full_path, line[i] );
+     snprintf( full_path , BSIZE, "%s%c", full_path, line[i] );
    }
 
   dbgtcos("tcosxmlrpc::get_full_path(%s)=%s\n", bin, full_path);

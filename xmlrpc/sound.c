@@ -61,14 +61,14 @@ tcos_sound(xmlrpc_env *env, xmlrpc_value *in, void *ud)
 
    dbgtcos("tcosxmlrpc::tcos_sound() exec=\"%s %s %s\"\n", SOUND_WRAPPER, option, cmdline);
 
-   sprintf( (char*) mycmd, "%s %s %s", SOUND_WRAPPER, option, cmdline);
+   snprintf( (char*) mycmd, BSIZE, "%s %s %s", SOUND_WRAPPER, option, cmdline);
 
    fp=(FILE*)popen( mycmd , "r");
    if (fp == NULL)
       return xmlrpc_build_value(env, "s", SOUND_READING_ERROR );
 
    /* put error msg into line var */
-   strcpy(line, SOUND_ERROR);
+   strncpy(line, SOUND_ERROR, BSIZE);
 
    fgets( line, sizeof line, fp);
    if (env->fault_occurred)
