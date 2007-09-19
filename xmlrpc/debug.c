@@ -47,7 +47,7 @@ void dbgtcos( const char *format_str, ... ) {
   }
 }
 
-
+/*
 #ifndef HAVE_MAIN
 int main( int argc, char **argv ) {
  
@@ -58,3 +58,4 @@ int main( int argc, char **argv ) {
   return(0);
 }
 #endif
+*/

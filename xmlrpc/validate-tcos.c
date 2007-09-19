@@ -29,6 +29,7 @@
 #include <sys/types.h>
 
 #include "validate.h"
+#include "debug.c"
 
 
 void
@@ -102,11 +103,16 @@ char *validate_tcos(char *user, char *pass)
 
 
 #ifndef HAVE_MAIN
-int main() {
+int main(int argc, char **argv) {
   char *username;
   char *password;
-  username = "root";
-  password = "root";
+  if (argc != 3) {
+   printf("Need to put user and pass params.\n");
+   printf("Example:  TCOS_DEBUG=1 ./validate-tcos user pass\n");
+   return 1;
+  }
+  username = argv[1];
+  password = argv[2];
   printf("main() user=%s pass=%s\n", username, password );
   printf("main() ?= %s.\n", validate_tcos(username, password) );
 

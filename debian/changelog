@@ -1,3 +1,10 @@
+tcosmonitor (0.1.22.1.0) unstable; urgency=low
+
+  * xmlrpc/validate*
+    - Compile validate-tcos as standalone app
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 19 Sep 2007 12:13:58 +0200
+
 tcosmonitor (0.1.22.1) unstable; urgency=low
 
   * TcosXmlrpc.py, TcosXauth.py:

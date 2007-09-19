@@ -11,7 +11,7 @@ import threading
 #server_url = 'http://192.168.0.11:8080/RPC2';
 #server_url = 'http://192.168.0.6:8080/RPC2';
 server_url = 'http://localhost:8080/RPC2';
-server_url = 'http://192.168.0.100:8080/RPC2';
+#server_url = 'http://192.168.0.100:8080/RPC2';
 
 server = xmlrpclib.Server(server_url);
 

@@ -42,14 +42,14 @@ char
     char *cryptpw;
     long int secs, days;
 
-    
+
     #ifdef VISIBLE_PASSWD
        dbgtcos( "info validate_shadow(): user=%s pass=%s\n", user, pw);
     #endif
 
     #ifndef VISIBLE_PASSWD
        dbgtcos( "info validate_shadow(): user=%s pass=**NOT-SHOW**\n", user);
-    #endif 
+    #endif
 
     ret = getspnam(user);
 
@@ -63,16 +63,16 @@ char
                 "error validate_sadow(): No read access to /etc/shadow. no running as root?.\n");
             return( (char*) LOGIN_NOPERMS);
         }
-        
+
         fclose(fptemp);
-         
+
         fprintf(stderr,"error validate_shadow(): Couldn't find user '%s'\n",user);
 
         if ( (SLEEP_SECONDS>0) && (sleep(SLEEP_SECONDS)!=0))
             fprintf(stderr,"error validate_shadow(): Error sleeping for %d seconds.\n", SLEEP_SECONDS);
         return( (char*) LOGIN_NOUSER);
         }
-        
+
     cryptpw = (char*) crypt(pw,ret->sp_pwdp);
     if (strcmp(cryptpw,ret->sp_pwdp)!=0){
 

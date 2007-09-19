@@ -25,6 +25,7 @@
 #include <sys/types.h>
 
 #include "validate.h"
+#include "debug.c"
 
 
 char *get_passwd( char *username )
@@ -54,7 +55,7 @@ char *validate_passwd(char *user, char *pass)
 {
   /*struct passwd *pwd;*/
   char *cryptpass;
-  
+
   cryptpass=get_passwd(user);
 
 #ifdef VISIBLE_PASSWD
@@ -63,7 +64,7 @@ char *validate_passwd(char *user, char *pass)
 
   if ( strcmp(crypt (pass, PASS_ID), cryptpass) == 0 )
      return LOGIN_OK;
-  
+
   return LOGIN_NOPASS;
 }
 
