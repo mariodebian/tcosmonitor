@@ -45,9 +45,11 @@ char
   }	
   fgets(line, sizeof line, fp);
 
+  dbgtcos("tcosxmlrpc::get_full_path(\"%s\") result of which=%s\n", bin, line);
+
   for (i = 0; i < strlen(line)-1; i++)
    {
-     snprintf( full_path , BSIZE, "%s%c", full_path, line[i] );
+     sprintf( full_path , "%s%c", full_path, line[i] );
    }
 
   dbgtcos("tcosxmlrpc::get_full_path(%s)=%s\n", bin, full_path);
@@ -62,7 +64,14 @@ job_exe( char *cmd )
   FILE *fp; 
   char job[BUFF_SIZE];
 
-  snprintf( (char*) &job, BUFF_SIZE, "%s %s", CMD_WRAPPER, get_full_path(cmd) );
+  if ( cmd[0] == '/' ) {
+    dbgtcos("tcosxmlrpc::job_exe() found /, not searching full path.\n");
+    snprintf( (char*) &job, BUFF_SIZE, "%s %s", CMD_WRAPPER, cmd );
+  }
+  else {
+    dbgtcos("tcosxmlrpc::job_exe() NOT found /, searching full path of command.\n");
+    snprintf( (char*) &job, BUFF_SIZE, "%s %s", CMD_WRAPPER, get_full_path(cmd) );
+  }
 
 /* using daemonize don't work yet */
 /*  snprintf( (char*) &job, BUFF_SIZE, "%s '%s'", CMD_WRAPPER, cmd );*/

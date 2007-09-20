@@ -1,3 +1,13 @@
+tcosmonitor (0.1.22.3) unstable; urgency=low
+
+  * xmlrpc/exe.c:
+    - Don't use get_full_path if command start with /
+    - Fix bug in get_full_path (remove snprintf BSIZE)
+  * TcosActions.py:
+    - Make escape spaces work with 2 or more files
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 20 Sep 2007 14:58:27 +0200
+
 tcosmonitor (0.1.22.2) unstable; urgency=low
 
   * TcosActions.py:
