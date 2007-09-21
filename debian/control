@@ -2,23 +2,19 @@ Source: tcosmonitor
 Section: gnome
 Priority: optional
 Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
-Build-Depends: debhelper (>= 5.0.37.2), libxmlrpc-c3, libxmlrpc-c3-dev, libxau-dev,
-               libxaw-headers, libxaw7-dev, imlib11-dev, python, python-support (>= 0.3)
+Build-Depends: debhelper (>= 5.0.37.2), python, python-support (>= 0.3)
 Standards-Version: 3.7.2
 XS-Python-Version: >= 2.4
 XS-Vcs-Browser: http://trac.tcosproject.org/browser/trunk/tcosmonitor
 XS-Vcs-Svn: https://forja.rediris.es/svn/cls-tcos/trunk/tcosmonitor
 
 Package: tcosmonitor
-Architecture: any
-Depends:  scrot, gksu | kdebase-bin, zenity, dbus, eject,
+Architecture: all
+Depends:  gksu | kdebase-bin, zenity, dbus,
           python-dbus | python2.4-dbus, python-gtk2, python-glade2, 
-          x11vnc, busybox, lsb-base (>= 3.0-6), 
-          python-notify, python-gnome2-extras, 
+          x11vnc, lsb-base (>= 3.0-6), python-notify, python-gnome2-extras, 
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
-Provides: tcos-tcosmonitor, tcos-standalone, ${python:Provides}
-Conflicts: tcos-tcosmonitor, tcos-standalone
-Replaces: tcos-tcosmonitor, tcos-standalone
+Conflicts: initramfs-tools-tcos (<= 0.83.2)
 XB-Python-Version: ${python:Versions}
 Description: Thin client monitor
  TCOS, thin Client Operating System is a method to create small embedded os

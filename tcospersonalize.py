@@ -143,9 +143,9 @@ class TcosPersonalize:
         self.ck_xdpms=self.ui.get_widget('ck_xdpms')
         
         # get textboxes
-        self.text_extramodules=self.ui.get_widget('text_extramodules')
-        self.text_xhorizsync=self.ui.get_widget('text_xhorizsync')
-        self.text_xvertsync=self.ui.get_widget('text_xvertsync')
+        self.text_extramodules=self.ui.get_widget('txt_extramodules')
+        self.text_xhorizsync=self.ui.get_widget('txt_xhorizsync')
+        self.text_xvertsync=self.ui.get_widget('txt_xvertsync')
         
         # host label
         self.hostlabel=self.ui.get_widget('label_host')
@@ -155,6 +155,13 @@ class TcosPersonalize:
         self.vars=[]
         self.OpenFile()
         
+        found=False
+        for var in self.vars:
+            if var[0] == "xdisablesync":
+                found=True
+        if not found:
+            print_debug("adding xdisablesync....")
+            self.vars.append(["xdisablesync", ""])
         
         # populate combos
         self.populate_select(self.combo_xsession, shared.xsession_values )
@@ -180,6 +187,9 @@ class TcosPersonalize:
         self.populate_checkboxes( self.ck_xmousewheel, self.GetVar("xmousewheel") )
         self.populate_checkboxes( self.ck_xdontzap, self.GetVar("xdontzap") )
         self.populate_checkboxes( self.ck_xdpms, self.GetVar("xdpms") )
+        
+        self.populate_textboxes( self.text_xhorizsync, self.GetVar("xhorizsync") )
+        self.populate_textboxes( self.text_xvertsync, self.GetVar("xvertsync") )
         
         # populate textboxes
         # NOTHING
@@ -276,6 +286,14 @@ class TcosPersonalize:
         self.SetVar("xres", self.read_select_value(self.combo_xres, "xres") )
         self.SetVar("xdepth", self.read_select_value(self.combo_xdepth, "xdepth") )
         
+        self.SetVar("xhorizsync", self.read_textbox(self.text_xhorizsync, "xhorizsync"))
+        self.SetVar("xvertsync", self.read_textbox(self.text_xvertsync, "xvertsync") )
+        
+        if self.GetVar("xhorizsync") == "\"disable\"" or self.GetVar("xvertsync") == "\"disable\"":
+            self.SetVar("xdisablesync", "disable")
+        else:
+            self.SetVar("xdisablesync", "")
+        
         # read checkboxes
         self.read_checkbox(self.ck_xmousewheel, "xmousewheel")
         self.read_checkbox(self.ck_xdontzap, "xdontzap")
@@ -320,6 +338,10 @@ class TcosPersonalize:
         else:
             widget.set_active(0)
         return
+
+    def populate_textboxes(self, widget, value):
+        if value:
+            widget.set_text(value.replace('"','') )
         
     def read_select_value(self, widget, varname):
         selected=-1
@@ -339,6 +361,15 @@ class TcosPersonalize:
         else:
             print_debug ( "read_checkbox(%s) UNCHECKED" %(widget.name) )
             self.SetVar(varname, 0)
+            
+    def read_textbox(self, widget, varname):
+        print widget.get_text()
+        if widget.get_text():
+            print_debug ( "read_textbox(%s) value=%s" %(widget.name, widget.get_text() ) )
+            return widget.get_text()
+        else:
+            print_debug ( "read_textbox(%s) can't read textbox" %(widget.name) )
+            return ""
         
     def on_buttongetavalaible_click(self, widget):
         print_debug( "on_button_getavalaible_click()" )

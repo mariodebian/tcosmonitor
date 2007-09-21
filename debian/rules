@@ -36,10 +36,6 @@ install: build
 	$(MAKE) install         DESTDIR=$(CURDIR)/debian/tcosmonitor PREFIX=/usr
 	$(MAKE) install-tcos    DESTDIR=$(CURDIR)/debian/tcosmonitor PREFIX=/usr
 
-	install -m 644 $(CURDIR)/debian/tcos-standalone.default $(CURDIR)/debian/tcosmonitor/etc/default/tcos-standalone
-
-	install -m 644 $(CURDIR)/debian/tcos-standalone.init $(CURDIR)/debian/tcosmonitor/etc/init.d/tcos-standalone
-
 	dh_link /usr/share/applications/tcosmonitor.desktop /usr/share/control-center-2.0/capplets/tcosmonitor.desktop
 
 	find $(CURDIR)/debian/tcosmonitor -name ".svn" | xargs rm -f --

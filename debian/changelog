@@ -1,3 +1,22 @@
+tcosmonitor (0.1.23.1) unstable; urgency=low
+
+  * Important move of code:
+    - Move xmlrpc code to initramfs-tools-tcos
+    - Move lockscreen to initramfs-tools-tcos
+    - Move udev to initramfs-tools-tcos
+    - Move hooks-addons to initramfs-tools-tcos
+  * Change tcosmonitor package arquitecture to all instead of any
+  * Remove obsolete code (httpd, and busybox)
+  * tcospersonalize.py:
+    - Allow to edit XhorizSync and XVertSync
+      (put disable and configurexorg will coment code)
+  * TcosActions.py:
+    - Import socket module
+  * Adjust depends and build-depends with only python package
+  * Change Architecture from any to all (not bins).
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 21 Sep 2007 23:11:27 +0200
+
 tcosmonitor (0.1.22.3) unstable; urgency=low
 
   * xmlrpc/exe.c:

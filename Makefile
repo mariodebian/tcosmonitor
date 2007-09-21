@@ -1,4 +1,4 @@
-all: fix-glade es.gmo tcosxmlrpc dbus udev
+all: fix-glade es.gmo dbus
 
 include common.mk
 
@@ -9,7 +9,6 @@ printversion:
 test-all:
 	@$(MAKE) test
 	@cd xmlrpc &&  $(MAKE) test
-	@cd udev &&    $(MAKE) test
 #	@cd busybox && $(MAKE) test && $(MAKE) test2
 	@cd dbus &&    $(MAKE) test
 
@@ -19,18 +18,10 @@ dist-clean:
 
 clean:
 	rm -f *~ *.pyc *.orig *.bak *-stamp
-	cd xmlrpc && $(MAKE) clean
-	cd lockscreen && $(MAKE) clean
 	cd po && rm -rf es/
 	$(MAKE) -f Makefile.ltsp clean
 	cd dbus && $(MAKE) clean
 
-tcosxmlrpc:
-	cd xmlrpc && $(MAKE)
-	cd lockscreen && $(MAKE)
-
-busybox_static:
-	if [ ! -f busybox/busybox ]; then cd busybox && $(MAKE) ; fi
 
 glade:
 	glade-2 $(PACKAGE).glade
@@ -67,9 +58,6 @@ es.gmo:
 
 dbus:
 	cd dbus && $(MAKE)
-
-udev:
-	cd udev && $(MAKE)
 
 
 install:
@@ -128,14 +116,8 @@ install:
 	install -d $(DESTDIR)/$(PREFIX)/share/locale/es/LC_MESSAGES/
 	install -m 644 po/es/LC_MESSAGES/$(PACKAGE).mo $(DESTDIR)/$(PREFIX)/share/locale/es/LC_MESSAGES/$(PACKAGE).mo
 	
-	# xmlrpc
-	cd xmlrpc && $(MAKE) install PREFIX=$(PREFIX) DESTDIR=$(DESTDIR)
-
 	# dbus
 	cd dbus && $(MAKE) install PREFIX=$(PREFIX) DESTDIR=$(DESTDIR)
-
-	# udev
-	cd udev && $(MAKE) install PREFIX=$(PREFIX) DESTDIR=$(DESTDIR) TCOS_BINS=$(TCOS_BINS)
 
 
 install-pxes1.0:
@@ -161,12 +143,9 @@ install-tcos:
 	install -d $(DESTDIR)/$(TCOS_DIR)/bin
 	install -d $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/
 
-	install -m 755 lockscreen/lockscreen $(DESTDIR)/$(TCOS_BINS)/lockscreen
-	install -m 644 lockscreen/lockscreen.png $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/lockscreen.png
-
-	# install tcos hooks
-	install -d $(DESTDIR)$(TCOS_DIR)/hooks-addons/
-	install -m 644 hooks-addons/tcosmonitor $(DESTDIR)$(TCOS_DIR)/hooks-addons/
+#	# install tcos hooks
+#	install -d $(DESTDIR)$(TCOS_DIR)/hooks-addons/
+#	install -m 644 hooks-addons/tcosmonitor $(DESTDIR)$(TCOS_DIR)/hooks-addons/
 
 
 targz: clean

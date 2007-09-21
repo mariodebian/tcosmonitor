@@ -2,15 +2,6 @@ usr/bin
 usr/share/tcosmonitor
 usr/share/tcosmonitor/images
 usr/share/applications
-usr/share/initramfs-tools-tcos/hooks-addons
-usr/lib/tcos
-var/lib/tcos/standalone
-var/lib/tcos/standalone/log
-var/lib/tcos/standalone/www
-var/lib/tcos/standalone/etc
-etc/default
-etc/init.d
 etc/X11/Xsession.d
-etc/tcos
 usr/share/pixmaps/
 usr/share/control-center-2.0/capplets

@@ -27,7 +27,7 @@ import gobject
 import gtk
 from gettext import gettext as _
 import os
-
+import socket
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 import shared
