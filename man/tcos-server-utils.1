@@ -1,0 +1,44 @@
+.TH tcos-server-utils 1 "Sep 24, 2007" "tcos-server-utils man page"
+
+.SH NAME
+tcos-server-utils \- Python script to exec some actions on connected thin clients.
+
+.SH DESCRIPTION
+
+.PP
+\fBtcos-server-utils\fP is a python script that generate XMLRPC events to do some jobs:
+ * Send a message
+ * Reboot
+ * Poweroff
+ * Restart Xorg
+
+tcos-server-utils use ~/.tcosconfig.conf auth and need to be configured before using it.
+
+
+.SH OPTIONS
+.B [no options]
+ With no options show some actions.
+
+.B --help
+ Some usage help about tcos-server-utils
+
+.B --action=foo
+ Exec desired action ( reboot, poweroff, restartx, message, nothing )
+   (action nothing is a self test)
+
+.B --text="foo"
+ If action=message this will the text displayed
+
+.B --users=user1,user2
+ Coma separated list of usernames to send text message
+
+.B --debug
+ Show verbose output when running
+
+.SH BUGS
+Contact Mario Izquierdo <mariodebian@gmail.com>
+
+Homepage: http://www.tcosproject.org
+
+.SH AUTHOR
+Mario Izquierdo (mariodebian) <mariodebian@gmail.com>

@@ -1,6 +1,5 @@
 [Desktop Entry]
 Version=1.0
-Encoding=UTF-8
 Name=TcosMonitor
 Name[en_GB]=TcosMonitor
 Name[es]=TcosMonitor
@@ -12,4 +11,4 @@ Terminal=false
 Type=Application
 Icon=/usr/share/pixmaps/tcos-icon-32x32.png
 GenericName[es_ES]=TcosMonitor
-Categories=GNOME;Application;Settings;System;
+Categories=GNOME;Settings;System;DesktopSettings;Monitor

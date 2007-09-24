@@ -1,3 +1,14 @@
+tcosmonitor (0.1.23.2) unstable; urgency=low
+
+  * Move dbus/tcosmonitor.conf to initramfs-tools-tcos package
+  * Make lintian clean:
+    - Fix typos in man pages
+    - Add tcos-server-utils man page
+    - *desktop remove Encoding line and fix Category in tcosmonitor
+    - Move python && python-support to Build-Depends-Indep
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 24 Sep 2007 13:39:31 +0200
+
 tcosmonitor (0.1.23.1) unstable; urgency=low
 
   * Important move of code:
