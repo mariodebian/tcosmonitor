@@ -1133,6 +1133,7 @@ class TcosActions:
                 for user in users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
+                        self.main.xmlrpc.newhost(ip)
                         server=self.main.xmlrpc.GetStandalone("get_server")
                         standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
@@ -1532,6 +1533,7 @@ class TcosActions:
                 for user in connected_users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
+                        self.main.xmlrpc.newhost(ip)
                         server=self.main.xmlrpc.GetStandalone("get_server")
                         standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )

@@ -32,6 +32,7 @@ import socket
 
 
 CONF_FILE="~/.tcos-devices-ng.conf"
+ALL_CONF_FILE="/etc/tcos/tcos-devices-ng.conf"
 
 # check for local DISPLAY
 remotehost, display =  os.environ["DISPLAY"].split(':')
@@ -126,7 +127,8 @@ class TcosDevicesNG:
         self.mounted={}
         self.mntconf={}
         self.username=get_username()
-        self.loadconf()
+        self.loadconf(CONF_FILE)
+        self.loadconf(ALL_CONF_FILE)
         
         ######## read floppys #############
         if self.mntconf.has_key("disable_quit") and self.mntconf['disable_quit'] == "1" :
@@ -173,9 +175,9 @@ class TcosDevicesNG:
         "umount-flash": {"DEVPATH": "/block/sd*",   "ACTION":"umount"}
         }
     
-    def loadconf(self):
-        print_debug ( "loadconf() __init__" )
-        conf=os.path.expanduser(CONF_FILE)
+    def loadconf(self, conffile):
+        print_debug ( "loadconf() __init__ conffile=%s" %conffile )
+        conf=os.path.expanduser(conffile)
         if os.path.isfile(conf):
             print_debug ("loadconf() found conf file %s" %conf)
             f=open(conf, "r")

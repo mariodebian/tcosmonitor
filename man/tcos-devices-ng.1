@@ -28,7 +28,8 @@ tcos-devices-ng use xauth with tcosxmlrpc (MIT-MAGIC-COOKIE)
 
 .SH OPTIONAL CONFIGURATION
 
-You can create a conf file in user home (~/.tcos\-devices\-ng.conf) with this content:
+You can create a conf file in user home ~/.tcos\-devices\-ng.conf (for one user) or 
+edit /etc/tcos/tcos\-devices\-ng.conf (for all users) with this content:
 
    hdc=myCdrom
    hdd=cdWriter
@@ -44,7 +45,7 @@ use value as mount point
 
 .SH DISABLE SOME DEVICES
 
-Put into ~/.tcos-devices-ng.conf something like this:
+Put into ~/.tcos\-devices\-ng.conf or edit /etc/tcos/tcos\-devices\-ng.conf like this:
 
     # disable floppy
     disable_floppy=1
