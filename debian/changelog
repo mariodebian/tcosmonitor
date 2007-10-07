@@ -1,3 +1,10 @@
+tcosmonitor (0.1.23.4) unstable; urgency=low
+
+  * Fix typo dependency notification-daemon
+  * Enable tcos-devices-ng by default
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 07 Oct 2007 10:41:12 +0200
+
 tcosmonitor (0.1.23.3) unstable; urgency=low
 
   * TcosActions.py:
