@@ -1,3 +1,10 @@
+tcosmonitor (0.1.23.5) unstable; urgency=low
+
+  * tcos-devices-ng.py:
+    - Use DEVPATH instead of DEVNAME in cdrom mount/umount events
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 11 Oct 2007 10:35:14 +0200
+
 tcosmonitor (0.1.23.4) unstable; urgency=low
 
   * Fix typo dependency notification-daemon

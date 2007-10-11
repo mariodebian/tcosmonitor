@@ -433,7 +433,7 @@ class TcosDevicesNG:
                 self.update_hdd(data["ACTION"])
             else:
                 # we have a cdrom
-                self.update_cdrom(data['DEVNAME'], action=data["ACTION"])
+                self.update_cdrom("/dev/" + data["DEVPATH"].split("/")[2], action=data["ACTION"])
             
         if data.has_key("DEVPATH") and "/block/fd" in data["DEVPATH"]:
             self.update_floppy(data["ACTION"])
