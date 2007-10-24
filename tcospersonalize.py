@@ -117,7 +117,7 @@ class TcosPersonalize:
         self.main = self.ui.get_widget('mainwindow')
 
         # close windows signals
-        self.main.connect('destroy', self.salirse )
+        self.main.connect('destroy', self.quitapp )
         
         # buttons
         self.buttonok=self.ui.get_widget('ok_button')
@@ -394,7 +394,7 @@ class TcosPersonalize:
     def on_buttonok_click(self, widget):
         print_debug ( "on_buttonok_click()" )
         self.SaveSettings()
-        self.salirse(None)
+        self.quitapp()
     
     def on_buttoncancel_click(self, widget):
         print_debug ( "on_buttoncancel_click()" )
@@ -402,7 +402,7 @@ class TcosPersonalize:
             # delete file
             print_debug ( "on_buttoncancel_click() deleting file" )
             os.remove(self.remotehost_config)
-        self.salirse(None)    
+        self.quitapp()    
 
     def on_buttondelete_click(self, widget):
         print_debug ( "on_buttondelete_click()" )
@@ -411,9 +411,9 @@ class TcosPersonalize:
             print_debug ( "on_buttondelete_click() deleting file" )
             os.remove(self.remotehost_config)
         shared.info_msg ( _("Deleted!") )
-        self.salirse(None)
+        self.quitapp()
 
-    def salirse(self,widget):
+    def quitapp(self,*args):
         print_debug ( _("Exiting") )
         gtk.main_quit()
 
@@ -421,7 +421,7 @@ class TcosPersonalize:
         try:
             gtk.main()
         except KeyboardInterrupt:
-            self.salirse(True)
+            self.quitapp()
 
 
 if __name__ == '__main__':

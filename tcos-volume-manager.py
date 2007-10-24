@@ -160,7 +160,7 @@ class TcosVolumeManager:
         self.mainwindow = self.ui.get_widget('mainwindow')
         
         # close windows signals
-        #self.mainwindow.connect('destroy', self.salirse )
+        #self.mainwindow.connect('destroy', self.quitapp )
         self.mainwindow.connect('delete-event', self.mainwindow_close )
         
         self.mainlabel=self.ui.get_widget('mainlabel')
@@ -332,7 +332,7 @@ class TcosVolumeManager:
         self.mainwindow.hide()
         return True
 
-    def salirse(self,True):
+    def quitapp(self,*args):
         print_debug ( _("Exiting") )
         self.mainloop.quit()
         
@@ -342,7 +342,7 @@ class TcosVolumeManager:
         try:
             self.mainloop.run()
         except KeyboardInterrupt: # Por si se pulsa Ctrl+C
-            self.salirse(True)
+            self.quitapp()
 
 if __name__ == "__main__":
     app=TcosVolumeManager(shared.remotehost)

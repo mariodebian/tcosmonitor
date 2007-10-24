@@ -88,7 +88,7 @@ class Initialize:
     def initbuttons(self):
         print_debug ( "initbuttons()" )
         self.main.quitbutton = self.ui.get_widget('quitbutton')
-        self.main.quitbutton.connect('clicked', self.main.salirse)
+        self.main.quitbutton.connect('clicked', self.main.quitapp)
         
         self.main.preferencesbutton = self.ui.get_widget('preferencesbutton')
         self.main.preferencesbutton.connect('clicked', self.main.actions.on_preferencesbutton_click)

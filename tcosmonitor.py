@@ -117,7 +117,8 @@ class TcosMonitor:
         self.is_fullscreen=False
         
         # close windows signals
-        self.mainwindow.connect('destroy', self.salirse )
+        self.mainwindow.connect('destroy', self.quitapp )
+        self.mainwindow.connect("delete_event", self.quitapp)
         #self.pref.connect('destroy', self.prefwindow_close )
         #self.pref.hide()
         
@@ -174,9 +175,9 @@ class TcosMonitor:
         if self.config.GetVar("populate_list_at_startup") == "1":
             self.populate_host_list()
         
-
-        
-    
+        # create tmp dir
+        p = popen2.Popen3("mkdir /tmp/tcos_share/")
+        p.wait()
         
     def prefwindow_close(self, widget, event):
         print_debug ( "prefwindow_close() closing preferences window" )
@@ -223,57 +224,23 @@ class TcosMonitor:
         self.statusbar.push(context_id, msg)
         return    
 
-    def salirse(self,True):
+    def quitapp(self,*args):
         print_debug ( _("Exiting") )
         #gtk.main_quit()
+        p = popen2.Popen3("rm -rf /tmp/tcos_share/")
+        p.wait()
         self.mainloop.quit()
 
 
     def run (self):
         self.mainloop = gobject.MainLoop()
-        #self.mainloop.run()
         try:
-            #gtk.main()
             self.mainloop.run()
-        except KeyboardInterrupt: # Por si se pulsa Ctrl+C
-            self.salirse(True)
+        except KeyboardInterrupt: # Press Ctrl+C
+            self.quitapp()
+        
+        
     
-"""
-class thread_controller(Thread):
-    # based on obex_controler
-    # http://www.student.lu.se/~cif04usv/wiki/btrcv.html
-    def __init__(self, cmd, gui):
-        self.gui=gui
-        self.finished=False
-        Thread.__init__(self)
-        self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
-        self.stdout = self.p.stdout
-        #print_debug ( "ThreadController::__init__() Started %s with pid %d" % (cmd, self.p.pid ) )
-
-    def isfinish(self):
-        return self.finished
-    
-    def run(self):
-        while True:
-            #print "THREAD: Sleeping..."
-            time.sleep(0.2)
-            line = self.stdout.readline()
-            line = line.replace('\n', '')
-            # chek if terminated
-            if self.p.poll() != None:
-                self.finished=True
-
-            if line.find("DONE") > 0:
-                print_debug ( "ThreadController::run() DONE found" )
-            #print("THREAD: read \" %s \" " % (line) )
-
-            while gtk.events_pending():
-                gtk.main_iteration(False)
-
-            #self.gui.writeintoprogresstxt( line )
-            return line
-"""
-
 if __name__ == '__main__':
     app = TcosMonitor ()
     # Run app

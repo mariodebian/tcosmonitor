@@ -1025,10 +1025,20 @@ class TcosActions:
             self.folder = self._folder = os.environ['HOME']
             dialog.set_current_folder(self.folder)
             filter = gtk.FileFilter()
-            filter.set_name("All files")
-            filter.add_pattern("*")
+            filter.set_name("Media Files ( *.avi, *.mpg, *.mpeg, *.mp3, *.wav, etc.. )")
+            file_types=["*.avi", "*.mpg", "*.mpeg", "*.ogg", "*.ogm", "*.asf", "*.divx", 
+                        "*.wmv", "*.vob", "*.m2v", "*.m4v", "*.mp2", "*.mp4", "*.ac3", 
+                        "*.ogg", "*.mp1", "*.mp2", "*.mp3", "*.wav", "*.wma"]
+            for elem in file_types:
+                filter.add_pattern( elem )
+            
             dialog.add_filter(filter)
-
+            
+            filter = gtk.FileFilter()
+            filter.set_name("All Files")
+            filter.add_pattern("*.*")
+            dialog.add_filter(filter)
+            
             response = dialog.run()
             if response == gtk.RESPONSE_OK:
                 
@@ -1040,6 +1050,8 @@ class TcosActions:
                 # exec this app on client
                 remote_cmd="vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm --fullscreen"
                 
+                self.write_into_statusbar( _("Waiting for start video transmission...") )
+                
                 for user in users:
                     if user.find(":") != -1:
                         # we have a standalone user...
@@ -1049,6 +1061,7 @@ class TcosActions:
                         users.remove(user)
                     
                 result = self.main.dbus_action.do_exec( users ,remote_cmd )
+                                
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
@@ -1062,6 +1075,8 @@ class TcosActions:
             
             users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
             
+            self.main.write_into_statusbar( _("Waiting for stop video transmission...") )
+            
             for user in users:
                 if user.find(":") != -1:
                     # we have a standalone user...
@@ -1072,8 +1087,7 @@ class TcosActions:
             
             result = self.main.dbus_action.do_killall( users , "vlc" )
    
-                
-            self.main.exe_cmd("killall vlc") 
+            self.main.exe_cmd("killall vlc")
             self.main.write_into_statusbar( _("Video broadcast stopped.") )
 
 
@@ -1099,11 +1113,8 @@ class TcosActions:
             filter.add_pattern("*")
             dialog.add_filter(filter)
             
-            confirm = None
             import popen2
-            p = popen2.Popen3("mkdir /tmp/tcos_share")
-            p.wait()
-
+            
             if not os.path.isdir("/tmp/tcos_share"):
                 shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
                 return
@@ -1129,6 +1140,8 @@ class TcosActions:
 
                 p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
+                
+                self.main.write_into_statusbar( _("Waiting for send files...") )
                 
                 for user in users:
                     if user.find(":") != -1:
@@ -1157,7 +1170,7 @@ class TcosActions:
                     else:
                         result = self.main.dbus_action.do_message(users ,
                                 _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
-                        
+                    
                 self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
             
@@ -1166,10 +1179,20 @@ class TcosActions:
 
 
     def start_vnc(self, ip):
+        #generate password vnc
+        tempfilepasswd = self.main.localdata.exe_cmd("tempfile -d /tmp/tcos_share -p .tcos")
+        temppasswd = os.path.basename(tempfilepasswd)
+        self.main.exe_cmd( "x11vnc -storepasswd %s %s 2>/dev/null" %( temppasswd, tempfilepasswd ) )
+        self.main.exe_cmd( "rsync -avx --chmod=go+r %s %s" %( tempfilepasswd, tempfilepasswd ) )
+        sleep(1)
+            
         if self.main.xmlrpc.IsStandalone(ip):
+            self.main.xmlrpc.newhost(ip)
+            server=self.main.xmlrpc.GetStandalone("get_server")
             self.main.xmlrpc.DBus("killall", "x11vnc")
             sleep(1)
-            self.main.xmlrpc.DBus("exec", "x11vnc -forever -shared -noshm")
+            self.main.xmlrpc.DBus("exec", "x11vnc -storepasswd %s /tmp/%s 2>/dev/null" %( temppasswd, temppasswd ) )
+            self.main.xmlrpc.DBus("exec", "x11vnc -allow %s -forever -shared -noshm -rfbauth /tmp/%s" %( server, temppasswd ) )
             gtk.gdk.threads_enter()
             self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
             gtk.gdk.threads_leave()
@@ -1185,6 +1208,8 @@ class TcosActions:
                 
                 try:
                     self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.Exe( ("x11vnc -storepasswd %s /tmp/.tcosvnc") %( temppasswd ) )
+                    sleep(1)
                     self.main.xmlrpc.Exe("startvnc")
                     gtk.gdk.threads_enter()
                     self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
@@ -1196,7 +1221,7 @@ class TcosActions:
                     gtk.gdk.threads_leave()
                     return
                 
-        cmd = "vncviewer " + ip
+        cmd = ("vncviewer " + ip + " -passwd %s" ) %( tempfilepasswd )
         print_debug ( "start_process() threading \"%s\"" %(cmd) )
         self.main.exe_cmd (cmd)
         
@@ -1333,8 +1358,20 @@ class TcosActions:
                 if self.main.localdata.IsLogged(client):
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
                     print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
+                    
+                    
+            #generate password vnc
+            tempfilepasswd = self.main.localdata.exe_cmd("tempfile -d /tmp/tcos_share -p .tcos")
+            temppasswd = os.path.basename(tempfilepasswd)
+            self.main.exe_cmd("killall x11vnc")
+            self.main.exe_cmd( "x11vnc -storepasswd %s %s 2>/dev/null" %( temppasswd, tempfilepasswd ) )
+            self.main.exe_cmd( "rsync -avx --chmod=go+r %s %s" %( tempfilepasswd, tempfilepasswd ) )
+            sleep(1)
+            
             # start x11vnc in local 
-            self.main.exe_cmd("x11vnc -shared -noshm -viewonly -forever")
+            self.main.exe_cmd( "x11vnc -shared -noshm -viewonly -forever -rfbauth %s" %( tempfilepasswd ) )
+            
+            self.main.write_into_statusbar( _("Waiting for start demo mode...") )
             
             # need to wait for start, PingPort loop
             from ping import PingPort
@@ -1348,9 +1385,11 @@ class TcosActions:
             # vncviewer --version 2>&1|grep built
             version=self.main.localdata.exe_cmd("vncviewer --version 2>&1| grep built", verbose=0)
             if "4.1" in version:
-                args="-ViewOnly -FullScreen"
+                args_thin=( "-ViewOnly -FullScreen -passwd %s" %( tempfilepasswd ) )
+                args_standalone=( "-ViewOnly -FullScreen -passwd /tmp/%s" %( temppasswd ) )
             elif "3.3" in version:
-                args="-viewonly -fullscreen"
+                args_thin=( "-viewonly -fullscreen -passwd %s" %( tempfilepasswd ) )
+                args_standalone=( "-viewonly -fullscreen -passwd /tmp/%s" %( temppasswd ) )
             else:
                 args=""
             
@@ -1361,12 +1400,15 @@ class TcosActions:
                     usern, ip = user.split(":")
                     self.main.xmlrpc.newhost(ip)
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    standalone_cmd="vncviewer %s %s" %(server, args)
+                    standalone_cmd = ( "x11vnc -storepasswd %s /tmp/%s 2>/dev/null" %( temppasswd, temppasswd ) )
+                    self.main.xmlrpc.DBus("exec", standalone_cmd )
+                    standalone_cmd="vncviewer %s %s" %(server, args_standalone)
                     self.main.xmlrpc.DBus("exec", standalone_cmd )
                     connected_users.remove(user)
                     
-            remote_cmd="vncviewer 127.0.0.1 %s" %(args)
+            remote_cmd="vncviewer 127.0.0.1 %s" %(args_thin)
             result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+               
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
             self.main.write_into_statusbar( _("Running in demo mode.") )
@@ -1376,6 +1418,8 @@ class TcosActions:
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+            
+            self.main.write_into_statusbar( _("Waiting for stop demo mode...") )
             
             for user in connected_users:
                 if user.find(":") != -1:
@@ -1418,8 +1462,18 @@ class TcosActions:
             self.folder = self._folder = os.environ['HOME']
             dialog.set_current_folder(self.folder)
             filter = gtk.FileFilter()
-            filter.set_name("All files")
-            filter.add_pattern("*")
+            filter.set_name("Media Files ( *.avi, *.mpg, *.mpeg, *.mp3, *.wav, etc.. )")
+            file_types=["*.avi", "*.mpg", "*.mpeg", "*.ogg", "*.ogm", "*.asf", "*.divx", 
+                        "*.wmv", "*.vob", "*.m2v", "*.m4v", "*.mp2", "*.mp4", "*.ac3", 
+                        "*.ogg", "*.mp1", "*.mp2", "*.mp3", "*.wav", "*.wma"]
+            for elem in file_types:
+                filter.add_pattern( elem )
+            
+            dialog.add_filter(filter)
+            
+            filter = gtk.FileFilter()
+            filter.set_name("All Files")
+            filter.add_pattern("*.*")
             dialog.add_filter(filter)
 
             response = dialog.run()
@@ -1433,6 +1487,8 @@ class TcosActions:
                 # exec this app on client
                 remote_cmd="vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm --fullscreen"
                 
+                self.main.write_into_statusbar( _("Waiting for start video transmission...") )
+                
                 for user in connected_users:
                     if user.find(":") != -1:
                         # we have a standalone user...
@@ -1442,6 +1498,7 @@ class TcosActions:
                         connected_users.remove(user)
                     
                 result = self.main.dbus_action.do_exec( connected_users ,remote_cmd )
+                
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
@@ -1458,6 +1515,8 @@ class TcosActions:
                 if self.main.localdata.IsLogged(client):
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
             
+            self.main.write_into_statusbar( _("Waiting for stop video transmission...") )
+            
             for user in connected_users:
                 if user.find(":") != -1:
                     # we have a standalone user...
@@ -1469,7 +1528,7 @@ class TcosActions:
             result = self.main.dbus_action.do_killall( connected_users , "vlc" )
    
                 
-            self.main.exe_cmd("killall vlc") 
+            self.main.exe_cmd("killall vlc")
             self.main.write_into_statusbar( _("Video broadcast stopped.") )
 
 
@@ -1499,11 +1558,8 @@ class TcosActions:
             filter.add_pattern("*")
             dialog.add_filter(filter)
             
-            confirm = None
             import popen2
-            p = popen2.Popen3("mkdir /tmp/tcos_share")
-            p.wait()
-
+            
             if not os.path.isdir("/tmp/tcos_share"):
                 shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
                 return
@@ -1529,6 +1585,8 @@ class TcosActions:
 
                 p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
+                
+                self.main.write_into_statusbar( _("Waiting for send files...") )
                 
                 for user in connected_users:
                     if user.find(":") != -1:
@@ -1557,7 +1615,7 @@ class TcosActions:
                     else:
                         result = self.main.dbus_action.do_message(connected_users ,
                                 _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
-                        
+                                    
                 self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
 

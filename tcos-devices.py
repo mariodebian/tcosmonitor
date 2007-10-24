@@ -687,7 +687,7 @@ Categories=GNOME;Application
         self.mainwindow.hide()
         
         self.quit_button=self.ui.get_widget('quit_button')
-        self.quit_button.connect("clicked", self.salirse)
+        self.quit_button.connect("clicked", self.quitapp)
         self.refresh_button=self.ui.get_widget('refresh_button')
         self.refresh_button.connect("clicked", self.get_data)
         
@@ -868,7 +868,7 @@ Categories=GNOME;Application
         self.mainwindow.hide()
         return True
 
-    def salirse(self,True, *args):
+    def quitapp(self,*args):
         print_debug ( _("Exiting") )
         self.mainloop.quit()
         
@@ -878,7 +878,7 @@ Categories=GNOME;Application
         try:
             self.mainloop.run()
         except KeyboardInterrupt: # Por si se pulsa Ctrl+C
-            self.salirse(True)
+            self.quitapp()
 
 if __name__ == "__main__":
     if action == "umount":

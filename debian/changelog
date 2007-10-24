@@ -1,3 +1,14 @@
+tcosmonitor (0.1.24.0) unstable; urgency=low
+
+  * tcosmonitor.py, tcospersonalize.py, tcos-devices.py, tcos-volume-manager.py
+    - Rename exit function salirse -> quitapp
+  * tcosmonitor.py:
+    - Create and delete /tmp/tcos_share
+  * TcosActions.py:
+    - Make vnc (server and client) to use random password
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 24 Oct 2007 09:38:10 +0200
+
 tcosmonitor (0.1.23.5) unstable; urgency=low
 
   * tcos-devices-ng.py:
