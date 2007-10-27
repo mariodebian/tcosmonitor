@@ -28,6 +28,8 @@ import gtk
 from gettext import gettext as _
 import os
 import socket
+import string
+from random import Random
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 import shared
@@ -156,6 +158,17 @@ class TcosActions:
         # refresh pref widgets
         self.main.init.populate_pref()
         self.main.pref.hide()        
+
+    def on_button_open_static(self, widget):
+        print_debug("on_button_open_static()")
+        self.main.static.show_static()
+        self.main.pref.hide()
+
+    def on_scan_method_change(self, widget):
+        if widget.get_active() == 2:
+            self.main.pref_open_static.set_sensitive(True)
+        else:
+            self.main.pref_open_static.set_sensitive(False)
     
     def on_refreshbutton_click(self,widget):
         self.main.write_into_statusbar ( _("Searching for connected hosts...") )
@@ -165,7 +178,7 @@ class TcosActions:
             # ping will call populate_hostlist when finish
             return
         else:
-            allclients=self.main.localdata.GetAllClients("netstat")
+            allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             if len(allclients) == 0:
                 self.main.write_into_statusbar ( _("Not connected hosts found.") )
                 # clean treeview
@@ -813,8 +826,13 @@ class TcosActions:
             ip=host
             hostname=self.main.localdata.GetHostname(ip)
             username=self.main.localdata.GetUsername(ip)
-            num_process=self.main.localdata.GetNumProcess(ip)
-            time_logged=self.main.localdata.GetTimeLogged(ip)
+            try:
+                num_process=self.main.localdata.GetNumProcess(ip)
+                time_logged=self.main.localdata.GetTimeLogged(ip)
+            except:
+                num_process="---"
+                time_logged="---"
+                pass
             
             if self.main.localdata.IsActive(ip):
                 image_active=active_image
@@ -1177,57 +1195,39 @@ class TcosActions:
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
 
-
+        
     def start_vnc(self, ip):
-        #generate password vnc
-        tempfilepasswd = self.main.localdata.exe_cmd("tempfile -d /tmp/tcos_share -p .tcos")
-        temppasswd = os.path.basename(tempfilepasswd)
-        self.main.exe_cmd( "x11vnc -storepasswd %s %s 2>/dev/null" %( temppasswd, tempfilepasswd ) )
-        self.main.exe_cmd( "rsync -avx --chmod=go+r %s %s" %( tempfilepasswd, tempfilepasswd ) )
-        sleep(1)
-            
-        if self.main.xmlrpc.IsStandalone(ip):
-            self.main.xmlrpc.newhost(ip)
-            server=self.main.xmlrpc.GetStandalone("get_server")
-            self.main.xmlrpc.DBus("killall", "x11vnc")
-            sleep(1)
-            self.main.xmlrpc.DBus("exec", "x11vnc -storepasswd %s /tmp/%s 2>/dev/null" %( temppasswd, temppasswd ) )
-            self.main.xmlrpc.DBus("exec", "x11vnc -allow %s -forever -shared -noshm -rfbauth /tmp/%s" %( server, temppasswd ) )
+        # gen password in thin client
+        passwd=''.join( Random().sample(string.letters+string.digits, 12) )
+        
+        self.main.xmlrpc.vnc("genpass", ip, passwd)
+        os.system("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
+                    %(passwd, os.path.expanduser('~/.tcosvnc')) )
+        
+        gtk.gdk.threads_enter()
+        self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
+        gtk.gdk.threads_leave()
+        
+        try:
+            self.main.xmlrpc.vnc("startserver", ip)
             gtk.gdk.threads_enter()
             self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
             gtk.gdk.threads_leave()
             sleep(5)
-            
-        #self.main.xmlrpc.newhost(ip)
-        # check if remote proc is running
-        else:
-            if not self.main.xmlrpc.GetStatus("x11vnc"):
-                gtk.gdk.threads_enter()
-                self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
-                gtk.gdk.threads_leave()
-                
-                try:
-                    self.main.xmlrpc.newhost(ip)
-                    self.main.xmlrpc.Exe( ("x11vnc -storepasswd %s /tmp/.tcosvnc") %( temppasswd ) )
-                    sleep(1)
-                    self.main.xmlrpc.Exe("startvnc")
-                    gtk.gdk.threads_enter()
-                    self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
-                    gtk.gdk.threads_leave()
-                    sleep(5)
-                except:
-                    gtk.gdk.threads_enter()
-                    shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
-                    gtk.gdk.threads_leave()
-                    return
-                
-        cmd = ("vncviewer " + ip + " -passwd %s" ) %( tempfilepasswd )
+        except:
+            gtk.gdk.threads_enter()
+            shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
+            gtk.gdk.threads_leave()
+            return
+        
+        cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
         print_debug ( "start_process() threading \"%s\"" %(cmd) )
         self.main.exe_cmd (cmd)
         
         gtk.gdk.threads_enter()
         self.main.write_into_statusbar( "" )
         gtk.gdk.threads_leave()
+        
 
     def start_ivs(self, ip):
         self.main.xmlrpc.newhost(ip)
@@ -1802,7 +1802,7 @@ class TcosActions:
             if tmp != "":
                 process=tmp.split('|')[0:-1]
             else:
-                process=["PID COMMAND", "66000 NO process found"]
+                process=["PID COMMAND", "66000 can't read process list"]
         else:    
             username=self.main.localdata.GetUsername(ip)
             cmd="LANG=C ps U \"%s\" -o pid,command" %(username)

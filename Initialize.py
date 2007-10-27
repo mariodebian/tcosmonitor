@@ -58,7 +58,6 @@ class Initialize:
         print_debug ( "__init__() starting" )
         self.main=main
         self.ui=self.main.ui
-        self.ui=self.main.ui
         self.model=gtk.ListStore\
         (str, str, str, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, str, str)
         
@@ -219,8 +218,16 @@ class Initialize:
         self.main.combo_network_interfaces = self.main.ui.get_widget('combo_networkinterface') 
         self.populate_select(self.main.combo_network_interfaces, self.main.config.GetAllNetworkInterfaces() )
         
+        # scan method
         self.main.pref_combo_scan_method = self.main.ui.get_widget('combo_scanmethod')
         self.populate_select(self.main.pref_combo_scan_method, shared.scan_methods )
+        
+        # static host list button
+        self.main.pref_open_static = self.main.ui.get_widget('button_open_static')
+        self.main.pref_open_static.connect('clicked', self.main.actions.on_button_open_static)
+        
+        # add signal changed to scan_method to enable/disable button on the fly
+        self.main.pref_combo_scan_method.connect('changed', self.main.actions.on_scan_method_change)
         
         
         # checkboxes
@@ -228,6 +235,8 @@ class Initialize:
         self.main.pref_cybermode = self.main.ui.get_widget('ck_cybermode')
         self.main.pref_systemprocess = self.main.ui.get_widget('ck_systemprocess')
         self.main.pref_blockactioninthishost = self.main.ui.get_widget('ck_blockactioninthishost')
+        self.main.pref_onlyshowtcos = self.main.ui.get_widget('ck_onlyshowtcos')
+        
         self.main.pref_tcosinfo = self.main.ui.get_widget('ck_tcosinfo')
         self.main.pref_cpuinfo = self.main.ui.get_widget('ck_cpuinfo')
         self.main.pref_kernelmodulesinfo = self.main.ui.get_widget('ck_kernelmodulesinfo')
@@ -244,6 +253,11 @@ class Initialize:
                          self.main.config.GetVar("scan_network_method"))
         self.set_active_in_select(self.main.combo_network_interfaces,\
                          self.main.config.GetVar("network_interface"))
+                         
+        if self.main.config.GetVar("scan_network_method") != "static":
+            self.main.pref_open_static.set_sensitive(False)
+        else:
+            self.main.pref_open_static.set_sensitive(True)
         
         # set value of spin
         self.main.pref_spin_update.set_value( float(self.main.config.GetVar("refresh_interval")) )
@@ -264,6 +278,8 @@ class Initialize:
         self.populate_checkboxes(self.main.pref_cybermode, "work_as_cyber_mode")
         self.populate_checkboxes(self.main.pref_systemprocess, "systemprocess")
         self.populate_checkboxes(self.main.pref_blockactioninthishost, "blockactioninthishost")
+        self.populate_checkboxes(self.main.pref_onlyshowtcos, "onlyshowtcos")
+        
         self.populate_checkboxes(self.main.pref_tcosinfo, "tcosinfo")
         self.populate_checkboxes(self.main.pref_cpuinfo, "cpuinfo")
         self.populate_checkboxes(self.main.pref_kernelmodulesinfo, "kernelmodulesinfo")
@@ -316,7 +332,7 @@ class Initialize:
         self.main.tabla.append_column (column1)
 		
         cell2 = gtk.CellRendererText ()
-        column2 = gtk.TreeViewColumn (_("Ip address"), cell2, text = COL_IP)
+        column2 = gtk.TreeViewColumn (_("IP address"), cell2, text = COL_IP)
         column2.set_resizable (True)	
         column2.set_sort_column_id(COL_IP)
         self.main.tabla.append_column (column2)
@@ -360,44 +376,7 @@ class Initialize:
         # allow to work right click
         self.main.tabla.connect_object("button_press_event", self.main.actions.on_hostlist_event, self.main.menu)
         return
-    
-            
 
-"""    
-class thread_controller(Thread):
-    # based on obex_controler
-    # http://www.student.lu.se/~cif04usv/wiki/btrcv.html
-    def __init__(self, cmd, gui):
-        self.gui=gui
-        self.finished=False
-        Thread.__init__(self)
-        self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
-        self.stdout = self.p.stdout
-        #print_debug ( "ThreadController::__init__() Started %s with pid %d" % (cmd, self.p.pid ) )
-
-    def isfinish(self):
-        return self.finished
-    
-    def run(self):
-        while True:
-            #print "THREAD: Sleeping..."
-            time.sleep(0.2)
-            line = self.stdout.readline()
-            line = line.replace('\n', '')
-            # chek if terminated
-            if self.p.poll() != None:
-                self.finished=True
-
-            if line.find("DONE") > 0:
-                print_debug ( "ThreadController::run() DONE found" )
-            #print("THREAD: read \" %s \" " % (line) )
-
-            while gtk.events_pending():
-                gtk.main_iteration(False)
-
-            #self.gui.writeintoprogresstxt( line )
-            return line
-"""
 
 if __name__ == '__main__':
     init=Initialize (None)

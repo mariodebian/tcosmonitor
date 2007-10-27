@@ -1,4 +1,4 @@
-tcosmonitor (0.1.24.0) unstable; urgency=low
+tcosmonitor (0.1.24.1) unstable; urgency=low
 
   * tcosmonitor.py, tcospersonalize.py, tcos-devices.py, tcos-volume-manager.py
     - Rename exit function salirse -> quitapp
@@ -6,8 +6,12 @@ tcosmonitor (0.1.24.0) unstable; urgency=low
     - Create and delete /tmp/tcos_share
   * TcosActions.py:
     - Make vnc (server and client) to use random password
+    - Use new method tcos.xmlrpc.vnc and a wrapper vnc-controller.sh
+  * TcosStaticHosts.py:
+    - Support new scan method (static list)
+  * Option to not show host not running tcosxmlrpc (port 8080)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 24 Oct 2007 09:38:10 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 27 Oct 2007 23:29:21 +0200
 
 tcosmonitor (0.1.23.5) unstable; urgency=low
 

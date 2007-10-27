@@ -94,6 +94,7 @@ import LocalData
 import TcosConf
 import TcosActions
 import TcosXauth
+import TcosStaticHosts
 
 class TcosMonitor:
     def __init__(self):
@@ -142,9 +143,11 @@ class TcosMonitor:
         self.xauth=TcosXauth.TcosXauth(self)
         
         
+        
         self.init=Initialize.Initialize(self)
         self.actions=TcosActions.TcosActions(self)
         
+        self.static=TcosStaticHosts.TcosStaticHosts(self)
         
         
         #########  init some elements ###########
@@ -176,7 +179,7 @@ class TcosMonitor:
             self.populate_host_list()
         
         # create tmp dir
-        p = popen2.Popen3("mkdir /tmp/tcos_share/")
+        p = popen2.Popen3("mkdir -p /tmp/tcos_share/")
         p.wait()
         
     def prefwindow_close(self, widget, event):

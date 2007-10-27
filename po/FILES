@@ -17,3 +17,4 @@ tcos-devices-ng.py
 TcosTrayIcon.py
 tcos-devices.glade
 server-utils/tcos-server-utils.py
+TcosStaticHosts.py

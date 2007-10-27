@@ -205,7 +205,7 @@ class LocalData:
             
             return []
             
-        else:
+        elif method == "netstat":
             print_debug ( "GetAllClients() using method \"netstat\" in port 600[0-9]" )
             start=time()
             self.allclients=[]
@@ -231,8 +231,41 @@ class LocalData:
             # sort numeric
             self.allclients = self.sorted_copy(self.allclients)
             
+            # onlys show host running tcosxmlrpc in 8080 port
+            if self.main.config.GetVar("onlyshowtcos") == 1:
+                hosts=[]
+                for host in self.allclients:
+                    # view status of port 8080
+                    if PingPort(host, shared.xmlremote_port, 0.5).get_status() == "OPEN":
+                        hosts.append(host)
+                self.allclients=hosts
+            
             print_debug ( "GetAllClients() Host connected=%s" %(self.allclients) )
             crono(start, "GetAllClients()")
+            return self.allclients
+        else:
+            self.allclients=[]
+            if len(self.main.static.data) < 1:
+                shared.error_msg( _("Static list method configured but no hosts in list.\n\nPlease, open preferences, click on 'Open Static Host list' and add some hosts.") )
+                return self.allclients
+                
+            for host in self.main.static.data:
+                # we have a single ip or range of ips??
+                ip=host[0]
+                if ip.find("-") != -1:
+                    base=ip.split(".")
+                    minip=int(base[3].split("-")[0])
+                    maxip=int(base[3].split("-")[1])
+                    if minip < maxip:
+                        for i in range(minip,maxip):
+                            newip=".".join(base[0:3]) + ".%s" %(i)
+                            self.allclients.append(newip)
+                    else:
+                        for i in range(maxip, minip):
+                            newip=".".join(base[0:3]) + ".%s" %(i)
+                            self.allclients.append(newip)
+                else:
+                    self.allclients.append(ip)
             return self.allclients
 
     

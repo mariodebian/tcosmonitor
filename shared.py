@@ -59,11 +59,12 @@ debug=False
 tcos_config_file="./tcos.conf"
 
 # if exec from svn or sources dir
-if os.path.isdir('./debian') and  os.path.isdir('./xmlrpc'):
+if os.path.isdir('./debian'):
     LOCALE_DIR = "./po/"
     GLADE_DIR = "./"
     IMG_DIR = "./images/"
     tcos_config_file="./tcos.conf"
+    print "exec in sources dir"
 else:
     tcos_config_file="/etc/tcos/tcos.conf"
     GLADE_DIR = "/usr/share/tcosmonitor/"
@@ -76,7 +77,8 @@ config_file=os.path.expanduser('~/.tcosmonitor.conf')
 
 scan_methods=[
 "netstat", 
-"ping"
+"ping",
+"static"
 ]
 
 
@@ -102,7 +104,9 @@ DefaultConfig=[
 ["soundserverinfo", 0, "int"], 
 ["systemprocess", 0, "int"], 
 ["tcosmonitorversion", version, "str"],
-["blockactioninthishost", 1, "int"]
+["blockactioninthishost", 1, "int"],
+["onlyshowtcos", 1, "int"],
+["statichosts", "", "str"]
 ]
 # method ping is list 0 of combo_scan_method
 

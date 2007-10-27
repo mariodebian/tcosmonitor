@@ -17,6 +17,7 @@ import socket
 import fcntl
 import struct
 from gettext import gettext as _
+from time import sleep
 
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
@@ -83,7 +84,13 @@ class Ping:
         for pingle in pinglist:
             pingle.join()
             if pingle.status == 2:
-                reachip.append(pingle.ip)
+                # only show in list hosts running tcosxmlrpc in 8080 port
+                if self.main.config.GetVar("onlyshowtcos") == 1:
+                    # view status of port 8080
+                    if PingPort(pingle.ip, shared.xmlremote_port, 0.5).get_status() == "OPEN":
+                        reachip.append(pingle.ip)
+                else:
+                    reachip.append(pingle.ip)
         
         self.main.worker.set_finished()
         
