@@ -341,6 +341,12 @@ class TcosXmlRpc:
                 return self.tc.tcos.standalone("get_server").replace('\n', '')
             except:
                 return ""
+        
+        elif item == "get_time":
+            try:
+                return self.tc.tcos.standalone("get_time").replace('\n', '')
+            except:
+                return None
             
         else:
             return ""

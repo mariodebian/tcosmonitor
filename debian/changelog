@@ -1,3 +1,9 @@
+tcosmonitor (0.1.24.2) unstable; urgency=low
+
+  * Fix get_time in standalone and thin client mode (who => last)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 29 Oct 2007 09:36:17 +0100
+
 tcosmonitor (0.1.24.1) unstable; urgency=low
 
   * tcosmonitor.py, tcospersonalize.py, tcos-devices.py, tcos-volume-manager.py

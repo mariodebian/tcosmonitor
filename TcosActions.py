@@ -826,13 +826,17 @@ class TcosActions:
             ip=host
             hostname=self.main.localdata.GetHostname(ip)
             username=self.main.localdata.GetUsername(ip)
+            
             try:
                 num_process=self.main.localdata.GetNumProcess(ip)
-                time_logged=self.main.localdata.GetTimeLogged(ip)
             except:
                 num_process="---"
+            
+            try:
+                time_logged=self.main.localdata.GetTimeLogged(ip)
+            except:
                 time_logged="---"
-                pass
+            
             
             if self.main.localdata.IsActive(ip):
                 image_active=active_image

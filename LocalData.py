@@ -509,20 +509,23 @@ class LocalData:
         cmd="LC_ALL=C LANGUAGE=C LANG=C date +'%b %d %H:%M'"
         date=self.exe_cmd(cmd)
         
-        cmd="LC_ALL=C LANGUAGE=C LANG=C who| awk '{print $1\"|\"$2\"|\"$3\" \"$4\" \"$5}'"
-        allhost=self.exe_cmd(cmd)
-        # get an array like this ['username'|'hostname or IP:0'|'Jul 12 21:56']
-
-        for line in allhost:
-            xhost=line.split('|')
-            if xhost[1] == "%s:0" %(host):
-                last=xhost[2]
-            if xhost[1] == "%s:0" %(self.GetHostname(host)):
-                last=xhost[2]
+        print_debug("GetTimeLogged() local date=%s" %date)
         
+        if not self.main.xmlrpc.IsStandalone(host):
+            cmd="LC_ALL=C LC_MESSAGES=C last| grep \"%s:\"| head -1 | awk '{print $5\" \"$6\" \"$7}'" %(host)
+            print_debug("GetTimeLogged() thin client host %s, get time for last command= %s" %(host, cmd))
+            #cmd="LC_ALL=C LANGUAGE=C LANG=C who| awk '{print $1\"|\"$2\"|\"$3\" \"$4\" \"$5}'"
+            # get an array like this ['username'|'hostname or IP:0'|'Jul 12 21:56']
+            last=self.exe_cmd(cmd)
+        else:
+            print_debug("GetTimeLogged() asking for time logged at standalone host %s" %(host))
+            last=self.main.xmlrpc.GetStandalone("get_time")
+            
+
         print_debug ("TimeLogged() last=%s date=%s" %(last, date) )
         # FORMAT AAAA-MM-DD HH:MM compare
         if last==date or last==None:
+            print_debug ("GetTimeLogged() last=date or last=None")
             return "00:00"
             
         (monthlast, daylast, hourlast) = last.split(' ')
@@ -531,7 +534,7 @@ class LocalData:
             print_debug ("GetTimeLogged() Login another day daylast=%s daylate=%s!!!!" %(daylast,daydate))
         (hlast, mlast)= hourlast.split(':')
         (hdate, mdate)= hourdate.split(':')
-        #restar
+        # diff times
         hlogged=int(hdate) - int(hlast)
         mlogged=int(mdate) - int(mlast)
         print_debug ("TimeLogged() DIFF user=%s date=%s" %(hourlast, hourdate) )
