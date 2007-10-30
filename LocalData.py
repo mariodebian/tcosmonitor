@@ -512,7 +512,7 @@ class LocalData:
         print_debug("GetTimeLogged() local date=%s" %date)
         
         if not self.main.xmlrpc.IsStandalone(host):
-            cmd="LC_ALL=C LC_MESSAGES=C last| grep \"%s:\"| head -1 | awk '{print $5\" \"$6\" \"$7}'" %(host)
+            cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:\" -e \"%s:0\" 2>/dev/null| head -1 | awk '{print $5\" \"$6\" \"$7}'" %(host, self.GetHostname(host))
             print_debug("GetTimeLogged() thin client host %s, get time for last command= %s" %(host, cmd))
             #cmd="LC_ALL=C LANGUAGE=C LANG=C who| awk '{print $1\"|\"$2\"|\"$3\" \"$4\" \"$5}'"
             # get an array like this ['username'|'hostname or IP:0'|'Jul 12 21:56']
