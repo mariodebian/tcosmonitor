@@ -1,3 +1,9 @@
+tcosmonitor (0.1.24.3) unstable; urgency=low
+
+  * Fix GetTimeLogged command for thin client hosts
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 31 Oct 2007 16:37:56 +0100
+
 tcosmonitor (0.1.24.2) unstable; urgency=low
 
   * Fix get_time in standalone and thin client mode (who => last)
