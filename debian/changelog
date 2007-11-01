@@ -1,8 +1,16 @@
 tcosmonitor (0.1.24.3) unstable; urgency=low
 
-  * Fix GetTimeLogged command for thin client hosts
+  * TcosActions.py shared.py Initialize.py tcosmonitor.glade:
+    - Remove stop demo mode, add progress stop button
+    - New individual action Demo mode from thin client / standalone host
+  * TcosActions.py
+    - Modify to use new tcos vnc-controller
+  * LocalData.py:
+    - Change GetTimeLogged with new last command
+  * TcosXmlRpc.py:
+    - Fix new tcos.vnc calls to correct number of arguments
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 31 Oct 2007 16:37:56 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 01 Nov 2007 19:07:53 +0100
 
 tcosmonitor (0.1.24.2) unstable; urgency=low
 

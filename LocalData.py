@@ -514,8 +514,6 @@ class LocalData:
         if not self.main.xmlrpc.IsStandalone(host):
             cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:0.*still\" -e \"%s:0.*still\"  2>/dev/null | head -1| awk '{print $(NF-5)\" \"$(NF-4)\" \"$(NF-3)}'" %(host, self.GetHostname(host))
             print_debug("GetTimeLogged() thin client host %s, get time for last command= %s" %(host, cmd))
-            #cmd="LC_ALL=C LANGUAGE=C LANG=C who| awk '{print $1\"|\"$2\"|\"$3\" \"$4\" \"$5}'"
-            # get an array like this ['username'|'hostname or IP:0'|'Jul 12 21:56']
             last=self.exe_cmd(cmd)
         else:
             print_debug("GetTimeLogged() asking for time logged at standalone host %s" %(host))
@@ -539,7 +537,7 @@ class LocalData:
         mlogged=int(mdate) - int(mlast)
         print_debug ("TimeLogged() DIFF user=%s date=%s" %(hourlast, hourdate) )
         hdays=""
-        if mlogged < 1:
+        if mlogged < 0:
             hlogged=hlogged-1
             mlogged=mlogged+60
         if hlogged < 0:

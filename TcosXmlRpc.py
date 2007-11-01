@@ -542,28 +542,28 @@ class TcosXmlRpc:
         self.newhost(ip)
         if action == "genpass":
             passwd=args
-            self.tc.tcos.vnc("genpass", "%s /tmp/.tcosvnc" %passwd, \
+            return self.tc.tcos.vnc("genpass", "%s /tmp/.tcosvnc" %passwd, \
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )
         elif action == "startserver":
-            self.tc.tcos.vnc("startserver", "/tmp/.tcosvnc", \
+            return self.tc.tcos.vnc("startserver", "/tmp/.tcosvnc", \
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )
         
         elif action == "stopserver":
-            self.tc.tcos.vnc("stopserver", \
+            return self.tc.tcos.vnc("stopserver", "",\
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )
         
         elif action == "startclient":
-            passwd=args
-            self.tc.tcos.vnc("startclient", "/tmp/.tcosvnc", \
+            server_ip=args
+            return self.tc.tcos.vnc("startclient", "%s /tmp/.tcosvnc" %server_ip, \
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )
         
         elif action == "stopclient":
             passwd=args
-            self.tc.tcos.vnc("stopclient",  \
+            return self.tc.tcos.vnc("stopclient", "", \
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )
             

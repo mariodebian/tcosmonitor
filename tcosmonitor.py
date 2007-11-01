@@ -231,7 +231,7 @@ class TcosMonitor:
         print_debug ( _("Exiting") )
         #gtk.main_quit()
         p = popen2.Popen3("rm -rf /tmp/tcos_share/")
-        p.wait()
+        p = popen2.Popen3("rm -f %s" % os.path.expanduser('~/.tcosvnc'))
         self.mainloop.quit()
 
 

@@ -983,14 +983,7 @@ class TcosActions:
                 th=self.main.exe_cmd( cmd )
             else:
                 shared.info_msg( _("%s is not supported to personalize!") %(client_type) )
-        
-#        if action == 11:
-#            # run installer
-#            pass_msg=_("Enter password of remote thin client (if asked for it)")
-#            cmd="xterm -e \"echo '%s'; ssh root@%s /sbin/installer.sh\"" %(pass_msg, self.main.selected_ip)
-#            print_debug ( "menu_event_one(%d) cmd=%s" %(action, cmd) )
-#            th=self.main.exe_cmd( cmd )
-            
+                    
         if action == 11:
             # reset xorg
             # Ask for it
@@ -1160,7 +1153,7 @@ class TcosActions:
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
                 p.wait()
 
-                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                p = popen2.Popen3("rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
                 
                 self.main.write_into_statusbar( _("Waiting for send files...") )
@@ -1170,7 +1163,7 @@ class TcosActions:
                         usern, ip=user.split(":")
                         self.main.xmlrpc.newhost(ip)
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
+                        standalone_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1183,8 +1176,8 @@ class TcosActions:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                     self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
-                    # Sent files to standalone
-                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
+                    # Sent files to thin client
+                    remote_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
                     
                     result = self.main.dbus_action.do_exec( users , remote_cmd )
                     if not result:
@@ -1195,9 +1188,71 @@ class TcosActions:
                     
                 self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
+        
+        if action == 19:
+            print_debug ("menu_event_one() demo mode from not teacher host" )
+            ip=self.main.selected_ip
+            allclients=self.main.localdata.allclients
+            
+            if not self.main.localdata.IsLogged(ip):
+                shared.error_msg ( _("Can't start VNC, user is not logged") )
+                return
+            
+            # demo mode
+            os.system("killall x11vnc 2>/dev/null")
+                    
+            #generate password vnc
+            passwd=''.join( Random().sample(string.letters+string.digits, 12) )
+            self.main.exe_cmd("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
+                                    %(passwd, os.path.expanduser('~/.tcosvnc')) )
+            
+            # start x11vnc in remote host
+            self.main.xmlrpc.vnc("stopserver", ip )
+            self.main.xmlrpc.vnc("genpass", ip, passwd )
+            self.main.xmlrpc.vnc("startserver", ip )
+                    
+            self.main.write_into_statusbar( _("Waiting for start demo mode from host %s...") %(ip) )
+            
+            # need to wait for start, PingPort loop
+            from ping import PingPort
+            status = "CLOSED"
+            while status != "OPEN":
+                status=PingPort(ip,5900).get_status()
+                if status == "CLOSED":
+                    sleep(1)
+            
+            # start in 1 (teacher)
+            total=1
+            for client in allclients:
+                if self.main.localdata.IsLogged(client) and client != ip:
+                    self.main.xmlrpc.vnc("genpass", client, passwd )
+                    self.main.xmlrpc.vnc("startclient", client, ip )
+                    total+=1
+            
+            if total < 1:
+                self.main.write_into_statusbar( _("No users logged.") )
+                # kill x11vnc in host
+                self.main.xmlrpc.vnc("stopserver", ip )
+            else:
+                self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
+                cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
+                self.main.exe_cmd (cmd)
+                self.set_progressbar( _("Running in demo mode from host %s...") %ip, 1 )
+                # configure action for Stop button
+                self.main.progressstop.show()
+                self.main.progressstop.connect('clicked', self.stop_vnc_demo, ip )
+                self.main.progressbar.show()
+            
+            
             
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
+
+    def stop_vnc_demo(self, widget, ip):
+        self.main.xmlrpc.vnc("stopserver", ip )
+        self.main.progressstop.hide()
+        self.main.progressbar.hide()
+        self.main.write_into_statusbar( _("Demo mode off.") )
 
         
     def start_vnc(self, ip):
@@ -1213,10 +1268,16 @@ class TcosActions:
         gtk.gdk.threads_leave()
         
         try:
-            self.main.xmlrpc.vnc("startserver", ip)
+            result=self.main.xmlrpc.vnc("startserver", ip)
+            if result.find("error") != -1:
+                gtk.gdk.threads_enter()
+                shared.error_msg ( _("Can't start VNC, error:\n%s") %(result) )
+                gtk.gdk.threads_leave()
+                return
             gtk.gdk.threads_enter()
             self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
             gtk.gdk.threads_leave()
+            # FIXME make a loop waiting for start???
             sleep(5)
         except:
             gtk.gdk.threads_enter()
@@ -1356,24 +1417,15 @@ class TcosActions:
         
         if action == 8:
             # demo mode
-            # search for connected users
-            connected_users=[]
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-                    print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
-                    
+            os.system("killall x11vnc 2>/dev/null")
                     
             #generate password vnc
-            tempfilepasswd = self.main.localdata.exe_cmd("tempfile -d /tmp/tcos_share -p .tcos")
-            temppasswd = os.path.basename(tempfilepasswd)
-            self.main.exe_cmd("killall x11vnc")
-            self.main.exe_cmd( "x11vnc -storepasswd %s %s 2>/dev/null" %( temppasswd, tempfilepasswd ) )
-            self.main.exe_cmd( "rsync -avx --chmod=go+r %s %s" %( tempfilepasswd, tempfilepasswd ) )
-            sleep(1)
+            passwd=''.join( Random().sample(string.letters+string.digits, 12) )
+            self.main.exe_cmd("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
+                                    %(passwd, os.path.expanduser('~/.tcosvnc')) )
             
             # start x11vnc in local 
-            self.main.exe_cmd( "x11vnc -shared -noshm -viewonly -forever -rfbauth %s" %( tempfilepasswd ) )
+            self.main.exe_cmd( "x11vnc -shared -noshm -viewonly -forever -rfbauth %s" %( os.path.expanduser('~/.tcosvnc') ) )
             
             self.main.write_into_statusbar( _("Waiting for start demo mode...") )
             
@@ -1385,68 +1437,37 @@ class TcosActions:
                 if status == "CLOSED":
                     sleep(1)
             
-            # get vncviewer version
-            # vncviewer --version 2>&1|grep built
-            version=self.main.localdata.exe_cmd("vncviewer --version 2>&1| grep built", verbose=0)
-            if "4.1" in version:
-                args_thin=( "-ViewOnly -FullScreen -passwd %s" %( tempfilepasswd ) )
-                args_standalone=( "-ViewOnly -FullScreen -passwd /tmp/%s" %( temppasswd ) )
-            elif "3.3" in version:
-                args_thin=( "-viewonly -fullscreen -passwd %s" %( tempfilepasswd ) )
-                args_standalone=( "-viewonly -fullscreen -passwd /tmp/%s" %( temppasswd ) )
-            else:
-                args=""
+            server_ip=self.main.xmlrpc.tc.tcos.standalone("get_server").replace('\n','')
+            print_debug("menu_event_all() vnc server ip=%s" %(server_ip))
             
-            # exec this app
-            for user in connected_users:
-                if user.find(":") != -1:
-                    # we have a standalone user...
-                    usern, ip = user.split(":")
-                    self.main.xmlrpc.newhost(ip)
-                    server=self.main.xmlrpc.GetStandalone("get_server")
-                    standalone_cmd = ( "x11vnc -storepasswd %s /tmp/%s 2>/dev/null" %( temppasswd, temppasswd ) )
-                    self.main.xmlrpc.DBus("exec", standalone_cmd )
-                    standalone_cmd="vncviewer %s %s" %(server, args_standalone)
-                    self.main.xmlrpc.DBus("exec", standalone_cmd )
-                    connected_users.remove(user)
-                    
-            remote_cmd="vncviewer 127.0.0.1 %s" %(args_thin)
-            result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
-               
-            if not result:
-                shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-            self.main.write_into_statusbar( _("Running in demo mode.") )
-        
-        if action == 9:
-            connected_users=[]
+            
+            total=0
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                    self.main.xmlrpc.vnc("genpass", client, passwd )
+                    self.main.xmlrpc.vnc("startclient", client, server_ip )
+                    total+=1
             
-            self.main.write_into_statusbar( _("Waiting for stop demo mode...") )
+            if total < 1:
+                self.main.write_into_statusbar( _("No users logged.") )
+                # kill x11vnc
+                self.main.exe_cmd("killall x11vnc 2>/dev/null")
+            else:
+                self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
+                self.set_progressbar( _("Running in demo mode from host %s...") %server_ip, 1 )
+                # configure action for Stop button
+                self.main.progressstop.show()
+                self.main.progressstop.connect('clicked', self.stop_vnc_demo, server_ip )
+                self.main.progressbar.show()
             
-            for user in connected_users:
-                if user.find(":") != -1:
-                    # we have a standalone user...
-                    usern, ip = user.split(":")
-                    self.main.xmlrpc.newhost(ip)
-                    self.main.xmlrpc.DBus("killall", "vncviewer" )
-                    connected_users.remove(user)
-                    
-            result = self.main.dbus_action.do_killall( connected_users , "vncviewer" )
-            
-            # kill my x11vnc server
-            self.main.exe_cmd("killall x11vnc")
-            self.main.write_into_statusbar( _("Demo mode off.") )
-        
-        if action == 10:
+        if action == 9:
             # capture screenshot of all and show minis
             # Ask for unlock screens
             self.main.worker=shared.Workers(self.main, None, None)
             self.main.worker.set_for_all_action(self.action_for_clients,\
                                                     allclients, "screenshot" )
 
-        if action == 11:
+        if action == 10:
             # action sent by vidal_joshur at gva dot es
             # start video broadcast mode
             # search for connected users
@@ -1509,7 +1530,7 @@ class TcosActions:
             
             dialog.destroy()
                                                     
-        if action == 12:
+        if action == 11:
             # action sent by vidal_joshur at gva dot es
             # stop video broadcast mode
             # search for connected users
@@ -1536,7 +1557,7 @@ class TcosActions:
             self.main.write_into_statusbar( _("Video broadcast stopped.") )
 
 
-        if action == 13:
+        if action == 12:
             # action sent by vidal_joshur at gva dot es
             # envio ficheros
             # search for connected users
