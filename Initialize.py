@@ -76,11 +76,13 @@ class Initialize:
         
     def init_progressbar(self):
         self.main.progressbar=self.ui.get_widget('progressbar')
+        self.main.progresstext=self.ui.get_widget('progresstext')
         self.main.progressbutton=self.ui.get_widget('progressbutton')
         self.main.progressbutton.connect('clicked', self.main.actions.on_progressbutton_click )
         self.main.progressbar.hide()
         self.main.progressstop=self.ui.get_widget('progressstop') 
         self.main.progressstop.hide()
+        self.main.progresstext.hide()
 
         
     def initbuttons(self):

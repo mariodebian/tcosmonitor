@@ -562,7 +562,6 @@ class TcosXmlRpc:
                                 self.main.config.GetVar("xmlrpc_password") )
         
         elif action == "stopclient":
-            passwd=args
             return self.tc.tcos.vnc("stopclient", "", \
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )

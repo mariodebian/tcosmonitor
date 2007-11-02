@@ -237,6 +237,14 @@ class LocalData:
                 for host in self.allclients:
                     # view status of port 8080
                     if PingPort(host, shared.xmlremote_port, 0.5).get_status() == "OPEN":
+                        self.main.xmlrpc.newhost(host)
+                        if self.main.xmlrpc.connected:
+                            print_debug("GetAllClients() host=%s port 8080 OPEN" %(host))
+                            hosts.append(host)
+                        else:
+                            print_debug("GetAllClients() host=%s port 8080 OPEN but not tcosxmlrpc" %(host))
+                    else:
+                        print_debug("GetAllClients() host=%s port 8080 CLOSED" %(host))
                         hosts.append(host)
                 self.allclients=hosts
             

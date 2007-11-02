@@ -1237,11 +1237,11 @@ class TcosActions:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
                 cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
                 self.main.exe_cmd (cmd)
-                self.set_progressbar( _("Running in demo mode from host %s...") %ip, 1 )
+                self.main.progresstext.set_text( _("Running in demo mode from host %s...") %ip )
                 # configure action for Stop button
                 self.main.progressstop.show()
                 self.main.progressstop.connect('clicked', self.stop_vnc_demo, ip )
-                self.main.progressbar.show()
+                self.main.progresstext.show()
             
             
             
@@ -1249,9 +1249,11 @@ class TcosActions:
         return
 
     def stop_vnc_demo(self, widget, ip):
+        self.main.exe_cmd ("killall x11vnc 2>/dev/null")
         self.main.xmlrpc.vnc("stopserver", ip )
         self.main.progressstop.hide()
-        self.main.progressbar.hide()
+        self.main.progresstext.hide()
+        self.main.progresstext.set_text( "" )
         self.main.write_into_statusbar( _("Demo mode off.") )
 
         
@@ -1437,14 +1439,14 @@ class TcosActions:
                 if status == "CLOSED":
                     sleep(1)
             
-            server_ip=self.main.xmlrpc.tc.tcos.standalone("get_server").replace('\n','')
-            print_debug("menu_event_all() vnc server ip=%s" %(server_ip))
-            
-            
             total=0
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
                     self.main.xmlrpc.vnc("genpass", client, passwd )
+                    # get server ip
+                    server_ip=self.main.xmlrpc.GetStandalone("get_server")
+                    print_debug("menu_event_all() vnc server ip=%s" %(server_ip))
+                    # start vncviewer
                     self.main.xmlrpc.vnc("startclient", client, server_ip )
                     total+=1
             
@@ -1454,11 +1456,11 @@ class TcosActions:
                 self.main.exe_cmd("killall x11vnc 2>/dev/null")
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
-                self.set_progressbar( _("Running in demo mode from host %s...") %server_ip, 1 )
+                self.main.progresstext.set_text( _("Running in demo mode from host %s...") %server_ip )
                 # configure action for Stop button
                 self.main.progressstop.show()
-                self.main.progressstop.connect('clicked', self.stop_vnc_demo, server_ip )
-                self.main.progressbar.show()
+                self.main.progressstop.connect('clicked', self.stop_vnc_demo, "" )
+                self.main.progresstext.show()
             
         if action == 9:
             # capture screenshot of all and show minis

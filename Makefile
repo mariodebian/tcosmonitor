@@ -176,6 +176,7 @@ patch_version:
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosConf.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosDBus.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosXauth.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosStaticHosts.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosXmlRpc.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices-ng.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices.py

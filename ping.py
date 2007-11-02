@@ -59,6 +59,7 @@ class Ping:
         for i in range(1,255):
             iprange=selfip.split(".")[:-1]
             ip=".".join(iprange)+"."+str(i)
+            # don't show server in list
             if ip in server_ips:
                 continue
             #print "ping to %s" %(ip)
@@ -88,10 +89,18 @@ class Ping:
                 if self.main.config.GetVar("onlyshowtcos") == 1:
                     # view status of port 8080
                     if PingPort(pingle.ip, shared.xmlremote_port, 0.5).get_status() == "OPEN":
-                        reachip.append(pingle.ip)
+                        self.main.xmlrpc.newhost(pingle.ip)
+                        if self.main.xmlrpc.connected:
+                            print_debug("ping_iprange() host=%s port 8080 OPEN" %(pingle.ip))
+                            reachip.append(pingle.ip)
+                        else:
+                            print_debug("ping_iprange() host=%s port 8080 OPEN but not tcosxmlrpc" %(pingle.ip))
+                    else:
+                        print_debug("ping_iprange() host=%s port 8080 closed" %(pingle.ip))
                 else:
                     reachip.append(pingle.ip)
         
+        print_debug("ping_iprange() discovered host finished" )
         self.main.worker.set_finished()
         
         if len(reachip) == 0:
@@ -99,7 +108,7 @@ class Ping:
             self.main.write_into_statusbar ( _("No host found") )
             self.main.progressbar.hide()
             self.main.progressbutton.hide()
-            gtk.gdk.threads_enter()
+            gtk.gdk.threads_leave()
         
         if len(reachip) > 0:
             gtk.gdk.threads_enter()

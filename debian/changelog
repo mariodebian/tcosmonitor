@@ -1,3 +1,14 @@
+tcosmonitor (0.1.24.4) unstable; urgency=low
+
+  * ping.py LocalData.py
+    - Make sure don't show hosts with 8080 port open and not tcosxmlrpc
+  * TcosActions.py
+    - Get server IP in every vnc hosts call (different networks)
+  * TcosActions.py Initialize.py tcosmonitor.glade
+    - Move progressstop (and create progresstext) to new bottom bar
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 02 Nov 2007 16:55:13 +0100
+
 tcosmonitor (0.1.24.3) unstable; urgency=low
 
   * TcosActions.py shared.py Initialize.py tcosmonitor.glade:
