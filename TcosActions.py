@@ -77,7 +77,7 @@ class TcosActions:
             shared.error_msg ( _("PulseAudio apps need /dev/shm.") )
 
     def on_kill_button_click(self, widget, pid, username):
-        print_debug ( "on_kill_button_click() FIXME pid=%s username=%s" %(pid, username) )
+        print_debug ( "on_kill_button_click() pid=%s username=%s" %(pid, username) )
         if shared.ask_msg ( _("Are you sure you want to stop this process?") ):
             print_debug ( "KILL KILL KILL" )
             if username.find(":") != -1 :
@@ -130,7 +130,7 @@ class TcosActions:
             self.main.fullscreenbutton.set_stock_id("gtk-leave-fullscreen")
     
     def on_downloadallmodules_click(self, widget):
-        print_debug ( "FIXME on_downloadallmodules_click() ################" )
+        print_debug ( "on_downloadallmodules_click() ################" )
         if self.main.selected_ip != None:
             print_debug( "on_downloadallmodules_click() downloading modules for %s" %(self.main.selected_ip) )
             # download allmodules.squashfs and mount it
@@ -1030,11 +1030,15 @@ class TcosActions:
             # search for connected users
             
             users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
+            client=[self.main.selected_ip]
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
                                gtk.FILE_CHOOSER_ACTION_OPEN,
-                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                               (_("Play DVD"), 1,
+                                _("Play SVCD/VCD"), 2,
+                                _("Play AudioCD"), 3,
+                                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                 gtk.STOCK_OPEN, gtk.RESPONSE_OK))
             dialog.set_default_response(gtk.RESPONSE_OK)
             self.folder = self._folder = os.environ['HOME']
@@ -1053,19 +1057,30 @@ class TcosActions:
             filter.set_name("All Files")
             filter.add_pattern("*.*")
             dialog.add_filter(filter)
-            
-            response = dialog.run()
-            if response == gtk.RESPONSE_OK:
-                
-                #self.main.exe_cmd("route add -net 239.255.255.0/24 gw 192.168.126.105 &")
-                self.main.exe_cmd( ("vlc file://%s --sout '#std{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename()) ) 
-                self.main.exe_cmd( "vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm" )  
 
+            response = dialog.run()
+            if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
                 
+                filename=dialog.get_filename().replace(" ", "\ ")
+                dialog.destroy()
+                
+                if response == gtk.RESPONSE_OK:
+                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %filename)
+                elif response == 1:
+                    self.main.exe_cmd("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                    
+                    msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
+                    shared.info_msg( msg )
+                    
+                elif response == 2:
+                    self.main.exe_cmd("vlc vcd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                elif response == 3:
+                    self.main.exe_cmd("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver")
                 # exec this app on client
-                remote_cmd="vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm --fullscreen"
                 
-                self.write_into_statusbar( _("Waiting for start video transmission...") )
+                remote_cmd="vlc udp:@239.255.255.0:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
+                
+                self.main.write_into_statusbar( _("Waiting for start video transmission...") )
                 
                 for user in users:
                     if user.find(":") != -1:
@@ -1076,37 +1091,19 @@ class TcosActions:
                         users.remove(user)
                     
                 result = self.main.dbus_action.do_exec( users ,remote_cmd )
-                                
+                
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-            
-            dialog.destroy()
+                self.main.progresstext.set_text( _("Running in broadcast video transmission.") )
+                # configure action for Stop button
+                self.main.progressstop.show()
+                self.main.progressstop.connect('clicked', self.stop_broadcast_mode, client )
+                self.main.progresstext.show()
+            else:
+                dialog.destroy()
                                                     
         if action == 17:
-            # action sent by vidal_joshur at gva dot es
-            # stop video broadcast mode
-            # search for connected users
-            
-            users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
-            
-            self.main.write_into_statusbar( _("Waiting for stop video transmission...") )
-            
-            for user in users:
-                if user.find(":") != -1:
-                    # we have a standalone user...
-                    usern, ip = user.split(":")
-                    self.main.xmlrpc.newhost(ip)
-                    self.main.xmlrpc.DBus("killall", "vlc" )
-                    users.remove(user)
-            
-            result = self.main.dbus_action.do_killall( users , "vlc" )
-   
-            self.main.exe_cmd("killall vlc")
-            self.main.write_into_statusbar( _("Video broadcast stopped.") )
-
-
-        if action == 18:
             # action sent by vidal_joshur at gva dot es
             # envio ficheros
             # search for connected users
@@ -1189,7 +1186,7 @@ class TcosActions:
                 self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
         
-        if action == 19:
+        if action == 18:
             print_debug ("menu_event_one() demo mode from not teacher host" )
             ip=self.main.selected_ip
             allclients=self.main.localdata.allclients
@@ -1216,10 +1213,15 @@ class TcosActions:
             # need to wait for start, PingPort loop
             from ping import PingPort
             status = "CLOSED"
+            max_wait=10
+            wait=0
             while status != "OPEN":
-                status=PingPort(ip,5900).get_status()
+                status=PingPort(ip, 5900).get_status()
                 if status == "CLOSED":
                     sleep(1)
+                    wait+=1
+                if wait > max_wait:
+                    break
             
             # start in 1 (teacher)
             total=1
@@ -1256,6 +1258,32 @@ class TcosActions:
         self.main.progresstext.set_text( "" )
         self.main.write_into_statusbar( _("Demo mode off.") )
 
+    def stop_broadcast_mode(self, widget, allclients):
+        # action sent by vidal_joshur at gva dot es
+        # stop video broadcast mode
+        # search for connected users
+            
+        connected_users=[]
+        for client in allclients:
+            if self.main.localdata.IsLogged(client):
+                connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                        
+        for user in connected_users:
+            if user.find(":") != -1:
+                # we have a standalone user...
+                usern, ip = user.split(":")
+                self.main.xmlrpc.newhost(ip)
+                self.main.xmlrpc.DBus("killall", "vlc" )
+                connected_users.remove(user)
+            
+        result = self.main.dbus_action.do_killall( connected_users , "vlc" )
+   
+        self.main.exe_cmd("killall vlc")
+        self.main.progressstop.hide()
+        self.main.progresstext.hide()
+        self.main.progresstext.set_text( "" )
+        self.main.write_into_statusbar( _("Video broadcast stopped.") )
+
         
     def start_vnc(self, ip):
         # gen password in thin client
@@ -1279,8 +1307,20 @@ class TcosActions:
             gtk.gdk.threads_enter()
             self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
             gtk.gdk.threads_leave()
-            # FIXME make a loop waiting for start???
-            sleep(5)
+            
+            # need to wait for start, PingPort loop
+            from ping import PingPort
+            status = "CLOSED"
+            max_wait=10
+            wait=0
+            while status != "OPEN":
+                status=PingPort(ip, 5900).get_status()
+                if status == "CLOSED":
+                    sleep(1)
+                    wait+=1
+                if wait > max_wait:
+                    break
+            
         except:
             gtk.gdk.threads_enter()
             shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
@@ -1434,10 +1474,15 @@ class TcosActions:
             # need to wait for start, PingPort loop
             from ping import PingPort
             status = "CLOSED"
+            max_wait=10
+            wait=0
             while status != "OPEN":
-                status=PingPort("127.0.0.1",5900).get_status()
+                status=PingPort("127.0.0.1", 5900).get_status()
                 if status == "CLOSED":
                     sleep(1)
+                    wait+=1
+                if wait > max_wait:
+                    break
             
             total=0
             for client in allclients:
@@ -1483,7 +1528,10 @@ class TcosActions:
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
                                gtk.FILE_CHOOSER_ACTION_OPEN,
-                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                               (_("Play DVD"), 1,
+                                _("Play SVCD/VCD"), 2,
+                                _("Play AudioCD"), 3,
+                                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                 gtk.STOCK_OPEN, gtk.RESPONSE_OK))
             dialog.set_default_response(gtk.RESPONSE_OK)
             self.folder = self._folder = os.environ['HOME']
@@ -1504,15 +1552,26 @@ class TcosActions:
             dialog.add_filter(filter)
 
             response = dialog.run()
-            if response == gtk.RESPONSE_OK:
+            if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
                 
-                #self.main.exe_cmd("route add -net 239.255.255.0/24 gw 192.168.126.105 &")
-                self.main.exe_cmd( ("vlc file://%s --sout '#std{access=rtp,mux=ts,dst=239.255.255.0:1234}' --no-x11-shm --no-xvideo-shm") %( dialog.get_filename()) ) 
-                self.main.exe_cmd( "vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm" )  
-
+                filename=dialog.get_filename().replace(" ", "\ ")
+                dialog.destroy()
                 
+                if response == gtk.RESPONSE_OK:
+                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %filename)
+                elif response == 1:
+                    self.main.exe_cmd("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                    
+                    msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
+                    shared.info_msg( msg )
+                    
+                elif response == 2:
+                    self.main.exe_cmd("vlc vcd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                elif response == 3:
+                    self.main.exe_cmd("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver")
                 # exec this app on client
-                remote_cmd="vlc udp://@239.255.255.0:1234 --no-x11-shm --no-xvideo-shm --fullscreen"
+                
+                remote_cmd="vlc udp:@239.255.255.0:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
                 
@@ -1529,37 +1588,15 @@ class TcosActions:
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-            
-            dialog.destroy()
+                self.main.progresstext.set_text( _("Running in broadcast video transmission.") )
+                # configure action for Stop button
+                self.main.progressstop.show()
+                self.main.progressstop.connect('clicked', self.stop_broadcast_mode, allclients )
+                self.main.progresstext.show()
+            else:
+                dialog.destroy()
                                                     
         if action == 11:
-            # action sent by vidal_joshur at gva dot es
-            # stop video broadcast mode
-            # search for connected users
-            
-            connected_users=[]
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-            
-            self.main.write_into_statusbar( _("Waiting for stop video transmission...") )
-            
-            for user in connected_users:
-                if user.find(":") != -1:
-                    # we have a standalone user...
-                    usern, ip = user.split(":")
-                    self.main.xmlrpc.newhost(ip)
-                    self.main.xmlrpc.DBus("killall", "vlc" )
-                    connected_users.remove(user)
-            
-            result = self.main.dbus_action.do_killall( connected_users , "vlc" )
-   
-                
-            self.main.exe_cmd("killall vlc")
-            self.main.write_into_statusbar( _("Video broadcast stopped.") )
-
-
-        if action == 12:
             # action sent by vidal_joshur at gva dot es
             # envio ficheros
             # search for connected users
@@ -1610,7 +1647,7 @@ class TcosActions:
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
                 p.wait()
 
-                p = popen2.Popen3("rsync -avx %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                p = popen2.Popen3("rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
                 
                 self.main.write_into_statusbar( _("Waiting for send files...") )
@@ -1620,7 +1657,7 @@ class TcosActions:
                         usern, ip=user.split(":")
                         self.main.xmlrpc.newhost(ip)
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
+                        standalone_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1634,7 +1671,7 @@ class TcosActions:
                     self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
                     # Sent files to standalone
-                    remote_cmd = "rsync -avx localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
+                    remote_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
                     
                     result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
                     if not result:

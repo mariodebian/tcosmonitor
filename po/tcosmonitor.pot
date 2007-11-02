@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-31 22:21+0100\n"
+"POT-Creation-Date: 2007-11-02 18:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Open preferences dialog"
 msgstr ""
 
-#: tcosmonitor.glade:60 tcosmonitor.glade:438 tcospersonalize.glade:8
+#: tcosmonitor.glade:60 tcosmonitor.glade:590 tcospersonalize.glade:8
 msgid "Preferences"
 msgstr ""
 
@@ -65,99 +65,99 @@ msgstr ""
 msgid "About this app"
 msgstr ""
 
-#: tcosmonitor.glade:376 tcosmonitor.glade:2129 tcosmonitor.glade:2512
+#: tcosmonitor.glade:417 tcosmonitor.glade:2281 tcosmonitor.glade:2664
 msgid "Cancel"
 msgstr ""
 
-#: tcosmonitor.glade:412
+#: tcosmonitor.glade:498
 msgid "Stop"
 msgstr ""
 
-#: tcosmonitor.glade:483
+#: tcosmonitor.glade:635
 msgid "Show host list on startup"
 msgstr ""
 
-#: tcosmonitor.glade:505
+#: tcosmonitor.glade:657
 msgid "Work as cyber mode (not work yet)"
 msgstr ""
 
-#: tcosmonitor.glade:526
+#: tcosmonitor.glade:678
 msgid "Update host list every (seg)"
 msgstr ""
 
-#: tcosmonitor.glade:555
+#: tcosmonitor.glade:707
 msgid ""
 "Update host list every selected seconds.\n"
 "\n"
 "Value=0 disable update."
 msgstr ""
 
-#: tcosmonitor.glade:579
+#: tcosmonitor.glade:731
 msgid "Scan network method"
 msgstr ""
 
-#: tcosmonitor.glade:607
+#: tcosmonitor.glade:759
 msgid ""
 "Network interface\n"
 "(thin client)"
 msgstr ""
 
-#: tcosmonitor.glade:670
+#: tcosmonitor.glade:822
 msgid "Cache timeout (seg)"
 msgstr ""
 
-#: tcosmonitor.glade:698
+#: tcosmonitor.glade:850
 msgid ""
 "Cache some data and connection status during selected seconds.\n"
 "\n"
 "Value=0 disable cache."
 msgstr ""
 
-#: tcosmonitor.glade:735
+#: tcosmonitor.glade:887
 msgid "Screenshot size:"
 msgstr ""
 
-#: tcosmonitor.glade:763 tcosmonitor.glade:835
+#: tcosmonitor.glade:915 tcosmonitor.glade:987
 msgid "% Size of screnshot."
 msgstr ""
 
-#: tcosmonitor.glade:786
+#: tcosmonitor.glade:938
 msgid "Show system process"
 msgstr ""
 
-#: tcosmonitor.glade:807
+#: tcosmonitor.glade:959
 msgid "Mini screenshot size:"
 msgstr ""
 
-#: tcosmonitor.glade:858
+#: tcosmonitor.glade:1010
 msgid "Don't do actions when running TcosMonitor in thin client"
 msgstr ""
 
-#: tcosmonitor.glade:879
+#: tcosmonitor.glade:1031
 msgid "List of hosts"
 msgstr ""
 
-#: tcosmonitor.glade:949
+#: tcosmonitor.glade:1101
 msgid "Open static host list"
 msgstr ""
 
-#: tcosmonitor.glade:989
+#: tcosmonitor.glade:1141
 msgid "Only show hosts running tcosxmlrpc (8080 port)"
 msgstr ""
 
-#: tcosmonitor.glade:1016
+#: tcosmonitor.glade:1168
 msgid "General settings"
 msgstr ""
 
-#: tcosmonitor.glade:1049
+#: tcosmonitor.glade:1201
 msgid "TcosXmlRpc username"
 msgstr ""
 
-#: tcosmonitor.glade:1098
+#: tcosmonitor.glade:1250
 msgid "TcosXmlRpc password"
 msgstr ""
 
-#: tcosmonitor.glade:1147
+#: tcosmonitor.glade:1299
 msgid ""
 "<b>NOTE:</b>\n"
 "This values are needed to do some actions\n"
@@ -174,107 +174,107 @@ msgid ""
 "instructions. This will generate a tcospasswd file with asked data.\n"
 msgstr ""
 
-#: tcosmonitor.glade:1194
+#: tcosmonitor.glade:1346
 msgid "Authentication "
 msgstr ""
 
-#: tcosmonitor.glade:1224
+#: tcosmonitor.glade:1376
 msgid "<b>Info avalaible from tcosxmlrpc</b>"
 msgstr ""
 
-#: tcosmonitor.glade:1250
+#: tcosmonitor.glade:1402
 msgid "Tcos general info"
 msgstr ""
 
-#: tcosmonitor.glade:1269
+#: tcosmonitor.glade:1421
 msgid "Cpu info"
 msgstr ""
 
-#: tcosmonitor.glade:1288
+#: tcosmonitor.glade:1440
 msgid "Kernel and modules info"
 msgstr ""
 
-#: tcosmonitor.glade:1307
+#: tcosmonitor.glade:1459
 msgid "PCI bus info"
 msgstr ""
 
-#: tcosmonitor.glade:1326
+#: tcosmonitor.glade:1478
 msgid "Ram and swap info"
 msgstr ""
 
-#: tcosmonitor.glade:1345
+#: tcosmonitor.glade:1497
 msgid "Process info"
 msgstr ""
 
-#: tcosmonitor.glade:1364
+#: tcosmonitor.glade:1516
 msgid "Network info"
 msgstr ""
 
-#: tcosmonitor.glade:1383 TcosActions.py:567
+#: tcosmonitor.glade:1535 TcosActions.py:567
 msgid "Xorg info"
 msgstr ""
 
-#: tcosmonitor.glade:1402
+#: tcosmonitor.glade:1554
 msgid "Sound server info"
 msgstr ""
 
-#: tcosmonitor.glade:1430
+#: tcosmonitor.glade:1582
 msgid "Avalaible info"
 msgstr ""
 
-#: tcosmonitor.glade:1514
+#: tcosmonitor.glade:1666
 msgid "GNU/GPL"
 msgstr ""
 
-#: tcosmonitor.glade:1515
+#: tcosmonitor.glade:1667
 msgid "A thin client network monitor"
 msgstr ""
 
-#: tcosmonitor.glade:1531
+#: tcosmonitor.glade:1683
 msgid "translator-credits"
 msgstr ""
 
-#: tcosmonitor.glade:1538
+#: tcosmonitor.glade:1690
 msgid "Question"
 msgstr ""
 
-#: tcosmonitor.glade:1562
+#: tcosmonitor.glade:1714
 msgid "<b>Run app in unknow host</b>"
 msgstr ""
 
-#: tcosmonitor.glade:1660
+#: tcosmonitor.glade:1812
 msgid "Static hosts list"
 msgstr ""
 
-#: tcosmonitor.glade:1683
+#: tcosmonitor.glade:1835
 msgid "<span size=\"x-large\">Static Hosts list</span>"
 msgstr ""
 
-#: tcosmonitor.glade:1792
+#: tcosmonitor.glade:1944
 msgid "Add"
 msgstr ""
 
-#: tcosmonitor.glade:1870
+#: tcosmonitor.glade:2022
 msgid "Modify"
 msgstr ""
 
-#: tcosmonitor.glade:1948
+#: tcosmonitor.glade:2100
 msgid "Delete"
 msgstr ""
 
-#: tcosmonitor.glade:2026
+#: tcosmonitor.glade:2178
 msgid "Get from connected"
 msgstr ""
 
-#: tcosmonitor.glade:2207 tcosmonitor.glade:2590
+#: tcosmonitor.glade:2359 tcosmonitor.glade:2742
 msgid "Save"
 msgstr ""
 
-#: tcosmonitor.glade:2253
+#: tcosmonitor.glade:2405
 msgid "New or edit hosts"
 msgstr ""
 
-#: tcosmonitor.glade:2307
+#: tcosmonitor.glade:2459
 msgid ""
 "You can add a simple host, \n"
 "   example: <b>192.168.0.100</b>\n"
@@ -285,43 +285,43 @@ msgid ""
 "MAC address is optional"
 msgstr ""
 
-#: tcosmonitor.glade:2348
+#: tcosmonitor.glade:2500
 msgid "IP address *"
 msgstr ""
 
-#: tcosmonitor.glade:2376 TcosStaticHosts.py:160
+#: tcosmonitor.glade:2528 TcosStaticHosts.py:160
 msgid "MAC address"
 msgstr ""
 
-#: Initialize.py:331
+#: Initialize.py:330
 msgid "Hostname"
 msgstr ""
 
-#: Initialize.py:337 TcosStaticHosts.py:154
+#: Initialize.py:336 TcosStaticHosts.py:154
 msgid "IP address"
 msgstr ""
 
-#: Initialize.py:343
+#: Initialize.py:342
 msgid "Username"
 msgstr ""
 
-#: Initialize.py:349
+#: Initialize.py:348
 msgid "Active"
 msgstr ""
 
-#: Initialize.py:354
+#: Initialize.py:353
 msgid "Logged"
 msgstr ""
 
-#: Initialize.py:359
+#: Initialize.py:358
 msgid "Screen Blocked"
 msgstr ""
 
-#: Initialize.py:364
+#: Initialize.py:363
 msgid "Num of process"
 msgstr ""
 
-#: Initialize.py:370
+#: Initialize.py:369
 msgid "Time log in"
 msgstr ""
 
@@ -329,7 +329,7 @@ msgstr ""
 msgid "unknow"
 msgstr ""
 
-#: LocalData.py:249
+#: LocalData.py:257
 msgid ""
 "Static list method configured but no hosts in list.\n"
 "\n"
@@ -337,20 +337,20 @@ msgid ""
 "hosts."
 msgstr ""
 
-#: ping.py:72
+#: ping.py:73
 #, python-format
 msgid "Ping to %s..."
 msgstr ""
 
-#: ping.py:81
+#: ping.py:82
 msgid "Waiting for pings..."
 msgstr ""
 
-#: ping.py:99
+#: ping.py:108
 msgid "No host found"
 msgstr ""
 
-#: ping.py:106 TcosActions.py:188
+#: ping.py:115 TcosActions.py:188
 #, python-format
 msgid "Found %d hosts"
 msgstr ""
@@ -423,81 +423,69 @@ msgstr ""
 msgid "Show running apps of this client"
 msgstr ""
 
-#: shared.py:191 shared.py:210
+#: shared.py:191 shared.py:208
 msgid "Video broadcast"
 msgstr ""
 
-#: shared.py:192
-msgid "Stop vide broadcast"
-msgstr ""
-
-#: shared.py:193 shared.py:212
+#: shared.py:192 shared.py:209
 msgid "Send files"
 msgstr ""
 
-#: shared.py:194
+#: shared.py:193
 msgid "Demo mode (from this host)"
 msgstr ""
 
-#: shared.py:199
+#: shared.py:198
 msgid "Reboot all clients"
 msgstr ""
 
-#: shared.py:200
+#: shared.py:199
 msgid "Poweroff all clients"
 msgstr ""
 
-#: shared.py:201
+#: shared.py:200
 msgid "Lock all screens"
 msgstr ""
 
-#: shared.py:202
+#: shared.py:201
 msgid "Unlock all screens"
 msgstr ""
 
-#: shared.py:203
+#: shared.py:202
 msgid "Logout clients"
 msgstr ""
 
-#: shared.py:204
+#: shared.py:203
 msgid "Restart X session of all clients"
 msgstr ""
 
-#: shared.py:205
+#: shared.py:204
 msgid "Exec same app in all connected users"
 msgstr ""
 
-#: shared.py:206
+#: shared.py:205
 msgid "Send a text message to all connected users"
 msgstr ""
 
-#: shared.py:207
+#: shared.py:206
 msgid "Enter demo mode, all connected users see my screen"
 msgstr ""
 
-#: shared.py:208
-msgid "Exit demo mode"
-msgstr ""
-
-#: shared.py:209
+#: shared.py:207
 msgid "Capture All clients screens"
 msgstr ""
 
-#: shared.py:211
-msgid "Stop Video broadcast"
-msgstr ""
-
-#: shared.py:356
+#: shared.py:353
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr ""
 
-#: shared.py:368
+#: shared.py:365
 #, python-format
 msgid "INFO: %s"
 msgstr ""
 
-#: shared.py:379
+#: shared.py:376
 #, python-format
 msgid "ERROR: %s"
 msgstr ""
@@ -779,7 +767,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: TcosActions.py:305 TcosActions.py:1191 TcosActions.py:1652
+#: TcosActions.py:305 TcosActions.py:1181 TcosActions.py:1678
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
@@ -1030,7 +1018,7 @@ msgstr ""
 msgid "Connecting to %s..."
 msgstr ""
 
-#: TcosActions.py:911 TcosActions.py:1679
+#: TcosActions.py:911 TcosActions.py:1705
 msgid "Can't exec this action because you are connected at this host!"
 msgstr ""
 
@@ -1059,73 +1047,84 @@ msgstr ""
 msgid "%s is not supported to personalize!"
 msgstr ""
 
-#: TcosActions.py:999
+#: TcosActions.py:992
 #, python-format
 msgid "Do you want to restart Xorg of %s?"
 msgstr ""
 
-#: TcosActions.py:1004 TcosActions.py:1019
+#: TcosActions.py:997 TcosActions.py:1012
 #, python-format
 msgid "%s is not supported to restart Xorg!"
 msgstr ""
 
-#: TcosActions.py:1011
+#: TcosActions.py:1004
 #, python-format
 msgid "Restart X session of %s with new config?"
 msgstr ""
 
-#: TcosActions.py:1041 TcosActions.py:1494
+#: TcosActions.py:1035 TcosActions.py:1528
 msgid "Select audio/video file.."
 msgstr ""
 
-#: TcosActions.py:1075 TcosActions.py:1528
+#: TcosActions.py:1038 TcosActions.py:1531
+msgid "Play DVD"
+msgstr ""
+
+#: TcosActions.py:1039 TcosActions.py:1532
+msgid "Play SVCD/VCD"
+msgstr ""
+
+#: TcosActions.py:1040 TcosActions.py:1533
+msgid "Play AudioCD"
+msgstr ""
+
+#: TcosActions.py:1072 TcosActions.py:1565
+msgid ""
+"First select the DVD chapter or play movie\n"
+"then press enter to send clients..."
+msgstr ""
+
+#: TcosActions.py:1083 TcosActions.py:1576
 msgid "Waiting for start video transmission..."
 msgstr ""
 
-#: TcosActions.py:1088 TcosActions.py:1183 TcosActions.py:1541
-#: TcosActions.py:1644
+#: TcosActions.py:1096 TcosActions.py:1173 TcosActions.py:1589
+#: TcosActions.py:1670
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
 "Reason:%s"
 msgstr ""
 
-#: TcosActions.py:1089 TcosActions.py:1542
+#: TcosActions.py:1097 TcosActions.py:1098 TcosActions.py:1590
+#: TcosActions.py:1591
 msgid "Running in broadcast video transmission."
 msgstr ""
 
-#: TcosActions.py:1100 TcosActions.py:1556
-msgid "Waiting for stop video transmission..."
-msgstr ""
-
-#: TcosActions.py:1113 TcosActions.py:1570
-msgid "Video broadcast stopped."
-msgstr ""
-
-#: TcosActions.py:1123 TcosActions.py:1584
+#: TcosActions.py:1113 TcosActions.py:1610
 msgid "Select file or files..."
 msgstr ""
 
-#: TcosActions.py:1141 TcosActions.py:1602
+#: TcosActions.py:1131 TcosActions.py:1628
 msgid ""
 "First create /tmp/tcos_share folder,\n"
 "and restart rsync daemon\n"
 "/etc/init.d/rsync restart"
 msgstr ""
 
-#: TcosActions.py:1150 TcosActions.py:1173 TcosActions.py:1176
-#: TcosActions.py:1187 TcosActions.py:1194 TcosActions.py:1611
-#: TcosActions.py:1634 TcosActions.py:1637 TcosActions.py:1648
-#: TcosActions.py:1655
+#: TcosActions.py:1140 TcosActions.py:1163 TcosActions.py:1166
+#: TcosActions.py:1177 TcosActions.py:1184 TcosActions.py:1637
+#: TcosActions.py:1660 TcosActions.py:1663 TcosActions.py:1674
+#: TcosActions.py:1681
 msgid "Teacher"
 msgstr ""
 
-#: TcosActions.py:1166 TcosActions.py:1627
+#: TcosActions.py:1156 TcosActions.py:1653
 msgid "Waiting for send files..."
 msgstr ""
 
-#: TcosActions.py:1176 TcosActions.py:1194 TcosActions.py:1637
-#: TcosActions.py:1655
+#: TcosActions.py:1166 TcosActions.py:1184 TcosActions.py:1663
+#: TcosActions.py:1681
 #, python-format
 msgid ""
 "Teacher has sent some files to %(teacher)s folder:\n"
@@ -1133,183 +1132,183 @@ msgid ""
 "%(basenames)s"
 msgstr ""
 
-#: TcosActions.py:1184 TcosActions.py:1645
+#: TcosActions.py:1174 TcosActions.py:1671
 msgid "Error creating destination folder."
 msgstr ""
 
-#: TcosActions.py:1196 TcosActions.py:1657
+#: TcosActions.py:1186 TcosActions.py:1683
 msgid "Files sent."
 msgstr ""
 
-#: TcosActions.py:1205
+#: TcosActions.py:1195
 msgid "Can't start VNC, user is not logged"
 msgstr ""
 
-#: TcosActions.py:1221
+#: TcosActions.py:1211
 #, python-format
 msgid "Waiting for start demo mode from host %s..."
 msgstr ""
 
-#: TcosActions.py:1240 TcosActions.py:1458
+#: TcosActions.py:1235 TcosActions.py:1499
 msgid "No users logged."
 msgstr ""
 
-#: TcosActions.py:1244 TcosActions.py:1462
+#: TcosActions.py:1239 TcosActions.py:1503
 #, python-format
 msgid "Running in demo mode with %s clients."
 msgstr ""
 
-#: TcosActions.py:1247
+#: TcosActions.py:1242 TcosActions.py:1504
 #, python-format
 msgid "Running in demo mode from host %s..."
 msgstr ""
 
-#: TcosActions.py:1261 TcosActions.py:1474
+#: TcosActions.py:1259
 msgid "Demo mode off."
 msgstr ""
 
-#: TcosActions.py:1273
+#: TcosActions.py:1285
+msgid "Video broadcast stopped."
+msgstr ""
+
+#: TcosActions.py:1297
 #, python-format
 msgid "Connecting with %s to start VNC support"
 msgstr ""
 
-#: TcosActions.py:1280
+#: TcosActions.py:1304
 #, python-format
 msgid ""
 "Can't start VNC, error:\n"
 "%s"
 msgstr ""
 
-#: TcosActions.py:1284
+#: TcosActions.py:1308
 msgid "Waiting for start of VNC server..."
 msgstr ""
 
-#: TcosActions.py:1290
+#: TcosActions.py:1326
 msgid "Can't start VNC, please add X11VNC support"
 msgstr ""
 
-#: TcosActions.py:1320
+#: TcosActions.py:1356
 msgid "Can't start IVS, please add iTALC support"
 msgstr ""
 
-#: TcosActions.py:1340
+#: TcosActions.py:1376
 msgid "No clients connected, press refresh button."
 msgstr ""
 
-#: TcosActions.py:1345
+#: TcosActions.py:1381
 #, python-format
 msgid "Do you want to reboot the following hosts:%s?"
 msgstr ""
 
-#: TcosActions.py:1355
+#: TcosActions.py:1391
 #, python-format
 msgid "Do you want to poweroff the following hosts:%s?"
 msgstr ""
 
-#: TcosActions.py:1365
+#: TcosActions.py:1401
 #, python-format
 msgid "Do you want to lock the following screens:%s?"
 msgstr ""
 
-#: TcosActions.py:1376
+#: TcosActions.py:1412
 #, python-format
 msgid "Do you want to unlock the following screens:%s?"
 msgstr ""
 
-#: TcosActions.py:1399
+#: TcosActions.py:1435
 #, python-format
 msgid "Do you want to restart X screens:%s?"
 msgstr ""
 
-#: TcosActions.py:1436
+#: TcosActions.py:1472
 msgid "Waiting for start demo mode..."
 msgstr ""
 
-#: TcosActions.py:1466
-msgid "Waiting for stop demo mode..."
-msgstr ""
-
-#: TcosActions.py:1667
+#: TcosActions.py:1693
 msgid "Screenshots of all hosts"
 msgstr ""
 
-#: TcosActions.py:1691
+#: TcosActions.py:1717
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr ""
 
-#: TcosActions.py:1715 TcosActions.py:1810
+#: TcosActions.py:1741 TcosActions.py:1836
 #, python-format
 msgid "Screenshot of %s"
 msgstr ""
 
-#: TcosActions.py:1727
+#: TcosActions.py:1753
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr ""
 
-#: TcosActions.py:1734
+#: TcosActions.py:1760
 msgid "Waiting for screenshots..."
 msgstr ""
 
-#: TcosActions.py:1776
+#: TcosActions.py:1802
 msgid "Trying to order terminal to do a screenshot..."
 msgstr ""
 
-#: TcosActions.py:1781
+#: TcosActions.py:1807
 msgid "Can't make screenshot, connection error"
 msgstr ""
 
-#: TcosActions.py:1787
+#: TcosActions.py:1813
 msgid "Get another screenshot"
 msgstr ""
 
-#: TcosActions.py:1801
+#: TcosActions.py:1827
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr ""
 
-#: TcosActions.py:1815
+#: TcosActions.py:1841
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr ""
 
-#: TcosActions.py:1833
+#: TcosActions.py:1859
 msgid "User not connected, no processes."
 msgstr ""
 
-#: TcosActions.py:1851
+#: TcosActions.py:1877
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr ""
 
-#: TcosActions.py:1855
+#: TcosActions.py:1881
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 
-#: TcosActions.py:1860
+#: TcosActions.py:1886
 msgid "Pid"
 msgstr ""
 
-#: TcosActions.py:1861
+#: TcosActions.py:1887
 msgid "Process command"
 msgstr ""
 
-#: TcosActions.py:1867
+#: TcosActions.py:1893
 msgid "Kill this process"
 msgstr ""
 
-#: TcosActions.py:1970
+#: TcosActions.py:1996
 msgid "Actions for selected host"
 msgstr ""
 
-#: TcosActions.py:1976
+#: TcosActions.py:2002
 #, python-format
 msgid "Actions for %s"
 msgstr ""
 
-#: TcosActions.py:2012
+#: TcosActions.py:2038
 msgid "Actions for all hosts"
 msgstr ""
 

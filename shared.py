@@ -189,9 +189,8 @@ onehost_menuitems=[
  [ _("Send a text message to user") , "menu_msg.png" ] ,      #action=14
  [ _("Show running apps of this client") , "menu_proc.png" ], #action=15
  [ _("Video broadcast") , None ],                             #action=16
- [ _("Stop vide broadcast") , None ],                         #action=17
- [ _("Send files") , None ],                                  #action=18
- [ _("Demo mode (from this host)") , "menu_remote.png" ],     #action=19
+ [ _("Send files") , None ],                                  #action=17
+ [ _("Demo mode (from this host)") , "menu_remote.png" ],     #action=18
  ]
 
 
@@ -207,8 +206,7 @@ allhost_menuitems=[
  [ _("Enter demo mode, all connected users see my screen") , "menu_remote.png" ], #action=8
  [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=9
  [ _("Video broadcast") , "menu_remote.png" ],                    #action=10
- [ _("Stop Video broadcast") , "menu_remote.png" ],               #action=11
- [ _("Send files") , "menu_remote.png" ]                          #action=12
+ [ _("Send files") , "menu_remote.png" ]                          #action=11
  ]
 
 
