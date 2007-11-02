@@ -1148,7 +1148,7 @@ msgid ""
 "First select the DVD chapter or play movie\n"
 "then press enter to send clients..."
 msgstr ""
-"Primero seleccione el capítulo del DVD o rerproduzca el vídeo\n"
+"Primero seleccione el capítulo del DVD o reproduzca el vídeo\n"
 "después, presione «enter» para enviarlo a los clientes..."
 
 #: TcosActions.py:1083 TcosActions.py:1576
