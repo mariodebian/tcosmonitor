@@ -188,9 +188,9 @@ onehost_menuitems=[
  [ _("Exec app on user display") , "menu_exec.png" ] ,        #action=13
  [ _("Send a text message to user") , "menu_msg.png" ] ,      #action=14
  [ _("Show running apps of this client") , "menu_proc.png" ], #action=15
- [ _("Video broadcast") , None ],                             #action=16
- [ _("Send files") , None ],                                  #action=17
- [ _("Demo mode (from this host)") , "menu_remote.png" ],     #action=18
+ [ _("Video broadcast") , "menu_broadcast.png" ],             #action=16
+ [ _("Send files") , "menu_send.png" ],                       #action=17
+ [ _("Demo mode (from this host)") , "menu_tiza.png" ],     #action=18
  ]
 
 
@@ -203,10 +203,10 @@ allhost_menuitems=[
  [ _("Restart X session of all clients"),  "menu_restartx.png" ] ,#action=5
  [ _("Exec same app in all connected users") , "menu_exec.png" ] ,#action=6
  [ _("Send a text message to all connected users") , "menu_msg.png" ], #action=7
- [ _("Enter demo mode, all connected users see my screen") , "menu_remote.png" ], #action=8
+ [ _("Enter demo mode, all connected users see my screen") , "menu_tiza.png" ], #action=8
  [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=9
- [ _("Video broadcast") , "menu_remote.png" ],                    #action=10
- [ _("Send files") , "menu_remote.png" ]                          #action=11
+ [ _("Video broadcast") , "menu_broadcast.png" ],                 #action=10
+ [ _("Send files") , "menu_send.png" ]                          #action=11
  ]
 
 
