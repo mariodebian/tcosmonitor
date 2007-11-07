@@ -80,7 +80,8 @@ class Initialize:
         self.main.progressbutton=self.ui.get_widget('progressbutton')
         self.main.progressbutton.connect('clicked', self.main.actions.on_progressbutton_click )
         self.main.progressbar.hide()
-        self.main.progressstop=self.ui.get_widget('progressstop') 
+        self.main.progressstop=self.ui.get_widget('progressstop')
+        self.main.progressstop.connect('clicked', self.main.actions.on_progressstop_click) 
         self.main.progressstop.hide()
         self.main.progresstext.hide()
 

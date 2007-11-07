@@ -1,3 +1,11 @@
+tcosmonitor (0.1.24.7) unstable; urgency=low
+
+  * TcosActions.py Initialize.py
+    - Fix some problems with vnc startserver (thanks to vidal for testing and patch)
+    - Remove stop_vnc and stop_broadcast functions, now use on_progressstop_click and 2 global vars
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 07 Nov 2007 15:55:14 +0100
+
 tcosmonitor (0.1.24.6) unstable; urgency=low
 
   * shared.py, images/* 

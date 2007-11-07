@@ -49,6 +49,7 @@ class TcosActions:
         print_debug ( "__init__()" )
         self.main=main
         self.model=self.main.init.model
+        self.main.progressstop_args={}
 
 
     ############################################################################    
@@ -1098,7 +1099,9 @@ class TcosActions:
                 self.main.progresstext.set_text( _("Running in broadcast video transmission.") )
                 # configure action for Stop button
                 self.main.progressstop.show()
-                self.main.progressstop.connect('clicked', self.stop_broadcast_mode, client )
+                # use new function to stop
+                self.main.progressstop_target="vlc"
+                self.main.progressstop_args['allclients']=client
                 self.main.progresstext.show()
             else:
                 dialog.destroy()
@@ -1204,7 +1207,9 @@ class TcosActions:
                                     %(passwd, os.path.expanduser('~/.tcosvnc')) )
             
             # start x11vnc in remote host
-            self.main.xmlrpc.vnc("stopserver", ip )
+            self.main.xmlrpc.newhost(ip)
+            # before starting x11vnc vnc-controller exec killall x11vnc, not need to stop from here
+            #self.main.xmlrpc.vnc("stopserver", ip )
             self.main.xmlrpc.vnc("genpass", ip, passwd )
             self.main.xmlrpc.vnc("startserver", ip )
                     
@@ -1242,7 +1247,9 @@ class TcosActions:
                 self.main.progresstext.set_text( _("Running in demo mode from host %s...") %ip )
                 # configure action for Stop button
                 self.main.progressstop.show()
-                self.main.progressstop.connect('clicked', self.stop_vnc_demo, ip )
+                # use new function to stop
+                self.main.progressstop_target="vnc"
+                self.main.progressstop_args['ip']=ip
                 self.main.progresstext.show()
             
             
@@ -1250,39 +1257,43 @@ class TcosActions:
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
 
-    def stop_vnc_demo(self, widget, ip):
-        self.main.exe_cmd ("killall x11vnc 2>/dev/null")
-        self.main.xmlrpc.vnc("stopserver", ip )
+    def on_progressstop_click(self, *args):
+        # do actions when user click on progressstop button
+        # exit if no target
+        if not self.main.progressstop_target: return
+        
+        if self.main.progressstop_target == "vnc":
+            self.main.exe_cmd ("killall x11vnc 2>/dev/null")
+            if self.main.progressstop_args['ip'] != "":
+                self.main.xmlrpc.newhost(self.main.progressstop_args['ip'])
+            self.main.xmlrpc.vnc("stopserver", self.main.progressstop_args['ip'] )
+            self.main.write_into_statusbar( _("Demo mode off.") )
+        
+        elif self.main.progressstop_target == "vlc":
+            connected_users=[]
+            for client in self.main.progressstop_args['allclients']:
+                if self.main.localdata.IsLogged(client):
+                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                            
+            for user in connected_users:
+                if user.find(":") != -1:
+                    # we have a standalone user...
+                    usern, ip = user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.DBus("killall", "vlc" )
+                    connected_users.remove(user)
+                
+            result = self.main.dbus_action.do_killall( connected_users , "vlc" )
+       
+            self.main.exe_cmd("killall vlc")
+            self.main.write_into_statusbar( _("Video broadcast stopped.") )
+        
         self.main.progressstop.hide()
         self.main.progresstext.hide()
         self.main.progresstext.set_text( "" )
-        self.main.write_into_statusbar( _("Demo mode off.") )
-
-    def stop_broadcast_mode(self, widget, allclients):
-        # action sent by vidal_joshur at gva dot es
-        # stop video broadcast mode
-        # search for connected users
-            
-        connected_users=[]
-        for client in allclients:
-            if self.main.localdata.IsLogged(client):
-                connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-                        
-        for user in connected_users:
-            if user.find(":") != -1:
-                # we have a standalone user...
-                usern, ip = user.split(":")
-                self.main.xmlrpc.newhost(ip)
-                self.main.xmlrpc.DBus("killall", "vlc" )
-                connected_users.remove(user)
-            
-        result = self.main.dbus_action.do_killall( connected_users , "vlc" )
-   
-        self.main.exe_cmd("killall vlc")
-        self.main.progressstop.hide()
-        self.main.progresstext.hide()
-        self.main.progresstext.set_text( "" )
-        self.main.write_into_statusbar( _("Video broadcast stopped.") )
+        self.main.progressstop_target=None
+        self.main.progressstop_args={}
+        return
 
         
     def start_vnc(self, ip):
@@ -1298,6 +1309,9 @@ class TcosActions:
         gtk.gdk.threads_leave()
         
         try:
+            self.main.xmlrpc.newhost(ip)
+            # before starting server vnc-controller.sh exec killall x11vnc, not needed to stop server
+            #self.main.xmlrpc.vnc("stopserver", ip )
             result=self.main.xmlrpc.vnc("startserver", ip)
             if result.find("error") != -1:
                 gtk.gdk.threads_enter()
@@ -1320,17 +1334,15 @@ class TcosActions:
                     wait+=1
                 if wait > max_wait:
                     break
-            
+            cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
+            print_debug ( "start_process() threading \"%s\"" %(cmd) )
+            self.main.exe_cmd (cmd)            
         except:
             gtk.gdk.threads_enter()
             shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
             gtk.gdk.threads_leave()
             return
-        
-        cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
-        print_debug ( "start_process() threading \"%s\"" %(cmd) )
-        self.main.exe_cmd (cmd)
-        
+
         gtk.gdk.threads_enter()
         self.main.write_into_statusbar( "" )
         gtk.gdk.threads_leave()
@@ -1504,7 +1516,9 @@ class TcosActions:
                 self.main.progresstext.set_text( _("Running in demo mode from host %s...") %server_ip )
                 # configure action for Stop button
                 self.main.progressstop.show()
-                self.main.progressstop.connect('clicked', self.stop_vnc_demo, "" )
+                # use new function to stop
+                self.main.progressstop_target="vnc"
+                self.main.progressstop_args['ip']=""
                 self.main.progresstext.show()
             
         if action == 9:
@@ -1591,7 +1605,9 @@ class TcosActions:
                 self.main.progresstext.set_text( _("Running in broadcast video transmission.") )
                 # configure action for Stop button
                 self.main.progressstop.show()
-                self.main.progressstop.connect('clicked', self.stop_broadcast_mode, allclients )
+                # use new function to stop
+                self.main.progressstop_target="vlc"
+                self.main.progressstop_args['allclients']=allclients
                 self.main.progresstext.show()
             else:
                 dialog.destroy()
