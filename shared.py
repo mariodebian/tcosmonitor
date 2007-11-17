@@ -106,6 +106,7 @@ DefaultConfig=[
 ["tcosmonitorversion", version, "str"],
 ["blockactioninthishost", 1, "int"],
 ["onlyshowtcos", 1, "int"],
+["selectedhosts", 0, "int"],
 ["statichosts", "", "str"]
 ]
 # method ping is list 0 of combo_scan_method
@@ -135,7 +136,7 @@ socket_default_timeout=15
 
 dbus_disabled=False
 
-disable_textview_on_update=False
+disable_textview_on_update=True
 
 
 NO_LOGIN_MSG="----"

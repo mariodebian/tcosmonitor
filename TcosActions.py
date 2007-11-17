@@ -31,7 +31,7 @@ import socket
 import string
 from random import Random
 
-COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
+COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
 
 def print_debug(txt):
@@ -213,8 +213,8 @@ class TcosActions:
         (model, iter) = hostlist.get_selected()
         if not iter:
             return
-        self.main.selected_host=model.get_value(iter,0)
-        self.main.selected_ip=model.get_value(iter, 1)
+        self.main.selected_host=model.get_value(iter,COL_HOST)
+        self.main.selected_ip=model.get_value(iter, COL_IP)
         
         print_debug ( "on_hostlist_clic() selectedhost=%s selectedip=%s" \
             %(self.main.selected_host, self.main.selected_ip) )
@@ -853,7 +853,7 @@ class TcosActions:
                 image_blocked=locked_image
             else:
                 image_blocked=unlocked_image
-                
+            
             gtk.gdk.threads_enter()
             self.iter = self.model.append (None)
             self.model.set_value (self.iter, COL_HOST, hostname )
@@ -904,8 +904,8 @@ class TcosActions:
         if iter == None:
             print_debug( "menu_event_one() not selected thin client !!!" )
             return
-        self.main.selected_host=model.get_value(iter,0)
-        self.main.selected_ip=model.get_value(iter, 1)
+        self.main.selected_host=model.get_value(iter,COL_HOST)
+        self.main.selected_ip=model.get_value(iter, COL_IP)
         
         if not self.doaction_onthisclient(action, self.main.selected_ip):
             # show a msg
@@ -988,15 +988,33 @@ class TcosActions:
         if action == 11:
             # reset xorg
             # Ask for it
-            client_type = self.main.xmlrpc.ReadInfo("get_client")
-            if client_type == "tcos":
-                msg=_("Do you want to restart Xorg of %s?" ) %(self.main.selected_ip)
-                if shared.ask_msg ( msg ):
-                    self.main.xmlrpc.Exe("restartx")
-                    self.refresh_client_info(self.main.selected_ip)
-            else:
-                shared.info_msg( _("%s is not supported to restart Xorg!") %(client_type) )
+            
+            if not self.main.localdata.IsLogged(self.main.selected_ip):
+                shared.error_msg ( _("Can't logout, user is not logged") )
+                return
                 
+            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
+            
+            print_debug("menu_event_one() user=%s" %user)
+            
+            msg=_( _("Do you want to logout user \"%s\"?" ) %(user) )
+            if shared.ask_msg ( msg ):
+                newusernames=[]
+                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT"
+                
+                if user.find(":") != -1:
+                    # we have a standalone user...
+                    usern, ip = user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.DBus("exec", remote_cmd )
+                else:
+                    newusernames.append(user)
+                        
+                result = self.main.dbus_action.do_exec(newusernames ,remote_cmd )
+            
+                if not result:
+                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+            
         if action == 12:
             # restart xorg with new settings
             # thin client must download again XXX.XXX.XXX.XXX.conf and rebuild xorg.conf
@@ -1380,10 +1398,25 @@ class TcosActions:
         
     def menu_event_all(self, action):
         start1=time()
-        allclients=self.main.localdata.allclients
+        
+        # don't make actions in clients not selected
+        if self.main.config.GetVar("selectedhosts") == 1:
+            allclients=[]
+            model=self.main.tabla.get_model()
+            rows = []
+            model.foreach(lambda model, path, iter: rows.append(path))
+            for host in rows:
+                iter=model.get_iter(host)
+                if model.get_value(iter, COL_SEL_ST):
+                    allclients.append(model.get_value(iter, COL_IP))
+        else:
+            # get all clients connected
+            allclients=self.main.localdata.allclients
+            
         allclients_txt=""
         for client in allclients:
             allclients_txt+="\n %s" %(client)
+            
         if len(self.main.localdata.allclients) == 0:
             shared.info_msg ( _("No clients connected, press refresh button.") )
             return
@@ -1431,16 +1464,33 @@ class TcosActions:
             return    
         
         if action == 4:
-            shared.info_msg ( "FIXME" )
-            print "LOGOUT FIXME"
-            """
-            # Ask for unlock screens
-            msg=_( _("Do you want to unlock the following screens:%s?" ) %(allclients_txt) )
+            connected_users=[]
+            for client in allclients:
+                if self.main.localdata.IsLogged(client):
+                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))  
+            
+            print_debug("menu_event_all() allclients=%s" %allclients)
+            
+            msg=_( _("Do you want to logout the following users:%s?" )\
+                                                     %(allclients_txt) )
             if shared.ask_msg ( msg ):
-                self.main.worker=shared.Workers(self.main, None, None)
-                self.main.worker.set_for_all_action(self.main.xmlrpc.action_for_clients, allclients, "unlockscreen" )
-            return
-            """
+                newusernames=[]
+                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT"
+                
+                for user in connected_users:
+                    if user.find(":") != -1:
+                        # we have a standalone user...
+                        usern, ip = user.split(":")
+                        self.main.xmlrpc.newhost(ip)
+                        self.main.xmlrpc.DBus("exec", remote_cmd )
+                    else:
+                        newusernames.append(user)
+                            
+                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
+            
+                if not result:
+                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+            
         
         if action == 5:
             # Ask for restart X session
@@ -1801,8 +1851,8 @@ class TcosActions:
     def lockscreen_changer(self, model, path, iter, args):
         ip, image = args
         # change image if ip is the same.
-        if model.get_value(iter, 1) == ip:
-            model.set_value(iter, 5, image)
+        if model.get_value(iter, COL_IP) == ip:
+            model.set_value(iter, COL_LOGGED, image)
     
     
     def get_screenshot(self, ip):
@@ -1948,9 +1998,9 @@ class TcosActions:
     
     def refresh_client_info2(self, model, path, iter, args):
         ip = args[0]
-        print_debug ( "refresh_client_info2()  ip=%s model_ip=%s" %(ip, model.get_value(iter, 1)) )
+        print_debug ( "refresh_client_info2()  ip=%s model_ip=%s" %(ip, model.get_value(iter, COL_IP)) )
         # update data if ip is the same.
-        if model.get_value(iter, 1) == ip:
+        if model.get_value(iter, COL_IP) == ip:
             self.set_client_data(ip, model, iter)
             
             
@@ -1992,7 +2042,7 @@ class TcosActions:
         
         #enable cache again
         self.main.localdata.cache_timeout=shared.cache_timeout
-            
+        
         model.set_value (iter, COL_HOST, hostname )
         model.set_value (iter, COL_IP, ip )
         model.set_value (iter, COL_USERNAME, username )
@@ -2051,7 +2101,10 @@ class TcosActions:
         self.main.allmenu=gtk.Menu()
         
         #menu headers
-        menu_items = gtk.MenuItem(_("Actions for all hosts"))
+        if self.main.config.GetVar("selectedhosts") == 1:
+            menu_items = gtk.MenuItem(_("Actions for selected hosts"))
+        else:
+            menu_items = gtk.MenuItem(_("Actions for all hosts"))
         self.main.allmenu.append(menu_items)
         menu_items.set_sensitive(False)
         menu_items.show()

@@ -36,7 +36,8 @@ from time import sleep, localtime
 import gobject
 import string
 
-COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
+COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
+
 
 # constant to font sizes
 PANGO_SCALE=1024
@@ -59,7 +60,7 @@ class Initialize:
         self.main=main
         self.ui=self.main.ui
         self.model=gtk.ListStore\
-        (str, str, str, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, str, str)
+        (str, str, str, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, str, str, bool,bool)
         
         self.main.updating=True
         
@@ -238,6 +239,7 @@ class Initialize:
         self.main.pref_systemprocess = self.main.ui.get_widget('ck_systemprocess')
         self.main.pref_blockactioninthishost = self.main.ui.get_widget('ck_blockactioninthishost')
         self.main.pref_onlyshowtcos = self.main.ui.get_widget('ck_onlyshowtcos')
+        self.main.pref_selectedhosts = self.main.ui.get_widget('ck_selectedhosts')
         
         self.main.pref_tcosinfo = self.main.ui.get_widget('ck_tcosinfo')
         self.main.pref_cpuinfo = self.main.ui.get_widget('ck_cpuinfo')
@@ -281,6 +283,7 @@ class Initialize:
         self.populate_checkboxes(self.main.pref_systemprocess, "systemprocess")
         self.populate_checkboxes(self.main.pref_blockactioninthishost, "blockactioninthishost")
         self.populate_checkboxes(self.main.pref_onlyshowtcos, "onlyshowtcos")
+        self.populate_checkboxes(self.main.pref_selectedhosts, "selectedhosts")
         
         self.populate_checkboxes(self.main.pref_tcosinfo, "tcosinfo")
         self.populate_checkboxes(self.main.pref_cpuinfo, "cpuinfo")
@@ -372,14 +375,29 @@ class Initialize:
         column8.set_sort_column_id(COL_TIME)
         self.main.tabla.append_column (column8)
         
+        if self.main.config.GetVar("selectedhosts") == 1:
+            cell9 = gtk.CellRendererToggle ()
+            cell9.connect('toggled', self.on_sel_click, self.model, COL_SEL_ST)
+            column9 = gtk.TreeViewColumn(_("Sel"), cell9, active=COL_SEL_ST, activatable=1)
+            self.main.tabla.append_column (column9)
+
+        # print rows in alternate colors if theme allow
+        self.main.tabla.set_rules_hint(True)
         
-        tabla_file = self.main.tabla.get_selection()
-        tabla_file.connect("changed", self.main.actions.on_hostlist_click)
+        self.main.tabla_file = self.main.tabla.get_selection()
+        self.main.tabla_file.connect("changed", self.main.actions.on_hostlist_click)
         # allow to work right click
         self.main.tabla.connect_object("button_press_event", self.main.actions.on_hostlist_event, self.main.menu)
         return
 
 
+    def on_sel_click(self, cell, path, model, col=0):
+        # reverse status of sel row (saved in COL_SEL_ST)
+        iter = model.get_iter(path)
+        self.model.set_value(iter, col, not model[path][col])
+        print_debug("on_sel_click() ip=%s status=%s" %(model[path][COL_IP], model[path][col]))
+        return True
+        
 if __name__ == '__main__':
     init=Initialize (None)
     

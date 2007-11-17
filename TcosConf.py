@@ -172,6 +172,7 @@ class TcosConf:
         self.read_checkbox(self.main.pref_systemprocess, "systemprocess")
         self.read_checkbox(self.main.pref_blockactioninthishost, "blockactioninthishost")
         self.read_checkbox(self.main.pref_onlyshowtcos, "onlyshowtcos")
+        self.read_checkbox(self.main.pref_selectedhosts, "selectedhosts")
             
         if self.main.pref_combo_scan_method.get_active() == 0:
             self.SetVar("scan_network_method", "netstat")

@@ -1,3 +1,16 @@
+tcosmonitor (0.1.24.8) unstable; urgency=low
+
+  * TcosActions.py:
+    - Use new session-cmd tool to logout users thanks to vidal and Lliurex team).
+  * TcosActions.py Initialize.py shared.py TcosConf.py tcosmonitor.glade:
+    - Add new opcion (make actions only on selected hosts)
+    - New column with a checkbox called: Sel
+  * Update template and spanish translation with new strings
+  * dbus/81tcos-utils:
+    - Add session-cmd stsrt script
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 17 Nov 2007 19:19:17 +0100
+
 tcosmonitor (0.1.24.7) unstable; urgency=low
 
   * TcosActions.py Initialize.py
