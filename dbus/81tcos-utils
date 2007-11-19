@@ -9,9 +9,6 @@ if [ "x${DISPLAY_HOST}" != "x" ]; then
   # launch tcos-dbus-client
   tcos-dbus-client &
 
-  # logout helper
-  /usr/lib/tcos/session-cmd-script &
-
   # launch other tcos utils
   tcos-devices --daemon &
   tcos-devices --hidden &
@@ -28,7 +25,6 @@ fi
 if [ -e /etc/default/tcos-standalone ]; then
   . /etc/default/tcos-standalone
   if [ "${TCOS_STANDALONE_START}" = "1" ]; then
-   /usr/lib/tcos/session-cmd-script &
    tcos-dbus-client --only-local &
   fi
 fi
