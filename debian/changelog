@@ -1,3 +1,13 @@
+tcosmonitor (0.1.24.9) unstable; urgency=low
+
+  * TcosActions.py:
+    - Fix send files with special character in filenames
+    - Change multicast to unicast in video difussion menu one, dont need saturate network
+      with multicast to one client and enables multistreaming difussion.
+    - Not work correctly send video or files in standalone
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Mon, 19 Nov 2007 14:59:54 +0100
+
 tcosmonitor (0.1.24.8) unstable; urgency=low
 
   * TcosActions.py:

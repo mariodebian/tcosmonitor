@@ -1047,9 +1047,11 @@ class TcosActions:
             # action sent by vidal_joshur at gva dot es
             # start video broadcast mode
             # search for connected users
+            # Stream to single client unicast
             
             users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
             client=[self.main.selected_ip]
+            ip_unicast=self.main.selected_ip
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
@@ -1084,22 +1086,24 @@ class TcosActions:
                 dialog.destroy()
                 
                 if response == gtk.RESPONSE_OK:
-                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %filename)
+                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(filename, ip_unicast) )
                 elif response == 1:
-                    self.main.exe_cmd("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                    self.main.exe_cmd("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
                     
                     msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
                     shared.info_msg( msg )
                     
                 elif response == 2:
-                    self.main.exe_cmd("vlc vcd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                    self.main.exe_cmd("vlc vcd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
                 elif response == 3:
-                    self.main.exe_cmd("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                    self.main.exe_cmd("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
                 # exec this app on client
                 
-                remote_cmd="vlc udp:@239.255.255.0:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
+                remote_cmd="vlc udp://@%s:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast)
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
+                
+                newusernames=[]
                 
                 for user in users:
                     if user.find(":") != -1:
@@ -1107,9 +1111,10 @@ class TcosActions:
                         usern, ip = user.split(":")
                         self.main.xmlrpc.newhost(ip)
                         self.main.xmlrpc.DBus("exec", remote_cmd )
-                        users.remove(user)
-                    
-                result = self.main.dbus_action.do_exec( users ,remote_cmd )
+                    else:
+                        newusernames.append(user)
+                        
+                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -1164,8 +1169,13 @@ class TcosActions:
                 rsync_filenames_server = ""
                 basenames = ""
                 for filename in filenames:
-                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename).replace(" ", "\ ") )
-                    rsync_filenames_server += "%s " %( filename.replace(" ", "\ ") )
+                    if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
+                        dialog.destroy()
+                        msg=_("Special characters used in %s filename.\nPlease rename it." %os.path.basename(filename) )
+                        shared.info_msg( msg )
+                        return
+                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename).replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
+                    rsync_filenames_server += "%s " %( filename.replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
                     basenames += "%s\n" %( os.path.basename(filename) )
                 
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
@@ -1176,6 +1186,8 @@ class TcosActions:
                 
                 self.main.write_into_statusbar( _("Waiting for send files...") )
                 
+                newusernames=[]
+                
                 for user in users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
@@ -1185,10 +1197,10 @@ class TcosActions:
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
-                        users.remove(user)
+                    else:
+                        newusernames.append(user)
                 
-                
-                result = self.main.dbus_action.do_exec( users , remote_cmd )
+                result = self.main.dbus_action.do_exec( newusernames , remote_cmd )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -1197,11 +1209,11 @@ class TcosActions:
                     # Sent files to thin client
                     remote_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
                     
-                    result = self.main.dbus_action.do_exec( users , remote_cmd )
+                    result = self.main.dbus_action.do_exec( newusernames , remote_cmd )
                     if not result:
                         shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
                     else:
-                        result = self.main.dbus_action.do_message(users ,
+                        result = self.main.dbus_action.do_message(newusernames ,
                                 _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
                     
                 self.main.write_into_statusbar( _("Files sent.") )
@@ -1292,16 +1304,19 @@ class TcosActions:
             for client in self.main.progressstop_args['allclients']:
                 if self.main.localdata.IsLogged(client):
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-                            
+            
+            newusernames=[]
+                      
             for user in connected_users:
                 if user.find(":") != -1:
                     # we have a standalone user...
                     usern, ip = user.split(":")
                     self.main.xmlrpc.newhost(ip)
                     self.main.xmlrpc.DBus("killall", "vlc" )
-                    connected_users.remove(user)
-                
-            result = self.main.dbus_action.do_killall( connected_users , "vlc" )
+                else:
+                    newusernames.append(user)
+                    
+            result = self.main.dbus_action.do_killall( newusernames , "vlc" )
        
             self.main.exe_cmd("killall vlc")
             self.main.write_into_statusbar( _("Video broadcast stopped.") )
@@ -1582,6 +1597,7 @@ class TcosActions:
             # action sent by vidal_joshur at gva dot es
             # start video broadcast mode
             # search for connected users
+            # Stream to multiple clients
             
             connected_users=[]
             for client in allclients:
@@ -1635,9 +1651,11 @@ class TcosActions:
                     self.main.exe_cmd("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver")
                 # exec this app on client
                 
-                remote_cmd="vlc udp:@239.255.255.0:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
+                remote_cmd="vlc udp://@239.255.255.0:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
+                
+                newusernames=[]
                 
                 for user in connected_users:
                     if user.find(":") != -1:
@@ -1645,9 +1663,10 @@ class TcosActions:
                         usern, ip = user.split(":")
                         self.main.xmlrpc.newhost(ip)
                         self.main.xmlrpc.DBus("exec", remote_cmd )
-                        connected_users.remove(user)
-                    
-                result = self.main.dbus_action.do_exec( connected_users ,remote_cmd )
+                    else:
+                        newusernames.append(user)
+                        
+                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -1706,8 +1725,13 @@ class TcosActions:
                 rsync_filenames_server = ""
                 basenames = ""
                 for filename in filenames:
-                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename).replace(" ", "\ ") )
-                    rsync_filenames_server += "%s " %( filename.replace(" ", "\ ") )
+                    if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
+                        dialog.destroy()
+                        msg=_("Special characters used in %s filename.\nPlease rename it." %os.path.basename(filename) )
+                        shared.info_msg( msg )
+                        return
+                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename).replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
+                    rsync_filenames_server += "%s " %( filename.replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
                     basenames += "%s\n" %( os.path.basename(filename) )
                 
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
@@ -1718,6 +1742,8 @@ class TcosActions:
                 
                 self.main.write_into_statusbar( _("Waiting for send files...") )
                 
+                newusernames=[]
+                
                 for user in connected_users:
                     if user.find(":") != -1:
                         usern, ip=user.split(":")
@@ -1727,10 +1753,10 @@ class TcosActions:
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
-                        connected_users.remove(user)
+                    else:
+                        newusernames.append(user)
                 
-                
-                result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+                result = self.main.dbus_action.do_exec( newusernames , remote_cmd )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -1739,11 +1765,11 @@ class TcosActions:
                     # Sent files to standalone
                     remote_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
                     
-                    result = self.main.dbus_action.do_exec( connected_users , remote_cmd )
+                    result = self.main.dbus_action.do_exec( newusernames , remote_cmd )
                     if not result:
                         shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
                     else:
-                        result = self.main.dbus_action.do_message(connected_users ,
+                        result = self.main.dbus_action.do_message(newusernames ,
                                 _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
                                     
                 self.main.write_into_statusbar( _("Files sent.") )
