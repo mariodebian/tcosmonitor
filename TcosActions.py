@@ -1050,8 +1050,17 @@ class TcosActions:
             # Stream to single client unicast
             
             users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
-            client=[self.main.selected_ip]
-            ip_unicast=self.main.selected_ip
+                        
+            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+            
+            client_type = self.main.xmlrpc.ReadInfo("get_client")
+            if client_type == "tcos":
+                ip_unicast="239.255.255.0"
+                remote_cmd="vlc udp://@%s:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast)
+            else:
+                ip_unicast=self.main.selected_ip
+                remote_cmd="vlc udp://@:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
+
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
@@ -1082,7 +1091,9 @@ class TcosActions:
             response = dialog.run()
             if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
                 
-                filename=dialog.get_filename().replace(" ", "\ ")
+                filename=dialog.get_filename()
+                for scape in str_scapes:
+                    filename=filename.replace("%s" %scape, "\%s" %scape)
                 dialog.destroy()
                 
                 if response == gtk.RESPONSE_OK:
@@ -1098,9 +1109,7 @@ class TcosActions:
                 elif response == 3:
                     self.main.exe_cmd("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
                 # exec this app on client
-                
-                remote_cmd="vlc udp://@%s:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast)
-                
+                                
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
                 
                 newusernames=[]
@@ -1124,7 +1133,7 @@ class TcosActions:
                 self.main.progressstop.show()
                 # use new function to stop
                 self.main.progressstop_target="vlc"
-                self.main.progressstop_args['allclients']=client
+                self.main.progressstop_args['allclients']=[self.main.selected_ip]
                 self.main.progresstext.show()
             else:
                 dialog.destroy()
@@ -1135,7 +1144,8 @@ class TcosActions:
             # search for connected users
             users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
             
-            
+            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+
             dialog = gtk.FileChooserDialog( _("Select file or files..."),
                                None,
                                gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -1160,7 +1170,7 @@ class TcosActions:
             response = dialog.run()
             
             if response == gtk.RESPONSE_OK:
-                
+                                
                 filenames = dialog.get_filenames()
                 # Crear carpeta profesor en desktop del cliente
                 remote_cmd="mkdir -p $HOME/Desktop/" + _("Teacher")
@@ -1174,14 +1184,19 @@ class TcosActions:
                         msg=_("Special characters used in %s filename.\nPlease rename it." %os.path.basename(filename) )
                         shared.info_msg( msg )
                         return
-                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename).replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
-                    rsync_filenames_server += "%s " %( filename.replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
+                    basename_scape=os.path.basename(filename)
+                    abspath_scape=filename
+                    for scape in str_scapes:
+                        basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
+                        abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
+                    rsync_filenames_client += "tcos_share/%s " %( basename_scape )
+                    rsync_filenames_server += "%s " %( abspath_scape )
                     basenames += "%s\n" %( os.path.basename(filename) )
                 
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
                 p.wait()
-
-                p = popen2.Popen3("rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                
+                p = popen2.Popen3("rsync -avx --timeout=30 --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
                 
                 self.main.write_into_statusbar( _("Waiting for send files...") )
@@ -1193,7 +1208,7 @@ class TcosActions:
                         usern, ip=user.split(":")
                         self.main.xmlrpc.newhost(ip)
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
+                        standalone_cmd = "rsync -avx --timeout=30 --ignore-existing --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1207,7 +1222,7 @@ class TcosActions:
                     self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
                     # Sent files to thin client
-                    remote_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
+                    remote_cmd = "rsync -avx --timeout=30 --ignore-existing --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
                     
                     result = self.main.dbus_action.do_exec( newusernames , remote_cmd )
                     if not result:
@@ -1602,8 +1617,9 @@ class TcosActions:
             connected_users=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))            
-            
+                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))    
+                        
+            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
@@ -1634,7 +1650,9 @@ class TcosActions:
             response = dialog.run()
             if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
                 
-                filename=dialog.get_filename().replace(" ", "\ ")
+                filename=dialog.get_filename()
+                for scape in str_scapes:
+                    filename=filename.replace("%s" %scape, "\%s" %scape)
                 dialog.destroy()
                 
                 if response == gtk.RESPONSE_OK:
@@ -1690,7 +1708,7 @@ class TcosActions:
                 if self.main.localdata.IsLogged(client):
                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
             
-            
+            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
             
             dialog = gtk.FileChooserDialog( _("Select file or files..."),
                                None,
@@ -1730,14 +1748,19 @@ class TcosActions:
                         msg=_("Special characters used in %s filename.\nPlease rename it." %os.path.basename(filename) )
                         shared.info_msg( msg )
                         return
-                    rsync_filenames_client += "tcos_share/%s " %( os.path.basename(filename).replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
-                    rsync_filenames_server += "%s " %( filename.replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("*", "\*").replace("!", "\!").replace("?", "\?").replace("\"", "\\\"") )
+                    basename_scape=os.path.basename(filename)
+                    abspath_scape=filename
+                    for scape in str_scapes:
+                        basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
+                        abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
+                    rsync_filenames_client += "tcos_share/%s " %( basename_scape )
+                    rsync_filenames_server += "%s " %( abspath_scape )
                     basenames += "%s\n" %( os.path.basename(filename) )
                 
                 p = popen2.Popen3("rm -f /tmp/tcos_share/*")
                 p.wait()
 
-                p = popen2.Popen3("rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
+                p = popen2.Popen3("rsync -avx --timeout=30 --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
                 p.wait()
                 
                 self.main.write_into_statusbar( _("Waiting for send files...") )
@@ -1749,7 +1772,7 @@ class TcosActions:
                         usern, ip=user.split(":")
                         self.main.xmlrpc.newhost(ip)
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
+                        standalone_cmd = "rsync -avx --timeout=30 --ignore-existing --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s::\"%s\" $HOME/Desktop/%s" %( server, rsync_filenames_client.strip(), _("Teacher") )
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
                         self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
@@ -1763,7 +1786,7 @@ class TcosActions:
                     self.main.write_into_statusbar( _("Error creating destination folder.") )
                 else:
                     # Sent files to standalone
-                    remote_cmd = "rsync -avx --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
+                    remote_cmd = "rsync -avx --timeout=30 --ignore-existing --no-p --no-g --chmod=ugo-wx,u+rw,go+r localhost::\"%s\" $HOME/Desktop/%s" %( rsync_filenames_client.strip(), _("Teacher") )
                     
                     result = self.main.dbus_action.do_exec( newusernames , remote_cmd )
                     if not result:
