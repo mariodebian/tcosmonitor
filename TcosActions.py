@@ -172,6 +172,8 @@ class TcosActions:
             self.main.pref_open_static.set_sensitive(False)
     
     def on_refreshbutton_click(self,widget):
+        if self.main.config.GetVar("xmlrpc_username") == "" or self.main.config.GetVar("xmlrpc_password") == "":
+            return
         self.main.write_into_statusbar ( _("Searching for connected hosts...") )
         
         if self.main.config.GetVar("scan_network_method") == "ping":
@@ -193,6 +195,8 @@ class TcosActions:
             return
         
     def on_searchbutton_click(self, widget):
+        if self.main.config.GetVar("xmlrpc_username") == "" or self.main.config.GetVar("xmlrpc_password") == "":
+            return
         print_debug ( "on_searchbutton_click()" )
         self.main.search_host(widget)
     
@@ -242,6 +246,62 @@ class TcosActions:
         self.main.ask.hide()
         return True
     
+    def on_drag_data_received( self, widget, context, x, y, selection, targetType, time):
+        files = selection.data.split('\n',1)
+        for f in files:
+            if f:
+                desktop = f.strip()
+                break
+                   
+        if desktop.startswith('file:///') and desktop.lower().endswith('.desktop') and os.path.isfile(desktop[7:]):
+            print_debug("open_file() reading data from \"%s\"..." \
+                        %(desktop[7:]) )
+            fd=file(desktop[7:], 'r')
+            data=fd.readlines()
+            fd.close()
+            
+            icons_path=["/usr/share/app-install/icons/", "/usr/share/icons/hicolor/48x48/apps/", 
+                        "/usr/share/icons/hicolor/32x32/apps/", "/usr/share/icons/hicolor/24x24/apps/", 
+                        "/usr/share/icons/gnome/48x48/apps/", "/usr/share/icons/gnome/32x32/apps/", 
+                        "/usr/share/pixmaps/", "/usr/share/icons/gnome/32x32/devices/"]
+            icons_extensions=[".png", "", ".xpm"]
+            str_image=""
+            
+            for line in data:
+                if line != '\n':
+                    if line.startswith("Exec="):
+                        line=line.replace('\n', '')
+                        action, str_exec=line.split("=",1)
+                        str_exec=str_exec.replace("%U","").replace("%u","").replace("%F","").replace("%f","").replace("%c","").replace("%i","").replace("%m","")
+                    elif line.startswith("Icon="):
+                        line=line.replace('\n', '')
+                        action, image_name=line.split("=",1)                        
+                        if not os.path.isfile(image_name):
+                            for ipath in icons_path:                    
+                                for ext in icons_extensions:
+                                    print_debug("searching icon=%s in %s extension=%s" %(image_name, ipath, ext))
+                                    if os.path.isfile(ipath+image_name+ext):
+                                        str_image=ipath+image_name+ext
+                                        print_debug("image_name=%s found at %s, extension %s" %(image_name, ipath, ext))
+                                        break
+                                if str_image != "": break
+                                str_image=""
+                        else:
+                            str_image=image_name
+                        
+                                    
+            if len(str_exec) <1:
+                shared.error_msg( _("%s is not application") %(os.path.basename(desktop[7:])) )
+            else:
+                if len(str_image) <1:
+                    self.main.image_entry.set_from_stock(gtk.STOCK_DIALOG_QUESTION, 4)
+                else:
+                    self.main.image_entry.set_from_file(str_image)
+                self.main.ask_entry.set_text(str_exec)
+        else:
+            shared.error_msg( _("%s is not application") %(os.path.basename(desktop[7:])) )
+        return True
+    
     def on_ask_exec_click(self, widget):
         app=self.main.ask_entry.get_text()
         if app != "":
@@ -251,6 +311,9 @@ class TcosActions:
     def on_ask_cancel_click(self, widget):
         self.main.ask.hide()
         self.main.ask_entry.set_text("")
+        #desactivar arrastrar y soltar
+        self.main.ask_fixed.hide()
+        self.main.image_entry.hide()
         return
     
     def askfor(self, mode="mess", msg="", users=[]):
@@ -274,6 +337,10 @@ class TcosActions:
         if users_txt[-2:] == ", ": users_txt=users_txt[:-2]
         
         if mode == "exec":
+            #activar arrastrar y soltar
+            self.main.ask_fixed.show()
+            self.main.image_entry.show()
+            self.main.image_entry.set_from_stock(gtk.STOCK_DIALOG_QUESTION, 4)
             self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n%s" ) %( users_txt ) )
         elif mode == "mess":
             self.main.ask_label.set_markup( _("<b>Send a message to:</b>\n%s" ) %( users_txt ) )
@@ -305,8 +372,11 @@ class TcosActions:
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
             else:
+                self.main.image_entry.hide()
                 self.main.ask.hide()
                 self.main.ask_entry.set_text("")
+                self.main.ask_fixed.hide()
+                self.main.image_entry.hide()
         elif self.ask_mode == "mess":
             result = self.main.dbus_action.do_message( newusernames , arg)
             if not result:
@@ -1087,7 +1157,6 @@ class TcosActions:
             filter.set_name("All Files")
             filter.add_pattern("*.*")
             dialog.add_filter(filter)
-
             response = dialog.run()
             if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
                 
@@ -1097,7 +1166,7 @@ class TcosActions:
                 dialog.destroy()
                 
                 if response == gtk.RESPONSE_OK:
-                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(filename, ip_unicast) )
+                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(filename, ip_unicast) )
                 elif response == 1:
                     self.main.exe_cmd("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
                     

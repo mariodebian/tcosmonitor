@@ -19,6 +19,7 @@ dist-clean:
 clean:
 	rm -f *~ *.pyc *.orig *.bak *-stamp
 	cd po && rm -rf es/
+	rm -f po/*~
 	$(MAKE) -f Makefile.ltsp clean
 	cd dbus && $(MAKE) clean
 

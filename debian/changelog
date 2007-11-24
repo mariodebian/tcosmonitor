@@ -1,3 +1,19 @@
+tcosmonitor (0.1.24.11) unstable; urgency=low
+
+  [ vidal ]
+  * TcosActions.py:
+      - Fix unicast diffusion not work in thin client
+      - Add scape special characters in video and send files
+      - Add preserve existing files and more timeout in send files actions
+
+  [ Mario Izquierdo (mariodebian) ]
+  * TcosActions.py Initialize.py tcosmonitor.glade:
+    - Add drag and drop support (patch by vidal, thanks)
+    - Fix again vlc commands
+  * Update spanish translations and template
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 24 Nov 2007 12:00:08 +0100
+
 tcosmonitor (0.1.24.10) unstable; urgency=low
 
   * dbus/81tcos-utils:

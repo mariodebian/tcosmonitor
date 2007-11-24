@@ -55,6 +55,8 @@ def crono(start, txt):
 
 
 class Initialize:
+    #drop_targets = [ ( "text/plain", 0, TARGET_TYPE_TEXT ) ]
+    
     def __init__(self, main):
         print_debug ( "__init__() starting" )
         self.main=main
@@ -146,8 +148,16 @@ class Initialize:
         self.main.ask.set_icon_from_file(shared.IMG_DIR +\
                                          'tcos-icon-32x32.png')
         
-        self.main.ask_label = self.main.ui.get_widget('txt_asklabel')
         
+        self.main.ask_label = self.main.ui.get_widget('txt_asklabel')
+        ## arrastrar y soltar
+        self.main.ask_fixed = self.main.ui.get_widget('ask_fixed')
+        self.main.image_entry = self.main.ui.get_widget('image_askentry')
+        self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ),], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
+        self.main.image_entry.connect( 'drag_data_received', self.main.actions.on_drag_data_received)
+        self.main.ask_fixed.hide()
+        self.main.image_entry.hide()
+        ## fin arrastrar y soltar
         self.liststore = gtk.ListStore(str)
         for s in shared.appslist:
             self.liststore.append([s])
@@ -397,7 +407,7 @@ class Initialize:
         self.model.set_value(iter, col, not model[path][col])
         print_debug("on_sel_click() ip=%s status=%s" %(model[path][COL_IP], model[path][col]))
         return True
-        
+
 if __name__ == '__main__':
     init=Initialize (None)
     
