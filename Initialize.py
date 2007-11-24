@@ -388,7 +388,8 @@ class Initialize:
         if self.main.config.GetVar("selectedhosts") == 1:
             cell9 = gtk.CellRendererToggle ()
             cell9.connect('toggled', self.on_sel_click, self.model, COL_SEL_ST)
-            column9 = gtk.TreeViewColumn(_("Sel"), cell9, active=COL_SEL_ST, activatable=1)
+            #column9 = gtk.TreeViewColumn(_("Sel"), cell9, active=COL_SEL_ST, activatable=1) # activatable make warnings , not needed
+            column9 = gtk.TreeViewColumn(_("Sel"), cell9, active=COL_SEL_ST)
             self.main.tabla.append_column (column9)
 
         # print rows in alternate colors if theme allow

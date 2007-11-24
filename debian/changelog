@@ -11,8 +11,12 @@ tcosmonitor (0.1.24.11) unstable; urgency=low
     - Add drag and drop support (patch by vidal, thanks)
     - Fix again vlc commands
   * Update spanish translations and template
+  * TcosActions.py:
+    - If no selected clients ask for select all
+  * Initialize.py:
+    - Remove activatable column (ugly warnings)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 24 Nov 2007 12:00:08 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 24 Nov 2007 12:14:27 +0100
 
 tcosmonitor (0.1.24.10) unstable; urgency=low
 

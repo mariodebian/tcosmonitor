@@ -1508,6 +1508,10 @@ class TcosActions:
                 iter=model.get_iter(host)
                 if model.get_value(iter, COL_SEL_ST):
                     allclients.append(model.get_value(iter, COL_IP))
+            if len(allclients) == 0:
+                msg=_( _("No clients selected, do you want to select all?" ) )
+                if shared.ask_msg ( msg ):
+                    allclients=self.main.localdata.allclients
         else:
             # get all clients connected
             allclients=self.main.localdata.allclients
