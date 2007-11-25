@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-24 12:14+0100\n"
-"PO-Revision-Date: 2007-11-24 12:15+0100\n"
+"POT-Creation-Date: 2007-11-25 21:35+0100\n"
+"PO-Revision-Date: 2007-11-25 21:35+0100\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "Buscar"
 msgid "About this app"
 msgstr "Acerca de esta aplicación"
 
-#: tcosmonitor.glade:417 tcosmonitor.glade:2397 tcosmonitor.glade:2780
+#: tcosmonitor.glade:417 tcosmonitor.glade:2422 tcosmonitor.glade:2805
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -276,42 +276,46 @@ msgid "Question"
 msgstr "Pregunta"
 
 #: tcosmonitor.glade:1834
+msgid "You can drag and drop launcher file to this box"
+msgstr "Puedes arrastrar y soltar un lanzador a esta caja"
+
+#: tcosmonitor.glade:1859
 msgid "<b>Run app in unknow host</b>"
 msgstr "<b>Ejecutar aplicación en equipo desconicido</b>"
 
-#: tcosmonitor.glade:1928
+#: tcosmonitor.glade:1953
 msgid "Static hosts list"
 msgstr "Lista de equipos"
 
-#: tcosmonitor.glade:1951
+#: tcosmonitor.glade:1976
 msgid "<span size=\"x-large\">Static Hosts list</span>"
 msgstr "<span size=\"x-large\">Lista de equipos</span>"
 
-#: tcosmonitor.glade:2060
+#: tcosmonitor.glade:2085
 msgid "Add"
 msgstr "Añadir"
 
-#: tcosmonitor.glade:2138
+#: tcosmonitor.glade:2163
 msgid "Modify"
 msgstr "Modificar"
 
-#: tcosmonitor.glade:2216
+#: tcosmonitor.glade:2241
 msgid "Delete"
 msgstr "Borrar"
 
-#: tcosmonitor.glade:2294
+#: tcosmonitor.glade:2319
 msgid "Get from connected"
 msgstr "Tomar desde conectados"
 
-#: tcosmonitor.glade:2475 tcosmonitor.glade:2858
+#: tcosmonitor.glade:2500 tcosmonitor.glade:2883
 msgid "Save"
 msgstr "Guardar"
 
-#: tcosmonitor.glade:2521
+#: tcosmonitor.glade:2546
 msgid "New or edit hosts"
 msgstr "Nuevo o editar lista de equipos"
 
-#: tcosmonitor.glade:2575
+#: tcosmonitor.glade:2600
 msgid ""
 "You can add a simple host, \n"
 "   example: <b>192.168.0.100</b>\n"
@@ -329,11 +333,11 @@ msgstr ""
 "\n"
 "la dirección MAC es opcional"
 
-#: tcosmonitor.glade:2616
+#: tcosmonitor.glade:2641
 msgid "IP address *"
 msgstr "Dirección IP *"
 
-#: tcosmonitor.glade:2644 TcosStaticHosts.py:160
+#: tcosmonitor.glade:2669 TcosStaticHosts.py:160
 msgid "MAC address"
 msgstr "Dirección MAC"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-24 12:14+0100\n"
+"POT-Creation-Date: 2007-11-25 21:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,7 +65,7 @@ msgstr ""
 msgid "About this app"
 msgstr ""
 
-#: tcosmonitor.glade:417 tcosmonitor.glade:2397 tcosmonitor.glade:2780
+#: tcosmonitor.glade:417 tcosmonitor.glade:2422 tcosmonitor.glade:2805
 msgid "Cancel"
 msgstr ""
 
@@ -243,42 +243,46 @@ msgid "Question"
 msgstr ""
 
 #: tcosmonitor.glade:1834
+msgid "You can drag and drop launcher file to this box"
+msgstr ""
+
+#: tcosmonitor.glade:1859
 msgid "<b>Run app in unknow host</b>"
 msgstr ""
 
-#: tcosmonitor.glade:1928
+#: tcosmonitor.glade:1953
 msgid "Static hosts list"
 msgstr ""
 
-#: tcosmonitor.glade:1951
+#: tcosmonitor.glade:1976
 msgid "<span size=\"x-large\">Static Hosts list</span>"
 msgstr ""
 
-#: tcosmonitor.glade:2060
+#: tcosmonitor.glade:2085
 msgid "Add"
 msgstr ""
 
-#: tcosmonitor.glade:2138
+#: tcosmonitor.glade:2163
 msgid "Modify"
 msgstr ""
 
-#: tcosmonitor.glade:2216
+#: tcosmonitor.glade:2241
 msgid "Delete"
 msgstr ""
 
-#: tcosmonitor.glade:2294
+#: tcosmonitor.glade:2319
 msgid "Get from connected"
 msgstr ""
 
-#: tcosmonitor.glade:2475 tcosmonitor.glade:2858
+#: tcosmonitor.glade:2500 tcosmonitor.glade:2883
 msgid "Save"
 msgstr ""
 
-#: tcosmonitor.glade:2521
+#: tcosmonitor.glade:2546
 msgid "New or edit hosts"
 msgstr ""
 
-#: tcosmonitor.glade:2575
+#: tcosmonitor.glade:2600
 msgid ""
 "You can add a simple host, \n"
 "   example: <b>192.168.0.100</b>\n"
@@ -289,11 +293,11 @@ msgid ""
 "MAC address is optional"
 msgstr ""
 
-#: tcosmonitor.glade:2616
+#: tcosmonitor.glade:2641
 msgid "IP address *"
 msgstr ""
 
-#: tcosmonitor.glade:2644 TcosStaticHosts.py:160
+#: tcosmonitor.glade:2669 TcosStaticHosts.py:160
 msgid "MAC address"
 msgstr ""
 

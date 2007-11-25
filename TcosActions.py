@@ -1166,7 +1166,7 @@ class TcosActions:
                 dialog.destroy()
                 
                 if response == gtk.RESPONSE_OK:
-                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(filename, ip_unicast) )
+                    self.main.exe_cmd("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(filename, ip_unicast) )
                 elif response == 1:
                     self.main.exe_cmd("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
                     

@@ -13,6 +13,7 @@
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="icon_name"></property>
   <property name="decorated">True</property>
   <property name="skip_taskbar_hint">False</property>
   <property name="skip_pager_hint">False</property>
@@ -39,7 +40,7 @@
 	    <widget class="GtkToolButton" id="quitbutton">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Exit TcosMonitor</property>
-	      <property name="label">Quit</property>
+	      <property name="label" translatable="yes">Quit</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-quit</property>
 	      <property name="visible_horizontal">True</property>
@@ -56,7 +57,7 @@
 	    <widget class="GtkToolButton" id="preferencesbutton">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Open preferences dialog</property>
-	      <property name="label">Preferences</property>
+	      <property name="label" translatable="yes">Preferences</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-preferences</property>
 	      <property name="visible_horizontal">True</property>
@@ -73,7 +74,7 @@
 	    <widget class="GtkToolButton" id="refreshbutton">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Update host list</property>
-	      <property name="label">Refresh</property>
+	      <property name="label" translatable="yes">Refresh</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-refresh</property>
 	      <property name="visible_horizontal">True</property>
@@ -103,7 +104,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="allhostbutton">
 	      <property name="visible">True</property>
-	      <property name="label">All Hosts</property>
+	      <property name="label" translatable="yes">All Hosts</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-go-down</property>
 	      <property name="visible_horizontal">True</property>
@@ -133,7 +134,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label2">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes"></property>
+		      <property name="label"></property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -317,7 +318,7 @@
 	    </widget>
 	    <packing>
 	      <property name="shrink">False</property>
-	      <property name="resize">False</property>
+	      <property name="resize">True</property>
 	    </packing>
 	  </child>
 
@@ -444,7 +445,7 @@
 	      <property name="right_attach">1</property>
 	      <property name="top_attach">0</property>
 	      <property name="bottom_attach">1</property>
-	      <property name="x_options"></property>
+	      <property name="x_options">fill</property>
 	      <property name="y_options"></property>
 	    </packing>
 	  </child>
@@ -525,7 +526,7 @@
 	      <property name="right_attach">1</property>
 	      <property name="top_attach">1</property>
 	      <property name="bottom_attach">2</property>
-	      <property name="x_options"></property>
+	      <property name="x_options">fill</property>
 	      <property name="y_options"></property>
 	    </packing>
 	  </child>
@@ -542,7 +543,7 @@
 	      <property name="right_attach">2</property>
 	      <property name="top_attach">0</property>
 	      <property name="bottom_attach">1</property>
-	      <property name="x_options"></property>
+	      <property name="x_options">expand|shrink|fill</property>
 	      <property name="y_options"></property>
 	    </packing>
 	  </child>
@@ -570,7 +571,7 @@
 	      <property name="right_attach">2</property>
 	      <property name="top_attach">1</property>
 	      <property name="bottom_attach">2</property>
-	      <property name="x_options"></property>
+	      <property name="x_options">fill</property>
 	      <property name="y_options"></property>
 	    </packing>
 	  </child>
@@ -644,7 +645,7 @@
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">5</property>
 		  <property name="bottom_attach">6</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -666,7 +667,7 @@
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">6</property>
 		  <property name="bottom_attach">7</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -695,7 +696,7 @@
 		  <property name="top_attach">0</property>
 		  <property name="bottom_attach">1</property>
 		  <property name="x_padding">2</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -747,7 +748,7 @@ Value=0 disable update.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">2</property>
 		  <property name="bottom_attach">3</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -776,7 +777,7 @@ Value=0 disable update.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">4</property>
 		  <property name="bottom_attach">5</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -805,8 +806,8 @@ Value=0 disable update.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">4</property>
 		  <property name="bottom_attach">5</property>
-		  <property name="x_options"></property>
-		  <property name="y_options"></property>
+		  <property name="x_options">fill</property>
+		  <property name="y_options">fill</property>
 		</packing>
 	      </child>
 
@@ -834,8 +835,8 @@ Value=0 disable update.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">2</property>
 		  <property name="bottom_attach">3</property>
-		  <property name="x_options"></property>
-		  <property name="y_options"></property>
+		  <property name="x_options">fill</property>
+		  <property name="y_options">fill</property>
 		</packing>
 	      </child>
 
@@ -862,7 +863,7 @@ Value=0 disable update.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">1</property>
 		  <property name="bottom_attach">2</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -900,7 +901,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">11</property>
 		  <property name="bottom_attach">12</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		</packing>
 	      </child>
 
@@ -927,7 +928,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">12</property>
 		  <property name="bottom_attach">13</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -971,7 +972,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">7</property>
 		  <property name="bottom_attach">8</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -999,7 +1000,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">13</property>
 		  <property name="bottom_attach">14</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1043,7 +1044,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">9</property>
 		  <property name="bottom_attach">10</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1071,7 +1072,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">3</property>
 		  <property name="bottom_attach">4</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1152,7 +1153,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">3</property>
 		  <property name="bottom_attach">4</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1174,7 +1175,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">10</property>
 		  <property name="bottom_attach">11</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1196,7 +1197,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">8</property>
 		  <property name="bottom_attach">9</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1263,7 +1264,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">0</property>
 		  <property name="bottom_attach">1</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1312,7 +1313,7 @@ Value=0 disable cache.</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">1</property>
 		  <property name="bottom_attach">2</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1374,7 +1375,7 @@ instructions. This will generate a tcospasswd file with asked data.
 		  <property name="right_attach">2</property>
 		  <property name="top_attach">2</property>
 		  <property name="bottom_attach">3</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -1658,11 +1659,11 @@ instructions. This will generate a tcospasswd file with asked data.
 	  <property name="spacing">10</property>
 
 	  <child>
-	    <widget class="GtkButton" id="pref_cancel_button">
+	    <widget class="GtkButton" id="pref_ok_button">
 	      <property name="width_request">90</property>
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
+	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
@@ -1676,11 +1677,11 @@ instructions. This will generate a tcospasswd file with asked data.
 	  </child>
 
 	  <child>
-	    <widget class="GtkButton" id="pref_ok_button">
+	    <widget class="GtkButton" id="pref_cancel_button">
 	      <property name="width_request">90</property>
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="label">gtk-ok</property>
+	      <property name="label">gtk-cancel</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
@@ -1711,6 +1712,8 @@ instructions. This will generate a tcospasswd file with asked data.
   <property name="copyright" translatable="yes">GNU/GPL</property>
   <property name="comments" translatable="yes">A thin client network monitor</property>
   <property name="wrap_license">False</property>
+  <property name="website"></property>
+  <property name="website_label" translatable="yes"></property>
   <property name="authors"> Mario Izquierdo (mariodebian)
  &lt;mariodebian@gmail.com&gt;
 
@@ -1822,6 +1825,31 @@ Contributions:
 	  <property name="padding">0</property>
 	  <property name="expand">True</property>
 	  <property name="fill">True</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkLabel" id="label99">
+	  <property name="visible">True</property>
+	  <property name="label" translatable="yes">You can drag and drop launcher file to this box</property>
+	  <property name="use_underline">False</property>
+	  <property name="use_markup">False</property>
+	  <property name="justify">GTK_JUSTIFY_LEFT</property>
+	  <property name="wrap">False</property>
+	  <property name="selectable">False</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	  <property name="width_chars">-1</property>
+	  <property name="single_line_mode">False</property>
+	  <property name="angle">0</property>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
 	</packing>
       </child>
 
@@ -2630,7 +2658,7 @@ MAC address is optional</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">0</property>
 		  <property name="bottom_attach">1</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
@@ -2658,7 +2686,7 @@ MAC address is optional</property>
 		  <property name="right_attach">1</property>
 		  <property name="top_attach">1</property>
 		  <property name="bottom_attach">2</property>
-		  <property name="x_options"></property>
+		  <property name="x_options">fill</property>
 		  <property name="y_options"></property>
 		</packing>
 	      </child>
