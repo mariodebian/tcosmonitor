@@ -1,3 +1,10 @@
+tcosmonitor (0.1.24.13) unstable; urgency=low
+
+  * TcosActions.py Initialize.py tcosmonitor.glade:
+      - Fix new label location in glade and not show in send messages
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Mon, 26 Nov 2007 13:24:28 +0100
+
 tcosmonitor (0.1.24.12) unstable; urgency=low
 
   * TcosActions.py

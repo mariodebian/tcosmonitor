@@ -152,11 +152,13 @@ class Initialize:
         self.main.ask_label = self.main.ui.get_widget('txt_asklabel')
         ## arrastrar y soltar
         self.main.ask_fixed = self.main.ui.get_widget('ask_fixed')
+        self.main.ask_dragdrop = self.main.ui.get_widget('label99')
         self.main.image_entry = self.main.ui.get_widget('image_askentry')
         self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ),], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
         self.main.image_entry.connect( 'drag_data_received', self.main.actions.on_drag_data_received)
         self.main.ask_fixed.hide()
         self.main.image_entry.hide()
+        self.main.ask_dragdrop.hide()
         ## fin arrastrar y soltar
         self.liststore = gtk.ListStore(str)
         for s in shared.appslist:

@@ -1779,7 +1779,7 @@ Contributions:
 
       <child>
 	<widget class="GtkFixed" id="ask_fixed">
-	  <property name="height_request">27</property>
+	  <property name="height_request">43</property>
 	  <property name="visible">True</property>
 
 	  <child>
@@ -1817,7 +1817,7 @@ Contributions:
 	    </widget>
 	    <packing>
 	      <property name="x">167</property>
-	      <property name="y">7</property>
+	      <property name="y">4</property>
 	    </packing>
 	  </child>
 	</widget>

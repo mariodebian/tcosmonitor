@@ -314,6 +314,7 @@ class TcosActions:
         #desactivar arrastrar y soltar
         self.main.ask_fixed.hide()
         self.main.image_entry.hide()
+        self.main.ask_dragdrop.hide()
         return
     
     def askfor(self, mode="mess", msg="", users=[]):
@@ -339,6 +340,7 @@ class TcosActions:
         if mode == "exec":
             #activar arrastrar y soltar
             self.main.ask_fixed.show()
+            self.main.ask_dragdrop.show()
             self.main.image_entry.show()
             self.main.image_entry.set_from_stock(gtk.STOCK_DIALOG_QUESTION, 4)
             self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n%s" ) %( users_txt ) )
@@ -372,17 +374,16 @@ class TcosActions:
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
             else:
-                self.main.image_entry.hide()
                 self.main.ask.hide()
                 self.main.ask_entry.set_text("")
-                self.main.ask_fixed.hide()
-                self.main.image_entry.hide()
         elif self.ask_mode == "mess":
             result = self.main.dbus_action.do_message( newusernames , arg)
             if not result:
                 shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
                     
-                        
+        self.main.ask_dragdrop.hide()
+        self.main.ask_fixed.hide()
+        self.main.image_entry.hide()                
         self.main.ask.hide()
         self.main.ask_entry.set_text("")                
         dbus_action=None
