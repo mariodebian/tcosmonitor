@@ -1513,6 +1513,7 @@ class TcosActions:
                 msg=_( _("No clients selected, do you want to select all?" ) )
                 if shared.ask_msg ( msg ):
                     allclients=self.main.localdata.allclients
+                if len(allclients) == 0: return
         else:
             # get all clients connected
             allclients=self.main.localdata.allclients
@@ -1975,7 +1976,7 @@ class TcosActions:
         ip, image = args
         # change image if ip is the same.
         if model.get_value(iter, COL_IP) == ip:
-            model.set_value(iter, COL_LOGGED, image)
+            model.set_value(iter, COL_BLOCKED, image)
     
     
     def get_screenshot(self, ip):

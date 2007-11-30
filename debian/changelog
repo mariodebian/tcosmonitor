@@ -1,3 +1,10 @@
+tcosmonitor (0.1.24.14) unstable; urgency=low
+
+  * In selected hosts if not select all try to continue and no return
+  * Not change image logged instead image blocked in lockscreen
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 30 Nov 2007 10:28:05 +0100
+
 tcosmonitor (0.1.24.13) unstable; urgency=low
 
   * TcosActions.py Initialize.py tcosmonitor.glade:
