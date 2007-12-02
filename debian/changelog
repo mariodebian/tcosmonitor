@@ -1,3 +1,15 @@
+tcosmonitor (0.1.25.1) unstable; urgency=low
+
+  * tcos-devices.py tcos-devices-ng.py:
+    - Read ~/Desktop dir with rsync-controller (support translated xdg-user-dirs)
+  * TcosActions.py Initialize.py tcosmonitor.glade:
+    - Make one stop button and label for every action, now is
+      posible to run more than one action and can stop it.
+    - Kill PID, if posible, if not, use killall
+    - Remove rsync code, now code go to initramfs-tools-tcos/bin/rsync-controller
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 02 Dec 2007 11:12:49 +0100
+
 tcosmonitor (0.1.24.14) unstable; urgency=low
 
   * In selected hosts if not select all try to continue and no return

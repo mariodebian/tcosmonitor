@@ -230,6 +230,11 @@ class TcosDevicesNG:
             print _("Error connecting with TcosXmlRpc in %s.") %(self.host)
             sys.exit(1)
 
+    def get_desktop_patch(self):
+        desktop=self.exe_cmd("/usr/lib/tcos/rsync-controller")
+        if not os.path.isdir(desktop):
+            return os.path.expanduser("~/Desktop")
+        return desktop
 
     def getremote_cdroms(self):
         self.cdrom_devices=self.xmlrpc.GetDevicesInfo(device="", mode="--getcdrom").split('|')
@@ -380,7 +385,7 @@ class TcosDevicesNG:
         print_debug("udev_daemon GetDevicesInfo time=%f" %(time.time() - start1) )
         if "error" in " ".join(udev): return
         udev=udev[:-1]
-        if udev[0] == "unknow": return
+        if len(udev) < 1 or udev[0] == "unknow": return
         udev=self.remove_dupes(udev)
         for line in udev:
             data={}
@@ -505,7 +510,7 @@ class TcosDevicesNG:
             
 
     def get_local_mountpoint(self, data):
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         
         #fslabel=self.get_value(data, "ID_FS_LABEL")
         #fsvendor=self.get_value(data, "ID_VENDOR")
@@ -561,7 +566,8 @@ class TcosDevicesNG:
     def floppy(self, action):
         action=action[0]
         print_debug("floppy call %s" %action)
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
+        
         if self.mntconf.has_key("fd0"):
             local_mount_point=os.path.join(desktop, self.mntconf['fd0'] )
         else:
@@ -587,7 +593,7 @@ class TcosDevicesNG:
     def cdrom(self, *args):
         action=args[0][0]
         cdrom_device=args[0][1]
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         
         if self.mntconf.has_key(cdrom_device):
             local_mount_point=os.path.join(desktop, self.mntconf[cdrom_device] )
@@ -626,7 +632,7 @@ class TcosDevicesNG:
     def hdd(self, *args):
         action=args[0][0]
         hdd_device=args[0][1]
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         
         if self.mntconf.has_key(hdd_device):
             local_mount_point=os.path.join(desktop, self.mntconf[hdd_device] )

@@ -213,10 +213,16 @@ class TcosDevices:
             return "xfce4"
         else:
             return ""
+
+    def get_desktop_patch(self):
+        desktop=self.exe_cmd("/usr/lib/tcos/rsync-controller")
+        if not os.path.isdir(desktop):
+            return os.path.expanduser("~/Desktop")
+        return desktop
     
     def get_local_mountpoint(self, line):
         print_debug( line )
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         data=line.split('#')
         #fslabel=data[4].split('=')[1]
         #fsvendor=data[6].split('=')[1]
@@ -761,7 +767,7 @@ Categories=GNOME;Application
         print_debug ( "get_data()  cdrom_device=%s" %(self.cdrom_device) )
     
     def floppy_mount(self, widget):
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         local_mount_point=os.path.join(desktop, _("Floppy") )
         
         if not self.mounter_remote("/dev/fd0", "", mode="--mount"):
@@ -775,7 +781,7 @@ Categories=GNOME;Application
         return
         
     def floppy_umount(self, widget):
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         local_mount_point=os.path.join(desktop, _("Floppy") )
         
         self.mounter_local(local_mount_point, "/mnt/fd0", device="/dev/fd0", label=_("Floppy"), mode="umount")
@@ -789,7 +795,7 @@ Categories=GNOME;Application
         return
         
     def cdrom_mount(self, widget):
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         local_mount_point=os.path.join(desktop, _("Cdrom") )
         
         if not self.mounter_remote(self.cdrom_device, "", mode="--mount"):
@@ -803,7 +809,7 @@ Categories=GNOME;Application
         return
         
     def cdrom_umount(self, widget):
-        desktop=os.path.expanduser("~/Desktop")
+        desktop=self.get_desktop_patch()
         local_mount_point=os.path.join(desktop, _("Cdrom") )
         
         print_debug ( "cdrom_umount() remote_mnt=%s device=%s" %(self.cdrom_remote, self.cdrom_device) )
