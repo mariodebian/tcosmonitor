@@ -1,3 +1,31 @@
+tcosmonitor (0.1.25.2) unstable; urgency=low
+
+  * Patches by Ignacio Vidal <vidal_joshur@gva.es>
+  * shared.py
+    - Update icons
+  * TcosActions.py
+    - Replace popen2.Popen3 with modern subprocess.Popen in some actions and
+      redefined execution commands to obtain real pid of process
+    - In some cases need SIGKILL to kill vnc or vlc processes that not want to die
+    - Var newallclients pass as arg allclients in progressbox, in demo mode
+      or video, only contain users for this action
+    - On click progressbox button for demo mode and video broadcast only kill
+      processes in clients associated to this action and not in users logged
+      after or not in selected hosts
+    - Kill actions by pid in server, not need killall in each action and
+      permits silmutaneous modes
+    - Fix add_progressbox button, stock "gtk-cancel" override our
+      configuration, only show in label button Cancel, not our string "Stop"
+      and icon personalized
+    - Add support in demo mode from not teacher host for selectedhosts
+    - Update some progressbox messages
+    - Add checks like is user logged or app running in some actions
+    - Show user and host in some messages instad only ip
+  * TcosActions.py VNC:
+    - Wait thin client close x11vnc.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 05 Dec 2007 00:15:55 +0100
+
 tcosmonitor (0.1.25.1) unstable; urgency=low
 
   * tcos-devices.py tcos-devices-ng.py:

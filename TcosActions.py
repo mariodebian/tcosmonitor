@@ -26,7 +26,7 @@ from time import time, sleep, localtime
 import gobject
 import gtk
 from gettext import gettext as _
-import os
+import os,subprocess
 import socket
 import string
 from random import Random
@@ -1002,13 +1002,15 @@ class TcosActions:
         if action == 2:
             # Ask for reboot reboot
             ip=self.main.selected_ip
-            msg=_( _("Do you want to reboot %s?" ) %(self.main.selected_ip) )
+            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
+            msg=_( _("Do you want to reboot %s?" ) %(user) )
             if shared.ask_msg ( msg ):
                 self.main.xmlrpc.Exe("reboot")
             
         if action == 3:
             # Ask for poweroff reboot
-            msg=_( _("Do you want to poweroff %s?" ) %(self.main.selected_ip) )
+            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
+            msg=_( _("Do you want to poweroff %s?" ) %(user) )
             if shared.ask_msg ( msg ):
                 self.main.xmlrpc.Exe("poweroff")    
         
@@ -1123,17 +1125,20 @@ class TcosActions:
             # Stream to single client unicast
             
             users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
+            
+            if not self.main.localdata.IsLogged(self.main.selected_ip):
+                shared.error_msg ( _("Can't send video broadcast, user is not logged") )
+                return
                         
             str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
             
             client_type = self.main.xmlrpc.ReadInfo("get_client")
             if client_type == "tcos":
                 ip_unicast="239.255.255.0"
-                remote_cmd="vlc udp://@%s:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast)
+                remote_cmd="vlc udp://@%s:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast)
             else:
                 ip_unicast=self.main.selected_ip
-                remote_cmd="vlc udp://@:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
-
+                remote_cmd="vlc udp://@:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
@@ -1164,28 +1169,39 @@ class TcosActions:
             if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
                 
                 filename=dialog.get_filename()
-                for scape in str_scapes:
-                    filename=filename.replace("%s" %scape, "\%s" %scape)
                 dialog.destroy()
                 
-                if response == gtk.RESPONSE_OK:
-                    p=popen2.Popen3("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(filename, ip_unicast) )
-                elif response == 1:
-                    p=popen2.Popen3("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
-                    
-                    msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
+                if filename.find(" ") != -1:
+                    msg=_("Not allowed white spaces in %s filename.\nPlease rename it." %os.path.basename(filename) )
                     shared.info_msg( msg )
-                    
+                    return
+                
+                for scape in str_scapes:
+                    filename=filename.replace("%s" %scape, "\%s" %scape)
+                
+                if response == gtk.RESPONSE_OK:
+                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(ip_unicast), "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver" ], shell=False)
+                elif response == 1:
+                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(ip_unicast), "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 2:
-                    p=popen2.Popen3("vlc vcd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
+                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(ip_unicast), "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 3:
-                    p=popen2.Popen3("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=%s:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast) )
+                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(ip_unicast), "--ttl=12", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 # exec this app on client
-                                
+                
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
                 
-                newusernames=[]
+                msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
+                shared.info_msg( msg )
                 
+                # check if vlc is running or fail like check ping in demo mode
+                running = p.poll() is None
+                if not running:
+                    self.main.write_into_statusbar( _("Error while exec app"))
+                    return
+                
+                newusernames=[]
+
                 for user in users:
                     if user.find(":") != -1:
                         # we have a standalone user...
@@ -1200,10 +1216,10 @@ class TcosActions:
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-                
+                server_ip=socket.gethostname()
+                client_ip=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)    
                 # new mode to Stop Button
-                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients": [self.main.selected_ip]}, _("Running in broadcast video transmission."))
-                
+                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients":[self.main.selected_ip]}, _("Running in broadcast video transmission from host %s to host %s") %(server_ip, client_ip))
             else:
                 dialog.destroy()
                                                     
@@ -1212,6 +1228,10 @@ class TcosActions:
             # envio ficheros
             # search for connected users
             users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
+            
+            if not self.main.localdata.IsLogged(self.main.selected_ip):
+                shared.error_msg ( _("Can't send files, user is not logged") )
+                return
             
             str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
 
@@ -1297,29 +1317,64 @@ class TcosActions:
         if action == 18:
             print_debug ("menu_event_one() demo mode from not teacher host" )
             ip=self.main.selected_ip
-            allclients=self.main.localdata.allclients
+            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
             
             if not self.main.localdata.IsLogged(ip):
                 shared.error_msg ( _("Can't start VNC, user is not logged") )
                 return
+                
+            msg=_( _("Do you want demo mode from %s?" ) %(socket.gethostbyname(ip) ) )
+            if not shared.ask_msg ( msg ): return
+                
+            if self.main.config.GetVar("selectedhosts") == 1:
+                allclients=[]
+                model=self.main.tabla.get_model()
+                rows = []
+                model.foreach(lambda model, path, iter: rows.append(path))
+                for host in rows:
+                    iter=model.get_iter(host)
+                    if model.get_value(iter, COL_SEL_ST):
+                        allclients.append(model.get_value(iter, COL_IP))
+                if len(allclients) == 0:
+                    msg=_( _("No clients selected, do you want to select all?" ) )
+                    if shared.ask_msg ( msg ):
+                        allclients=self.main.localdata.allclients
+                    if len(allclients) == 0: return
+            else:
+                # get all clients connected
+                allclients=self.main.localdata.allclients
+                
             
-            # demo mode
-            os.system("killall x11vnc 2>/dev/null")
-                    
+            # force kill x11vnc in client
+            self.main.xmlrpc.newhost(ip)
+            from ping import PingPort
+            max_wait=5
+            wait=0
+            self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
+                
+            status="OPEN"
+            while status != "CLOSED":
+                status=PingPort(ip, 5900).get_status()
+                self.main.xmlrpc.vnc("stopserver", ip )
+                print_debug("start_vnc() waiting to kill x11vnc...")    
+                sleep(1)
+                wait+=1
+                if wait > max_wait:
+                    print_debug("max_wait, returning")
+                    # fixme show error message
+                    return
+                        
             #generate password vnc
             passwd=''.join( Random().sample(string.letters+string.digits, 12) )
             self.main.exe_cmd("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
                                     %(passwd, os.path.expanduser('~/.tcosvnc')) )
-            
+                
             # start x11vnc in remote host
-            self.main.xmlrpc.newhost(ip)
-            # before starting x11vnc vnc-controller exec killall x11vnc, not need to stop from here
-            #self.main.xmlrpc.vnc("stopserver", ip )
             self.main.xmlrpc.vnc("genpass", ip, passwd )
             self.main.xmlrpc.vnc("startserver", ip )
-                    
+                        
             self.main.write_into_statusbar( _("Waiting for start demo mode from host %s...") %(ip) )
-            
+                
             # need to wait for start, PingPort loop
             from ping import PingPort
             status = "CLOSED"
@@ -1332,27 +1387,31 @@ class TcosActions:
                     wait+=1
                 if wait > max_wait:
                     break
-            
+                
+            if status != "OPEN":
+                self.main.write_into_statusbar( _("Error while exec app"))
+                return
+                
             # start in 1 (teacher)
+            newallclients=[]
             total=1
             for client in allclients:
                 if self.main.localdata.IsLogged(client) and client != ip:
                     self.main.xmlrpc.vnc("genpass", client, passwd )
                     self.main.xmlrpc.vnc("startclient", client, ip )
                     total+=1
-            
+                    newallclients.append(client)
+                    
             if total < 1:
                 self.main.write_into_statusbar( _("No users logged.") )
                 # kill x11vnc in host
                 self.main.xmlrpc.vnc("stopserver", ip )
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
-                cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
-                self.main.exe_cmd (cmd)
-                
+                p=popen2.Popen3(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc') ])
                 # new mode for stop button
-                self.add_progressbox( {"target": "vnc", "ip": ip}, _("Running in demo mode from host %s...") %ip )
-            
+                self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %user )
+                
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
 
@@ -1361,7 +1420,10 @@ class TcosActions:
         print_debug("add_progressbox() args=%s, text=%s" %(args, text))
         table=gtk.Table(2, 2, False)
         table.show()
-        button=gtk.Button( _("Stop"), "gtk-cancel", False)
+        button=gtk.Button(_("Stop"))
+        image = gtk.Image()
+        image.set_from_stock (gtk.STOCK_STOP, gtk.ICON_SIZE_BUTTON)
+        button.set_image(image)
         button.connect('clicked', self.on_progressbox_click, args, table)
         button.show()
         label=gtk.Label( text )
@@ -1379,15 +1441,28 @@ class TcosActions:
         
         if args['target'] == "vnc":
             if args['ip'] != "":
+                for client in args['allclients']:
+                    if self.main.localdata.IsLogged(client):
+                        self.main.xmlrpc.newhost(client)
+                        self.main.xmlrpc.vnc("stopclient", client)
+                # kill only in server one vncviewer
+                if "pid" in args:
+                    self.main.exe_cmd("kill -9 %s 2>/dev/null" %(args['pid']))
+                else:
+                    self.main.exe_cmd("killall -s KILL vncviewer")
                 self.main.xmlrpc.newhost(args['ip'])
                 self.main.xmlrpc.vnc("stopserver", args['ip'] )
             else:
-                # get all users
-                for client in self.main.localdata.allclients:
-                    self.main.xmlrpc.newhost(client)
-                    self.main.xmlrpc.vnc("stopclient", client)
-                    
-                self.main.exe_cmd ("sleep 2; killall x11vnc 2>/dev/null")
+                # get all users at this demo mode and not kill others demo modes, in some cases need SIGKILL
+                for client in args['allclients']:
+                    if self.main.localdata.IsLogged(client):
+                        self.main.xmlrpc.newhost(client)
+                        self.main.xmlrpc.vnc("stopclient", client)
+                if "pid" in args:
+                    self.main.exe_cmd ("sleep 2; kill -9 %s 2>/dev/null" %(args['pid']))
+                else:
+                    self.main.exe_cmd("killall -s KILL x11vnc")
+                
             self.main.write_into_statusbar( _("Demo mode off.") )
         
         elif args['target'] == "vlc":
@@ -1400,39 +1475,55 @@ class TcosActions:
                       
             for user in connected_users:
                 if user.find(":") != -1:
-                    # we have a standalone user...
+                    # we have a standalone user... in some cases or after much time need SIGKILL vlc
                     usern, ip = user.split(":")
                     self.main.xmlrpc.newhost(ip)
-                    self.main.xmlrpc.DBus("killall", "vlc" )
+                    self.main.xmlrpc.DBus("killall", "-s KILL vlc" )
                 else:
                     newusernames.append(user)
                     
-            result = self.main.dbus_action.do_killall( newusernames , "vlc" )
+            result = self.main.dbus_action.do_killall( newusernames , "-s KILL vlc" )
             
             if "pid" in args:
-                self.main.exe_cmd("kill %s" %(args['pid']) )
+                self.main.exe_cmd("kill -9 %s" %(args['pid']) ) 
             else:
-                self.main.exe_cmd("killall vlc")
+                self.main.exe_cmd("killall -s KILL vlc")
             self.main.write_into_statusbar( _("Video broadcast stopped.") )
-        
-        
+
         return
 
         
     def start_vnc(self, ip):
+        # force kill x11vnc in client
+        self.main.xmlrpc.newhost(ip)
+        from ping import PingPort
+        max_wait=5
+        wait=0
+        gtk.gdk.threads_enter()
+        self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
+        gtk.gdk.threads_leave()
+            
+        status="OPEN"
+        while status != "CLOSED":
+            status=PingPort(ip, 5900).get_status()
+            self.main.xmlrpc.vnc("stopserver", ip )
+            print_debug("start_vnc() waiting to kill x11vnc...")    
+            sleep(1)
+            wait+=1
+            if wait > max_wait:
+                print_debug("max_wait, returning")
+                # fixme show error message
+                return
+        
         # gen password in thin client
         passwd=''.join( Random().sample(string.letters+string.digits, 12) )
         
         self.main.xmlrpc.vnc("genpass", ip, passwd)
         os.system("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
                     %(passwd, os.path.expanduser('~/.tcosvnc')) )
-        
-        gtk.gdk.threads_enter()
-        self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
-        gtk.gdk.threads_leave()
-        
+                
         try:
-            self.main.xmlrpc.newhost(ip)
+            
             # before starting server vnc-controller.sh exec killall x11vnc, not needed to stop server
             #self.main.xmlrpc.vnc("stopserver", ip )
             result=self.main.xmlrpc.vnc("startserver", ip)
@@ -1446,9 +1537,9 @@ class TcosActions:
             gtk.gdk.threads_leave()
             
             # need to wait for start, PingPort loop
-            from ping import PingPort
+            
             status = "CLOSED"
-            max_wait=10
+            
             wait=0
             while status != "OPEN":
                 status=PingPort(ip, 5900).get_status()
@@ -1457,9 +1548,10 @@ class TcosActions:
                     wait+=1
                 if wait > max_wait:
                     break
-            cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
-            print_debug ( "start_process() threading \"%s\"" %(cmd) )
-            self.main.exe_cmd (cmd)            
+            if status == "OPEN":
+                cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
+                print_debug ( "start_process() threading \"%s\"" %(cmd) )
+                self.main.exe_cmd (cmd)            
         except:
             gtk.gdk.threads_enter()
             shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
@@ -1631,7 +1723,7 @@ class TcosActions:
         
         if action == 8:
             # demo mode
-            os.system("killall x11vnc 2>/dev/null")
+            #self.main.exe_cmd("killall -s KILL x11vnc 2>/dev/null")
                     
             #generate password vnc
             passwd=''.join( Random().sample(string.letters+string.digits, 12) )
@@ -1639,8 +1731,8 @@ class TcosActions:
                                     %(passwd, os.path.expanduser('~/.tcosvnc')) )
             
             # start x11vnc in local 
-            self.main.exe_cmd( "x11vnc -shared -noshm -viewonly -forever -rfbauth %s" %( os.path.expanduser('~/.tcosvnc') ) )
-            
+            p=popen2.Popen3(["x11vnc", "-shared", "-noshm", "-viewonly", "-forever", "-rfbauth", "%s" %( os.path.expanduser('~/.tcosvnc') ) ])
+                        
             self.main.write_into_statusbar( _("Waiting for start demo mode...") )
             
             # need to wait for start, PingPort loop
@@ -1655,7 +1747,12 @@ class TcosActions:
                     wait+=1
                 if wait > max_wait:
                     break
-            
+                
+            if status != "OPEN":
+                self.main.write_into_statusbar( _("Error while exec app"))
+                return
+        
+            newallclients=[]
             total=0
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
@@ -1666,17 +1763,18 @@ class TcosActions:
                     # start vncviewer
                     self.main.xmlrpc.vnc("startclient", client, server_ip )
                     total+=1
+                    newallclients.append(client)
             
             if total < 1:
                 self.main.write_into_statusbar( _("No users logged.") )
                 # kill x11vnc
-                self.main.exe_cmd("killall x11vnc 2>/dev/null")
+                self.main.exe_cmd("kill -9 %s 2>/dev/null") %(p.pid)
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
-                
+                server_ip=socket.gethostname()
                 # new mode Stop Button
-                self.add_progressbox( {"target": "vnc", "ip":""}, _("Running in demo mode from host %s...") %server_ip )
-            
+                self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from host %s...") %server_ip )
+                
         if action == 9:
             # capture screenshot of all and show minis
             # Ask for unlock screens
@@ -1691,9 +1789,11 @@ class TcosActions:
             # Stream to multiple clients
             
             connected_users=[]
+            newallclients=[]
             for client in allclients:
                 if self.main.localdata.IsLogged(client):
-                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))    
+                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                    newallclients.append(client)
                         
             str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
             
@@ -1727,27 +1827,39 @@ class TcosActions:
             if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
                 
                 filename=dialog.get_filename()
+                dialog.destroy()
+
+                if filename.find(" ") != -1:
+                    msg=_("Not allowed white spaces in %s filename.\nPlease rename it." %os.path.basename(filename) )
+                    shared.info_msg( msg )
+                    return
+                    
                 for scape in str_scapes:
                     filename=filename.replace("%s" %scape, "\%s" %scape)
-                dialog.destroy()
                 
                 if response == gtk.RESPONSE_OK:
-                    p=popen2.Popen3("vlc file://%s --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %filename)
+                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver" ], shell=False)
                 elif response == 1:
-                    p=popen2.Popen3("vlc dvd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
-                    
-                    msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
-                    shared.info_msg( msg )
-                    
+                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 2:
-                    p=popen2.Popen3("vlc vcd:// --sout '#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 3:
-                    p=popen2.Popen3("vlc cdda:// --sout '#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}' --ttl 12 --no-x11-shm --no-xvideo-shm --disable-screensaver")
+                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--ttl=12", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 # exec this app on client
                 
-                remote_cmd="vlc udp://@239.255.255.0:1234 --brightness 2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
+                remote_cmd="vlc udp://@239.255.255.0:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
+                
+                
+                msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
+                shared.info_msg( msg )
+                
+                # check if vlc is running or fail like check ping in demo mode
+                running = p.poll() is None
+                if not running:
+                    self.main.write_into_statusbar( _("Error while exec app"))
+                    return
                 
                 newusernames=[]
                 
@@ -1759,16 +1871,15 @@ class TcosActions:
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                     else:
                         newusernames.append(user)
-                        
+                            
                 result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-                
+                server_ip=socket.gethostname()                        
                 # new mode Stop Button
-                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients": allclients}, _("Running in broadcast video transmission.") )
-                
+                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients": newallclients}, _("Running in broadcast video transmission from host %s...") %server_ip )
             else:
                 dialog.destroy()
                                                     

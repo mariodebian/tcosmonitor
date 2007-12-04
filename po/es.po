@@ -1344,7 +1344,7 @@ msgstr "¿Quiere reiniciar las sesiones X de los siguientes equipos: %s?"
 
 #: TcosActions.py:1637
 msgid "Waiting for start demo mode..."
-msgstr "Esperando al arranque del modo desmo..."
+msgstr "Esperando al arranque del modo demo..."
 
 #: TcosActions.py:1881
 msgid "Screenshots of all hosts"

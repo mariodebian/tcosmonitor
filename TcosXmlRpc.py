@@ -168,7 +168,7 @@ class TcosXmlRpc:
         else:
             cached=self.cache(ip, shared.xmlremote_port)
         
-        print_debug ( "nwehost() cached=%s" %(cached) )
+        print_debug ( "newhost() cached=%s" %(cached) )
         
         if cached == None:
             if not self.isPortListening(ip, shared.xmlremote_port):
