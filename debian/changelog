@@ -4,8 +4,10 @@ tcosmonitor (0.1.25.3) unstable; urgency=low
     - Use last|grep still to get connected users for thin clients
   * TcosXmlRpc.py:
     - Fix debug info
+  * po/tcosmonitor.po po/es.po:
+    - Update translations and template
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 05 Dec 2007 13:18:26 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 05 Dec 2007 16:37:17 +0100
 
 tcosmonitor (0.1.25.2) unstable; urgency=low
 
