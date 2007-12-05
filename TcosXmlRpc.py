@@ -524,14 +524,14 @@ class TcosXmlRpc:
     
         
     def screenshot(self, size="65"):
-        print_debug ( "screenshot() %s" %(size) )
+        print_debug ( "screenshot() size=%s" %(size) )
         try:
             result=self._ParseResult( self.tc.tcos.screenshot(\
                      "%s" %(size),\
                      self.main.config.GetVar("xmlrpc_username"), \
                      self.main.config.GetVar("xmlrpc_password")) )
                      
-            print_debug ( "screenshot(size=%s percent) %s" %(size, result) )
+            print_debug ( "screenshot(size=%s percent) %s done" %(size, result) )
             return True
         except:
             # connection error

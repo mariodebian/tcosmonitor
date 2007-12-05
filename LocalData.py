@@ -424,19 +424,20 @@ class LocalData:
             print_debug ( "GetUsername(%s) not active, returning NO_LOGIN_MSG" %(ip) )
             return shared.NO_LOGIN_MSG
 
-        cmd="who |grep \"%s:\" | head -1 |awk '{print $1}'" %( self.GetHostname(ip) )
+        cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:0.*still\" -e \"%s:0.*still\" 2>/dev/null | head -1| awk '{print $1}'" %(ip, self.GetHostname(ip))
+        #cmd="who |grep \"%s:\" | head -1 |awk '{print $1}'" %( self.GetHostname(ip) )
         output=self.exe_cmd(cmd)
         if output != []:
             self.username=output
             self.add_to_cache( ip, 2 , self.username )
             return self.username
         
-        cmd="who |grep \"%s:\" | head -1 |awk '{print $1}'" %(ip)
-        output=self.exe_cmd(cmd)
-        if output != []:
-            self.username=output
-            self.add_to_cache( ip, 2 , self.username )
-            return self.username
+        #cmd="who |grep \"%s:\" | head -1 |awk '{print $1}'" %(ip)
+        #output=self.exe_cmd(cmd)
+        #if output != []:
+        #    self.username=output
+        #    self.add_to_cache( ip, 2 , self.username )
+        #    return self.username
         
         print_debug ( "GetUsername() fail to search username, return unknow" )
         self.add_to_cache( ip, 2 , self.username )

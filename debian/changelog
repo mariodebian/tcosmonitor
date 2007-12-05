@@ -1,3 +1,12 @@
+tcosmonitor (0.1.25.3) unstable; urgency=low
+
+  * LocalData.py:
+    - Use last|grep still to get connected users for thin clients
+  * TcosXmlRpc.py:
+    - Fix debug info
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 05 Dec 2007 13:18:26 +0100
+
 tcosmonitor (0.1.25.2) unstable; urgency=low
 
   * Patches by Ignacio Vidal <vidal_joshur@gva.es>
