@@ -1002,17 +1002,17 @@ class TcosActions:
         if action == 2:
             # Ask for reboot reboot
             ip=self.main.selected_ip
-            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
-            msg=_( _("Do you want to reboot %s?" ) %(user) )
+            host=self.main.localdata.GetHostname(self.main.selected_ip)
+            msg=_( _("Do you want to reboot %s?" ) %(host) )
             if shared.ask_msg ( msg ):
                 self.main.xmlrpc.Exe("reboot")
             
         if action == 3:
             # Ask for poweroff reboot
-            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
-            msg=_( _("Do you want to poweroff %s?" ) %(user) )
+            host=self.main.localdata.GetHostname(self.main.selected_ip)
+            msg=_( _("Do you want to poweroff %s?" ) %(host) )
             if shared.ask_msg ( msg ):
-                self.main.xmlrpc.Exe("poweroff")    
+                self.main.xmlrpc.Exe("poweroff")     
         
         if action == 4:
             # lock screen
@@ -1216,10 +1216,9 @@ class TcosActions:
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-                server_ip=socket.gethostname()
-                client_ip=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)    
+                host=self.main.localdata.GetHostname(self.main.selected_ip)    
                 # new mode to Stop Button
-                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients":[self.main.selected_ip]}, _("Running in broadcast video transmission from host %s to host %s") %(server_ip, client_ip))
+                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients":[self.main.selected_ip]}, _("Running in broadcast video transmission to host %s") %(host))
             else:
                 dialog.destroy()
                                                     
@@ -1317,13 +1316,13 @@ class TcosActions:
         if action == 18:
             print_debug ("menu_event_one() demo mode from not teacher host" )
             ip=self.main.selected_ip
-            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
+            host=self.main.localdata.GetHostname(self.main.selected_ip)
             
             if not self.main.localdata.IsLogged(ip):
                 shared.error_msg ( _("Can't start VNC, user is not logged") )
                 return
                 
-            msg=_( _("Do you want demo mode from %s?" ) %(socket.gethostbyname(ip) ) )
+            msg=_( _("Do you want demo mode from %s?" ) %(host) )
             if not shared.ask_msg ( msg ): return
                 
             if self.main.config.GetVar("selectedhosts") == 1:
@@ -1410,7 +1409,7 @@ class TcosActions:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
                 p=popen2.Popen3(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc') ])
                 # new mode for stop button
-                self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %user )
+                self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %host )
                 
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
@@ -1496,11 +1495,12 @@ class TcosActions:
     def start_vnc(self, ip):
         # force kill x11vnc in client
         self.main.xmlrpc.newhost(ip)
+        host=self.main.localdata.GetHostname(self.main.selected_ip)
         from ping import PingPort
         max_wait=5
         wait=0
         gtk.gdk.threads_enter()
-        self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
+        self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(host) )
         gtk.gdk.threads_leave()
             
         status="OPEN"
@@ -1771,9 +1771,10 @@ class TcosActions:
                 self.main.exe_cmd("kill -9 %s 2>/dev/null") %(p.pid)
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
-                server_ip=socket.gethostname()
+                server_ip=self.main.xmlrpc.GetStandalone("get_server")
+                host=self.main.localdata.GetHostname(server_ip)
                 # new mode Stop Button
-                self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from host %s...") %server_ip )
+                self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from host %s...") %host )
                 
         if action == 9:
             # capture screenshot of all and show minis
@@ -1851,7 +1852,7 @@ class TcosActions:
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
                 
-                
+            
                 msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
                 shared.info_msg( msg )
                 
@@ -1877,9 +1878,8 @@ class TcosActions:
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-                server_ip=socket.gethostname()                        
                 # new mode Stop Button
-                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients": newallclients}, _("Running in broadcast video transmission from host %s...") %server_ip )
+                self.add_progressbox( {"target": "vlc", "pid":p.pid, "allclients": newallclients}, _("Running in broadcast video transmission"))
             else:
                 dialog.destroy()
                                                     
