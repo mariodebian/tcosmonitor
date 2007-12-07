@@ -1316,13 +1316,13 @@ class TcosActions:
         if action == 18:
             print_debug ("menu_event_one() demo mode from not teacher host" )
             ip=self.main.selected_ip
-            host=self.main.localdata.GetHostname(self.main.selected_ip)
+            hostname=self.main.localdata.GetHostname(self.main.selected_ip)
             
             if not self.main.localdata.IsLogged(ip):
                 shared.error_msg ( _("Can't start VNC, user is not logged") )
                 return
                 
-            msg=_( _("Do you want demo mode from %s?" ) %(host) )
+            msg=_( _("Do you want demo mode from %s?" ) %(hostname) )
             if not shared.ask_msg ( msg ): return
                 
             if self.main.config.GetVar("selectedhosts") == 1:
@@ -1409,7 +1409,7 @@ class TcosActions:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
                 p=popen2.Popen3(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc') ])
                 # new mode for stop button
-                self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %host )
+                self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %(hostname) )
                 
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
@@ -1772,9 +1772,9 @@ class TcosActions:
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
                 server_ip=self.main.xmlrpc.GetStandalone("get_server")
-                host=self.main.localdata.GetHostname(server_ip)
+                hostname=self.main.localdata.GetHostname(server_ip)
                 # new mode Stop Button
-                self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from host %s...") %host )
+                self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from host %s...") %(hostname) )
                 
         if action == 9:
             # capture screenshot of all and show minis

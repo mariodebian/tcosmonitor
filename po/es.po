@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-05 16:31+0100\n"
-"PO-Revision-Date: 2007-12-05 16:36+0100\n"
+"PO-Revision-Date: 2007-12-07 14:50+0100\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1158,7 +1158,7 @@ msgstr "¡%s no permite reiniciar Xorg!"
 
 #: TcosActions.py:1130
 msgid "Can't send video broadcast, user is not logged"
-msgstr "No se enviar la difusión de video, el usuario no está logueado"
+msgstr "No se pudo enviar la difusión de vídeo, el usuario no está logueado"
 
 #: TcosActions.py:1143 TcosActions.py:1801
 msgid "Select audio/video file.."
@@ -1209,7 +1209,7 @@ msgstr "Modo difusión de vídeo activo."
 #: TcosActions.py:1221
 #, python-format
 msgid "Running in broadcast video transmission to host %s"
-msgstr "Ejecutándose el modo de difusión de vídeo desde el equipo %s"
+msgstr "Ejecutándose el modo de difusión de vídeo al equipo %s"
 
 #: TcosActions.py:1232
 msgid "Can't send files, user is not logged"

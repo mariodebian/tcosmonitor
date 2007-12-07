@@ -1,3 +1,12 @@
+tcosmonitor (0.1.25.4) unstable; urgency=low
+
+  * TcosActions.py:
+    - Fix minor typos
+  * po/es.po:
+    - Fix translations
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Fri,  7 Dec 2007 14:56:46 +0100
+
 tcosmonitor (0.1.25.3) unstable; urgency=low
 
   * LocalData.py:
