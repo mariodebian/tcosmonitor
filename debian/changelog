@@ -1,3 +1,10 @@
+tcosmonitor (0.1.25.5) unstable; urgency=low
+
+  * tcos-devices-ng.py:
+    - Umount ltspfs by userid or username
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 09 Dec 2007 16:12:03 +0100
+
 tcosmonitor (0.1.25.4) unstable; urgency=low
 
   * TcosActions.py:
