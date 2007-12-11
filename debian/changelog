@@ -1,3 +1,10 @@
+tcosmonitor (0.1.25.6) unstable; urgency=low
+
+  * tcos-devices-ng.py:
+    - Fix typos
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 11 Dec 2007 21:37:28 +0100
+
 tcosmonitor (0.1.25.5) unstable; urgency=low
 
   * tcos-devices-ng.py:

@@ -917,7 +917,7 @@ class TcosDevicesNG:
             return []
 
     def umount_all(self):
-        mounted=self.exe_cmd("grep ^ltspfs /proc/mounts |grep -e "user_id=%s" -e "user=%s" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]) )
+        mounted=self.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]) )
         if type(mounted) == type(""):
             print_debug( "umount_all() umounting %s..." %mounted )
             self.exe_cmd("fusermount -u %s" %mounted)
