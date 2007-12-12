@@ -1,9 +1,14 @@
 tcosmonitor (0.1.25.6) unstable; urgency=low
 
+  [ Ignacio Vidal ]
   * tcos-devices-ng.py:
     - Fix typos
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 11 Dec 2007 21:37:28 +0100
+  [ Mario Izquierdo (mariodebian) ]
+  * TcosDBus.py:
+    - Use IP address instead of hostname in tcos-dbus-client standalone mode
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 12 Dec 2007 16:34:18 +0100
 
 tcosmonitor (0.1.25.5) unstable; urgency=low
 

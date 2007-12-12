@@ -76,12 +76,23 @@ class TcosDBusServer:
             print_debug ( "auth() not allowed in local display" )
             return False
         
-        # for standalone use hostname as self.host
+        # for standalone use local ip as self.host
+        if shared.allow_local_display:
+            import ping
+            p=ping.Ping(None)
+            ips=p.get_server_ips()
+            if len(ips) < 1:
+                print "tcos-dbus-client **WARNING** Can't get IP adrress, trying with hostname"
+            else:
+                if len(ips) > 1:
+                    print "tcos-dbus-client **WARNING** This host have more than one IP: %s using first: %s" %(ips, ips[0])
+                self.host=ips[0]
+                     
+        # is self.host is empty try with hostname
         if self.host == "":
             import socket
             self.host=socket.gethostname()
             
-        
         
         # check if tcosxmlrpc is running
         from ping import PingPort
@@ -152,7 +163,7 @@ class TcosDBusServer:
                 msg_type=self.parse_dbus_str(message[2][0])
                 msg_args=self.parse_dbus_str(message[3][0])
                 print_debug ( "new_message() Ummm one message for me!!" )
-                print_debug ( "type=%s args=%s" %(msg_type, msg_args) )
+                print_debug ( "new_message() type=%s args=%s" %(msg_type, msg_args) )
                 
                 if msg_type == "kill":
                     pid=int(msg_args)
