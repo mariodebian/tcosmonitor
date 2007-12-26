@@ -22,6 +22,7 @@ clean:
 	rm -f po/*~
 	$(MAKE) -f Makefile.ltsp clean
 	cd dbus && $(MAKE) clean
+	cd extensions && $(MAKE) clean
 
 
 glade:
@@ -40,7 +41,8 @@ gedit:
 gedit-cvs:
 	gedit-cvs *.py >/dev/null 2>&1 &
 
-
+po_files:
+	find -type f -name "*.py" -o -name "*.glade"| sed 's|\./||g' | sort | uniq > po/FILES
 pot:
 	xgettext  -o po/tcosmonitor.pot --files-from=po/FILES
 
@@ -76,7 +78,6 @@ install:
 	install -m 644 $(PACKAGE).glade $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
 	install -m 644 tcospersonalize.glade $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
 	install -m 644 tcos-volume-manager.glade $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
-	install -m 644 tcos-devices.glade $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
 
 	# install all images
 	for i in `ls images/*png`; do install -m 644 $$i $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/$$i; done
@@ -100,20 +101,15 @@ install:
 	install -m 644 htmltextview.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosTrayIcon.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosStaticHosts.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosPreferences.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosCommon.py       $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 
 	install -m 755 tcosmonitor.py           $(DESTDIR)/$(PREFIX)/bin/tcosmonitor
 	install -m 755 tcospersonalize.py       $(DESTDIR)/$(PREFIX)/bin/tcospersonalize
 	install -m 755 tcos-volume-manager.py   $(DESTDIR)/$(PREFIX)/bin/tcos-volume-manager
-	install -m 755 tcos-devices.py          $(DESTDIR)/$(PREFIX)/bin/tcos-devices
 	install -m 755 tcos-devices-ng.py       $(DESTDIR)/$(PREFIX)/bin/tcos-devices-ng
 
 	install -m 755 server-utils/tcos-server-utils.py          $(DESTDIR)/$(PREFIX)/sbin/tcos-server-utils
-
-#	install -m 644 tcos-devices-daemon.desktop      $(DESTDIR)/etc/xdg/autostart/
-#	install -m 644 tcos-devices-autostart.desktop   $(DESTDIR)/etc/xdg/autostart/
-#	install -m 644 tcos-devices.desktop             $(DESTDIR)$(PREFIX)/share/applications/
-#	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)$(PREFIX)/share/applications/
-#	install -m 644 tcos-volume-manager.desktop      $(DESTDIR)/etc/xdg/autostart/
 
 	# locales
 	install -d $(DESTDIR)/$(PREFIX)/share/locale/es/LC_MESSAGES/
@@ -122,6 +118,8 @@ install:
 	# dbus
 	cd dbus && $(MAKE) install PREFIX=$(PREFIX) DESTDIR=$(DESTDIR)
 
+	# extensions
+	cd extensions && $(MAKE) install PREFIX=$(PREFIX) DESTDIR=$(DESTDIR)
 
 install-pxes1.0:
 	@echo "Making pxes-1.0"
@@ -174,13 +172,18 @@ patch_version:
 	sed -i 's/__VERSION__/$(VERSION)/g' LocalData.py
 	sed -i 's/__VERSION__/$(VERSION)/g' ping.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosActions.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosCommon.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosConf.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosDBus.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosXauth.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosStaticHosts.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosXmlRpc.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosPAM.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosMonitorDaemon.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosPreferences.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosTrayIcon.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosStaticHosts.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices-ng.py
-	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-volume-manager.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcosmonitor.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcospersonalize.py
@@ -192,7 +195,6 @@ patch_dapper: patch_version
 	sed -i '/python-support/s/0.3/0.1.1ubuntu1/g' debian/control
 	sed -i '/dh_pysupport/s/dh_pysupport/dh_python/g' debian/rules
 
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
@@ -200,7 +202,6 @@ patch_dapper: patch_version
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' server-utils/tcos-server-utils.py
 
 patch_edgy: patch_version
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
@@ -212,7 +213,6 @@ patch_feisty: patch_version
 patch_gutsy: patch_version
 
 patch_etch: patch_version
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py

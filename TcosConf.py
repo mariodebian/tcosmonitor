@@ -43,7 +43,7 @@ class TcosConf:
         self.main=main
         self.FirstRunning=False
         self.allnetworkinterfaces=[]
-        self.GetAllNetworkInterfaces()
+        #self.GetAllNetworkInterfaces()
         
         # reset memory data
         self.data=""
@@ -149,11 +149,12 @@ class TcosConf:
                 return _var[1]
         print_debug ( "GetVar() not found, %s, returning \"\"" %(varname) )
         return ""
-        
+    
+    """    
     def SaveSettings(self):
-        """
-        save settings
-        """
+        #
+        #save settings
+        #
         start=time()
         print_debug ( "SaveSettings() INIT" )
         self.SetVar("xmlrpc_username", "" + self.main.pref_xmlrpc_username.get_text() )
@@ -221,6 +222,7 @@ class TcosConf:
         value=model[selected][0]
         print_debug ( "TcosGui::read_select() reading %s=%s" %(varname, value) )
         return value
+    
             
     def GetAllNetworkInterfaces(self):
         self.allnetworkinterfaces=None
@@ -232,6 +234,7 @@ class TcosConf:
                     self.allnetworkinterfaces.append(sub)
         print_debug ( "GetAllNetworkInterfaces() %s" %( self.allnetworkinterfaces ) )
         return self.allnetworkinterfaces
+    """
         
 if __name__ == '__main__':
     conf = TcosConf(None)
@@ -240,6 +243,3 @@ if __name__ == '__main__':
     print_debug ( conf.vars )
     conf.SaveToFile()
     
-    #conf.SetVar("xmlrpc_username", "user")
-    #print conf.vars
-    #conf.SaveToFile()

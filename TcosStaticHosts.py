@@ -243,7 +243,7 @@ class TcosStaticHosts:
     def staticwindow_save(self, widget):
         print_debug("staticwindow_save()")
         # save in conf file
-        self.main.config.SaveSettings()
+        self.main.preferences.SaveSettings()
         self.staticwindow_close()
 
     def get_static_conf(self):

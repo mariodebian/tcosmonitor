@@ -1,3 +1,82 @@
+tcosmonitor (0.2.1) unstable; urgency=low
+
+  * New in 0.2 version:
+    - Don't call newhost and PingPort with same IP address many times
+    - Call reboot and poweroff with configurable timeout
+    - Move common functions to TcosCommon
+    - Remove old tcos-devices
+    - Move Preferences code to TcosPreferences class
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 26 Dec 2007 12:11:49 +0100
+
+tcosmonitor (0.2.0~rc1.2) unstable; urgency=low
+
+  [ Ignacio Vidal ]
+  * TcosActions.py:
+    - Update methods poweroff and reboot with messages and timeout in clients
+    - Add in preferences timeout for actions
+    - Avoid use dangeorous commands like rm, cp or mv in exec app
+    - Send multicast in video difussion only to network interface configured in preferences
+    - Video difusion allow lock keyboard and mouse in clients
+    - Update some translations
+  * TcosXmlRpc.py:
+    - Add lock keyboard and mouse
+  * shared.py:
+    - Define time in seg for timeout in actions
+  * TcosPreferences.py:
+    - Define new vars
+
+  [ Mario Izquierdo (mariodebian) ]
+  * Merge tags/tcosmonitor-0.2.0~rc1 translations and templates
+  * Fix Makefile target po_files (add glade files)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 26 Dec 2007 11:54:25 +0100
+
+tcosmonitor (0.2.0~rc1.1) unstable; urgency=low
+
+  * TcosXauth.py
+    - Load TcosCommon in __init__ (not break tcospersonalize.py)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 19 Dec 2007 20:24:36 +0100
+
+tcosmonitor (0.2.0~rc1) unstable; urgency=low
+
+  * tcos-devices-ng.py
+    - Use self.host (fix typo)
+  * TcosActions.py
+    - Fix stupid typos self.main.main => self.main
+  * Add TcosPAM.py TcosMonitorDaemon.py classes
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 19 Dec 2007 09:17:45 +0100
+
+tcosmonitor (0.2.0~rc0) unstable; urgency=low
+
+  * ###########################################################
+  * # This is a EXPERIMENTAL RELEASE !!! use at your own risk #
+  * ###########################################################
+  * New way of menus, methods and classes, mayor rewrite of some of old classes
+  * Remove old tcos-devices (tcos-devices-ng is very better)
+  * New classes TcosCommon.py TcosPreferences.py
+  * Move some TcosActions code to TcosCommon
+  * Lost of undocumented changes (I will document next days)
+  * Initial extensions support (not work yet)
+  * TcosPreferences.py:
+    - Call Setvar in TcosConf class
+  * tcosmonitor.py:
+    - delete subprocess import
+  * tcos-devices-ng.py
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 19 Dec 2007 09:16:23 +0100
+
+tcosmonitor (0.1.25.7) unstable; urgency=low
+
+  * tcos-devices-ng.py:
+    - Check for output of mounter_local and show error if can't mount
+  * tcos-volume-manager.glade:
+    - Set height to 300px
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 16 Dec 2007 16:09:49 +0100
+
 tcosmonitor (0.1.25.6) unstable; urgency=low
 
   [ Ignacio Vidal ]

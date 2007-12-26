@@ -50,6 +50,12 @@ class TcosDBusServer:
         self.error_msg=None
         print_debug ( "TcosDBusServer() __init__ as username=%s" %(self.username) )
         print_debug ( "TcosDBusServer() admin=\"%s\" passwd=\"%s\""  %(self.admin, self.passwd) )
+        
+        import TcosCommon
+        self.common=TcosCommon.TcosCommon(self)        
+        self.host=self.common.get_display(ip_mode=True)
+        self.hostname=self.common.get_display(ip_mode=False)
+        
         self.bus = dbus.SystemBus()
 
     def auth(self):
@@ -58,18 +64,14 @@ class TcosDBusServer:
             print_debug ( "Need admin and passwd data to do this action" )
             return False
         
+        #self.common=TcosCommon.TcosCommon(self)        
+        #self.host=self.common.get_display(ip_mode=True)
+        #self.hostname=self.common.get_display(ip_mode=False)
         
         # get DISPLAY env var
-        self.host, display=os.environ["DISPLAY"].split(':')
-        self.display = ":%s" %(display)
-        print_debug( "host=\"%s\" display=\"%s\"" %(self.host, self.display) )
-        
-        #  FIXME
-        #  to TEST and DEBUG uncomment this
-        #
-        #self.host="tcos11"
-        #
-        #
+        #self.host, display=os.environ["DISPLAY"].split(':')
+        #self.display = ":%s" %(display)
+        #print_debug( "host=\"%s\" display=\"%s\"" %(self.host, self.display) )
         
         if self.host == "" and not shared.allow_local_display:
             self.error_msg=_("TcosDBus not allowed in local display")

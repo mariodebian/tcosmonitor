@@ -3,7 +3,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
-#    tcos-devices version __VERSION__
+#    tcos-devices-ng version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 #
@@ -42,12 +42,6 @@ if remotehost == "":
     print "tcos-devices-ng: Not allowed to run in local DISPLAY"
     sys.exit(0)
 
-if len(remotehost.split('.')) == 4:
-    # we have an ip
-    try:
-        remotehost=socket.gethostbyaddr(remotehost)[0]
-    except:
-        pass
 
 if not os.path.isfile("shared.py"):
         sys.path.append('/usr/share/tcosmonitor')
@@ -60,7 +54,6 @@ if not shared.test_start("tcos-devices-ng") :
     print "tcos-devices-ng disabled at %s" %(shared.module_conf_file)
     sys.exit(1)
 
-shared.remotehost=remotehost
     
 from TcosTrayIcon import *
 import threading
@@ -81,15 +74,14 @@ gtk.gdk.threads_init()
 def usage():
     print "tcos-devices-ng help:"
     print ""
-    print "   tcos-devices-ng --host=foo    (use foo as remote host)"
     print "   tcos-devices-ng -d [--debug]  (write debug data to stdout)"
     print "   tcos-devices-ng -h [--help]   (this help)"
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug", "host=" ])
+    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug" ])
 except getopt.error, msg:
     print msg
-    print "for command line options use tcos-devices --help"
+    print "for command line options use tcos-devices-ng --help"
     sys.exit(2)
 
 
@@ -97,8 +89,6 @@ except getopt.error, msg:
 for o, a in opts:
     if o in ("-d", "--debug"):
         shared.debug = True
-    if o == "--host":
-        shared.remotehost = a
     if o in ("-h", "--help"):
         usage()
         sys.exit()
@@ -115,18 +105,16 @@ def print_debug(txt):
     if shared.debug:
         print "%d %s::%s" %(os.getpid(), "tcos-devices-ng", txt)
 
-def get_username():
-    return pwd.getpwuid(os.getuid())[0]
-
 
 
 class TcosDevicesNG:
     def __init__(self):
-        self.host=shared.remotehost
+        self.host=None
+        self.hostname=None
         self.name="TcosDevicesNG"
         self.mounted={}
         self.mntconf={}
-        self.username=get_username()
+        self.username=None
         self.loadconf(CONF_FILE)
         self.loadconf(ALL_CONF_FILE)
         
@@ -213,12 +201,22 @@ class TcosDevicesNG:
         # get all devices
         import TcosXmlRpc
         import TcosConf
+        import TcosCommon
         import TcosXauth
         self.xauth=TcosXauth.TcosXauth(self)
         self.xauth.init_standalone()
+        self.common=TcosCommon.TcosCommon(self)
         print_debug ( "loading config class..." )
         self.config=TcosConf.TcosConf(self, openfile=False)
         self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
+        
+        self.username=self.common.get_username()
+        self.host=self.common.get_display(ip_mode=True)
+        self.hostname=self.common.get_display(ip_mode=False)
+        
+        if not self.common.user_in_group("fuse"):
+            print "tcos-devices-ng: ERROR: User not in group fuse"
+            sys.exit(1)
         
         # make a test and exit if no cookie match
         if not self.xauth.test_auth():
@@ -231,9 +229,9 @@ class TcosDevicesNG:
             sys.exit(1)
 
     def get_desktop_patch(self):
-        desktop=self.exe_cmd("/usr/lib/tcos/rsync-controller")
+        desktop=self.common.exe_cmd("/usr/lib/tcos/rsync-controller")
         if not os.path.isdir(desktop):
-            return os.path.expanduser("~/Desktop")
+            desktop=os.path.expanduser("~/Desktop")
         return desktop
 
     def getremote_cdroms(self):
@@ -486,7 +484,10 @@ class TcosDevicesNG:
         if mode == "mount":
             if not os.path.isdir(local_mount_point):
                 os.mkdir (local_mount_point)
-            self.exe_cmd("ltspfs %s:%s %s" %(shared.remotehost, remote_mnt, local_mount_point) )
+            output=self.common.exe_cmd("ltspfs %s:%s %s 2>&1" %(self.host, remote_mnt, local_mount_point) )
+            if "ERROR" in output:
+                self.show_notification( _("Error mounting LTSPFS, check versions of LTSPFS packages"), urgency=pynotify.URGENCY_CRITICAL)
+                return False
             
             # send notification
             self.show_notification( 
@@ -496,7 +497,7 @@ class TcosDevicesNG:
         if mode == "umount":
             if os.path.isdir(local_mount_point):
                 print_debug ( "mounter_local() umounting %s" %(local_mount_point) )
-                self.exe_cmd("fusermount -u %s" %(local_mount_point) )
+                self.common.exe_cmd("fusermount -u %s" %(local_mount_point) )
                 print_debug ( "mounter_local() removing dir %s" %(local_mount_point) )
                 os.rmdir(local_mount_point)
             
@@ -507,6 +508,7 @@ class TcosDevicesNG:
                 
             self.show_notification( _("Umounting device %s.\nPlease wait..." ) %(mydevice)\
              , urgency=pynotify.URGENCY_NORMAL )
+        return True
             
 
     def get_local_mountpoint(self, data):
@@ -577,7 +579,8 @@ class TcosDevicesNG:
             if not self.mounter_remote("/dev/fd0", "", mode="--mount"):
                 self.show_notification (  _("Can't mount floppy")  )
                 return
-            self.mounter_local(local_mount_point, "/mnt/fd0", device="/dev/fd0", label=_("Floppy"), mode="mount")
+            if not self.mounter_local(local_mount_point, "/mnt/fd0", device="/dev/fd0", label=_("Floppy"), mode="mount"):
+                return
             self.launch_desktop_filemanager(local_mount_point)
             self.update_floppy()
             return
@@ -608,7 +611,8 @@ class TcosDevicesNG:
             if not self.mounter_remote(absdev, "", mode="--mount"):
                 self.show_notification (  _("Can't mount cdrom")  )
                 return
-            self.mounter_local(local_mount_point, "/mnt/%s"%cdrom_device, device=absdev, label=_("Cdrom_%s")  %cdrom_device, mode="mount")
+            if not self.mounter_local(local_mount_point, "/mnt/%s"%cdrom_device, device=absdev, label=_("Cdrom_%s")  %cdrom_device, mode="mount"):
+                return
             
             # change status
             self.update_cdrom(cdrom_device)
@@ -647,7 +651,8 @@ class TcosDevicesNG:
             if not self.mounter_remote(absdev, "", mode="--mount"):
                 self.show_notification (  _("Can't mount hard disk partition")  )
                 return
-            self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s")  %hdd_device, mode="mount")
+            if not self.mounter_local(local_mount_point, "/mnt/%s"%hdd_device, device=absdev, label=_("Disk_%s")  %hdd_device, mode="mount"):
+                return
             
             # change status
             self.update_hdd(hdd_device)
@@ -683,10 +688,10 @@ class TcosDevicesNG:
             model=data['ID_MODEL']
             if action == "add":
                 self.show_notification( _("From terminal %(host)s.\nConnected USB device %(device)s\n%(vendor)s %(model)s" ) \
-                %{"host":shared.remotehost, "device":device, "vendor":vendor, "model":model } )
+                %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } )
             if action == "remove":
                 self.show_notification( _("From terminal %(host)s.\nDisconnected USB device %(device)s\n%(vendor)s %(model)s" ) \
-                %{"host":shared.remotehost, "device":device, "vendor":vendor, "model":model } ) 
+                %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } ) 
             return
         
         else:
@@ -738,7 +743,8 @@ class TcosDevicesNG:
                 label = os.path.basename(local_mount_point)
                 
                 # mount with fuse and ltspfs    
-                self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="mount")
+                if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="mount"):
+                    return
                 
                 # launch desktop filemanager
                 self.launch_desktop_filemanager(local_mount_point)
@@ -758,7 +764,7 @@ class TcosDevicesNG:
                     return
                 # umount local fuse
                 # check if fuse is mounted
-                status=self.exe_cmd("mount |grep -c %s" %(local_mount_point) )
+                status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point) )
                 if int(status) != 0:
                     self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="umount")
                 
@@ -865,9 +871,9 @@ class TcosDevicesNG:
 
 
     def get_desktop(self):    
-        is_gnome=self.exe_cmd("ps ux |grep gnome-panel  |grep -c -v grep"  )
-        is_kde = self.exe_cmd("ps ux |grep   startkde   |grep -c -v grep"  )
-        is_xfce= self.exe_cmd("ps ux |grep xfce4-panel  |grep -c -v grep"  )
+        is_gnome=self.common.exe_cmd("ps ux |grep gnome-panel  |grep -c -v grep"  )
+        is_kde = self.common.exe_cmd("ps ux |grep   startkde   |grep -c -v grep"  )
+        is_xfce= self.common.exe_cmd("ps ux |grep xfce4-panel  |grep -c -v grep"  )
         if int(is_gnome) > 0:
             return "gnome"
         elif int(is_kde) > 0:
@@ -895,46 +901,22 @@ class TcosDevicesNG:
     def exec_filemanager(self, *args):
         os.system(args[0])         
 
-    
-    def exe_cmd(self, cmd, verbose=1):
-        import popen2
-        output=[]
-        (stdout, stdin) = popen2.popen2(cmd)
-        stdin.close()
-        for line in stdout:
-            if line != '\n':
-                line=line.replace('\n', '')
-                output.append(line)
-        if len(output) == 1:
-            return output[0]
-        elif len(output) > 1:
-            if verbose==1:
-                print_debug ( "get_result(%s) %s" %(cmd, output) )
-            return output
-        else:
-            if verbose == 1:
-                print_debug ( "get_result(%s)=None" %(cmd) )
-            return []
-
     def umount_all(self):
-        mounted=self.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]) )
+        mounted=self.common.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]) )
         if type(mounted) == type(""):
             print_debug( "umount_all() umounting %s..." %mounted )
-            self.exe_cmd("fusermount -u %s" %mounted)
+            self.common.exe_cmd("fusermount -u %s 2>&1" %mounted)
             # delete dir
             os.rmdir(mounted)
         else:
             for mount in mounted:
                 print_debug( "umount_all() umounting %s..." %mount )
-                self.exe_cmd("fusermount -u %s" %mount)
+                self.common.exe_cmd("fusermount -u %s 2>&1" %mount)
                 # delete dir
                 os.rmdir(mount)
-            
-            
-
   
     def exit(self):
-        print_debug ( "FIXME do some thing before quiting..." )
+        #print_debug ( "FIXME do some thing before quiting..." )
         # say udev_daemon loop to quit
         self.umount_all()
         self.quitting=True

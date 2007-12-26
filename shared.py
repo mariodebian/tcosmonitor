@@ -59,10 +59,11 @@ debug=False
 tcos_config_file="./tcos.conf"
 
 # if exec from svn or sources dir
-if os.path.isdir('./debian'):
+if os.path.isdir('./debian') and os.path.isdir('./po') and os.path.isdir('extensions'):
     LOCALE_DIR = "./po/"
     GLADE_DIR = "./"
     IMG_DIR = "./images/"
+    EXTENSIONS="./extensions"
     tcos_config_file="./tcos.conf"
     print "exec in sources dir"
 else:
@@ -70,6 +71,7 @@ else:
     GLADE_DIR = "/usr/share/tcosmonitor/"
     IMG_DIR = "/usr/share/tcosmonitor/images/"
     LOCALE_DIR = "/usr/share/locale"
+    EXTENSIONS="/usr/share/tcosmonitor/extensions/"
 
 
 # config file
@@ -87,6 +89,7 @@ DefaultConfig=[
 ["work_as_cyber_mode", 0, "int"],
 ["refresh_interval", 10, "int"],
 ["cache_timeout", 0, "int"],
+["actions_timeout", 0, "int"],
 ["scan_network_method", "netstat", "str"],
 ["scrot_size", 65, "int"],      # % of screenshot
 ["miniscrot_size", 25, "int"],      # % of screenshot
@@ -117,7 +120,7 @@ setlocale( LC_ALL )
 bindtextdomain( PACKAGE, LOCALE_DIR )
 textdomain( PACKAGE )
 
-# text file enabling or disabling tcos-devices or tcos-volume-manager
+# text file enabling or disabling tcos-devices-ng or tcos-volume-manager
 module_conf_file="/etc/tcos/tcosmonitor.conf"
 
 httpd_port=8081
@@ -165,7 +168,6 @@ appslist=[
 'beep-media-player',
 'audacious',
 'tcos-volume-manager',
-'tcos-devices',
 'tcos-devices-ng'
 ]
 
@@ -189,7 +191,7 @@ onehost_menuitems=[
  [ _("Exec app on user display") , "menu_exec.png" ] ,        #action=13
  [ _("Send a text message to user") , "menu_msg.png" ] ,      #action=14
  [ _("Show running apps of this client") , "menu_proc.png" ], #action=15
- [ _("Video broadcast") , "menu_broadcast.png" ],             #action=16
+ [ _("Audio/Video broadcast") , "menu_broadcast.png" ],             #action=16
  [ _("Send files") , "menu_send.png" ],                       #action=17
  [ _("Demo mode (from this host)") , "menu_tiza.png" ],     #action=18
  ]
@@ -206,7 +208,7 @@ allhost_menuitems=[
  [ _("Send a text message to all connected users") , "menu_msg.png" ], #action=7
  [ _("Enter demo mode, all connected users see my screen") , "menu_tiza.png" ], #action=8
  [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=9
- [ _("Video broadcast") , "menu_broadcast.png" ],                 #action=10
+ [ _("Audio/Video broadcast") , "menu_broadcast.png" ],                 #action=10
  [ _("Send files") , "menu_send.png" ]                          #action=11
  ]
 
@@ -230,7 +232,21 @@ system_process=[
  "dcop", 
  "bonobo",
  "xauth",
- "tcos-devices",
+ "faucet",
+ "trackerd",
+ "metacity",
+ "gnome-panel",
+ "nautilus",
+ "gnome-power-manager",
+ "gnome-cups-icon",
+ "evolution-alarm-notify",
+ "update-notifier",
+ "system-config-printer",
+ "gnome-volume-manager",
+ "seahorse-agent",
+ "smart-notifier",
+ "[python]",
+ "[sh]",
  "tcos-volume-manager",
  "notification-daemon",
  "bash"

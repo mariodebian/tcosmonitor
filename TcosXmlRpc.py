@@ -59,6 +59,7 @@ class TcosXmlRpc:
         self.url=None
         self.tc=None
         self.ports=[]
+        self.resethosts()
         
         if self.main != None:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
@@ -73,6 +74,13 @@ class TcosXmlRpc:
                     gtk.gdk.threads_leave()
         else:
             print_debug ( "running outside tcosmonitor" )
+
+    def resethosts(self):
+        self.lasthost=None
+        self.lastport=None
+        self.laststandalone_ip=None
+        self.aliveStatus=None
+        self.isStandAlone=None
 
     def isLive(self, ip):
         """
@@ -100,12 +108,13 @@ class TcosXmlRpc:
                     self.ports.append( [ip, "", False, time()] )
                     return False
     
+    """    
     def cache(self, ip, port):
-        """
-        self.ports is an array that contains:
-            [ip, port, True/False, time()]
-        we cache num self.cache_timeout sec petittions
-        """
+        
+        #self.ports is an array that contains:
+        #    [ip, port, True/False, time()]
+        #we cache num self.cache_timeout sec petittions
+        
         if self.main:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
         else:
@@ -127,54 +136,58 @@ class TcosXmlRpc:
                         print_debug ( self.ports )
                         return None
         return None
-                    
+    """
+
     def isPortListening(self, ip, port):
         """
         check if ip and port is live and running something (using sockets)
         
         """
-        cached=None
+        if not ip:   return False
+        if not port: return False
         
-        print_debug ( "isPortListening(%s:%s) __init__" %(ip,port) )
-        if self.main != None:
-            cached=self.cache(ip, port)
-            
-        if cached != None:
-            return cached
-            
-        if ip == None:
+        # this avoid to scan same ip a lot of times, but can give errors FIXME
+        if self.lasthost == ip and self.aliveStatus == "OPEN":
+            print_debug("isPortListening() not scanning again, using lastip=%s OPEN" %(ip))
             return True
-        if port == None:
-            return True
+        elif self.lasthost == ip and self.aliveStatus == "CLOSED":
+            print_debug("isPortListening() not scanning again, using lastip=%s CLOSED" %(ip))
+            return False
         
         from ping import PingPort
-        status=PingPort(ip,port).get_status()
-        print_debug ( "isPortListening() status=%s" %(status) )
-        if status == "OPEN":
+        self.aliveStatus=PingPort(ip,port).get_status()
+        self.lastport=port
+        #print_debug ( "isPortListening() PING PORT DONE status=%s" %(self.aliveStatus) )
+        if self.aliveStatus == "OPEN":
+            print_debug ( "isPortListening(%s:%s) PinPort => OPEN" %(ip,port))
             return True
         else:
+            print_debug ( "isPortListening(%s:%s) PinPort => CLOSED" %(ip,port) )
             return False
         
                 
     def newhost(self, ip):
-        print_debug ( "newhost(%s)" %(ip) )
+        #print_debug ( "newhost(%s)" %(ip) )
         self.ip=ip
         self.version=None
         self.logged=None
         cached = None
         
-        if self.main == None:
-            print_debug ( "newhost() seems to run outside tcosmonitor" )
-        else:
-            cached=self.cache(ip, shared.xmlremote_port)
+        # this avoid to scan same ip a lot of times, but can give errors FIXME
+        if self.lasthost == ip and self.connected:
+            print_debug("newhost() not scanning again, using lastip=%s" %(ip))
+            return
         
-        print_debug ( "newhost() cached=%s" %(cached) )
+        # change ip, force new
+        if self.lasthost != ip:
+            self.resethosts()
         
-        if cached == None:
-            if not self.isPortListening(ip, shared.xmlremote_port):
-                self.connected=False
-                return
-                    
+        self.lasthost=ip 
+        
+        if not self.isPortListening(ip, shared.xmlremote_port):
+            self.connected=False
+            return
+        
         self.url = 'http://%s:%d/RPC2' %(self.ip, shared.xmlremote_port)
         try:
             # set min socket timeout to 2 secs
@@ -188,14 +201,7 @@ class TcosXmlRpc:
             print_debug("newhost() ERROR conection unavalaible !!!")
             self.connected=False
         
-    def login(self):
-        print_debug ( "\n\nDELETE ME\n\n" )
-        return
-        
-    def logout(self):
-        print_debug ( "\n\nDELETE ME\n\n" )
-        return
-        
+
     def GetVersion(self):
         if not self.connected:
             print_debug ("GetVersion() Error, NO CONNECTION!!")
@@ -306,10 +312,19 @@ class TcosXmlRpc:
             print_debug("IsStandalone() NO CONNECTION")
             return False
         
-        print_debug("IsStandalone() ip=%s" %self.ip)
+        # use last data
+        if self.laststandalone_ip == ip:
+            return self.isStandAlone
+        
+        self.laststandalone_ip=ip
         
         if self.ReadInfo("get_client") == "standalone":
+            print_debug("IsStandalone() ip=%s TRUE" %ip)
+            self.isStandAlone=True
             return True
+        
+        print_debug("IsStandalone() ip=%s FALSE" %ip)
+        self.isStandAlone=False    
         return False
     
 
@@ -505,6 +520,30 @@ class TcosXmlRpc:
         if self.isPortListening(self.ip, shared.xmlremote_port):
             try:
                 self.tc.tcos.unlockscreen(\
+                    self.main.config.GetVar("xmlrpc_username"), \
+                    self.main.config.GetVar("xmlrpc_password"))
+                return True
+            except:
+                pass
+        return False
+    
+    def lockkeybmouse(self, ip=None):
+        if ip: self.newhost(ip)
+        if self.isPortListening(self.ip, shared.xmlremote_port):
+            try:
+                self.tc.tcos.lockkeybmouse( \
+                    self.main.config.GetVar("xmlrpc_username"), \
+                    self.main.config.GetVar("xmlrpc_password"))
+                return True
+            except:
+                pass
+        return False
+        
+    def unlockkeybmouse(self, ip=None):
+        if ip: self.newhost(ip)
+        if self.isPortListening(self.ip, shared.xmlremote_port):
+            try:
+                self.tc.tcos.unlockkeybmouse(\
                     self.main.config.GetVar("xmlrpc_username"), \
                     self.main.config.GetVar("xmlrpc_password"))
                 return True

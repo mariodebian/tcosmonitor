@@ -38,7 +38,6 @@ import gtk.glade
 from time import time, sleep
 import getopt
 from gettext import gettext as _
-from subprocess import Popen, PIPE, STDOUT
 import popen2
 from threading import Thread
 #import threading
@@ -87,7 +86,7 @@ for o, a in opts:
         sys.exit()
 
 
-
+import TcosCommon
 import Initialize
 import TcosXmlRpc
 import LocalData
@@ -95,6 +94,8 @@ import TcosConf
 import TcosActions
 import TcosXauth
 import TcosStaticHosts
+import TcosPreferences
+
 
 class TcosMonitor:
     def __init__(self):
@@ -137,10 +138,12 @@ class TcosMonitor:
         
         
         # init classes
+        self.common=TcosCommon.TcosCommon(self)
         self.config=TcosConf.TcosConf(self)
         self.localdata=LocalData.LocalData(self)
         self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
         self.xauth=TcosXauth.TcosXauth(self)
+        self.preferences=TcosPreferences.TcosPreferences(self)
         
         
         
@@ -154,9 +157,10 @@ class TcosMonitor:
         self.init.init_progressbar()
         self.init.initabout()
         self.init.initask()
-        self.init.initpref()
-        self.init.populate_pref()
+        #self.init.initpref()
+        #self.init.populate_pref()
         #########################################
+        self.preferences.populate_pref()
         
         self.actions.update_hostlist()
         self.init.initbuttons()
@@ -181,15 +185,13 @@ class TcosMonitor:
         # create tmp dir
         p = popen2.Popen3("mkdir -p /tmp/tcos_share/")
         p.wait()
-        
+    
+    """    
     def prefwindow_close(self, widget, event):
         print_debug ( "prefwindow_close() closing preferences window" )
         self.pref.hide()
         return True
-    
-
-
-    
+    """
 
     def search_host(self, widget):
         print_debug ( "search_host()" )
@@ -213,12 +215,11 @@ class TcosMonitor:
         if txt != hostname and txt != ip and txt != username:
             data.append(path)
   
-
-    
-
-    def exe_cmd(self, cmd):
-        print_debug ( "exe_cmd() cmd=%s" %(cmd) )
-        self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
+    """
+    #def exe_cmd(self, cmd):
+    #    print_debug ( "exe_cmd() cmd=%s" %(cmd) )
+    #    self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
+    """
     
     def write_into_statusbar(self, msg, *args):
         #print_debug("STATUSBAR: Writing \"%s\" into statusbar" % msg)

@@ -128,25 +128,7 @@ class LocalData:
         
         #print_debug ( self.allhostdata )
     
-    def exe_cmd(self, cmd, verbose=1):
-        output=[]
-        (stdout, stdin) = popen2.popen2(cmd)
-        stdin.close()
-        for line in stdout:
-            if line != '\n':
-                line=line.replace('\n', '')
-                output.append(line)
-        if len(output) == 1:
-            return output[0]
-        elif len(output) > 1:
-            if verbose==1:
-                print_debug ( "get_result(%s) %s" %(cmd, output) )
-            return output
-        else:
-            if verbose == 1:
-                print_debug ( "get_result(%s)=None" %(cmd) )
-            return []
-
+    
     def sorted_copy(self, alist):
         # inspired by Alex Martelli
         # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52234
@@ -213,7 +195,7 @@ class LocalData:
             #read this command output
             cmd="netstat -putan 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
             
-            output=self.exe_cmd(cmd)
+            output=self.main.common.exe_cmd(cmd)
             
             #avoid to have a spimple string
             if type(output) == type(""):
@@ -340,7 +322,7 @@ class LocalData:
             # split cuts with '\t' or ' '
             xline=line.split()    
             
-            print_debug ( "xline=%s" %(xline) )
+            #print_debug ( "xline=%s" %(xline) )
             if self.ipValid(xline[0]):
                 if xline[0]==ip and len(xline) == 2:
                     self.hostname = xline[1]
@@ -425,19 +407,11 @@ class LocalData:
             return shared.NO_LOGIN_MSG
 
         cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:0.*still\" -e \"%s:0.*still\" 2>/dev/null | head -1| awk '{print $1}'" %(ip, self.GetHostname(ip))
-        #cmd="who |grep \"%s:\" | head -1 |awk '{print $1}'" %( self.GetHostname(ip) )
-        output=self.exe_cmd(cmd)
+        output=self.main.common.exe_cmd(cmd)
         if output != []:
             self.username=output
             self.add_to_cache( ip, 2 , self.username )
             return self.username
-        
-        #cmd="who |grep \"%s:\" | head -1 |awk '{print $1}'" %(ip)
-        #output=self.exe_cmd(cmd)
-        #if output != []:
-        #    self.username=output
-        #    self.add_to_cache( ip, 2 , self.username )
-        #    return self.username
         
         print_debug ( "GetUsername() fail to search username, return unknow" )
         self.add_to_cache( ip, 2 , self.username )
@@ -448,7 +422,7 @@ class LocalData:
         return True or False if host is active
         use xmlrpc echo
         """
-        print_debug ( "IsActive(%s) = %s " %(host, self.main.xmlrpc.GetVersion()) )
+        #print_debug ( "IsActive(%s) = %s " %(host, self.main.xmlrpc.GetVersion()) )
         if self.main.xmlrpc.GetVersion() != None:
             print_debug ( "IsActive(%s)=True" %(host) )
             return True
@@ -488,14 +462,12 @@ class LocalData:
         if self.username == shared.NO_LOGIN_MSG:
             return "---"
         
-        if self.main.xmlrpc.IsStandalone():
+        if self.main.xmlrpc.IsStandalone(host):
             return self.main.xmlrpc.GetStandalone("get_process")
         
         
-        #cmd=" ps aux|grep \"^%s \"| wc -l" %(self.username)
         cmd=" ps aux|grep -c \"^%s \"" %(self.username)
-        #print_debug ("GetNumProcess() exec=%s" %(cmd) )
-        process=self.exe_cmd(cmd)
+        process=self.main.common.exe_cmd(cmd)
         
         print_debug ("GetNumProcess() process=%s" %(process) )
         return process
@@ -516,14 +488,14 @@ class LocalData:
         last=None
         
         cmd="LC_ALL=C LANGUAGE=C LANG=C date +'%b %d %H:%M'"
-        date=self.exe_cmd(cmd)
+        date=self.main.common.exe_cmd(cmd)
         
         print_debug("GetTimeLogged() local date=%s" %date)
         
         if not self.main.xmlrpc.IsStandalone(host):
             cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:0.*still\" -e \"%s:0.*still\"  2>/dev/null | head -1| awk '{print $(NF-5)\" \"$(NF-4)\" \"$(NF-3)}'" %(host, self.GetHostname(host))
             print_debug("GetTimeLogged() thin client host %s, get time for last command= %s" %(host, cmd))
-            last=self.exe_cmd(cmd)
+            last=self.main.common.exe_cmd(cmd)
         else:
             print_debug("GetTimeLogged() asking for time logged at standalone host %s" %(host))
             last=self.main.xmlrpc.GetStandalone("get_time")

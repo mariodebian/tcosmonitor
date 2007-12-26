@@ -201,7 +201,7 @@ class Initialize:
 
 
 
-    
+    """
     def initpref(self):
         # init pref window and buttons
         self.main.pref = self.main.ui.get_widget('prefwindow')            
@@ -211,6 +211,9 @@ class Initialize:
         # dont destroy window
         # http://www.async.com.br/faq/pygtk/index.py?req=show&file=faq10.006.htp
         self.main.pref.connect('delete-event', self.main.prefwindow_close )
+        
+        # extensions table
+        self.main.extensions_table=self.ui.get_widget('extensions_table')
         
         # buttons
         self.main.pref_ok = self.ui.get_widget('pref_ok_button')
@@ -259,7 +262,7 @@ class Initialize:
         self.main.pref_networkinfo = self.main.ui.get_widget('ck_networkinfo')
         self.main.pref_xorginfo = self.main.ui.get_widget('ck_xorginfo')
         self.main.pref_soundserverinfo = self.main.ui.get_widget('ck_soundserverinfo')
-        
+      
     def populate_pref(self):
         # set default for combos
         self.set_active_in_select(self.main.pref_combo_scan_method,\
@@ -332,6 +335,7 @@ class Initialize:
                 print_debug ("set_active_in_select() default is %s, index %d" %( model[i][0] , i ) )
                 widget.set_active(i)
         return    
+    """
     
     def init_hostlist(self):
         print_debug ( "init_hostlist()" )

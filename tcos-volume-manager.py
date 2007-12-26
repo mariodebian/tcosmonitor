@@ -117,8 +117,7 @@ class TcosVolumeManager:
             tips.set_tip(icon, ( _("Tcos Sound levels on:\n%s") %(self.host) )[0:79])
             tips.enable()
             icon.show_all()
-            eventbox.connect("button_press_event",
-                             self.on_tray_icon_press_event)
+            eventbox.connect("button_press_event", self.on_tray_icon_press_event)
         
         
         from ping import PingPort
@@ -341,7 +340,7 @@ class TcosVolumeManager:
         self.mainloop = gobject.MainLoop()
         try:
             self.mainloop.run()
-        except KeyboardInterrupt: # Por si se pulsa Ctrl+C
+        except KeyboardInterrupt: # Ctrl+C Event
             self.quitapp()
 
 if __name__ == "__main__":
