@@ -471,12 +471,18 @@ class TcosDevicesNG:
             except:
                 return True
         
+        # set socket timeout bigger (floppy can take some time)
+        import socket
+        socket.setdefaulttimeout(15)
+
         mount=self.xmlrpc.GetDevicesInfo(device=device, mode=mode)
         if mount != mnt_point:
             print_debug ( "mount_remote() mount failed, retry with filesystem")
+            print_debug ("mounter_remote() FIRST ERROR mount='%s' mnt_point='%s'" %(mount, mnt_point))
             # try to mount with filesystem
             mount=self.xmlrpc.GetDevicesInfo(device="%s %s" %(device, fstype), mode=mode)
             if mount != mnt_point:
+                print_debug ("mounter_remote() SECOND ERROR mount='%s' mnt_point='%s'" %(mount, mnt_point))
                 return False
         return True
 

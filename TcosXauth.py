@@ -93,7 +93,8 @@ class TcosXauth:
             return
         try:
             returned = self.xmlrpc.tc.tcos.xauth(cookie, self.display_ip)
-        except:
+        except Exception, err:
+            print_debug("test_auth() Exception error: %s"%err)
             returned = "error"
         
         if "OK" in returned: return True

@@ -197,8 +197,8 @@ class TcosXmlRpc:
             # save socket default timeout
             socket.setdefaulttimeout(shared.socket_default_timeout)
             print_debug ( "newhost() tcosxmlrpc running on %s" %(self.ip) )
-        except:
-            print_debug("newhost() ERROR conection unavalaible !!!")
+        except Exception, err:
+            print_debug("newhost() ERROR conection unavalaible !!! error: %s"%err)
             self.connected=False
         
 
@@ -211,7 +211,8 @@ class TcosXmlRpc:
         try:
             self.version=self.tc.tcos.version()
             return self.version
-        except:
+        except Exception, err:
+            print_debug("GetVersion() Exception error %s"%err)
             return None
     
         
@@ -231,7 +232,8 @@ class TcosXmlRpc:
             self.tc.tcos.exe(cmd,\
               self.main.config.GetVar("xmlrpc_username"),\
               self.main.config.GetVar("xmlrpc_password"))
-        except:
+        except Exception, err:
+            print_debug("Exe() Exception error %s"%err)
             pass
         
     def Kill(self, app):
@@ -247,7 +249,8 @@ class TcosXmlRpc:
             self.tc.tcos.kill(app,\
               self.main.config.GetVar("xmlrpc_username"), \
               self.main.config.GetVar("xmlrpc_password"))
-        except:
+        except Exception, err:
+            print_debug("Kill() Exception error %s"%err)
             pass
     
     def GetStatus(self, cmd):
@@ -264,7 +267,8 @@ class TcosXmlRpc:
         
         try:
             status=self._ParseResult( self.tc.tcos.status(cmd) )
-        except:
+        except Exception, err:
+            print_debug("GetStatus() Exception PARSER error %s"%err)
             return False
 
         if status == "1":
@@ -293,8 +297,8 @@ class TcosXmlRpc:
             return None
         try:
             result=self.tc.tcos.info(string).replace('\n', '')
-        except:
-            print_debug ( "ReadInfo(%s): ERROR, can't connect to XMLRPC server!!!" %string )
+        except Exception, err:
+            print_debug ( "ReadInfo(%s): ERROR, can't connect to XMLRPC server!!! error %s" %(string,err) )
             return ""
         if result.find('error') == 0:
             print_debug ( "ReadInfo(%s): ERROR, result contains error string!!!" %string )
@@ -335,7 +339,8 @@ class TcosXmlRpc:
                 return shared.NO_LOGIN_MSG
             try:
                 result=self.tc.tcos.standalone("get_user").replace('\n', '')
-            except:
+            except Exception, err:
+                print_debug("GetStandalone(get_user) Exception error: %s"%err)
                 return shared.NO_LOGIN_MSG
             
             if result.find('error') == 0:
@@ -348,19 +353,22 @@ class TcosXmlRpc:
         elif item == "get_process":
             try:
                 return self.tc.tcos.standalone("get_process").replace('\n', '')
-            except:
+            except Exception, err:
+                print_debug("GetStandalone(get_process) Exception error: %s"%err)
                 return ""
         
         elif item == "get_server":
             try:
                 return self.tc.tcos.standalone("get_server").replace('\n', '')
-            except:
+            except Exception, err:
+                print_debug("GetStandalone(get_server) Exception error %s"%err)
                 return ""
         
         elif item == "get_time":
             try:
                 return self.tc.tcos.standalone("get_time").replace('\n', '')
-            except:
+            except Exception, err:
+                print_debug("GetStandalone(get_time) Exception error %s"%err)
                 return None
             
         else:
@@ -375,7 +383,8 @@ class TcosXmlRpc:
         print_debug ("DBus() cmd=%s" %(cmd) )
         try:
             return self.tc.tcos.dbus(cmd, remote_user, remote_passwd).replace('\n', '')
-        except:
+        except Exception, err:
+            print_debug("DBus Exception error %s"%err)
             return None
         
     def GetSoundChannels(self):
@@ -408,7 +417,8 @@ class TcosXmlRpc:
             
         try:
             result=self.tc.tcos.sound("--showcontrols", "", user, passwd ).replace('\n', '')
-        except:
+        except Exception, err:
+            print_debug("GetSoundChannels(--showcontrols) Exception error: %s"%err)
             return ""
 
         if result.find('error') == 0:
@@ -442,7 +452,8 @@ class TcosXmlRpc:
 
         try:
             result=self.tc.tcos.sound(mode, " \"%s\" " %(channel), user, passwd ).replace('\n', '')
-        except:
+        except Exception, err:
+            print_debug("GetSoundInfo() Exception error: %s"%err)
             return ""
 
         if result.find('error') == 0:
@@ -470,7 +481,8 @@ class TcosXmlRpc:
 
         try:
             result=self.tc.tcos.sound(mode, " \"%s\" \"%s\" " %(channel,value), user, passwd).replace('\n', '')
-        except:
+        except Exception, err:
+            print_debug("SetSound() Exception error: %s"%err)
             return ""
 
         if result.find('error') == 0:
@@ -500,7 +512,8 @@ class TcosXmlRpc:
                 return result
             else:
                 return result
-        except:
+        except Exception, err:
+            print_debug("GetDevicesInfo() EXCEPTION getting info err=%s"%(err) )
             return ""
 
     def lockscreen(self, ip=None):
@@ -511,7 +524,8 @@ class TcosXmlRpc:
                     self.main.config.GetVar("xmlrpc_username"), \
                     self.main.config.GetVar("xmlrpc_password"))
                 return True
-            except:
+            except Exception, err:
+                print_debug ("lockscreen() Exception, error: %s" %err)
                 pass
         return False
         
@@ -523,7 +537,8 @@ class TcosXmlRpc:
                     self.main.config.GetVar("xmlrpc_username"), \
                     self.main.config.GetVar("xmlrpc_password"))
                 return True
-            except:
+            except Exception, err:
+                print_debug ("unlockscreen() Exception, error: %s" %err)
                 pass
         return False
     
@@ -535,7 +550,8 @@ class TcosXmlRpc:
                     self.main.config.GetVar("xmlrpc_username"), \
                     self.main.config.GetVar("xmlrpc_password"))
                 return True
-            except:
+            except Exception, err:
+                print_debug ("lockkeybmouse() Exception, error: %s" %err)
                 pass
         return False
         
@@ -547,7 +563,8 @@ class TcosXmlRpc:
                     self.main.config.GetVar("xmlrpc_username"), \
                     self.main.config.GetVar("xmlrpc_password"))
                 return True
-            except:
+            except Exception, err:
+                print_debug ("unlockkeybmouse() Exception, error: %s" %err)
                 pass
         return False
 
@@ -572,8 +589,8 @@ class TcosXmlRpc:
                      
             print_debug ( "screenshot(size=%s percent) %s done" %(size, result) )
             return True
-        except:
-            # connection error
+        except Exception, err:
+            print_debug ("screenshot() Exception, error: %s" %err)
             return False
         
         
