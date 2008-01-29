@@ -94,7 +94,7 @@ class TcosCommon:
         d="/sys/class/net/"
         for sub in os.listdir(d):
             if os.path.isdir(os.path.join(d, sub)):
-                if sub != "lo" and sub != "sit0":
+                if not sub in shared.hidden_network_ifaces:
                     self.vars["allnetworkinterfaces"].append(sub)
         print_debug ( "GetAllNetworkInterfaces() %s" %( self.vars["allnetworkinterfaces"] ) )
         return self.vars["allnetworkinterfaces"]

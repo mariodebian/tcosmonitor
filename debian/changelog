@@ -6,8 +6,10 @@ tcosmonitor (0.2.1) unstable; urgency=low
     - Move common functions to TcosCommon
     - Remove old tcos-devices
     - Move Preferences code to TcosPreferences class
+  * Check GetVersion() instead of connected while discovering tcos clients
+  * hidden_network_ifaces array with hidden ifaces 
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 26 Dec 2007 12:11:49 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 29 Jan 2008 16:21:54 +0100
 
 tcosmonitor (0.2.0~rc1.2) unstable; urgency=low
 
