@@ -80,10 +80,11 @@ class TcosXauth:
         return self.read_cookie()
         
     def get_hostname(self):
-        return self.display_host
+        return self.display_ip
 
     def test_auth(self):
         cookie=self.read_cookie()
+        print_debug("test_auth() cookie=%s ip=%s"%(cookie, self.display_ip))
         if cookie == None:
             print_debug ( "test_auth() Can't read cookie" )
             return

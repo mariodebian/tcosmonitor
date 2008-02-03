@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-26 11:30+0100\n"
+"POT-Creation-Date: 2008-02-03 18:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,133 +86,133 @@ msgstr ""
 msgid "TcosMonitor web page"
 msgstr ""
 
-#: shared.py:178
+#: shared.py:179
 msgid "Refresh terminal info"
 msgstr ""
 
-#: shared.py:179
+#: shared.py:180
 msgid "Clean info about terminal"
 msgstr ""
 
-#: shared.py:180
+#: shared.py:181
 msgid "Reboot"
 msgstr ""
 
-#: shared.py:181
+#: shared.py:182
 msgid "Poweroff"
 msgstr ""
 
-#: shared.py:182
+#: shared.py:183
 msgid "Lock screen"
 msgstr ""
 
-#: shared.py:183
+#: shared.py:184
 msgid "Unlock screen"
 msgstr ""
 
-#: shared.py:184
+#: shared.py:185
 msgid "Connect to remote screen (iTALC)"
 msgstr ""
 
-#: shared.py:185
+#: shared.py:186
 msgid "Connect to remote screen (VNC)"
 msgstr ""
 
-#: shared.py:186
+#: shared.py:187
 msgid "Screenshot"
 msgstr ""
 
-#: shared.py:187
+#: shared.py:188
 msgid "Give a remote xterm"
 msgstr ""
 
-#: shared.py:188
+#: shared.py:189
 msgid "Configure this host"
 msgstr ""
 
-#: shared.py:189
+#: shared.py:190
 msgid "Logout client"
 msgstr ""
 
-#: shared.py:190
+#: shared.py:191
 msgid "Restart X session with new settings"
 msgstr ""
 
-#: shared.py:191
+#: shared.py:192
 msgid "Exec app on user display"
 msgstr ""
 
-#: shared.py:192
+#: shared.py:193
 msgid "Send a text message to user"
 msgstr ""
 
-#: shared.py:193
+#: shared.py:194
 msgid "Show running apps of this client"
 msgstr ""
 
-#: shared.py:194 shared.py:211
+#: shared.py:195 shared.py:212
 msgid "Audio/Video broadcast"
 msgstr ""
 
-#: shared.py:195 shared.py:212
+#: shared.py:196 shared.py:213
 msgid "Send files"
 msgstr ""
 
-#: shared.py:196
+#: shared.py:197
 msgid "Demo mode (from this host)"
 msgstr ""
 
-#: shared.py:201
+#: shared.py:202
 msgid "Reboot all clients"
 msgstr ""
 
-#: shared.py:202
+#: shared.py:203
 msgid "Poweroff all clients"
 msgstr ""
 
-#: shared.py:203
+#: shared.py:204
 msgid "Lock all screens"
 msgstr ""
 
-#: shared.py:204
+#: shared.py:205
 msgid "Unlock all screens"
 msgstr ""
 
-#: shared.py:205
+#: shared.py:206
 msgid "Logout clients"
 msgstr ""
 
-#: shared.py:206
+#: shared.py:207
 msgid "Restart X session of all clients"
 msgstr ""
 
-#: shared.py:207
+#: shared.py:208
 msgid "Exec same app in all connected users"
 msgstr ""
 
-#: shared.py:208
+#: shared.py:209
 msgid "Send a text message to all connected users"
 msgstr ""
 
-#: shared.py:209
+#: shared.py:210
 msgid "Enter demo mode, all connected users see my screen"
 msgstr ""
 
-#: shared.py:210
+#: shared.py:211
 msgid "Capture All clients screens"
 msgstr ""
 
-#: shared.py:370
+#: shared.py:371
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr ""
 
-#: shared.py:382
+#: shared.py:383
 #, python-format
 msgid "INFO: %s"
 msgstr ""
 
-#: shared.py:393
+#: shared.py:394
 #, python-format
 msgid "ERROR: %s"
 msgstr ""
@@ -985,140 +985,139 @@ msgstr ""
 msgid "Tcos device daemon"
 msgstr ""
 
-#: tcos-devices-ng.py:228 tcos-volume-manager.py:147
+#: tcos-devices-ng.py:230 tcos-volume-manager.py:147
 #, python-format
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr ""
 
-#: tcos-devices-ng.py:251
+#: tcos-devices-ng.py:253
 #, python-format
 msgid "Cdrom device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:254
+#: tcos-devices-ng.py:256
 msgid "Mount Cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:255
+#: tcos-devices-ng.py:257
 msgid "Umount Cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:275
+#: tcos-devices-ng.py:277
 #, python-format
 msgid "Disk partition %s"
 msgstr ""
 
-#: tcos-devices-ng.py:278
+#: tcos-devices-ng.py:280
 msgid "Mount disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:279
+#: tcos-devices-ng.py:281
 msgid "Umount disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:290
+#: tcos-devices-ng.py:292
 msgid "No floppy detected"
 msgstr ""
 
-#: tcos-devices-ng.py:302 tcos-devices-ng.py:576 tcos-devices-ng.py:582
-#: tcos-devices-ng.py:588
+#: tcos-devices-ng.py:304 tcos-devices-ng.py:593 tcos-devices-ng.py:599
+#: tcos-devices-ng.py:605
 msgid "Floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:305
+#: tcos-devices-ng.py:307
 msgid "Mount Floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:306
+#: tcos-devices-ng.py:308
 msgid "Umount Floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:316
+#: tcos-devices-ng.py:318
 msgid "Floppy mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices-ng.py:318
+#: tcos-devices-ng.py:320
 msgid "Floppy umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices-ng.py:334
+#: tcos-devices-ng.py:336
 msgid "Hard disk partition mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices-ng.py:337
+#: tcos-devices-ng.py:339
 msgid "Hard disk partition umounted."
 msgstr ""
 
-#: tcos-devices-ng.py:359
+#: tcos-devices-ng.py:361
 msgid "Audio cdrom mounted., you can listen music opening wav files."
 msgstr ""
 
-#: tcos-devices-ng.py:361
+#: tcos-devices-ng.py:363
 msgid "Cdrom mounted. Ready for use."
 msgstr ""
 
-#: tcos-devices-ng.py:364
+#: tcos-devices-ng.py:366
 msgid "Cdrom umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices-ng.py:489
-msgid "Error mounting LTSPFS, check versions of LTSPFS packages"
-msgstr ""
-
-#: tcos-devices-ng.py:494
+#: tcos-devices-ng.py:458
 #, python-format
 msgid ""
-"Mounting device %(device)s in \n"
-"%(mnt_point)s\n"
+"Mounting device %s\n"
 "Please wait..."
 msgstr ""
 
-#: tcos-devices-ng.py:509
+#: tcos-devices-ng.py:504
+msgid "Error mounting LTSPFS, check versions of LTSPFS packages"
+msgstr ""
+
+#: tcos-devices-ng.py:526
 #, python-format
 msgid ""
 "Umounting device %s.\n"
 "Please wait..."
 msgstr ""
 
-#: tcos-devices-ng.py:555
+#: tcos-devices-ng.py:572
 msgid "usbdisk"
 msgstr ""
 
-#: tcos-devices-ng.py:580
+#: tcos-devices-ng.py:597
 msgid "Can't mount floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:591
+#: tcos-devices-ng.py:608
 msgid "Can't umount floppy"
 msgstr ""
 
-#: tcos-devices-ng.py:604 tcos-devices-ng.py:614 tcos-devices-ng.py:625
+#: tcos-devices-ng.py:621 tcos-devices-ng.py:631 tcos-devices-ng.py:642
 #, python-format
 msgid "Cdrom_%s"
 msgstr ""
 
-#: tcos-devices-ng.py:612
+#: tcos-devices-ng.py:629
 msgid "Can't mount cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:628
+#: tcos-devices-ng.py:645
 msgid "Can't umount cdrom"
 msgstr ""
 
-#: tcos-devices-ng.py:644 tcos-devices-ng.py:654 tcos-devices-ng.py:665
+#: tcos-devices-ng.py:661 tcos-devices-ng.py:671 tcos-devices-ng.py:682
 #, python-format
 msgid "Disk_%s"
 msgstr ""
 
-#: tcos-devices-ng.py:652
+#: tcos-devices-ng.py:669
 msgid "Can't mount hard disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:668
+#: tcos-devices-ng.py:685
 msgid "Can't umount hard disk partition"
 msgstr ""
 
-#: tcos-devices-ng.py:690
+#: tcos-devices-ng.py:707
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1126,7 +1125,7 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: tcos-devices-ng.py:693
+#: tcos-devices-ng.py:710
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1134,32 +1133,32 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: tcos-devices-ng.py:716
+#: tcos-devices-ng.py:733
 #, python-format
 msgid "USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:719
+#: tcos-devices-ng.py:736
 #, python-format
 msgid "Mount USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:720
+#: tcos-devices-ng.py:737
 #, python-format
 msgid "Umount USB device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:735 tcos-devices-ng.py:780
+#: tcos-devices-ng.py:752 tcos-devices-ng.py:763 tcos-devices-ng.py:805
 #, python-format
 msgid "Error, can't mount device %s"
 msgstr ""
 
-#: tcos-devices-ng.py:804
+#: tcos-devices-ng.py:829
 #, python-format
 msgid "USB device %s umounted. You can extract it."
 msgstr ""
 
-#: tcos-devices-ng.py:807
+#: tcos-devices-ng.py:832
 #, python-format
 msgid "USB device %s mounted. Ready for use."
 msgstr ""

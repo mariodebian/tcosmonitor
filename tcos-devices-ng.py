@@ -214,6 +214,8 @@ class TcosDevicesNG:
         self.host=self.common.get_display(ip_mode=True)
         self.hostname=self.common.get_display(ip_mode=False)
         
+        print_debug("initremote() username=%s host=%s hostname=%s"%(self.username, self.host, self.hostname))
+        
         if not self.common.user_in_group("fuse"):
             print "tcos-devices-ng: ERROR: User not in group fuse"
             sys.exit(1)
@@ -452,6 +454,9 @@ class TcosDevicesNG:
             return False
         mnt_point="/mnt/%s" %(device[5:])
         if mode == "--mount":
+            # send notification
+            self.show_notification( _("Mounting device %s\nPlease wait..." ) %(device), urgency=pynotify.URGENCY_NORMAL )
+             
             print_debug ( "mount_remote() mounting device=%s fstype=%s mnt_point=%s" %(device, fstype, mnt_point) )
         elif mode == "--umount":
             print_debug ( "mount_remote() umounting device=%s fstype=%s mnt_point=%s" %(device, fstype, mnt_point) )
@@ -477,13 +482,17 @@ class TcosDevicesNG:
 
         mount=self.xmlrpc.GetDevicesInfo(device=device, mode=mode)
         if mount != mnt_point:
-            print_debug ( "mount_remote() mount failed, retry with filesystem")
-            print_debug ("mounter_remote() FIRST ERROR mount='%s' mnt_point='%s'" %(mount, mnt_point))
+            print_debug ( "mounter_remote() mount failed, retry with filesystem")
+            print_debug ( "mounter_remote() FIRST ERROR mount='%s' mnt_point='%s'" %(mount, mnt_point))
+            return False
+            """
             # try to mount with filesystem
             mount=self.xmlrpc.GetDevicesInfo(device="%s %s" %(device, fstype), mode=mode)
             if mount != mnt_point:
                 print_debug ("mounter_remote() SECOND ERROR mount='%s' mnt_point='%s'" %(mount, mnt_point))
                 return False
+            """
+        print_debug("mounter_remote() mount OK")
         return True
 
     def mounter_local(self, local_mount_point, remote_mnt, device="", label="",mode="mount"):
@@ -495,11 +504,13 @@ class TcosDevicesNG:
                 self.show_notification( _("Error mounting LTSPFS, check versions of LTSPFS packages"), urgency=pynotify.URGENCY_CRITICAL)
                 return False
             
+            """
+            # DISABLED: too late to show notification better in mounter_remote
             # send notification
             self.show_notification( 
             _("Mounting device %(device)s in \n%(mnt_point)s\nPlease wait..." )\
              %{"device":device, "mnt_point":local_mount_point}, urgency=pynotify.URGENCY_NORMAL )
-        
+            """
         if mode == "umount":
             if os.path.isdir(local_mount_point):
                 print_debug ( "mounter_local() umounting %s" %(local_mount_point) )
@@ -728,34 +739,42 @@ class TcosDevicesNG:
                                     device)
                     
                     self.systray.register_action("usb_%s_mount" %devid , self.usb, {
-                                            "DEVNAME": device, "ACTION": "mount", "ID_FS_TYPE": fstype
+                                            "DEVNAME": device, "ACTION": "mount", "ID_FS_TYPE": fstype, "FORCE_MOUNT":True
                                                                                     } 
                                                 )
                     self.systray.register_action("usb_%s_umount" %devid , self.usb, {
-                                            "DEVNAME": device, "ACTION": "umount", "ID_FS_TYPE": fstype
+                                            "DEVNAME": device, "ACTION": "umount", "ID_FS_TYPE": fstype, "FORCE_MOUNT":True
                                                                                     }
                                                  )
                     ###############################################
+                    
+                    if not self.mounter_remote(device, fstype, "--mount"):
+                        self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                        return
                 
-                if not self.mounter_remote(device, fstype, "--mount"):
-                    self.show_notification (  _("Error, can't mount device %s") %(device)  )
-                    return
+                    if device in self.mounted:
+                        data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
+                        data['ID_VENDOR']=os.path.basename(self.mounted[device])
                 
-                if device in self.mounted:
-                    data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
-                    data['ID_VENDOR']=os.path.basename(self.mounted[device])
+                if action == "mount":
+                    # mount from menu and wait for udev mount event
+                    if data.has_key("FORCE_MOUNT") and data["FORCE_MOUNT"]:
+                        if not self.mounter_remote(device, fstype, "--mount"):
+                            self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                        return
                 
-                local_mount_point = self.get_local_mountpoint(data)
-                label = os.path.basename(local_mount_point)
+                    # remote device is mounted, mount_local and launch filemanager
+                    local_mount_point = self.get_local_mountpoint(data)
+                    label = os.path.basename(local_mount_point)
                 
-                # mount with fuse and ltspfs    
-                if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="mount"):
-                    return
+                    # mount with fuse and ltspfs    
+                    if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="mount"):
+                        return
                 
-                # launch desktop filemanager
-                self.launch_desktop_filemanager(local_mount_point)
-                self.mounted[device]=local_mount_point
-                ##########################################
+                    # launch desktop filemanager
+                    self.launch_desktop_filemanager(local_mount_point)
+                    self.mounted[device]=local_mount_point
+                    ##########################################
                 
                 
             elif action == "remove" or action == "umount":

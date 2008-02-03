@@ -9,8 +9,16 @@ tcosmonitor (0.2.1) unstable; urgency=low
   * Check GetVersion() instead of connected while discovering tcos clients
   * hidden_network_ifaces array with hidden ifaces
   * fix typo self.main.xmlrpc.Getversion => self.main.xmlrpc.GetVersion
+  * TcosXauth.py:
+    - Use IP address instead of hostname
+  * tcos-devices-ng.py (Not mount twice BUG):
+    - When usb add event only mount_remote
+    - When usb mount event mount local
+    - In USB menus add key FORCE_MOUNT to call mounter_remote without add event
+    - Move mounting notification to mounter_remote
+  * Update translations (notifications)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 03 Feb 2008 15:47:24 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 03 Feb 2008 18:30:50 +0100
 
 tcosmonitor (0.2.0~rc1.2) unstable; urgency=low
 
