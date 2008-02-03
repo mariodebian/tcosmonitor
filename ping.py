@@ -90,7 +90,7 @@ class Ping:
                     # view status of port 8080
                     if PingPort(pingle.ip, shared.xmlremote_port, 0.5).get_status() == "OPEN":
                         self.main.xmlrpc.newhost(pingle.ip)
-                        if self.main.xmlrpc.Getversion():
+                        if self.main.xmlrpc.GetVersion():
                             print_debug("ping_iprange() host=%s port 8080 OPEN" %(pingle.ip))
                             reachip.append(pingle.ip)
                         else:
