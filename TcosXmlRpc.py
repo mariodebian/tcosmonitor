@@ -58,6 +58,7 @@ class TcosXmlRpc:
         self.connected=False
         self.url=None
         self.tc=None
+        self.lock=False
         self.ports=[]
         self.resethosts()
         
@@ -81,6 +82,18 @@ class TcosXmlRpc:
         self.laststandalone_ip=None
         self.aliveStatus=None
         self.isStandAlone=None
+
+    def wait(self):
+        """
+        wait (max 4 sec) for self.lock == True
+        """
+        print_debug("##############  wait() lock=%s  #################"%self.lock)
+        if not self.lock: return
+        i=0
+        for i in range(40):
+            print_debug("##############  wait() i=%s  ##############"%i)
+            if not self.lock: return
+            sleep(0.1)
 
     def isLive(self, ip):
         """
@@ -108,35 +121,6 @@ class TcosXmlRpc:
                     self.ports.append( [ip, "", False, time()] )
                     return False
     
-    """    
-    def cache(self, ip, port):
-        
-        #self.ports is an array that contains:
-        #    [ip, port, True/False, time()]
-        #we cache num self.cache_timeout sec petittions
-        
-        if self.main:
-            self.cache_timeout=self.main.config.GetVar("cache_timeout")
-        else:
-            self.cache_timeout=10
-        #print_debug ( "cache(%s, %s) cache_timeout=%s" %(ip, port, self.cache_timeout) )
-        for i in range(len(self.ports)):
-            #print data
-            if self.ports[i][0] == ip:
-                if port == "" or self.ports[i][1] == port:
-                    # we have same ip and same port
-                    print_debug ( "cache() %s cached from %s secs ¿<? timeout=%s" \
-                            %(self.ports[i][2], float(time() - self.ports[i][3]), self.cache_timeout ) )
-                    if float(time() - float(self.ports[i][3]) ) < float(self.cache_timeout):
-                        print_debug ( "cache() IS CACHED, returning %s" %(self.ports[i][2]) )
-                        return self.ports[i][2]
-                    else:
-                        print_debug ( "cache() delete old cache" )
-                        self.ports.pop(i)
-                        print_debug ( self.ports )
-                        return None
-        return None
-    """
 
     def isPortListening(self, ip, port):
         """
@@ -502,18 +486,22 @@ class TcosXmlRpc:
             xauth_cookie="foo"
         if xauth_cookie == None:
             return "GetDevicesInfo error: xauth cookie don't match"
+        # wait for other petitions
+        self.wait()
+        # lock process 
+        self.lock=True
         # don't fail if timeout
         try:
             result=self.tc.tcos.devices(mode, " \"%s\" " %(device), \
                                        xauth_cookie, \
                                        remote_hostname ).replace('\n', '')
+            self.lock=False
             if "error" in result:
-                print_debug ( "GetDevicesInfo(): ERROR, result contains error string!!!\n%s" %(result))
-                return result
-            else:
-                return result
+                print_debug ( "GetDevicesInfo(device=%s, mode=%s): ERROR, result contains error string!!!\n%s" %(device, mode, result))
+            return result
         except Exception, err:
-            print_debug("GetDevicesInfo() EXCEPTION getting info err=%s"%(err) )
+            self.lock=False
+            print_debug("GetDevicesInfo(device=%s, mode=%s) EXCEPTION getting info err=%s"%(device, mode, err) )
             return ""
 
     def lockscreen(self, ip=None):

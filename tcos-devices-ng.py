@@ -182,7 +182,7 @@ class TcosDevicesNG:
                         pass
         print_debug( "loadconf mntconf=%s" %self.mntconf )
         return
-    
+   
     def show_notification(self, msg, urgency=pynotify.URGENCY_CRITICAL):
         pynotify.init("tcos-devices-ng")
         image_uri="file://" + os.path.abspath(shared.IMG_DIR) + "/tcos-devices-32x32.png"
@@ -428,7 +428,7 @@ class TcosDevicesNG:
         
     def do_udev_event(self, *args):
         data=args[0]
-        print_debug ("do_udev_event() data=%s" %data)
+        #print_debug ("do_udev_event() data=%s" %data)
         if data.has_key("ID_BUS") and data["ID_BUS"] == "usb":
             self.usb(data)
         
@@ -446,8 +446,8 @@ class TcosDevicesNG:
         if data.has_key("DEVPATH") and "/block/sd" in data["DEVPATH"]:
             # FIXME SATA devices not detected as HDD
             self.update_usb(data)
-
-
+        
+        
     def mounter_remote(self, device, fstype, mode="--mount"):
         print_debug ( "mounter_remote() device=%s fstype=%s" %(device, fstype) )
         if device == None:
@@ -465,16 +465,18 @@ class TcosDevicesNG:
         import socket
         socket.setdefaulttimeout(15)
         
-        type=self.xmlrpc.GetDevicesInfo(device=device, mode="--gettype").replace('\n','')
-        if type == "ntfs-3g" and mode == "--mount":
-            print_debug ( "mounter_remote() Ummm mounting a NTFS-3G, creating a thread" )
-            # create a thread
-            try:
-                ntfs_3g=threading.Thread(target=self.xmlrpc.GetDevicesInfo, args=(device,mode) )
-                ntfs_3g.start()
-                return True
-            except:
-                return True
+        if fstype != "vfat":
+            # if we know that device is vfat dont try to get type again
+            dtype=self.xmlrpc.GetDevicesInfo(device=device, mode="--gettype").replace('\n','')
+            if dtype == "ntfs-3g" and mode == "--mount":
+                print_debug ( "mounter_remote() Ummm mounting a NTFS-3G, creating a thread" )
+                # create a thread
+                try:
+                    ntfs_3g=threading.Thread(target=self.xmlrpc.GetDevicesInfo, args=(device,mode) )
+                    ntfs_3g.start()
+                    return True
+                except:
+                    return True
         
         # set socket timeout bigger (floppy can take some time)
         import socket
@@ -492,7 +494,7 @@ class TcosDevicesNG:
                 print_debug ("mounter_remote() SECOND ERROR mount='%s' mnt_point='%s'" %(mount, mnt_point))
                 return False
             """
-        print_debug("mounter_remote() mount OK")
+        print_debug("mounter_remote(device=%s fstype=%s) mount OK"%(device, fstype))
         return True
 
     def mounter_local(self, local_mount_point, remote_mnt, device="", label="",mode="mount"):
@@ -515,8 +517,12 @@ class TcosDevicesNG:
             if os.path.isdir(local_mount_point):
                 print_debug ( "mounter_local() umounting %s" %(local_mount_point) )
                 self.common.exe_cmd("fusermount -u %s" %(local_mount_point) )
+                self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %(local_mount_point) )
                 print_debug ( "mounter_local() removing dir %s" %(local_mount_point) )
-                os.rmdir(local_mount_point)
+                try:
+                    os.rmdir(local_mount_point)
+                except Exception, err:
+                    print_debug("mounter_local(umount %s) Exception, error %s"%(local_mount_point,err))
             
             mydevice=""
             for dev in self.mounted:
@@ -800,12 +806,15 @@ class TcosDevicesNG:
                     status=int(status)
                     if status == 0:
                         print_debug ( "remove_usb() device=%s seems not mounted" %(device) )
+                        self.systray.update_status("usb_%s"%devid, "usb_%s_mount"%devid, True)
+                        self.systray.update_status("usb_%s"%devid, "usb_%s_umount"%devid, False)
+                        
                     else:
                         if not self.mounter_remote(device, fstype, "--umount"):
                             self.show_notification (  _("Error, can't mount device %s") %(device)  )
                             return
-                except ValueError:
-                    print_debug ( "error loading device status" )
+                except Exception, err:
+                    print_debug ( "usb() Exception error %s"%err )
                 
                 
                 #if device in self.mounted:
@@ -818,6 +827,11 @@ class TcosDevicesNG:
         #print_debug ("update_usb()")
         data=args[0]
         action=data['ACTION']
+        
+        if not data.has_key("ID_FS_LABEL"):
+            # don't update if we have disk (only partititions)
+            return
+        
         device="/dev/%s" %data['DEVPATH'].split('/')[2]
         
         if( len( data['DEVPATH'].split('/') ) ) > 3:
@@ -928,17 +942,25 @@ class TcosDevicesNG:
 
     def umount_all(self):
         mounted=self.common.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]) )
-        if type(mounted) == type(""):
+        if type(mounted) != type( [] ):
             print_debug( "umount_all() umounting %s..." %mounted )
             self.common.exe_cmd("fusermount -u %s 2>&1" %mounted)
+            self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %mounted)
             # delete dir
-            os.rmdir(mounted)
+            try:
+                os.rmdir(mounted)
+            except Exception, err:
+                print_debug("umount_all() Exception, error %s"%err)
         else:
             for mount in mounted:
                 print_debug( "umount_all() umounting %s..." %mount )
                 self.common.exe_cmd("fusermount -u %s 2>&1" %mount)
+                self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %mount)
                 # delete dir
-                os.rmdir(mount)
+                try:
+                    os.rmdir(mounted)
+                except Exception, err:
+                    print_debug("umount_all() Exception, error %s"%err)
   
     def exit(self):
         #print_debug ( "FIXME do some thing before quiting..." )
