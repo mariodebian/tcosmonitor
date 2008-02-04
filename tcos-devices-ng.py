@@ -801,6 +801,7 @@ class TcosDevicesNG:
                 
                 # umount remote device
                 # check if remote is mounted (user can umount before from desktop icon)
+                print_debug("usb() GETSTATUS device =%s"%device)
                 status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
                 try:
                     status=int(status)
@@ -828,7 +829,7 @@ class TcosDevicesNG:
         data=args[0]
         action=data['ACTION']
         
-        if not data.has_key("ID_FS_LABEL"):
+        if not data.has_key("ID_FS_LABEL") and data["ID_FS_LABEL"] == "":
             # don't update if we have disk (only partititions)
             return
         
@@ -845,7 +846,8 @@ class TcosDevicesNG:
         if action ==  "mount":
             self.show_notification (  _("USB device %s mounted. Ready for use.") %(devid)  )
         
-        usb_status=self.xmlrpc.GetDevicesInfo(device, mode="--getstatus").replace('\n','')
+        print_debug("update_usb() GETSTATUS device=%s data=%s"%(device,data) )
+        usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus").replace('\n','')
         if usb_status == "0":
             ismounted=False
             n=1
@@ -942,26 +944,18 @@ class TcosDevicesNG:
 
     def umount_all(self):
         mounted=self.common.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]) )
-        if type(mounted) != type( [] ):
-            print_debug( "umount_all() umounting %s..." %mounted )
-            self.common.exe_cmd("fusermount -u %s 2>&1" %mounted)
-            self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %mounted)
+        if type(mounted) == type(""):
+            mounted=[mounted]
+        for mount in mounted:
+            print_debug( "umount_all() umounting %s..." %mount )
+            self.common.exe_cmd("fusermount -u %s 2>&1" %mount)
+            self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %mount)
             # delete dir
             try:
-                os.rmdir(mounted)
+                os.rmdir(mount)
             except Exception, err:
                 print_debug("umount_all() Exception, error %s"%err)
-        else:
-            for mount in mounted:
-                print_debug( "umount_all() umounting %s..." %mount )
-                self.common.exe_cmd("fusermount -u %s 2>&1" %mount)
-                self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %mount)
-                # delete dir
-                try:
-                    os.rmdir(mounted)
-                except Exception, err:
-                    print_debug("umount_all() Exception, error %s"%err)
-  
+          
     def exit(self):
         #print_debug ( "FIXME do some thing before quiting..." )
         # say udev_daemon loop to quit

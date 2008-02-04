@@ -21,8 +21,10 @@ tcosmonitor (0.2.1) unstable; urgency=low
     - Add a semaphore function (wait) to not allow concurrent GetDevicesInfo connections
   * tcos-devices-ng.py
     - Fix some functions to allow usb disk with part > 1
+  * tcos-devices-ng.py
+    - Fix umount USB devices, one by one.
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 04 Feb 2008 20:17:50 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 04 Feb 2008 22:55:35 +0100
 
 tcosmonitor (0.2.0~rc1.2) unstable; urgency=low
 
