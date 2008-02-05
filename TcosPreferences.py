@@ -67,6 +67,9 @@ class TcosPreferences:
         self.main.pref_xmlrpc_username = self.main.ui.get_widget('xmlrpc_username')
         self.main.pref_xmlrpc_password = self.main.ui.get_widget('xmlrpc_password')
         
+        self.main.pref_ssh_remote_username = self.main.ui.get_widget('ssh_remote_username')
+        self.main.pref_vlc_audio_codec = self.main.ui.get_widget('vlc_audio_codec')
+        
         # populate selects (only on startup)
         self.main.combo_network_interfaces = self.main.ui.get_widget('combo_networkinterface') 
         self.populate_select(self.main.combo_network_interfaces, self.main.common.GetAllNetworkInterfaces() )
@@ -110,6 +113,10 @@ class TcosPreferences:
         print_debug ( "SaveSettings() INIT" )
         self.main.config.SetVar("xmlrpc_username", "" + self.main.pref_xmlrpc_username.get_text() )
         self.main.config.SetVar("xmlrpc_password", "" + self.main.pref_xmlrpc_password.get_text() )
+        
+        self.main.config.SetVar("ssh_remote_username", "" + self.main.pref_ssh_remote_username.get_text() )
+        self.main.config.SetVar("vlc_audio_codec", "" + self.main.pref_vlc_audio_codec.get_text() )
+        
         self.main.config.SetVar("refresh_interval", float(self.main.pref_spin_update.get_value()) )
         
         self.main.config.SetVar("scrot_size", int(self.main.pref_scrotsize.get_value()) )
@@ -232,6 +239,11 @@ class TcosPreferences:
         self.main.pref_xmlrpc_password.set_text(\
                      self.main.config.GetVar("xmlrpc_password").replace('"', '') )
         
+        self.main.pref_ssh_remote_username.set_text(\
+                     self.main.config.GetVar("ssh_remote_username").replace('"', '') )
+                     
+        self.main.pref_vlc_audio_codec.set_text(\
+                     self.main.config.GetVar("vlc_audio_codec").replace('"', '') )
         
         # populate checkboxes
         self.populate_checkboxes(self.main.pref_populatelistatstartup, "populate_list_at_startup")

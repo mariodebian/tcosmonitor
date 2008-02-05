@@ -110,7 +110,9 @@ DefaultConfig=[
 ["blockactioninthishost", 1, "int"],
 ["onlyshowtcos", 1, "int"],
 ["selectedhosts", 0, "int"],
-["statichosts", "", "str"]
+["statichosts", "", "str"],
+["ssh_remote_username", "root", "str"],
+["vlc_audio_codec", "mp3", "str"]
 ]
 # method ping is list 0 of combo_scan_method
 
