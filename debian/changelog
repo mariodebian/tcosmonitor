@@ -27,15 +27,19 @@ tcosmonitor (0.2.1) unstable; urgency=low
   * TcosActions.py
     - Add vlc audio codec
     - Add ssh remote username
-    - Update translations 
+    - Update translations
 
   [ Ignacio Vidal ]
   * TcosActions.py
     - Complete support vlc audio codec
   * tcos-devices-ng.py
-    - Add support for external devices CDROM-USB 
+    - Add support for external devices CDROM-USB
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 06 Feb 2008 13:01:06 +0100
+  [ Mario Izquierdo (mariodebian) ]
+  * tcosmonitor.glade:
+    - Convert invisible_chars to * (dapper don't support big dots)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 06 Feb 2008 13:35:29 +0100
 
 tcosmonitor (0.2.0~rc1.2) unstable; urgency=low
 
