@@ -1243,16 +1243,23 @@ Value=0 default</property>
 	      </child>
 
 	      <child>
-		<widget class="GtkEntry" id="vlc_audio_codec">
+		<widget class="GtkComboBoxEntry" id="vlc_audio_codec">
 		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
-		  <property name="visibility">True</property>
-		  <property name="max_length">0</property>
-		  <property name="text">mp3</property>
+		  <property name="add_tearoffs">False</property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char">●</property>
-		  <property name="activates_default">False</property>
+		  <property name="focus_on_click">True</property>
+
+		  <child internal-child="entry">
+		    <widget class="GtkEntry" id="comboboxentry-entry3">
+		      <property name="editable">True</property>
+		      <property name="visibility">True</property>
+		      <property name="max_length">0</property>
+		      <property name="text" translatable="yes"></property>
+		      <property name="has_frame">True</property>
+		      <property name="invisible_char">●</property>
+		      <property name="activates_default">False</property>
+		    </widget>
+		  </child>
 		</widget>
 		<packing>
 		  <property name="left_attach">1</property>

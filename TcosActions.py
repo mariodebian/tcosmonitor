@@ -1898,13 +1898,13 @@ class TcosActions:
                     filename=filename.replace("%s" %scape, "\%s" %scape)
                 
                 if response == gtk.RESPONSE_OK:
-                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver" ], shell=False)
+                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver" ], shell=False)
                 elif response == 1:
-                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
+                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 2:
-                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=mp3,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
+                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 3:
-                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=mp3,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}", "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
+                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=%s,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 # exec this app on client
                 
                 remote_cmd="vlc udp://@239.255.255.0:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver"

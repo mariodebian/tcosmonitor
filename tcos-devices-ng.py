@@ -430,7 +430,10 @@ class TcosDevicesNG:
         data=args[0]
         #print_debug ("do_udev_event() data=%s" %data)
         if data.has_key("ID_BUS") and data["ID_BUS"] == "usb":
-            self.usb(data)
+            if data.has_key("DEVPATH") and "/block/sr" in data["DEVPATH"]:
+                self.cdrom_usb(data)
+            else:
+                self.usb(data)
         
         if data.has_key("DEVPATH") and "/block/hd" in data["DEVPATH"]:
             if len(data["DEVPATH"].split('/')) > 3:
@@ -695,7 +698,143 @@ class TcosDevicesNG:
             self.update_hdd(hdd_device)
             return
 
+    def cdrom_usb(self, *args):
+        data=args[0]
+        if type(data) == type( () ): data=args[0][0]
+        
+        print_debug("cdrom_usb() data=%s" %data)
+        if data.has_key('DEVPATH'):
+            device="/dev/"+data["DEVPATH"].split('/')[2]
+        else:
+            device=data['DEVNAME']
+        action=data['ACTION']
+        devid=device.split('/')[2]
+        remote_mnt="/mnt/%s" %(devid)
 
+        usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+        if usb_status == "0":
+            mount=True
+            n=1
+        else:
+            mount=False
+            n=2
+   
+        if action == "add":
+            vendor=data['ID_VENDOR']
+            model=data['ID_MODEL']
+            fstype=data['ID_FS_TYPE']
+            self.show_notification( _("From terminal %(host)s.\nConnected CDROM USB device %(device)s\n%(vendor)s %(model)s" ) \
+            %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } )
+            ###########     add USB CDROM device    ############
+            self.systray.register_device("usb_%s"%devid, 
+                            _("CDROM USB device %s") %devid, 
+                            "usb%s.png"%n, True, 
+                            {
+                        "usb_%s_mount" %devid: [ _("Mount CDROM USB device %s") %(devid),  "usb_mount.png", mount,  None, device],
+                        "usb_%s_umount" %devid: [ _("Umount CDROM USB device %s") %(devid), "usb_umount.png", not mount, None, device]
+                            }, 
+                            device)
+                
+            self.systray.register_action("usb_%s_mount" %devid , self.cdrom_usb, {
+                                    "DEVNAME": device, "ACTION": "mount", "ID_FS_TYPE": fstype, "FORCE_MOUNT":True
+                                                                            } 
+                                        )
+            self.systray.register_action("usb_%s_umount" %devid , self.cdrom_usb, {
+                                    "DEVNAME": device, "ACTION": "umount", "ID_FS_TYPE": fstype, "FORCE_MOUNT":True
+                                                                            }
+                                            )
+            ###############################################
+            desktop=self.get_desktop_patch()
+    
+            if self.mntconf.has_key(devid):
+                local_mount_point=os.path.join(desktop, self.mntconf[devid] )
+            else:
+                local_mount_point=os.path.join(desktop, _("Cdrom_%s") %devid )
+                
+            print_debug ( "cdrom_usb() remote_mnt=%s device=%s" %(remote_mnt, devid) )
+            if not self.mounter_remote(device, "", mode="--mount"):
+                self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                return
+
+            if device in self.mounted:
+                data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
+                data['ID_VENDOR']=os.path.basename(self.mounted[device])
+
+            # remote device is mounted, mount_local and launch filemanager
+            if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=_("Cdrom_%s")  %devid, mode="mount"):
+                return
+        
+            # change status
+            self.update_cdrom_usb(devid, action)
+            self.launch_desktop_filemanager(local_mount_point)
+            self.mounted[device]=local_mount_point
+            return    
+                    
+        elif action == "mount":
+            fstype=data['ID_FS_TYPE']
+            desktop=self.get_desktop_patch()
+    
+            if self.mntconf.has_key(devid):
+                local_mount_point=os.path.join(desktop, self.mntconf[devid] )
+            else:
+                local_mount_point=os.path.join(desktop, _("Cdrom_%s") %devid )
+                
+            print_debug ( "cdrom_usb() remote_mnt=%s device=%s" %(remote_mnt, devid) )
+            if not self.mounter_remote(device, "", mode="--mount"):
+                self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                return
+
+            if device in self.mounted:
+                data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
+                data['ID_VENDOR']=os.path.basename(self.mounted[device])
+
+            # remote device is mounted, mount_local and launch filemanager
+            if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=_("Cdrom_%s")  %devid, mode="mount"):
+                return
+        
+            # change status
+            self.update_cdrom_usb(devid, action)
+            self.launch_desktop_filemanager(local_mount_point)
+            self.mounted[device]=local_mount_point
+            return
+            
+        elif action == "remove" or action == "umount":
+            if action == "remove":
+                vendor=data['ID_VENDOR']
+                model=data['ID_MODEL']
+                self.show_notification( _("From terminal %(host)s.\nDisconnected CDROM USB device %(device)s\n%(vendor)s %(model)s" ) \
+                %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } ) 
+                print_debug ("cdrom_usb() UNREGISTER SERVICE")
+                self.systray.unregister_device("usb_%s"%devid)
+            if device in self.mounted:
+                local_mount_point=self.mounted[device]
+            else:
+                print_debug ( "remove_cdrom_usb() device %s not found in self.mounted" %(device) )
+                return
+            # umount local fuse
+            # check if fuse is mounted
+            status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point) )
+            if int(status) != 0:
+                self.mounter_local(local_mount_point, remote_mnt, device=device, label=_("Cdrom_%s") %devid, mode="umount")
+            
+            # umount remote device
+            # check if remote is mounted (user can umount before from desktop icon)
+            print_debug("cdrom_usb() GETSTATUS device=%s"%device)
+            status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+            try:
+                status=int(status)
+                if status == 0:
+                    print_debug ( "remove_cdrom_usb() device=%s seems not mounted" %(device) )
+                    self.systray.update_status("usb_%s"%devid, "usb_%s_mount"%devid, True)
+                    self.systray.update_status("usb_%s"%devid, "usb_%s_umount"%devid, False)
+                    
+                else:
+                    if not self.mounter_remote(device, "", mode="--umount"):
+                        self.show_notification (  _("Can't umount cdrom usb %s") %(device)  )
+                        return
+                    self.update_cdrom_usb(devid, action)
+            except Exception, err:
+                print_debug ( "cdrom_usb() Exception error %s"%err )
 
     def usb(self, *args):
         data=args[0]
@@ -823,14 +962,43 @@ class TcosDevicesNG:
                 #else:
                 #    print_debug ( "remove_usb() devive=%s not in self.mounted dictionary" )
         
+    def update_cdrom_usb(self, devid, action=None):
+        #print_debug ("update_cdrom_usb()")
+        
+        device="/dev/%s" %devid
+        
+        if action ==  "umount":
+            self.show_notification (  _("CDROM USB device %s umounted. You can extract it.") %(devid)  )
+            
+        if action ==  "mount" or action ==  "add":
+            self.show_notification (  _("CDROM USB device %s mounted. Ready for use.") %(devid)  )
+        
+        print_debug("update_cdrom_usb() GETSTATUS device=%s action=%s"%(device,action) )
+
+        usb_status=self.xmlrpc.GetDevicesInfo(device, mode="--getstatus").replace('\n','')
+        if usb_status == "0":
+            ismounted=False
+            n=1
+        else:
+            ismounted=True
+            n=2
+        print_debug ("update_cdrom_usb() usb devid=%s ismounted=%s" %(devid, ismounted) )
+        #self.systray.items["usb_"%devid][1]="usb%s.png"%n
+        self.systray.update_status("usb_%s"%devid, "usb_%s_mount"%devid, not ismounted)
+        self.systray.update_status("usb_%s"%devid, "usb_%s_umount"%devid, ismounted)
+
 
     def update_usb(self, *args):
         #print_debug ("update_usb()")
         data=args[0]
         action=data['ACTION']
         
-        if not data.has_key("ID_FS_LABEL") and data["ID_FS_LABEL"] == "":
+        if not data.has_key("ID_FS_TYPE"):
             # don't update if we have disk (only partititions)
+            return
+        
+        if data["ID_FS_TYPE"] == "":
+            # don't update if fstype is empty (devicesctl.sh and udev put FILESYSTEM always)
             return
         
         device="/dev/%s" %data['DEVPATH'].split('/')[2]

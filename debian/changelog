@@ -1,5 +1,6 @@
 tcosmonitor (0.2.1) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * New in 0.2 version:
     - Don't call newhost and PingPort with same IP address many times
     - Call reboot and poweroff with configurable timeout
@@ -23,8 +24,18 @@ tcosmonitor (0.2.1) unstable; urgency=low
     - Fix some functions to allow usb disk with part > 1
   * tcos-devices-ng.py
     - Fix umount USB devices, one by one.
+  * TcosActions.py
+    - Add vlc audio codec
+    - Add ssh remote username
+    - Update translations 
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 04 Feb 2008 22:55:35 +0100
+  [ Ignacio Vidal ]
+  * TcosActions.py
+    - Complete support vlc audio codec
+  * tcos-devices-ng.py
+    - Add support for external devices CDROM-USB 
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 06 Feb 2008 13:01:06 +0100
 
 tcosmonitor (0.2.0~rc1.2) unstable; urgency=low
 

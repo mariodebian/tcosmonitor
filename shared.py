@@ -83,6 +83,11 @@ scan_methods=[
 "static"
 ]
 
+vlc_audio_codecs=[
+"mpga", 
+"mp3"
+]
+
 
 DefaultConfig=[
 ["populate_list_at_startup", 0, "int"],
@@ -112,7 +117,7 @@ DefaultConfig=[
 ["selectedhosts", 0, "int"],
 ["statichosts", "", "str"],
 ["ssh_remote_username", "root", "str"],
-["vlc_audio_codec", "mp3", "str"]
+["vlc_audio_codec", "mpga", "str"]
 ]
 # method ping is list 0 of combo_scan_method
 

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 17:26+0100\n"
-"PO-Revision-Date: 2008-02-05 17:27+0100\n"
+"POT-Creation-Date: 2008-02-06 12:56+0100\n"
+"PO-Revision-Date: 2008-02-06 13:00+0100\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,133 +93,133 @@ msgstr "Encontrados %d equipos"
 msgid "TcosMonitor web page"
 msgstr "Página web de TcosMonitor"
 
-#: shared.py:181
+#: shared.py:186
 msgid "Refresh terminal info"
 msgstr "Actualizar información del terminal"
 
-#: shared.py:182
+#: shared.py:187
 msgid "Clean info about terminal"
 msgstr "Limpiar información del terminal"
 
-#: shared.py:183
+#: shared.py:188
 msgid "Reboot"
 msgstr "Reiniciar"
 
-#: shared.py:184
+#: shared.py:189
 msgid "Poweroff"
 msgstr "Apagar"
 
-#: shared.py:185
+#: shared.py:190
 msgid "Lock screen"
 msgstr "Bloquear pantalla"
 
-#: shared.py:186
+#: shared.py:191
 msgid "Unlock screen"
 msgstr "Desbloquear pantalla"
 
-#: shared.py:187
+#: shared.py:192
 msgid "Connect to remote screen (iTALC)"
 msgstr "Conectar a la pantalla remota (iTALC)"
 
-#: shared.py:188
+#: shared.py:193
 msgid "Connect to remote screen (VNC)"
 msgstr "Conectar a la pantalla remota (VNC)"
 
-#: shared.py:189
+#: shared.py:194
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
-#: shared.py:190
+#: shared.py:195
 msgid "Give a remote xterm"
 msgstr "Ejecutar un terminal xterm en el cliente"
 
-#: shared.py:191
+#: shared.py:196
 msgid "Configure this host"
 msgstr "Configurar este equipo"
 
-#: shared.py:192
+#: shared.py:197
 msgid "Logout client"
 msgstr "Desconectar cliente"
 
-#: shared.py:193
+#: shared.py:198
 msgid "Restart X session with new settings"
 msgstr "Reiniciar sesión X con la nueva configuración"
 
-#: shared.py:194
+#: shared.py:199
 msgid "Exec app on user display"
 msgstr "Ejecutar aplicación en pantalla de usuario"
 
-#: shared.py:195
+#: shared.py:200
 msgid "Send a text message to user"
 msgstr "Enviar un mensaje de texto al usuario"
 
-#: shared.py:196
+#: shared.py:201
 msgid "Show running apps of this client"
 msgstr "Mostrar aplicaciones ejecutadas por este cliente"
 
-#: shared.py:197 shared.py:214
+#: shared.py:202 shared.py:219
 msgid "Audio/Video broadcast"
 msgstr "Difusión de audio/vídeo"
 
-#: shared.py:198 shared.py:215
+#: shared.py:203 shared.py:220
 msgid "Send files"
 msgstr "Enviar archivos"
 
-#: shared.py:199
+#: shared.py:204
 msgid "Demo mode (from this host)"
 msgstr "Modo demo (desde este equipo)"
 
-#: shared.py:204
+#: shared.py:209
 msgid "Reboot all clients"
 msgstr "Reiniciar todos los clientes"
 
-#: shared.py:205
+#: shared.py:210
 msgid "Poweroff all clients"
 msgstr "Apagar todos los clientes"
 
-#: shared.py:206
+#: shared.py:211
 msgid "Lock all screens"
 msgstr "Bloquear todas las pantallas"
 
-#: shared.py:207
+#: shared.py:212
 msgid "Unlock all screens"
 msgstr "Desbloquear todas las pantallas"
 
-#: shared.py:208
+#: shared.py:213
 msgid "Logout clients"
 msgstr "Desconectar todos los clientes"
 
-#: shared.py:209
+#: shared.py:214
 msgid "Restart X session of all clients"
 msgstr "Reiniciar sesión X de todos los clientes"
 
-#: shared.py:210
+#: shared.py:215
 msgid "Exec same app in all connected users"
 msgstr "Ejecutar misma aplicación en todos los usuarios conectados"
 
-#: shared.py:211
+#: shared.py:216
 msgid "Send a text message to all connected users"
 msgstr "Enviar un mensaje de texto a todos los usuarios conectados"
 
-#: shared.py:212
+#: shared.py:217
 msgid "Enter demo mode, all connected users see my screen"
 msgstr "Entrar en modo demostración, todos los usuarios ven mi pantalla"
 
-#: shared.py:213
+#: shared.py:218
 msgid "Capture All clients screens"
 msgstr "Capturar todas las pantallas"
 
-#: shared.py:373
+#: shared.py:378
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr "PREGUNTA: %(txt)s, RESPUESTA %(response)s"
 
-#: shared.py:385
+#: shared.py:390
 #, python-format
 msgid "INFO: %s"
 msgstr "INFO: %s"
 
-#: shared.py:396
+#: shared.py:401
 #, python-format
 msgid "ERROR: %s"
 msgstr "ERROR: %s"
@@ -475,7 +475,7 @@ msgstr "Datos recibidos(rx): "
 msgid "Data send(tx): "
 msgstr "Datos enviados(tx): "
 
-#: TcosActions.py:680 tcosmonitor.glade:1642
+#: TcosActions.py:680 tcosmonitor.glade:1649
 msgid "Xorg info"
 msgstr "Información de Xorg"
 
@@ -827,7 +827,7 @@ msgstr "Ejecutandose en modo demostración con %s equipos."
 msgid "Running in demo mode from host %s..."
 msgstr "Ejecutandose en modo demostración desde el equipo %s..."
 
-#: TcosActions.py:1480 TcosPreferences.py:300
+#: TcosActions.py:1480 TcosPreferences.py:305
 msgid "Stop"
 msgstr "Parar"
 
@@ -1061,8 +1061,8 @@ msgstr "Desmontar partición"
 msgid "No floppy detected"
 msgstr "No se ha detectado disquete"
 
-#: tcos-devices-ng.py:304 tcos-devices-ng.py:599 tcos-devices-ng.py:605
-#: tcos-devices-ng.py:611
+#: tcos-devices-ng.py:304 tcos-devices-ng.py:602 tcos-devices-ng.py:608
+#: tcos-devices-ng.py:614
 msgid "Floppy"
 msgstr "Disquete"
 
@@ -1103,7 +1103,7 @@ msgstr "Cdrom montado. Listo para usar."
 msgid "Cdrom umounted. You can extract it."
 msgstr "Cdrom desmontado. Ahora puede extraerlo."
 
-#: tcos-devices-ng.py:458
+#: tcos-devices-ng.py:461
 #, python-format
 msgid ""
 "Mounting device %s\n"
@@ -1112,11 +1112,11 @@ msgstr ""
 "Montando dispositivo %s.\n"
 "Por favor, espere..."
 
-#: tcos-devices-ng.py:506
+#: tcos-devices-ng.py:509
 msgid "Error mounting LTSPFS, check versions of LTSPFS packages"
 msgstr "Error montando LTSPFS, compruebe las versiones de los paquetes LTSPFS"
 
-#: tcos-devices-ng.py:532
+#: tcos-devices-ng.py:535
 #, python-format
 msgid ""
 "Umounting device %s.\n"
@@ -1125,45 +1125,95 @@ msgstr ""
 "Desmontando dispositivo %s.\n"
 "Por favor, espere..."
 
-#: tcos-devices-ng.py:578
+#: tcos-devices-ng.py:581
 msgid "usbdisk"
 msgstr "disco-usb"
 
-#: tcos-devices-ng.py:603
+#: tcos-devices-ng.py:606
 msgid "Can't mount floppy"
 msgstr "No se pudo montar el disquete"
 
-#: tcos-devices-ng.py:614
+#: tcos-devices-ng.py:617
 msgid "Can't umount floppy"
 msgstr "No se pudo desmontar el disquete"
 
-#: tcos-devices-ng.py:627 tcos-devices-ng.py:637 tcos-devices-ng.py:648
+#: tcos-devices-ng.py:630 tcos-devices-ng.py:640 tcos-devices-ng.py:651
+#: tcos-devices-ng.py:752 tcos-devices-ng.py:764 tcos-devices-ng.py:780
+#: tcos-devices-ng.py:792 tcos-devices-ng.py:818
 #, python-format
 msgid "Cdrom_%s"
 msgstr "Cdrom_%s"
 
-#: tcos-devices-ng.py:635
+#: tcos-devices-ng.py:638
 msgid "Can't mount cdrom"
 msgstr "No se pudo montar el cdrom"
 
-#: tcos-devices-ng.py:651
+#: tcos-devices-ng.py:654
 msgid "Can't umount cdrom"
 msgstr "No se pudo desmontar el cdrom"
 
-#: tcos-devices-ng.py:667 tcos-devices-ng.py:677 tcos-devices-ng.py:688
+#: tcos-devices-ng.py:670 tcos-devices-ng.py:680 tcos-devices-ng.py:691
 #, python-format
 msgid "Disk_%s"
 msgstr "Disco_%s"
 
-#: tcos-devices-ng.py:675
+#: tcos-devices-ng.py:678
 msgid "Can't mount hard disk partition"
 msgstr "No se pudo montar la partición"
 
-#: tcos-devices-ng.py:691
+#: tcos-devices-ng.py:694
 msgid "Can't umount hard disk partition"
 msgstr "No se pudo desmontar la partición"
 
-#: tcos-devices-ng.py:713
+#: tcos-devices-ng.py:726
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Connected CDROM USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+"Desde el terminal %(host)s.\n"
+"Dispositivo CDROM USB conectado %(device)s\n"
+"%(vendor)s %(model)s"
+
+#: tcos-devices-ng.py:730
+#, python-format
+msgid "CDROM USB device %s"
+msgstr "Dispositivo CDROM USB %s"
+
+#: tcos-devices-ng.py:733
+#, python-format
+msgid "Mount CDROM USB device %s"
+msgstr "Montar dispositivo CDROM USB %s"
+
+#: tcos-devices-ng.py:734
+#, python-format
+msgid "Umount CDROM USB device %s"
+msgstr "Desmontar dispositivo CDROM USB %s"
+
+#: tcos-devices-ng.py:756 tcos-devices-ng.py:784 tcos-devices-ng.py:897
+#: tcos-devices-ng.py:908 tcos-devices-ng.py:954
+#, python-format
+msgid "Error, can't mount device %s"
+msgstr "Error, no se pudo montar el dispositivo %s"
+
+#: tcos-devices-ng.py:805
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Disconnected CDROM USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+"Desde el terminal %(host)s.\n"
+"Dispositivo CDROM USB desconectado %(device)s\n"
+"%(vendor)s %(model)s"
+
+#: tcos-devices-ng.py:833
+#, python-format
+msgid "Can't umount cdrom usb %s"
+msgstr "No se pudo desmontar el cdrom usb"
+
+#: tcos-devices-ng.py:852
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1174,7 +1224,7 @@ msgstr ""
 "Dispositivo USB conectado %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: tcos-devices-ng.py:716
+#: tcos-devices-ng.py:855
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -1185,32 +1235,37 @@ msgstr ""
 "Dispositivo USB desconectado %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: tcos-devices-ng.py:739
+#: tcos-devices-ng.py:878
 #, python-format
 msgid "USB device %s"
 msgstr "Dispositivo USB %s"
 
-#: tcos-devices-ng.py:742
+#: tcos-devices-ng.py:881
 #, python-format
 msgid "Mount USB device %s"
 msgstr "Montar dispositivo USB %s"
 
-#: tcos-devices-ng.py:743
+#: tcos-devices-ng.py:882
 #, python-format
 msgid "Umount USB device %s"
 msgstr "Desmontar dispositivo USB %s"
 
-#: tcos-devices-ng.py:758 tcos-devices-ng.py:769 tcos-devices-ng.py:815
+#: tcos-devices-ng.py:971
 #, python-format
-msgid "Error, can't mount device %s"
-msgstr "Error, no se pudo montar el dispositivo %s"
+msgid "CDROM USB device %s umounted. You can extract it."
+msgstr "Dispositivo CDROM USB %s desmontado. Ahora puede extraerlo."
 
-#: tcos-devices-ng.py:848
+#: tcos-devices-ng.py:974
+#, python-format
+msgid "CDROM USB device %s mounted. Ready for use."
+msgstr "Dispositivo CDROM USB %s montado.Listo para usar."
+
+#: tcos-devices-ng.py:1012
 #, python-format
 msgid "USB device %s umounted. You can extract it."
 msgstr "Dispositivo USB %s desmontado. Ahora puede extraerlo."
 
-#: tcos-devices-ng.py:851
+#: tcos-devices-ng.py:1015
 #, python-format
 msgid "USB device %s mounted. Ready for use."
 msgstr "Dispositivo USB %s montado.Listo para usar."
@@ -1259,7 +1314,7 @@ msgstr "Buscar"
 msgid "About this app"
 msgstr "Acerca de esta aplicación"
 
-#: tcosmonitor.glade:417 tcosmonitor.glade:2483 tcosmonitor.glade:2866
+#: tcosmonitor.glade:417 tcosmonitor.glade:2490 tcosmonitor.glade:2873
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -1375,19 +1430,19 @@ msgstr "Usuario remoto SSH"
 msgid "VLC audio codec"
 msgstr "Codec de audio para VLC"
 
-#: tcosmonitor.glade:1275
+#: tcosmonitor.glade:1282
 msgid "General settings"
 msgstr "Configuración general"
 
-#: tcosmonitor.glade:1308
+#: tcosmonitor.glade:1315
 msgid "TcosXmlRpc username"
 msgstr "Usuario TcosXmlRpc"
 
-#: tcosmonitor.glade:1357
+#: tcosmonitor.glade:1364
 msgid "TcosXmlRpc password"
 msgstr "Contraseña TcosXmlRpc"
 
-#: tcosmonitor.glade:1406
+#: tcosmonitor.glade:1413
 msgid ""
 "<b>NOTE:</b>\n"
 "This values are needed to do some actions\n"
@@ -1418,109 +1473,109 @@ msgstr ""
 "las instrucciones. Esto generará un archivo tcospasswd con los datos "
 "preguntados.\n"
 
-#: tcosmonitor.glade:1453
+#: tcosmonitor.glade:1460
 msgid "Authentication "
 msgstr "Autenticación"
 
-#: tcosmonitor.glade:1483
+#: tcosmonitor.glade:1490
 msgid "<b>Info avalaible from tcosxmlrpc</b>"
 msgstr "<b>Información disponible de tcosxmlrpc</b>"
 
-#: tcosmonitor.glade:1509
+#: tcosmonitor.glade:1516
 msgid "Tcos general info"
 msgstr "Información general de Tcos"
 
-#: tcosmonitor.glade:1528
+#: tcosmonitor.glade:1535
 msgid "Cpu info"
 msgstr "Información de la CPU"
 
-#: tcosmonitor.glade:1547
+#: tcosmonitor.glade:1554
 msgid "Kernel and modules info"
 msgstr "Información del kernel y módulos"
 
-#: tcosmonitor.glade:1566
+#: tcosmonitor.glade:1573
 msgid "PCI bus info"
 msgstr "Información bus PCI"
 
-#: tcosmonitor.glade:1585
+#: tcosmonitor.glade:1592
 msgid "Ram and swap info"
 msgstr "Información de la RAM y SWAP"
 
-#: tcosmonitor.glade:1604
+#: tcosmonitor.glade:1611
 msgid "Process info"
 msgstr "Información de procesos"
 
-#: tcosmonitor.glade:1623
+#: tcosmonitor.glade:1630
 msgid "Network info"
 msgstr "Información de la red"
 
-#: tcosmonitor.glade:1661
+#: tcosmonitor.glade:1668
 msgid "Sound server info"
 msgstr "Información del servidor de sonido"
 
-#: tcosmonitor.glade:1689
+#: tcosmonitor.glade:1696
 msgid "Avalaible info"
 msgstr "Información disponible"
 
-#: tcosmonitor.glade:1773
+#: tcosmonitor.glade:1780
 msgid "GNU/GPL"
 msgstr "GNU/GPL"
 
-#: tcosmonitor.glade:1774
+#: tcosmonitor.glade:1781
 msgid "A thin client network monitor"
 msgstr "Un monitor de clientes ligeros"
 
-#: tcosmonitor.glade:1790
+#: tcosmonitor.glade:1797
 msgid "translator-credits"
 msgstr ""
 "Mario Izquierdo (mariodebian)\n"
 "<mariodebian@gmail.com>"
 
-#: tcosmonitor.glade:1820
+#: tcosmonitor.glade:1827
 msgid "Question"
 msgstr "Pregunta"
 
-#: tcosmonitor.glade:1895
+#: tcosmonitor.glade:1902
 msgid "You can drag and drop launcher file to this box"
 msgstr "Puedes arrastrar y soltar un lanzador a esta caja"
 
-#: tcosmonitor.glade:1920
+#: tcosmonitor.glade:1927
 msgid "<b>Run app in unknow host</b>"
 msgstr "<b>Ejecutar aplicación en equipo desconicido</b>"
 
-#: tcosmonitor.glade:2014
+#: tcosmonitor.glade:2021
 msgid "Static hosts list"
 msgstr "Lista de equipos"
 
-#: tcosmonitor.glade:2037
+#: tcosmonitor.glade:2044
 msgid "<span size=\"x-large\">Static Hosts list</span>"
 msgstr "<span size=\"x-large\">Lista de equipos</span>"
 
-#: tcosmonitor.glade:2146
+#: tcosmonitor.glade:2153
 msgid "Add"
 msgstr "Añadir"
 
-#: tcosmonitor.glade:2224
+#: tcosmonitor.glade:2231
 msgid "Modify"
 msgstr "Modificar"
 
-#: tcosmonitor.glade:2302
+#: tcosmonitor.glade:2309
 msgid "Delete"
 msgstr "Borrar"
 
-#: tcosmonitor.glade:2380
+#: tcosmonitor.glade:2387
 msgid "Get from connected"
 msgstr "Tomar desde conectados"
 
-#: tcosmonitor.glade:2561 tcosmonitor.glade:2944
+#: tcosmonitor.glade:2568 tcosmonitor.glade:2951
 msgid "Save"
 msgstr "Guardar"
 
-#: tcosmonitor.glade:2607
+#: tcosmonitor.glade:2614
 msgid "New or edit hosts"
 msgstr "Nuevo o editar lista de equipos"
 
-#: tcosmonitor.glade:2661
+#: tcosmonitor.glade:2668
 msgid ""
 "You can add a simple host, \n"
 "   example: <b>192.168.0.100</b>\n"
@@ -1538,11 +1593,11 @@ msgstr ""
 "\n"
 "la dirección MAC es opcional"
 
-#: tcosmonitor.glade:2702
+#: tcosmonitor.glade:2709
 msgid "IP address *"
 msgstr "Dirección IP *"
 
-#: tcosmonitor.glade:2730 TcosStaticHosts.py:160
+#: tcosmonitor.glade:2737 TcosStaticHosts.py:160
 msgid "MAC address"
 msgstr "Dirección MAC"
 
@@ -1634,7 +1689,7 @@ msgstr "¿Borrar archivo de configuración de %s?"
 msgid "Deleted!"
 msgstr "¡Borrado!"
 
-#: TcosPreferences.py:195
+#: TcosPreferences.py:200
 msgid "New settings saved."
 msgstr "Configuración guardada."
 

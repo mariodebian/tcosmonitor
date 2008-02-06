@@ -69,6 +69,7 @@ class TcosPreferences:
         
         self.main.pref_ssh_remote_username = self.main.ui.get_widget('ssh_remote_username')
         self.main.pref_vlc_audio_codec = self.main.ui.get_widget('vlc_audio_codec')
+        self.populate_select(self.main.pref_vlc_audio_codec, shared.vlc_audio_codecs )
         
         # populate selects (only on startup)
         self.main.combo_network_interfaces = self.main.ui.get_widget('combo_networkinterface') 
@@ -115,7 +116,11 @@ class TcosPreferences:
         self.main.config.SetVar("xmlrpc_password", "" + self.main.pref_xmlrpc_password.get_text() )
         
         self.main.config.SetVar("ssh_remote_username", "" + self.main.pref_ssh_remote_username.get_text() )
-        self.main.config.SetVar("vlc_audio_codec", "" + self.main.pref_vlc_audio_codec.get_text() )
+        
+        if self.main.pref_vlc_audio_codec.get_active() == 0:
+            self.main.config.SetVar("vlc_audio_codec", "mpga")
+        else:
+            self.main.config.SetVar("vlc_audio_codec", "mp3")
         
         self.main.config.SetVar("refresh_interval", float(self.main.pref_spin_update.get_value()) )
         
@@ -242,8 +247,8 @@ class TcosPreferences:
         self.main.pref_ssh_remote_username.set_text(\
                      self.main.config.GetVar("ssh_remote_username").replace('"', '') )
                      
-        self.main.pref_vlc_audio_codec.set_text(\
-                     self.main.config.GetVar("vlc_audio_codec").replace('"', '') )
+        self.set_active_in_select(self.main.pref_vlc_audio_codec,\
+                         self.main.config.GetVar("vlc_audio_codec"))
         
         # populate checkboxes
         self.populate_checkboxes(self.main.pref_populatelistatstartup, "populate_list_at_startup")
