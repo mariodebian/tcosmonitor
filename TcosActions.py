@@ -2093,7 +2093,7 @@ class TcosActions:
                 elif action == "screenshot":
                     self.main.xmlrpc.screenshot( self.main.config.GetVar("miniscrot_size") ) 
                     
-                    url="http://%s:%s/capture-thumb.png" %(ip, shared.httpd_port)
+                    url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
                     hostname=self.main.localdata.GetHostname(ip)
                     self.main.datatxt.insert_html( 
                      "<span style='background-color:#f3d160'>" +
@@ -2187,7 +2187,7 @@ class TcosActions:
         block_txt+="<span style='font-size: medium'> %s </span>" %(datetxt)
         block_txt+="<span> </span><input type='button' name='self.main.another_screenshot_button' label='%s' />" %( slabel )
          
-        url="http://%s:%s/capture-thumb.png" %(ip, shared.httpd_port)
+        url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
         self.main.datatxt.clean()
         self.main.datatxt.insert_block( block_txt )
                                  

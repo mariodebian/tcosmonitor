@@ -1,3 +1,10 @@
+tcosmonitor (0.2.2) unstable; urgency=low
+
+  * TcosActions.py
+    - Change screenshot type to jpg (less filesize)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 09 Feb 2008 13:05:45 +0100
+
 tcosmonitor (0.2.1) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]

@@ -221,5 +221,8 @@ patch_etch: patch_version
 
 patch_unstable: patch_version
 
+patch_hardy: patch_version
+
+patch_max: patch_version
 
 .PHONY: fix-glade es.gmo tcosxmlrpc dbus udev
