@@ -153,14 +153,16 @@ class TcosDevicesNG:
         self.systray.register_action("quit", lambda w: self.exit() )
         
         self.udev_events={ 
-        "insert":       {"ID_BUS":  "usb",         "ACTION":"add"}, 
-        "remove":       {"ID_BUS":  "usb",         "ACTION":"remove"},
-        "mount-floppy": {"DEVPATH": "/block/fd0",  "ACTION":"mount"},
-        "umount-floppy":{"DEVPATH": "/block/fd0",  "ACTION":"umount"},
-        "mount-cdrom":  {"DEVPATH": "/block/hd*",   "ACTION":"mount"},
-        "umount-cdrom": {"DEVPATH": "/block/hd*",   "ACTION":"umount"}, 
-        "mount-flash":  {"DEVPATH": "/block/sd*",   "ACTION":"mount"},
-        "umount-flash": {"DEVPATH": "/block/sd*",   "ACTION":"umount"}
+        "insert":         {"ID_BUS":  "usb",         "ACTION":"add"}, 
+        "remove":         {"ID_BUS":  "usb",         "ACTION":"remove"},
+        "insert-firewire":{"ID_BUS":  "ieee1394",    "ACTION":"add"}, 
+        "remove-firewire":{"ID_BUS":  "ieee1394",    "ACTION":"remove"},
+        "mount-floppy":   {"DEVPATH": "/block/fd0",  "ACTION":"mount"},
+        "umount-floppy":  {"DEVPATH": "/block/fd0",  "ACTION":"umount"},
+        "mount-cdrom":    {"DEVPATH": "/block/hd*",   "ACTION":"mount"},
+        "umount-cdrom":   {"DEVPATH": "/block/hd*",   "ACTION":"umount"}, 
+        "mount-flash":    {"DEVPATH": "/block/sd*",   "ACTION":"mount"},
+        "umount-flash":   {"DEVPATH": "/block/sd*",   "ACTION":"umount"}
         }
     
     def loadconf(self, conffile):
@@ -435,6 +437,9 @@ class TcosDevicesNG:
             else:
                 self.usb(data)
         
+        if data.has_key("ID_BUS") and data["ID_BUS"] == "ieee1394":
+            self.firewire(data)
+        
         if data.has_key("DEVPATH") and "/block/hd" in data["DEVPATH"]:
             if len(data["DEVPATH"].split('/')) > 3:
                 # we have a hdd
@@ -446,10 +451,11 @@ class TcosDevicesNG:
         if data.has_key("DEVPATH") and "/block/fd" in data["DEVPATH"]:
             self.update_floppy(data["ACTION"])
         
-        if data.has_key("DEVPATH") and "/block/sd" in data["DEVPATH"]:
+        if data.has_key("DEVPATH") and data["ID_BUS"] == "ieee1394" and "/block/sd" in data["DEVPATH"]:
             # FIXME SATA devices not detected as HDD
+            self.update_firewire(data)
+        elif data.has_key("DEVPATH") and "/block/sd" in data["DEVPATH"]:
             self.update_usb(data)
-        
         
     def mounter_remote(self, device, fstype, mode="--mount"):
         print_debug ( "mounter_remote() device=%s fstype=%s" %(device, fstype) )
@@ -578,7 +584,10 @@ class TcosDevicesNG:
                         return desktop + "/" + fsvendor + "-" + str(counter)
                     counter+=1
         else:
-            mnt=_("usbdisk")
+            if data.has_key("ID_BUS") and data["ID_BUS"] == "usb":
+                mnt=_("usbdisk")
+            else:
+                mnt=_("firewiredisk")
             print_debug ( "get_local_mountpoint() don't have label or vendor" )
             if not os.path.isdir(desktop + "/" + mnt):
                 print_debug ( "get_local_mountpoint() %s dir not exists, returning..." %(desktop + "/" + mnt) )
@@ -720,9 +729,18 @@ class TcosDevicesNG:
             n=2
    
         if action == "add":
-            vendor=data['ID_VENDOR']
-            model=data['ID_MODEL']
-            fstype=data['ID_FS_TYPE']
+            if not data.has_key('ID_VENDOR'):
+                vendor=""
+            else:
+                vendor=data['ID_VENDOR']
+            if not data.has_key('ID_MODEL'):
+                model=""
+            else:
+                model=data['ID_MODEL']
+            if not data.has_key('ID_FS_TYPE'):
+                fstype=""
+            else:
+                fstype=data['ID_FS_TYPE']
             self.show_notification( _("From terminal %(host)s.\nConnected CDROM USB device %(device)s\n%(vendor)s %(model)s" ) \
             %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } )
             ###########     add USB CDROM device    ############
@@ -744,34 +762,39 @@ class TcosDevicesNG:
                                                                             }
                                             )
             ###############################################
-            desktop=self.get_desktop_patch()
-    
-            if self.mntconf.has_key(devid):
-                local_mount_point=os.path.join(desktop, self.mntconf[devid] )
-            else:
-                local_mount_point=os.path.join(desktop, _("Cdrom_%s") %devid )
-                
-            print_debug ( "cdrom_usb() remote_mnt=%s device=%s" %(remote_mnt, devid) )
-            if not self.mounter_remote(device, "", mode="--mount"):
-                self.show_notification (  _("Error, can't mount device %s") %(device)  )
-                return
+            # We can have only a cdrom connected without cd inserted
+            if fstype != "":
+                desktop=self.get_desktop_patch()
+        
+                if self.mntconf.has_key(devid):
+                    local_mount_point=os.path.join(desktop, self.mntconf[devid] )
+                else:
+                    local_mount_point=os.path.join(desktop, _("Cdrom_%s") %devid )
+                    
+                print_debug ( "cdrom_usb() remote_mnt=%s device=%s" %(remote_mnt, devid) )
+                if not self.mounter_remote(device, fstype, mode="--mount"):
+                    self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                    return
 
-            if device in self.mounted:
-                data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
-                data['ID_VENDOR']=os.path.basename(self.mounted[device])
+                if device in self.mounted:
+                    data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
+                    data['ID_VENDOR']=os.path.basename(self.mounted[device])
 
-            # remote device is mounted, mount_local and launch filemanager
-            if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=_("Cdrom_%s")  %devid, mode="mount"):
-                return
+                # remote device is mounted, mount_local and launch filemanager
+                if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=_("Cdrom_%s")  %devid, mode="mount"):
+                    return
+                self.launch_desktop_filemanager(local_mount_point)
+                self.mounted[device]=local_mount_point
         
             # change status
             self.update_cdrom_usb(devid, action)
-            self.launch_desktop_filemanager(local_mount_point)
-            self.mounted[device]=local_mount_point
             return    
                     
         elif action == "mount":
-            fstype=data['ID_FS_TYPE']
+            if not data.has_key('ID_FS_TYPE'):
+                fstype=""
+            else:
+                fstype=data['ID_FS_TYPE']
             desktop=self.get_desktop_patch()
     
             if self.mntconf.has_key(devid):
@@ -780,7 +803,7 @@ class TcosDevicesNG:
                 local_mount_point=os.path.join(desktop, _("Cdrom_%s") %devid )
                 
             print_debug ( "cdrom_usb() remote_mnt=%s device=%s" %(remote_mnt, devid) )
-            if not self.mounter_remote(device, "", mode="--mount"):
+            if not self.mounter_remote(device, fstype, mode="--mount"):
                 self.show_notification (  _("Error, can't mount device %s") %(device)  )
                 return
 
@@ -800,8 +823,14 @@ class TcosDevicesNG:
             
         elif action == "remove" or action == "umount":
             if action == "remove":
-                vendor=data['ID_VENDOR']
-                model=data['ID_MODEL']
+                if not data.has_key('ID_VENDOR'):
+                    vendor=""
+                else:
+                    vendor=data['ID_VENDOR']
+                if not data.has_key('ID_MODEL'):
+                    model=""
+                else:
+                    model=data['ID_MODEL']
                 self.show_notification( _("From terminal %(host)s.\nDisconnected CDROM USB device %(device)s\n%(vendor)s %(model)s" ) \
                 %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } ) 
                 print_debug ("cdrom_usb() UNREGISTER SERVICE")
@@ -846,8 +875,14 @@ class TcosDevicesNG:
         action=data['ACTION']
         if not data.has_key('ID_FS_TYPE'):
             # we don't have a filesystem only a full device (ex: /dev/sda)
-            vendor=data['ID_VENDOR']
-            model=data['ID_MODEL']
+            if not data.has_key('ID_VENDOR'):
+                vendor=""
+            else:
+                vendor=data['ID_VENDOR']
+            if not data.has_key('ID_MODEL'):
+                model=""
+            else:
+                model=data['ID_MODEL']
             if action == "add":
                 self.show_notification( _("From terminal %(host)s.\nConnected USB device %(device)s\n%(vendor)s %(model)s" ) \
                 %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } )
@@ -858,7 +893,12 @@ class TcosDevicesNG:
         
         else:
             # we have a filesystem ex: /dev/sda1
-            fstype=data['ID_FS_TYPE']
+            if not data.has_key('ID_FS_TYPE'):
+                fstype=""
+            else:
+                fstype=data['ID_FS_TYPE']
+            
+            if fstype == "swap" or fstype == "extended": return
             
             usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
             if usb_status == "0":
@@ -961,6 +1001,137 @@ class TcosDevicesNG:
                 #    del self.mounted[device]
                 #else:
                 #    print_debug ( "remove_usb() devive=%s not in self.mounted dictionary" )
+                
+    def firewire(self, *args):
+        data=args[0]
+        if type(data) == type( () ): data=args[0][0]
+        
+        print_debug("firewire() data=%s" %data)
+        
+        device=data['DEVNAME']
+        action=data['ACTION']
+        if not data.has_key('ID_FS_TYPE'):
+            # we don't have a filesystem only a full device (ex: /dev/sda)
+            if not data.has_key('ID_VENDOR'):
+                vendor=""
+            else:
+                vendor=data['ID_VENDOR']
+            if not data.has_key('ID_MODEL'):
+                model=""
+            else:
+                model=data['ID_MODEL']
+            if action == "add":
+                self.show_notification( _("From terminal %(host)s.\nConnected Firewire device %(device)s\n%(vendor)s %(model)s" ) \
+                %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } )
+            if action == "remove":
+                self.show_notification( _("From terminal %(host)s.\nDisconnected Firewire device %(device)s\n%(vendor)s %(model)s" ) \
+                %{"host":self.hostname, "device":device, "vendor":vendor, "model":model } ) 
+            return
+        
+        else:
+            # we have a filesystem ex: /dev/sda1
+            if not data.has_key('ID_FS_TYPE'):
+                fstype=""
+            else:
+                fstype=data['ID_FS_TYPE']
+            
+            if fstype == "swap" or fstype == "extended": return
+            
+            usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+            if usb_status == "0":
+                mount=True
+                n=1
+            else:
+                mount=False
+                n=2
+            
+            # add to menu
+            devid=device.split('/')[2]
+            remote_mnt="/mnt/%s" %(devid)
+            if action == "add" or action == "mount":
+                if action == "add":
+                    ###########     add Firewire  device    ############
+                    self.systray.register_device("usb_%s"%devid, 
+                                    _("Firewire device %s") %devid, 
+                                    "usb%s.png"%n, True, 
+                                    {
+                                "usb_%s_mount" %devid: [ _("Mount Firewire device %s") %(devid),  "usb_mount.png", mount,  None, device],
+                                "usb_%s_umount" %devid: [ _("Umount Firewire device %s") %(devid), "usb_umount.png", not mount, None, device]
+                                    }, 
+                                    device)
+                    
+                    self.systray.register_action("usb_%s_mount" %devid , self.firewire, {
+                                            "DEVNAME": device, "ACTION": "mount", "ID_FS_TYPE": fstype, "FORCE_MOUNT":True
+                                                                                    } 
+                                                )
+                    self.systray.register_action("usb_%s_umount" %devid , self.firewire, {
+                                            "DEVNAME": device, "ACTION": "umount", "ID_FS_TYPE": fstype, "FORCE_MOUNT":True
+                                                                                    }
+                                                 )
+                    ###############################################
+                    
+                    if not self.mounter_remote(device, fstype, "--mount"):
+                        self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                        return
+                
+                    if device in self.mounted:
+                        data['ID_FS_LABEL']=os.path.basename(self.mounted[device])
+                        data['ID_VENDOR']=os.path.basename(self.mounted[device])
+                
+                if action == "mount":
+                    # mount from menu and wait for udev mount event
+                    if data.has_key("FORCE_MOUNT") and data["FORCE_MOUNT"]:
+                        if not self.mounter_remote(device, fstype, "--mount"):
+                            self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                        return
+                
+                    # remote device is mounted, mount_local and launch filemanager
+                    local_mount_point = self.get_local_mountpoint(data)
+                    label = os.path.basename(local_mount_point)
+                
+                    # mount with fuse and ltspfs    
+                    if not self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="mount"):
+                        return
+                
+                    # launch desktop filemanager
+                    self.launch_desktop_filemanager(local_mount_point)
+                    self.mounted[device]=local_mount_point
+                    ##########################################
+                
+                
+            elif action == "remove" or action == "umount":
+                if action == "remove":
+                    print_debug ("firewire() UNREGISTER SERVICE")
+                    self.systray.unregister_device("usb_%s"%devid)
+                if device in self.mounted:
+                    local_mount_point=self.mounted[device]
+                    label = os.path.basename(local_mount_point)
+                else:
+                    print_debug ( "remove_firewire() device %s not found in self.mounted" %(device) )
+                    return
+                # umount local fuse
+                # check if fuse is mounted
+                status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point) )
+                if int(status) != 0:
+                    self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="umount")
+                
+                # umount remote device
+                # check if remote is mounted (user can umount before from desktop icon)
+                print_debug("firewire() GETSTATUS device =%s"%device)
+                status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+                try:
+                    status=int(status)
+                    if status == 0:
+                        print_debug ( "remove_firewire() device=%s seems not mounted" %(device) )
+                        self.systray.update_status("usb_%s"%devid, "usb_%s_mount"%devid, True)
+                        self.systray.update_status("usb_%s"%devid, "usb_%s_umount"%devid, False)
+                        
+                    else:
+                        if not self.mounter_remote(device, fstype, "--umount"):
+                            self.show_notification (  _("Error, can't mount device %s") %(device)  )
+                            return
+                except Exception, err:
+                    print_debug ( "firewire() Exception error %s"%err )
         
     def update_cdrom_usb(self, devid, action=None):
         #print_debug ("update_cdrom_usb()")
@@ -997,7 +1168,7 @@ class TcosDevicesNG:
             # don't update if we have disk (only partititions)
             return
         
-        if data["ID_FS_TYPE"] == "":
+        if data["ID_FS_TYPE"] == "" or data["ID_FS_TYPE"] == "swap" or data["ID_FS_TYPE"] == "extended":
             # don't update if fstype is empty (devicesctl.sh and udev put FILESYSTEM always)
             return
         
@@ -1026,7 +1197,45 @@ class TcosDevicesNG:
         #self.systray.items["usb_"%devid][1]="usb%s.png"%n
         self.systray.update_status("usb_%s"%devid, "usb_%s_mount"%devid, not ismounted)
         self.systray.update_status("usb_%s"%devid, "usb_%s_umount"%devid, ismounted)
-
+        
+    def update_firewire(self, *args):
+        #print_debug ("update_firewire()")
+        data=args[0]
+        action=data['ACTION']
+        
+        if not data.has_key("ID_FS_TYPE"):
+            # don't update if we have disk (only partititions)
+            return
+        
+        if data["ID_FS_TYPE"] == "" or data["ID_FS_TYPE"] == "swap" or data["ID_FS_TYPE"] == "extended":
+            # don't update if fstype is empty (devicesctl.sh and udev put FILESYSTEM always)
+            return
+        
+        device="/dev/%s" %data['DEVPATH'].split('/')[2]
+        
+        if( len( data['DEVPATH'].split('/') ) ) > 3:
+            devid=data['DEVPATH'].split('/')[3]
+        else:
+            devid=data['DEVPATH'].split('/')[2]
+        
+        if action ==  "umount":
+            self.show_notification (  _("Firewire device %s umounted. You can extract it.") %(devid)  )
+            
+        if action ==  "mount":
+            self.show_notification (  _("Firewire device %s mounted. Ready for use.") %(devid)  )
+        
+        print_debug("update_firewire() GETSTATUS device=%s data=%s"%(device,data) )
+        usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus").replace('\n','')
+        if usb_status == "0":
+            ismounted=False
+            n=1
+        else:
+            ismounted=True
+            n=2
+        print_debug ("update_firewire() usb devid=%s ismounted=%s" %(devid, ismounted) )
+        #self.systray.items["usb_"%devid][1]="usb%s.png"%n
+        self.systray.update_status("usb_%s"%devid, "usb_%s_mount"%devid, not ismounted)
+        self.systray.update_status("usb_%s"%devid, "usb_%s_umount"%devid, ismounted)
         
     def remove_dupes(self, mylist):
         """
