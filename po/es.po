@@ -1399,8 +1399,8 @@ msgid "Open static host list"
 msgstr "Abrir lista fija de equipos"
 
 #: tcosmonitor.glade:1076
-msgid "Only show hosts running tcosxmlrpc (8080 port)"
-msgstr "Sólo mostrar equipos ejecutando tcosmxlrpc (puerto 8080)"
+msgid "Only show hosts running tcosxmlrpc (8998 port)"
+msgstr "Sólo mostrar equipos ejecutando tcosmxlrpc (puerto 8998)"
 
 #: tcosmonitor.glade:1098
 msgid "Only do all actions on selected hosts (requires restart TcosMonitor)"

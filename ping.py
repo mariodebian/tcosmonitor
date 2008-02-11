@@ -85,18 +85,18 @@ class Ping:
         for pingle in pinglist:
             pingle.join()
             if pingle.status == 2:
-                # only show in list hosts running tcosxmlrpc in 8080 port
+                # only show in list hosts running tcosxmlrpc in 8998 port
                 if self.main.config.GetVar("onlyshowtcos") == 1:
-                    # view status of port 8080
+                    # view status of port 8998
                     if PingPort(pingle.ip, shared.xmlremote_port, 0.5).get_status() == "OPEN":
                         self.main.xmlrpc.newhost(pingle.ip)
                         if self.main.xmlrpc.GetVersion():
-                            print_debug("ping_iprange() host=%s port 8080 OPEN" %(pingle.ip))
+                            print_debug("ping_iprange() host=%s port 8998 OPEN" %(pingle.ip))
                             reachip.append(pingle.ip)
                         else:
-                            print_debug("ping_iprange() host=%s port 8080 OPEN but not tcosxmlrpc" %(pingle.ip))
+                            print_debug("ping_iprange() host=%s port 8998 OPEN but not tcosxmlrpc" %(pingle.ip))
                     else:
-                        print_debug("ping_iprange() host=%s port 8080 closed" %(pingle.ip))
+                        print_debug("ping_iprange() host=%s port 8998 closed" %(pingle.ip))
                 else:
                     reachip.append(pingle.ip)
         

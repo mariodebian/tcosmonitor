@@ -213,20 +213,20 @@ class LocalData:
             # sort numeric
             self.allclients = self.sorted_copy(self.allclients)
             
-            # onlys show host running tcosxmlrpc in 8080 port
+            # onlys show host running tcosxmlrpc in 8998 port
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 hosts=[]
                 for host in self.allclients:
-                    # view status of port 8080
+                    # view status of port 8998
                     if PingPort(host, shared.xmlremote_port, 0.5).get_status() == "OPEN":
                         self.main.xmlrpc.newhost(host)
                         if self.main.xmlrpc.GetVersion():
-                            print_debug("GetAllClients() host=%s port 8080 OPEN" %(host))
+                            print_debug("GetAllClients() host=%s port 8998 OPEN" %(host))
                             hosts.append(host)
                         else:
-                            print_debug("GetAllClients() host=%s port 8080 OPEN but not tcosxmlrpc" %(host))
+                            print_debug("GetAllClients() host=%s port 8998 OPEN but not tcosxmlrpc" %(host))
                     else:
-                        print_debug("GetAllClients() host=%s port 8080 CLOSED" %(host))
+                        print_debug("GetAllClients() host=%s port 8998 CLOSED" %(host))
                         hosts.append(host)
                 self.allclients=hosts
             

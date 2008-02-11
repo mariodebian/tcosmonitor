@@ -621,15 +621,15 @@ if __name__ == '__main__':
     else:
         print "80 is NOT listening"
         
-    if app.isPortListening("192.168.0.3", "8080"):
-        print "8080 is listening"
+    if app.isPortListening("192.168.0.3", "8998"):
+        print "8998 is listening"
     else:
-        print "8080 is NOT listening"
+        print "8998 is NOT listening"
     
-    #if app.isPortListening("192.168.0.10", "8080"):
-    #    print "8080 is listening"
+    #if app.isPortListening("192.168.0.10", "8998"):
+    #    print "8998 is listening"
     #else:
-    #    print "8080 is NOT listening"
+    #    print "8998 is NOT listening"
     #start=time()
     #print_debug ("TCOS_VERSION:  %s" %(app.GetVersion()) ) 
     #howmany(start, "get version info")

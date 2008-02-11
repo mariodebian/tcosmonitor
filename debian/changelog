@@ -1,3 +1,13 @@
+tcosmonitor (0.2.3) unstable; urgency=low
+
+  * ping.py README.standalone TcosXmlRpc.py tcosmonitor.glade shared.py
+    LocalData.py po/tcosmonitor.pot po/es.po
+    - Change XMLRPC port from 8080 to 8998
+  * debian/control
+    - Conflicts with initramfs-tools-tcos <= 0.88.14.10
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 11 Feb 2008 12:09:49 +0100
+
 tcosmonitor (0.2.2) unstable; urgency=low
 
   * TcosActions.py

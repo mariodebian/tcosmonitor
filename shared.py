@@ -132,7 +132,7 @@ module_conf_file="/etc/tcos/tcosmonitor.conf"
 
 httpd_port=8081
 
-xmlremote_port=8080
+xmlremote_port=8998
 xmlremote_url="/RPC2"
 
 pulseaudio_soundserver_port=4713
