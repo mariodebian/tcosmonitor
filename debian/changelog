@@ -1,11 +1,16 @@
 tcosmonitor (0.2.4) unstable; urgency=low
 
+  [ Ignacio Vidal ]
   * tcos-devices-ng.py
     - Update support cdrom usb
     - Add support for Firewire external disks
     - Fix dont try to mount swap or extended partitions in usb/firewire disks
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Mon, 11 Feb 2008 18:37:21 +0100
+  [ Mario Izquierdo (mariodebian) ]
+  * server-utils/tcos-server-utils.py:
+    - Import TcosCommon module (thanks pelox for bug report)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 14 Feb 2008 16:43:04 +0100
 
 tcosmonitor (0.2.3) unstable; urgency=low
 

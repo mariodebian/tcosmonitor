@@ -110,8 +110,10 @@ class ServerUtils:
         self.worker_running = False
         
         # get all devices
+        import TcosCommon
         import TcosXmlRpc
         import TcosConf
+        self.common=TcosCommon.TcosCommon(self)
         self.config=TcosConf.TcosConf(self)
         self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
         
