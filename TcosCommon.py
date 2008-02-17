@@ -31,6 +31,8 @@ import shared
 import popen2
 from subprocess import Popen, PIPE, STDOUT
 
+from time import sleep
+
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" %("TcosCommon", txt)
@@ -40,6 +42,7 @@ class TcosCommon:
 
     def __init__(self,main):
         self.main=main
+        self.thread_lock=False
         self.vars={}
         print_debug("__init__()")
         pass
@@ -169,6 +172,33 @@ class TcosCommon:
             if extfilter and eval("self.extensions[ext]."+ext+".extension_type") == extfilter:
                 print_debug("init_extensions() init %s filter=%s" %(ext,extfilter))
                 self.init_extension( eval("self.extensions[ext]."+ext) )
+
+
+    def threads_enter(self, fromtxt=None):
+        import gtk
+        #print_debug("===> threads_enter() FROM %s"%fromtxt)
+        if self.thread_lock:
+            self.wait()
+        self.thread_lock=True
+        gtk.gdk.threads_enter()
+
+    def threads_leave(self, fromtxt=None):
+        import gtk
+        #print_debug("======> treads_leave() FROM %s"%fromtxt)
+        gtk.gdk.threads_leave()
+        self.thread_lock=False
+
+    def wait(self):
+        """
+        wait (max 4 sec) for self.lock == True
+        """
+        print_debug("\n\nwait() CALLED\n\n")
+        if not self.thread_lock: return
+        i=0
+        for i in range(40):
+            print_debug("wait() ************* i=%s  ***************"%i)
+            if not self.thread_lock: return
+            sleep(0.1)
 
 if __name__ == '__main__':
     shared.debug=True

@@ -192,7 +192,7 @@ class TcosMonitor:
         self.pref.hide()
         return True
     """
-
+    """
     def search_host(self, widget):
         print_debug ( "search_host()" )
         txt=self.searchtxt.get_text()
@@ -214,8 +214,7 @@ class TcosMonitor:
         username=model.get_value(iter, 2)
         if txt != hostname and txt != ip and txt != username:
             data.append(path)
-  
-    """
+    
     #def exe_cmd(self, cmd):
     #    print_debug ( "exe_cmd() cmd=%s" %(cmd) )
     #    self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)

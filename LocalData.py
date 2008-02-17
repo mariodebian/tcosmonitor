@@ -180,8 +180,10 @@ class LocalData:
             
             ping=Ping(self.main)
             ss=ping.get_ip_address(interface)
-            
-            print_debug ( "GetAllClients() method=ping starting worker without dog" )
+            if ss == None:
+                self.main.write_into_statusbar( _("Selected network inteface (%s) don't have IP address" ) %(interface) )
+                return []
+            print_debug ( "GetAllClients() method=ping starting worker without dog iface=%s ip=%s" %(interface,ss) )
             self.main.worker=shared.Workers(self.main, ping.ping_iprange, [ss], dog=False )
             self.main.worker.start()
             

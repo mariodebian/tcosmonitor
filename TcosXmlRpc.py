@@ -70,9 +70,11 @@ class TcosXmlRpc:
             if self.username == "" or self.password == "":
                 # warn empty username and password 
                 if self.main.name == "TcosMonitor":
-                    gtk.gdk.threads_enter()
+                    #gtk.gdk.threads_enter()
+                    self.main.common.threads_enter("TcosXmlRpc:__init__ no user or password")
                     shared.error_msg( _("Username or password are empty,\nplease edit in preferences dialog!") )
-                    gtk.gdk.threads_leave()
+                    #gtk.gdk.threads_leave()
+                    self.main.common.threads_leave("TcosXmlRpc:__init__ no user or password")
         else:
             print_debug ( "running outside tcosmonitor" )
 

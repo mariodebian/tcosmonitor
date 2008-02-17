@@ -106,11 +106,32 @@ class Initialize:
         self.main.aboutbutton = self.ui.get_widget('aboutbutton')
         self.main.aboutbutton.connect('clicked', self.main.actions.on_aboutbutton_click)
         
-        self.main.searchbutton = self.ui.get_widget('searchbutton')
-        self.main.searchbutton.connect('clicked', self.main.actions.on_searchbutton_click)
+        self.main.donatewindow= self.ui.get_widget('windowdonate')
+        self.main.donatewindow.connect('delete-event', self.main.actions.on_donatewindow_close )
+        self.main.donatewindow.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
+        #print_debug("show_donate ??? value=%s"%self.main.config.GetVar("show_donate"))
+        if self.main.config.GetVar("show_donate") == 1:
+            self.main.donatewindow.show()
         
-        self.main.searchtxt = self.ui.get_widget('searchtxt')
-        self.main.searchtxt.connect('activate', self.main.search_host)
+        self.main.donatebutton = self.ui.get_widget('donatebutton')
+        self.main.donatebutton.connect('clicked', self.main.actions.on_donatebutton_click)
+        
+        self.main.donateurl=self.ui.get_widget('donateurl')
+        self.main.donateurl.connect('clicked', self.main.actions.on_donateurl_click)
+        
+        self.main.donateurllabel=self.ui.get_widget('donateurllabel')
+        
+        self.main.donateshowagain=self.ui.get_widget('donateshowagain')
+        if self.main.config.GetVar("show_donate") == 1:
+            self.main.donateshowagain.set_active(False)
+        else:
+            self.main.donateshowagain.set_active(True)
+        
+        #self.main.searchbutton = self.ui.get_widget('searchbutton')
+        #self.main.searchbutton.connect('clicked', self.main.actions.on_searchbutton_click)
+        
+        #self.main.searchtxt = self.ui.get_widget('searchtxt')
+        #self.main.searchtxt.connect('activate', self.main.search_host)
         
         
     def initabout(self):

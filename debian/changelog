@@ -1,3 +1,15 @@
+tcosmonitor (0.2.5) unstable; urgency=low
+
+  * TcosActions.py ping.py TcosXmlRpc.py tcosmonitor.py TcosCommon.py
+    LocalData.py
+    - Change gtk.gdk.threads_* calls to self.main.common.threads_*
+      With this we can search for parallel calls to threads locks
+  * Initialize.py tcosmonitor.glade
+    - Delete search box and button and add donate window
+  * Update translations
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 17 Feb 2008 19:00:32 +0100
+
 tcosmonitor (0.2.4) unstable; urgency=low
 
   [ Ignacio Vidal ]

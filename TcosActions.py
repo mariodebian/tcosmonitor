@@ -146,34 +146,7 @@ class TcosActions:
         if not self.main.worker.is_stoped():
             self.main.worker.stop()
             self.main.progressbutton.hide()
-    """        
-    def on_pref_ok_button_click(self, widget):
-        self.main.config.SaveSettings()
-        # refresh pref widgets
-        self.main.init.populate_pref()
-        print_debug ( "on_pref_ok_button_click() SAVE SETTINGS !!!" )
-        self.main.write_into_statusbar ( _("New settings saved.") )
-        self.main.pref.hide()
-        
-    def on_pref_cancel_button_click(self, widget):
-        print_debug ( "on_pref_cancel_button_click()" )
-        # refresh pref widgets
-        self.main.init.populate_pref()
-        self.main.pref.hide()        
-    
-    
-    def on_button_open_static(self, widget):
-        print_debug("on_button_open_static()")
-        self.main.static.show_static()
-        self.main.pref.hide()
 
-    def on_scan_method_change(self, widget):
-        if widget.get_active() == 2:
-            self.main.pref_open_static.set_sensitive(True)
-        else:
-            self.main.pref_open_static.set_sensitive(False)
-    """
-    
     
     def on_refreshbutton_click(self,widget):
         if self.main.config.GetVar("xmlrpc_username") == "" or self.main.config.GetVar("xmlrpc_password") == "":
@@ -200,13 +173,28 @@ class TcosActions:
             self.main.worker=shared.Workers(self.main, self.populate_hostlist, [allclients] )
             self.main.worker.start()
             return
-        
+    
+    """    
     def on_searchbutton_click(self, widget):
         if self.main.config.GetVar("xmlrpc_username") == "" or self.main.config.GetVar("xmlrpc_password") == "":
             return
         print_debug ( "on_searchbutton_click()" )
         self.main.search_host(widget)
+    """
+    def on_donatebutton_click(self, widget):
+        self.main.donatewindow.show()
     
+    def on_donatewindow_close(self, *args):
+        notshowagain=self.main.donateshowagain.get_active()
+        if notshowagain:
+            self.main.config.SetVar("show_donate", "0")
+            self.main.config.SaveToFile()
+        self.main.donatewindow.hide()
+        return True
+    
+    def on_donateurl_click(self, *args):
+        url=self.main.donateurllabel.get_text()
+        self.main.common.exe_cmd("x-www-browser %s"%url)
     ############################################################################
 
     def populate_host_list(self):
@@ -448,7 +436,7 @@ class TcosActions:
         
     def populate_datatxt(self, ip):
         start1=time()
-        print_debug ("populate_datatxt() INIT")
+        print_debug ("populate_datatxt() INIT ip %s"%ip)
         
         if not self.main.xmlrpc.connected:
             print_debug ( "populate_datatxt(%s) NO CONNECTION" %(ip) )
@@ -467,7 +455,8 @@ class TcosActions:
         print_debug ( "Client type=%s" %(tcos_vars["get_client"]) )
         
         # print into statusbar
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions:populate_datatxt show progressbar")
         
         if shared.disable_textview_on_update: self.main.tabla.set_sensitive(False)
         
@@ -476,7 +465,8 @@ class TcosActions:
         self.main.progressbar.show()
         #self.main.progressbutton.show()
         self.set_progressbar( _("Connecting with %s to retrieve some info..."  ) %(ip) , 0 ,show_percent=False)
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions:populate_datatxt show progressbar")
         
         
         info_percent=0.0
@@ -849,14 +839,16 @@ class TcosActions:
             else:
                 self.datatxt.insert_block ( "Sound server is not running", image=shared.IMG_DIR + "info_sound_ko.png")
         
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions:populate_datatxt end")
         self.datatxt.display()
         self.update_progressbar( 1 )
         self.main.progressbar.hide()
         
         if shared.disable_textview_on_update: self.main.tabla.set_sensitive(True)
         
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions:populate_datatxt end")
         
         crono(start1, "populate_datatxt(%s)" %(ip) )
         return False
@@ -898,7 +890,8 @@ class TcosActions:
         # clean list
         print_debug ( "populate_hostlist() clear list and start progressbar!!!" )
         
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions:populate_hostlist show progressbar")
 
         if shared.disable_textview_on_update: self.main.tabla.set_sensitive(False)
 
@@ -908,7 +901,8 @@ class TcosActions:
         self.main.progressbutton.show()
         self.set_progressbar( _("Searching info of hosts..."), 0)
         self.model.clear()
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions:populate_hostlist show progressbar")
         
         inactive_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'inactive.png')
         active_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active.png')
@@ -929,11 +923,13 @@ class TcosActions:
             except:
                 pass
             i += 1
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions:populate_hostlist show connecting")
             self.main.progressbar.show()
             self.set_progressbar( _("Connecting to %s...") \
                             %(host), float(i)/float(len(clients)) )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions:populate_hostlist show connecting")
             
             
             self.main.localdata.newhost(host)
@@ -969,7 +965,8 @@ class TcosActions:
             else:
                 image_blocked=unlocked_image
             
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions:populate_hostlist print data")
             self.iter = self.model.append (None)
             self.model.set_value (self.iter, COL_HOST, hostname )
             self.model.set_value (self.iter, COL_IP, host )
@@ -979,11 +976,13 @@ class TcosActions:
             self.model.set_value (self.iter, COL_BLOCKED, image_blocked)
             self.model.set_value (self.iter, COL_PROCESS, num_process )
             self.model.set_value (self.iter, COL_TIME, time_logged)
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions:populate_hostlist print data")
             
             crono(start2, "populate_host_list(%s)" %(ip) )
         
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions:populate_hostlist END")
         self.main.progressbar.hide()
         self.main.progressbutton.hide()
         self.main.refreshbutton.set_sensitive(True)
@@ -991,7 +990,8 @@ class TcosActions:
         
         if shared.disable_textview_on_update: self.main.tabla.set_sensitive(True)
         
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions:populate_hostlist END")
         
         try:
             self.main.worker.set_finished()
@@ -1558,9 +1558,11 @@ class TcosActions:
         from ping import PingPort
         max_wait=5
         wait=0
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions:start_vnc print status msg")
         self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(host) )
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions:start_vnc print status msg")
             
         status="OPEN"
         while status != "CLOSED":
@@ -1587,13 +1589,17 @@ class TcosActions:
             #self.main.xmlrpc.vnc("stopserver", ip )
             result=self.main.xmlrpc.vnc("startserver", ip)
             if result.find("error") != -1:
-                gtk.gdk.threads_enter()
+                #gtk.gdk.threads_enter()
+                self.main.common.threads_enter("TcosActions:start_vnc print error msg")
                 shared.error_msg ( _("Can't start VNC, error:\n%s") %(result) )
-                gtk.gdk.threads_leave()
+                #gtk.gdk.threads_leave()
+                self.main.common.threads_leave("TcosActions:start_vnc print error msg")
                 return
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions:start_vnc print waiting msg")
             self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions:start_vnc print waiting msg")
             
             # need to wait for start, PingPort loop
             
@@ -1612,44 +1618,56 @@ class TcosActions:
                 print_debug ( "start_process() threading \"%s\"" %(cmd) )
                 self.main.common.exe_cmd (cmd, background=True)            
         except:
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions:start_vnc print x11vnc support msg")
             shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions:start_vnc print x11vnc support msg")
             return
 
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions:start_vnc clean status msg")
         self.main.write_into_statusbar( "" )
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions:start_vnc clean status msg")
         
 
     def start_ivs(self, ip):
         self.main.xmlrpc.newhost(ip)
         # check if remote proc is running
         if not self.main.xmlrpc.GetStatus("ivs"):
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions:start_ivs write connecting msg")
             self.main.write_into_statusbar( "Connecting with %s to start iTALC support" %(ip) )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions:start_ivs write connecting msg")
             
             try:
                 self.main.xmlrpc.newhost(ip)
                 self.main.xmlrpc.Exe("startivs")
-                gtk.gdk.threads_enter()
+                #gtk.gdk.threads_enter()
+                self.main.common.threads_enter("TcosActions:start_ivs write waiting msg")
                 self.main.write_into_statusbar( "Waiting for start of IVS server..." )
-                gtk.gdk.threads_leave()
+                #gtk.gdk.threads_leave()
+                self.main.common.threads_leave("TcosActions:start_ivs write waiting msg")
                 sleep(5)
             except:
-                gtk.gdk.threads_enter()
+                #gtk.gdk.threads_enter()
+                self.main.common.threads_enter("TcosActions:start_ivs write error msg")
                 shared.error_msg ( _("Can't start IVS, please add iTALC support") )
-                gtk.gdk.threads_leave()
+                #gtk.gdk.threads_leave()
+                self.main.common.threads_leave("TcosActions:start_ivs write error msg")
                 return
                 
         cmd = "icv " + ip + " root"
         print_debug ( "start_process() threading \"%s\"" %(cmd) )
         self.main.common.exe_cmd (cmd, background=True)
         
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions:start_ivs END")
         self.main.write_into_statusbar( "" )
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions:start_ivs END")
 
         
     def menu_event_all(self, action):
@@ -2046,17 +2064,16 @@ class TcosActions:
 
 
     def action_for_clients(self, allhost, action):
+        self.main.common.threads_enter("TcosActions::action_for_clients cleaning")
         if action == "screenshot":
-            gtk.gdk.threads_enter()
             self.main.datatxt.clean()
             block_txt=_("Screenshots of all hosts")
             self.main.datatxt.insert_block( block_txt )
             self.main.datatxt.insert_html("<br/>")
-            gtk.gdk.threads_leave()
             
-        gtk.gdk.threads_enter()
+            
         self.main.progressbar.show()
-        gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions::action_for_clients cleaning")
         
         for ip in allhost:
             if not self.doaction_onthisclient(action, ip):
@@ -2072,24 +2089,30 @@ class TcosActions:
             mydict={}
             mydict["action"]=action
             mydict["ip"]=ip
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions::action_for_clients doing action")
             self.set_progressbar( _("Doing action \"%(action)s\" in %(ip)s...") %mydict , percent )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions::action_for_clients doing action")
         
             self.main.xmlrpc.newhost(ip)
             try:
                 if action == "unlockscreen":
                     self.main.xmlrpc.unlockscreen()
                     # update icon
-                    gtk.gdk.threads_enter()
+                    #gtk.gdk.threads_enter()
+                    self.main.common.threads_enter("TcosActions::action_for_clients unlockscreen")
                     self.change_lockscreen(ip)
-                    gtk.gdk.threads_leave()
+                    #gtk.gdk.threads_leave()
+                    self.main.common.threads_leave("TcosActions::action_for_clients unlockscreen")
                 elif action == "lockscreen":
                     self.main.xmlrpc.lockscreen()
                     # update icon
-                    gtk.gdk.threads_enter()
+                    #gtk.gdk.threads_enter()
+                    self.main.common.threads_enter("TcosActions::action_for_clients lockscreen")
                     self.change_lockscreen(ip)
-                    gtk.gdk.threads_leave()
+                    #gtk.gdk.threads_leave()
+                    self.main.common.threads_leave("TcosActions::action_for_clients lockscreen")
                 elif action == "screenshot":
                     self.main.xmlrpc.screenshot( self.main.config.GetVar("miniscrot_size") ) 
                     
@@ -2108,18 +2131,22 @@ class TcosActions:
                                          %(action, ip) )
                 pass
         
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions::action_for_clients END client")
             self.set_progressbar( _("Done action \"%(action)s\" in %(ip)s") %mydict , 1 )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions::action_for_clients END")
             # wait (shared.wait_between_many_host) seconds per host to show progressbar???
             sleep(shared.wait_between_many_host)
         
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions::action_for_clients END all")
         if action == "screenshot": 
             self.set_progressbar( _("Waiting for screenshots...") , 1 )
             self.main.datatxt.display()
         self.main.progressbar.hide()
-        gtk.gdk.threads_leave()     
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions::action_for_clients END all")
         return
         
         
@@ -2158,13 +2185,17 @@ class TcosActions:
         
         # write into statusbar   
         #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions::get_screenshot writing wait msg")
         self.main.write_into_statusbar ( _("Trying to order terminal to do a screenshot...") )
         #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions::get_screenshot writing wait msg")
         
         if not self.main.xmlrpc.screenshot( self.main.config.GetVar("scrot_size") ):
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("TcosActions::get_screenshot writing error msg")
             self.main.write_into_statusbar( _("Can't make screenshot, connection error") )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("TcosActions::get_screenshot writing error msg")
             return False
         
         print_debug ( "get_screenshot() creating button..." )
@@ -2195,10 +2226,12 @@ class TcosActions:
                                  %(url, _("Screenshot of %s" %(ip) )) )
         
         
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("TcosActions::get_screenshot END")
         self.main.datatxt.display()
         self.main.write_into_statusbar ( _("Screenshot of %s, done.") %(ip)  )
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("TcosActions::get_screenshot END")
         
         return False
 

@@ -117,7 +117,8 @@ DefaultConfig=[
 ["selectedhosts", 0, "int"],
 ["statichosts", "", "str"],
 ["ssh_remote_username", "root", "str"],
-["vlc_audio_codec", "mpga", "str"]
+["vlc_audio_codec", "mpga", "str"],
+["show_donate", 1, "int"]
 ]
 # method ping is list 0 of combo_scan_method
 
@@ -466,8 +467,8 @@ class Workers:
             pass
         
         if self.main.worker_running == False:
-            self.th.start()     # start thread
             self.set_started()  # config var as started
+            self.th.start()     # start thread
             self.start_watch_dog(self.th) # start watch_dog
         else:
             print_debug ( "worker() other work pending... not starting" )
@@ -478,11 +479,13 @@ class Workers:
         #self.main.worker_running=False
         
     def set_finished(self):
+        print_debug("worker set_finished() *****")
         self.__finished = True
         self.__stop=False
         self.main.worker_running=False
 
     def set_started(self):
+        print_debug("worker set_started() *****")
         self.__finished=False
         self.__stop=False
         self.main.worker_running=True

@@ -53,6 +53,7 @@ class Ping:
         self.reachip=[]
 
     def ping_iprange(self, selfip):
+        print_debug("ping_iprange() ip=%s"%selfip)
         pinglist = []
         reachip =[]
         server_ips=self.get_server_ips()
@@ -64,23 +65,28 @@ class Ping:
                 continue
             #print "ping to %s" %(ip)
             if self.main.worker.is_stoped():
+                print_debug("ping_iprange() WORKER is stoped")
                 # this is a stop thread var
                 break
             ##########
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("Ping:ping_iprange show progress")
             self.main.progressbar.show()
             self.main.progressbutton.show()
-            self.main.actions.set_progressbar( _("Ping to %s...") \
-                            %(ip), float(i)/float(254) )
-            gtk.gdk.threads_leave()
+            self.main.actions.set_progressbar( _("Ping to %s...")%(ip), float(i)/float(254) )
+            #print_debug("ping_iprange() ip=%s"%(ip))
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("Ping:ping_iprange show progress")
             ############
             current = pingip(ip)
             pinglist.append(current)
             current.start()
         
-        gtk.gdk.threads_enter()
+        #gtk.gdk.threads_enter()
+        self.main.common.threads_enter("Ping:ping_iprange print waiting")
         self.main.actions.set_progressbar( _("Waiting for pings...") , float(1) )
-        gtk.gdk.threads_leave()
+        #gtk.gdk.threads_leave()
+        self.main.common.threads_leave("Ping:ping_iprange print waiting")
      
         for pingle in pinglist:
             pingle.join()
@@ -104,16 +110,20 @@ class Ping:
         self.main.worker.set_finished()
         
         if len(reachip) == 0:
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("Ping:ping_iprange print no hosts")
             self.main.write_into_statusbar ( _("No host found") )
             self.main.progressbar.hide()
             self.main.progressbutton.hide()
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("Ping:ping_iprange print no hosts")
         
         if len(reachip) > 0:
-            gtk.gdk.threads_enter()
+            #gtk.gdk.threads_enter()
+            self.main.common.threads_enter("Ping:ping_iprange print num hosts")
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(reachip) )
-            gtk.gdk.threads_leave()
+            #gtk.gdk.threads_leave()
+            self.main.common.threads_leave("Ping:ping_iprange print num hosts")
             
             self.main.localdata.allclients=reachip
             
@@ -125,23 +135,29 @@ class Ping:
  
     def get_ip_address(self, ifname):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        return socket.inet_ntoa(fcntl.ioctl(
-            s.fileno(),
-            0x8915,  # SIOCGIFADDR
-            struct.pack('256s', ifname[:15])
-        )[20:24])
+        try:
+            ip=socket.inet_ntoa(fcntl.ioctl(
+                s.fileno(),
+                0x8915,  # SIOCGIFADDR
+                struct.pack('256s', ifname[:15])
+            )[20:24])
+        except:
+            ip=None
+            print_debug("get_ip_address() ifname %s don't have ip address"%ifname)
+        return ip
 
 
     def get_server_ips(self):
         IPS=[]
         for dev in os.listdir("/sys/class/net"):
             if not dev in shared.hidden_network_ifaces:
-               print_debug ( "get_server_ips() add interface %s" %dev )
-               try:
-                   ip=self.get_ip_address(dev)
-                   IPS.append(ip)
-               except:
-                   pass
+                print_debug ( "get_server_ips() add interface %s" %dev )
+                ip=self.get_ip_address(dev)
+                if ip:
+                    print_debug("appending ip %s"%ip)
+                    IPS.append(ip)
+               
+        print_debug("get_server_ips() IPS=%s"%IPS)
         return IPS
 
 

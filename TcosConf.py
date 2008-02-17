@@ -71,7 +71,11 @@ class TcosConf:
         conf=[]
         print_debug("open_file() reading data from \"%s\"..." \
                             %(shared.config_file) )
-        fd=file(shared.config_file, 'r')
+        try:
+            fd=file(shared.config_file, 'r')
+        except:
+            print("Error Opening %s file"%shared.config_file)
+            return
         self.data=fd.readlines()
         fd.close()
         for line in self.data:
