@@ -212,6 +212,8 @@ patch_feisty: patch_version
 
 patch_gutsy: patch_version
 
+patch_max: patch_version
+
 patch_etch: patch_version
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
 	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py

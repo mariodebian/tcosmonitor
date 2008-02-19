@@ -158,6 +158,8 @@ class TcosActions:
         
         if self.main.config.GetVar("scan_network_method") == "ping":
             allclients=self.main.localdata.GetAllClients("ping")
+            model=self.main.tabla.get_model()
+            model.clear()
             # ping will call populate_hostlist when finish
             return
         else:
@@ -449,7 +451,9 @@ class TcosActions:
         self.datatxt = self.main.datatxt
         
         # clear datatxt
+        self.main.common.threads_enter("TcosActions:populate_datatxt clean datatxt")
         self.datatxt.clean()
+        self.main.common.threads_enter("TcosActions:populate_datatxt clean datatxt")
 
         tcos_vars["get_client"] = self.main.xmlrpc.ReadInfo("get_client")
         print_debug ( "Client type=%s" %(tcos_vars["get_client"]) )
@@ -482,7 +486,9 @@ class TcosActions:
         
         if self.main.config.GetVar("tcosinfo") == 1:
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             if tcos_vars["get_client"] == "tcos":
                 self.datatxt.insert_block( _("Tcos info") , image=shared.IMG_DIR + "tcos-icon-32x32.png" )
@@ -527,7 +533,9 @@ class TcosActions:
             
         if self.main.config.GetVar("kernelmodulesinfo") == 1:
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
             
             self.datatxt.insert_block( _("Kernel info"),  image=shared.IMG_DIR + "info_kernel.png" )
             
@@ -567,7 +575,9 @@ class TcosActions:
         
         if cpuinfo == 1:
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             self.datatxt.insert_block( _("Cpu info: "), image=shared.IMG_DIR + "info_cpu.png"  ) 
             
@@ -584,7 +594,9 @@ class TcosActions:
         
         if pciinfo == 1:
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             # PCI info
             self.datatxt.insert_block( _("PCI buses: ") , image=shared.IMG_DIR + "info_pci.png" )
@@ -602,7 +614,9 @@ class TcosActions:
         
         if self.main.config.GetVar("processinfo") == 1 and tcos_vars["get_client"] != "standalone":
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
             
             self.datatxt.insert_block( _("Process running: "), image=shared.IMG_DIR + "info_proc.png"  )
             
@@ -613,7 +627,9 @@ class TcosActions:
         
         if ramswapinfo == 1:
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
             
             self.datatxt.insert_block( _("Ram info: "), image=shared.IMG_DIR + "info_ram.png"  )
             
@@ -642,7 +658,9 @@ class TcosActions:
         
         if networkinfo == 1:
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             self.datatxt.insert_block( _("Network info: ") , image=shared.IMG_DIR + "info_net.png" )
             
@@ -665,7 +683,9 @@ class TcosActions:
             
         if self.main.config.GetVar("xorginfo") == 1 and tcos_vars["get_client"] != "standalone":
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             self.datatxt.insert_block( _("Xorg info") , image=shared.IMG_DIR + "info_xorg.png" )
         
@@ -722,7 +742,9 @@ class TcosActions:
             
         if self.main.config.GetVar("soundserverinfo") == 1:
             info_percent+=percent_step
+            self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
+            self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             # make a ping to port
             from ping import PingPort
