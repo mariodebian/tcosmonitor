@@ -2,8 +2,9 @@ tcosmonitor (0.2.6) unstable; urgency=low
 
   * TcosActions.py
     - Fix freeze bug
+    - Fix double call to common.thread_enter()
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 19 Feb 2008 20:28:02 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 19 Feb 2008 22:51:37 +0100
 
 tcosmonitor (0.2.5) unstable; urgency=low
 

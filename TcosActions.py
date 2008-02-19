@@ -453,7 +453,7 @@ class TcosActions:
         # clear datatxt
         self.main.common.threads_enter("TcosActions:populate_datatxt clean datatxt")
         self.datatxt.clean()
-        self.main.common.threads_enter("TcosActions:populate_datatxt clean datatxt")
+        self.main.common.threads_leave("TcosActions:populate_datatxt clean datatxt")
 
         tcos_vars["get_client"] = self.main.xmlrpc.ReadInfo("get_client")
         print_debug ( "Client type=%s" %(tcos_vars["get_client"]) )
