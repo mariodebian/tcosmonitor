@@ -157,9 +157,8 @@ class TcosActions:
         self.main.xmlrpc.resethosts()
         
         if self.main.config.GetVar("scan_network_method") == "ping":
+            self.model.clear()
             allclients=self.main.localdata.GetAllClients("ping")
-            model=self.main.tabla.get_model()
-            model.clear()
             # ping will call populate_hostlist when finish
             return
         else:

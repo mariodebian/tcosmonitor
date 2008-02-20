@@ -195,7 +195,7 @@ class LocalData:
             self.allclients=[]
             self.hostname=None
             #read this command output
-            cmd="netstat -putan 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
+            cmd="LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
             
             output=self.main.common.exe_cmd(cmd)
             
