@@ -203,6 +203,7 @@ onehost_menuitems=[
  [ _("Audio/Video broadcast") , "menu_broadcast.png" ],             #action=16
  [ _("Send files") , "menu_send.png" ],                       #action=17
  [ _("Demo mode (from this host)") , "menu_tiza.png" ],     #action=18
+ [ _("Boot client") , "menu_wol.png" ]                      #action=19
  ]
 
 
@@ -218,7 +219,8 @@ allhost_menuitems=[
  [ _("Enter demo mode, all connected users see my screen") , "menu_tiza.png" ], #action=8
  [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=9
  [ _("Audio/Video broadcast") , "menu_broadcast.png" ],                 #action=10
- [ _("Send files") , "menu_send.png" ]                          #action=11
+ [ _("Send files") , "menu_send.png" ],                          #action=11
+ [ _("Boot All clients") , "menu_wol.png" ]                          #action=12
  ]
 
 

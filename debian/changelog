@@ -7,11 +7,19 @@ tcosmonitor (0.2.6) unstable; urgency=low
 
   [ Ignacio Vidal ]
   * TcosActions.py
-    - Fix clear list after
-  * LocalData.py
-    - Fix scan netstat 
+    - Fix actions poweroff, reboot and poweroff with timeout
+    - In video difussion unmute,restore volume audio and fix keyboard and mouse lock
+    - In actions demo mode and video broadcast deactivate screensaver
+    - Add option to boot clients with wake on lan (pre added by mariodebian in initramfs-tools-tcos)
+  * TcosXmlRpc.py
+    - Define vlc method
+  * shared.py
+    - Add menu item wake on lan
+  * Update translations
+  * debian/control
+    - Add etherwake depend
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 20 Feb 2008 15:38:41 +0100
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 22 Feb 2008 13:16:47 +0100
 
 tcosmonitor (0.2.5) unstable; urgency=low
 

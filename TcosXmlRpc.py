@@ -532,29 +532,29 @@ class TcosXmlRpc:
                 pass
         return False
     
-    def lockkeybmouse(self, ip=None):
+    def lockcontroller(self, action, ip=None):
         if ip: self.newhost(ip)
         if self.isPortListening(self.ip, shared.xmlremote_port):
             try:
-                self.tc.tcos.lockkeybmouse( \
+                self.tc.tcos.lockcontroller("%s" %action, \
                     self.main.config.GetVar("xmlrpc_username"), \
                     self.main.config.GetVar("xmlrpc_password"))
                 return True
             except Exception, err:
-                print_debug ("lockkeybmouse() Exception, error: %s" %err)
+                print_debug ("lockcontroller() Exception, error: %s" %err)
                 pass
         return False
         
-    def unlockkeybmouse(self, ip=None):
+    def unlockcontroller(self, action, ip=None):
         if ip: self.newhost(ip)
         if self.isPortListening(self.ip, shared.xmlremote_port):
             try:
-                self.tc.tcos.unlockkeybmouse(\
+                self.tc.tcos.unlockcontroller("%s" %action, \
                     self.main.config.GetVar("xmlrpc_username"), \
                     self.main.config.GetVar("xmlrpc_password"))
                 return True
             except Exception, err:
-                print_debug ("unlockkeybmouse() Exception, error: %s" %err)
+                print_debug ("unlockcontroller() Exception, error: %s" %err)
                 pass
         return False
 
@@ -612,7 +612,12 @@ class TcosXmlRpc:
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )
             
-        
+    def vlc(self, ip, volume, lock):
+        self.newhost(ip)
+        return self.tc.tcos.vlc("%s" %volume, "%s" %lock, \
+                            self.main.config.GetVar("xmlrpc_username"), \
+                            self.main.config.GetVar("xmlrpc_password") )
+    
 if __name__ == '__main__':
     shared.debug = True
     app=TcosXmlRpc (None)

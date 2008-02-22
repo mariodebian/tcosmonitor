@@ -14,7 +14,7 @@ Architecture: all
 Depends:  gksu | kdebase-bin, zenity, dbus,
           python-dbus | python2.4-dbus, python-gtk2, python-glade2, 
           x11vnc, lsb-base (>= 3.0-6), python-notify, python-gnome2-extras, 
-          notification-daemon, libnotify-bin, tcos-core,
+          notification-daemon, libnotify-bin, tcos-core, etherwake, 
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Conflicts: initramfs-tools-tcos (<= 0.84.14.10)
 XB-Python-Version: ${python:Versions}

@@ -348,13 +348,14 @@ class TcosActions:
         self.main.ask.show()
         return True
                 
-    def exe_app_in_client(self, mode, timeout, users=[]):
+    def exe_app_in_client(self, mode, timeout=0, msg="", users=[]):
         connected_users=[]
         for client in users:
             if self.main.localdata.IsLogged(client):
                 connected_users.append(self.main.localdata.GetUsernameAndHost(client))  
   
-        remote_cmd=("/usr/lib/tcos/session-cmd-send %s %s" %(mode.upper(), timeout))
+        remote_cmd=("/usr/lib/tcos/session-cmd-send %s %s %s" %(mode.upper(), timeout, msg))
+        action="down-controller %s %s" %(mode, timeout)
         print_debug("exe_app_in_client() usernames=%s" %users)
         
         newusernames=[]
@@ -375,7 +376,7 @@ class TcosActions:
         
         self.main.worker=shared.Workers(self.main, None, None)
         self.main.worker.set_for_all_action(self.action_for_clients,\
-                                                     users, "%s %s" %(mode, timeout) )
+                                                     users, action )
         return
     
     def exe_app_in_client_display(self, arg):
@@ -453,7 +454,6 @@ class TcosActions:
         self.main.common.threads_enter("TcosActions:populate_datatxt clean datatxt")
         self.datatxt.clean()
         self.main.common.threads_leave("TcosActions:populate_datatxt clean datatxt")
-
         tcos_vars["get_client"] = self.main.xmlrpc.ReadInfo("get_client")
         print_debug ( "Client type=%s" %(tcos_vars["get_client"]) )
         
@@ -660,7 +660,6 @@ class TcosActions:
             self.main.common.threads_enter("TcosActions:populate_datatxt update progressbar")
             self.update_progressbar( info_percent )
             self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
-        
             self.datatxt.insert_block( _("Network info: ") , image=shared.IMG_DIR + "info_net.png" )
             
             tcos_vars["network_hostname"]=self.main.xmlrpc.ReadInfo("network_hostname")
@@ -1073,7 +1072,8 @@ class TcosActions:
             msg=_( _("Do you want to reboot %s?" ) %(host) )
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
-                self.exe_app_in_client("reboot", timeout , users=[self.main.selected_ip])
+                msg=(_("Pc will reboot in %s seconds") %timeout)
+                self.exe_app_in_client("reboot", timeout, msg, users=[self.main.selected_ip])
             
         if action == 3:
             # Ask for poweroff reboot
@@ -1081,7 +1081,8 @@ class TcosActions:
             msg=_( _("Do you want to poweroff %s?" ) %(host) )
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
-                self.exe_app_in_client("poweroff", timeout , users=[self.main.selected_ip])
+                msg=(_("Pc will shutdown in %s seconds") %timeout)
+                self.exe_app_in_client("poweroff", timeout, msg, users=[self.main.selected_ip])
         
         if action == 4:
             # lock screen
@@ -1144,7 +1145,9 @@ class TcosActions:
             msg=_( _("Do you want to logout user \"%s\"?" ) %(user) )
             if shared.ask_msg ( msg ):
                 newusernames=[]
-                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT"
+                timeout=self.main.config.GetVar("actions_timeout")
+                msg=_("Session will close in %s seconds") %timeout
+                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT %s %s" %(timeout, msg)
                 
                 if user.find(":") != -1:
                     # we have a standalone user...
@@ -1206,13 +1209,14 @@ class TcosActions:
                         
             str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
             lock="disable"
+            volume="85"
             client_type = self.main.xmlrpc.ReadInfo("get_client")
             if client_type == "tcos":
                 ip_unicast="239.255.255.0"
-                remote_cmd="vlc udp://@%s:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver" %(ip_unicast)
+                remote_cmd="vlc udp://@%s:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver --volume=300" %(ip_unicast)
             else:
                 ip_unicast=self.main.selected_ip
-                remote_cmd="vlc udp://@:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
+                remote_cmd="vlc udp://@:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver --volume=300"
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
@@ -1276,7 +1280,6 @@ class TcosActions:
                 
                 msg=_( "Lock keyboard and mouse on client?" )
                 if shared.ask_msg ( msg ):
-                    self.main.xmlrpc.lockkeybmouse(self.main.selected_ip)
                     lock="enable"
                 
                 newusernames=[]
@@ -1294,6 +1297,9 @@ class TcosActions:
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+                
+                self.main.xmlrpc.vlc( self.main.selected_ip, volume, lock )
+                
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
                 host=self.main.localdata.GetHostname(self.main.selected_ip)    
                 # new mode to Stop Button
@@ -1469,7 +1475,7 @@ class TcosActions:
             if status != "OPEN":
                 self.main.write_into_statusbar( _("Error while exec app"))
                 return
-                
+                        
             # start in 1 (teacher)
             newallclients=[]
             total=1
@@ -1489,7 +1495,27 @@ class TcosActions:
                 p=popen2.Popen3(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc') ])
                 # new mode for stop button
                 self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %(hostname) )
-                
+        
+        if action == 19:
+            if self.main.config.GetVar("scan_network_method") != "static":
+                msg=_( _("Wake On Lan only works with static list\nEnable scan method \"static\" in Preferences" ))
+                shared.info_msg ( msg )
+                return
+                        
+            msg=_( _("Do you want boot %s client?" %self.main.selected_ip))
+            if shared.ask_msg ( msg ):
+                data=[]
+                hostslist=self.main.config.GetVar("statichosts")
+                eth=self.main.config.GetVar("network_interface")
+                if hostslist == "": return
+                data=hostslist.split("#")
+                data=data[:-1]
+                for host in data:
+                    ip, mac=host.split("|")
+                    if ip == self.main.selected_ip:
+                        print_debug("Send magic packet to mac=%s" %mac)
+                        self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+        
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
 
@@ -1547,7 +1573,7 @@ class TcosActions:
             connected_users=[]
             for client in args['allclients']:
                 if self.main.localdata.IsLogged(client):
-                    if args['lock'] == "enable": self.main.xmlrpc.unlockkeybmouse(client)
+                    if args['lock'] == "enable": self.main.xmlrpc.unlockcontroller("lockvlc", client)
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
             
             newusernames=[]
@@ -1693,7 +1719,27 @@ class TcosActions:
         
     def menu_event_all(self, action):
         start1=time()
-        
+        # boot by wake on lan
+        if action == 12:
+            if self.main.config.GetVar("scan_network_method") != "static":
+                msg=_( _("Wake On Lan only works with static list\nEnable scan method \"static\" in Preferences" ))
+                shared.info_msg ( msg )
+                return
+                        
+            msg=_( _("Do you want boot all clients?" ))
+            if shared.ask_msg ( msg ):
+                data=[]
+                hostslist=self.main.config.GetVar("statichosts")
+                eth=self.main.config.GetVar("network_interface")
+                if hostslist == "": return
+                data=hostslist.split("#")
+                data=data[:-1]
+                for host in data:
+                    mac=host.split("|")[1]
+                    print_debug("Send magic packet to mac=%s" %mac)
+                    self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+            return
+                
         # don't make actions in clients not selected
         if self.main.config.GetVar("selectedhosts") == 1:
             allclients=[]
@@ -1727,7 +1773,8 @@ class TcosActions:
                                             %(allclients_txt) )
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
-                self.exe_app_in_client("reboot", timeout , users=allclients)
+                msg=(_("Pc will reboot in %s seconds") %timeout)
+                self.exe_app_in_client("reboot", timeout, msg, users=allclients)
             return
         
         if action == 1:
@@ -1736,7 +1783,8 @@ class TcosActions:
                                               %(allclients_txt) )
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
-                self.exe_app_in_client("poweroff", timeout , users=allclients)
+                msg=(_("Pc will shutdown in %s seconds") %timeout)
+                self.exe_app_in_client("poweroff", timeout, msg, users=allclients)
             return
         
         if action == 2:
@@ -1773,7 +1821,9 @@ class TcosActions:
                                                      %(allclients_txt) )
             if shared.ask_msg ( msg ):
                 newusernames=[]
-                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT"
+                timeout=self.main.config.GetVar("actions_timeout")
+                msg=_("Session will close in %s seconds") %timeout
+                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT %s %s" %(timeout, msg)
                 
                 for user in connected_users:
                     if user.find(":") != -1:
@@ -1845,7 +1895,7 @@ class TcosActions:
             if status != "OPEN":
                 self.main.write_into_statusbar( _("Error while exec app"))
                 return
-        
+                        
             newallclients=[]
             total=0
             for client in allclients:
@@ -1896,6 +1946,7 @@ class TcosActions:
                         
             str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
             lock="disable"
+            volume="85"
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
                                gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -1946,7 +1997,7 @@ class TcosActions:
                     p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=%s,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 # exec this app on client
                 
-                remote_cmd="vlc udp://@239.255.255.0:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver"
+                remote_cmd="vlc udp://@239.255.255.0:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver --volume=300"
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
                 
@@ -1962,8 +2013,6 @@ class TcosActions:
                 
                 msg=_( "Lock keyboard and mouse on clients?" )
                 if shared.ask_msg ( msg ):
-                    for client in newallclients:
-                        self.main.xmlrpc.lockkeybmouse(client)
                     lock="enable"
                     
                 newusernames=[]
@@ -1981,6 +2030,10 @@ class TcosActions:
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+                
+                for client in newallclients:
+                    self.main.xmlrpc.vlc( client, volume, lock )
+                
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
                 # new mode Stop Button
                 self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": newallclients}, _("Running in broadcast video transmission"))
