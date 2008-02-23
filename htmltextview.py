@@ -1,4 +1,6 @@
+# -*- coding: UTF-8 -*-
 ### Copyright (C) 2005 Gustavo J. A. M. Carneiro
+### Copyright (C) 2007-2008 Mario Izquierdo (added support for image url, buttons and sliders)
 ###
 ### This library is free software; you can redistribute it and/or
 ### modify it under the terms of the GNU Lesser General Public

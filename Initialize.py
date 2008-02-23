@@ -106,34 +106,63 @@ class Initialize:
         self.main.aboutbutton = self.ui.get_widget('aboutbutton')
         self.main.aboutbutton.connect('clicked', self.main.actions.on_aboutbutton_click)
         
-        self.main.donatewindow= self.ui.get_widget('windowdonate')
-        self.main.donatewindow.connect('delete-event', self.main.actions.on_donatewindow_close )
-        self.main.donatewindow.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
-        #print_debug("show_donate ??? value=%s"%self.main.config.GetVar("show_donate"))
-        if self.main.config.GetVar("show_donate") == 1:
-            self.main.donatewindow.show()
         
-        self.main.donatebutton = self.ui.get_widget('donatebutton')
-        self.main.donatebutton.connect('clicked', self.main.actions.on_donatebutton_click)
+        self.main.searchbutton = self.ui.get_widget('searchbutton')
+        self.main.searchbutton.connect('clicked', self.main.actions.on_searchbutton_click)
         
-        self.main.donateurl=self.ui.get_widget('donateurl')
-        self.main.donateurl.connect('clicked', self.main.actions.on_donateurl_click)
+        self.main.searchtxt = self.ui.get_widget('searchtxt')
+        self.main.searchtxt.connect('activate', self.main.search_host)
+
+
+    def initabouttcos(self):
+        self.main.abouttcos = self.main.ui.get_widget('abouttcos')
+        self.main.abouttcos.hide()
+        self.main.abouttcos.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
         
-        self.main.donateurllabel=self.ui.get_widget('donateurllabel')
+        self.main.abouttabs = self.main.ui.get_widget('abouttabs')
         
-        self.main.donateshowagain=self.ui.get_widget('donateshowagain')
-        if self.main.config.GetVar("show_donate") == 1:
-            self.main.donateshowagain.set_active(False)
+        #self.main.abouttcos.connect("close", self.on_about_close)
+        self.main.abouttcos.connect("delete_event", self.main.actions.on_abouttcos_close)
+        
+        self.main.abouttcos_version=self.main.ui.get_widget('abouttcos_version')
+        self.main.abouttcos_version.set_text(shared.version)
+        
+        self.main.donateurllabel = self.ui.get_widget('donateurllabel')
+        
+        self.main.abouttcos_donatebutton = self.ui.get_widget('abouttcos_donatebutton')
+        self.main.abouttcos_donatebutton.connect('clicked', self.main.actions.on_donateurl_click)
+        
+        # LOAD LICENSE_FILE in TextView
+        self.main.abouttcos_license = self.ui.get_widget('abouttcos_license')
+        textbuffer = self.main.abouttcos_license.get_buffer()
+        if path.isfile(shared.LICENSE_FILE):
+            f=open(shared.LICENSE_FILE, "r")
+            data=f.read()
+            f.close()
+            textbuffer.set_text(data)
         else:
-            self.main.donateshowagain.set_active(True)
+            textbuffer.set_text( _("GPL-2 license file not found") )
         
-        #self.main.searchbutton = self.ui.get_widget('searchbutton')
-        #self.main.searchbutton.connect('clicked', self.main.actions.on_searchbutton_click)
+        self.main.abouttcos_logo = self.ui.get_widget('abouttcos_logo')
+        self.main.abouttcos_logo.set_from_file(shared.IMG_DIR +'tcos-logo.png')
         
-        #self.main.searchtxt = self.ui.get_widget('searchtxt')
-        #self.main.searchtxt.connect('activate', self.main.search_host)
+        self.main.abouttcos_webbutton = self.ui.get_widget('abouttcos_webbutton')
+        self.main.abouttcos_webbutton.connect('clicked', self.main.actions.on_weburl_click)
+        
+        self.main.abouttcos_donatecheck = self.ui.get_widget('abouttcos_donatecheck')
+        self.main.abouttcos_donatecheck.connect('toggled', self.main.actions.on_abouttcos_donatecheck_change)
+        
+        if self.main.config.GetVar("show_donate") == 1:
+            self.main.abouttcos.show()
+            self.main.abouttabs.set_current_page(self.main.abouttabs.get_n_pages()-1)
+            self.main.abouttcos_donatecheck.set_active(False)
+        else:
+            self.main.abouttcos_donatecheck.set_active(True)
         
         
+
+
+    """
     def initabout(self):
         self.main.about = self.main.ui.get_widget('aboutdialog')
         self.main.about.hide()
@@ -157,6 +186,7 @@ class Initialize:
     def on_about_close(self, widget, event=None):
         self.main.about.hide()
         return True
+    """
     
     def initask(self):
         self.main.ask_ip=None
@@ -219,144 +249,6 @@ class Initialize:
         self.main.actions.exe_app_in_client_display(text)
         return
     
-
-
-
-    """
-    def initpref(self):
-        # init pref window and buttons
-        self.main.pref = self.main.ui.get_widget('prefwindow')            
-        self.main.pref.hide()
-        self.main.pref.set_icon_from_file(shared.IMG_DIR +\
-                                 'tcos-icon-32x32.png')
-        # dont destroy window
-        # http://www.async.com.br/faq/pygtk/index.py?req=show&file=faq10.006.htp
-        self.main.pref.connect('delete-event', self.main.prefwindow_close )
-        
-        # extensions table
-        self.main.extensions_table=self.ui.get_widget('extensions_table')
-        
-        # buttons
-        self.main.pref_ok = self.ui.get_widget('pref_ok_button')
-        self.main.pref_ok.connect('clicked', self.main.actions.on_pref_ok_button_click)
-        self.main.pref_cancel = self.ui.get_widget('pref_cancel_button')
-        self.main.pref_cancel.connect('clicked', self.main.actions.on_pref_cancel_button_click)
-        
-        # make pref widgets
-        self.main.pref_spin_update = self.main.ui.get_widget('spin_update')
-        self.main.pref_cache_timeout = self.main.ui.get_widget('spin_cache_timeout')
-        self.main.pref_scrotsize = self.main.ui.get_widget('spin_scrotsize')
-        self.main.pref_miniscrotsize = self.main.ui.get_widget('spin_miniscrotsize')
-        self.main.pref_xmlrpc_username = self.main.ui.get_widget('xmlrpc_username')
-        self.main.pref_xmlrpc_password = self.main.ui.get_widget('xmlrpc_password')
-        
-        # populate selects (only on startup)
-        self.main.combo_network_interfaces = self.main.ui.get_widget('combo_networkinterface') 
-        self.populate_select(self.main.combo_network_interfaces, self.main.config.GetAllNetworkInterfaces() )
-        
-        # scan method
-        self.main.pref_combo_scan_method = self.main.ui.get_widget('combo_scanmethod')
-        self.populate_select(self.main.pref_combo_scan_method, shared.scan_methods )
-        
-        # static host list button
-        self.main.pref_open_static = self.main.ui.get_widget('button_open_static')
-        self.main.pref_open_static.connect('clicked', self.main.actions.on_button_open_static)
-        
-        # add signal changed to scan_method to enable/disable button on the fly
-        self.main.pref_combo_scan_method.connect('changed', self.main.actions.on_scan_method_change)
-        
-        
-        # checkboxes
-        self.main.pref_populatelistatstartup = self.main.ui.get_widget('ck_showliststartup')
-        self.main.pref_cybermode = self.main.ui.get_widget('ck_cybermode')
-        self.main.pref_systemprocess = self.main.ui.get_widget('ck_systemprocess')
-        self.main.pref_blockactioninthishost = self.main.ui.get_widget('ck_blockactioninthishost')
-        self.main.pref_onlyshowtcos = self.main.ui.get_widget('ck_onlyshowtcos')
-        self.main.pref_selectedhosts = self.main.ui.get_widget('ck_selectedhosts')
-        
-        self.main.pref_tcosinfo = self.main.ui.get_widget('ck_tcosinfo')
-        self.main.pref_cpuinfo = self.main.ui.get_widget('ck_cpuinfo')
-        self.main.pref_kernelmodulesinfo = self.main.ui.get_widget('ck_kernelmodulesinfo')
-        self.main.pref_pcibusinfo = self.main.ui.get_widget('ck_pcibusinfo')
-        self.main.pref_ramswapinfo = self.main.ui.get_widget('ck_ramswapinfo')
-        self.main.pref_processinfo = self.main.ui.get_widget('ck_processinfo')
-        self.main.pref_networkinfo = self.main.ui.get_widget('ck_networkinfo')
-        self.main.pref_xorginfo = self.main.ui.get_widget('ck_xorginfo')
-        self.main.pref_soundserverinfo = self.main.ui.get_widget('ck_soundserverinfo')
-      
-    def populate_pref(self):
-        # set default for combos
-        self.set_active_in_select(self.main.pref_combo_scan_method,\
-                         self.main.config.GetVar("scan_network_method"))
-        self.set_active_in_select(self.main.combo_network_interfaces,\
-                         self.main.config.GetVar("network_interface"))
-                         
-        if self.main.config.GetVar("scan_network_method") != "static":
-            self.main.pref_open_static.set_sensitive(False)
-        else:
-            self.main.pref_open_static.set_sensitive(True)
-        
-        # set value of spin
-        self.main.pref_spin_update.set_value( float(self.main.config.GetVar("refresh_interval")) )
-        self.main.pref_cache_timeout.set_value( float(self.main.config.GetVar("cache_timeout")) )
-        self.main.pref_scrotsize.set_value( float(self.main.config.GetVar("scrot_size")) )
-        self.main.pref_miniscrotsize.set_value( float(self.main.config.GetVar("miniscrot_size")) )
-        
-        # set value of text widgets
-        self.main.pref_xmlrpc_username.set_text(\
-                     self.main.config.GetVar("xmlrpc_username").replace('"', '') )
-                     
-        self.main.pref_xmlrpc_password.set_text(\
-                     self.main.config.GetVar("xmlrpc_password").replace('"', '') )
-        
-        
-        # populate checkboxes
-        self.populate_checkboxes(self.main.pref_populatelistatstartup, "populate_list_at_startup")
-        self.populate_checkboxes(self.main.pref_cybermode, "work_as_cyber_mode")
-        self.populate_checkboxes(self.main.pref_systemprocess, "systemprocess")
-        self.populate_checkboxes(self.main.pref_blockactioninthishost, "blockactioninthishost")
-        self.populate_checkboxes(self.main.pref_onlyshowtcos, "onlyshowtcos")
-        self.populate_checkboxes(self.main.pref_selectedhosts, "selectedhosts")
-        
-        self.populate_checkboxes(self.main.pref_tcosinfo, "tcosinfo")
-        self.populate_checkboxes(self.main.pref_cpuinfo, "cpuinfo")
-        self.populate_checkboxes(self.main.pref_kernelmodulesinfo, "kernelmodulesinfo")
-        self.populate_checkboxes(self.main.pref_pcibusinfo, "pcibusinfo")
-        self.populate_checkboxes(self.main.pref_ramswapinfo, "ramswapinfo")
-        self.populate_checkboxes(self.main.pref_processinfo, "processinfo")
-        self.populate_checkboxes(self.main.pref_networkinfo, "networkinfo")
-        self.populate_checkboxes(self.main.pref_xorginfo, "xorginfo")
-        self.populate_checkboxes(self.main.pref_soundserverinfo, "soundserverinfo")
-        
-    
-    def populate_checkboxes(self, widget, varname):
-        checked=self.main.config.GetVar(varname)
-        if checked == "":
-            checked=1
-        checked=int(checked)
-        if checked == 1:
-            widget.set_active(1)
-        else:
-            widget.set_active(0)
-        return
-                  
-    def populate_select(self, widget, values):
-        valuelist = gtk.ListStore(str)
-        for value in values:
-            valuelist.append([value.split()[0]])
-        widget.set_model(valuelist)
-        widget.set_text_column(0)
-        model=widget.get_model()
-        return
-    
-    def set_active_in_select(self, widget, default):
-        model=widget.get_model()
-        for i in range(len(model)):
-            if model[i][0] == default:
-                print_debug ("set_active_in_select() default is %s, index %d" %( model[i][0] , i ) )
-                widget.set_active(i)
-        return    
-    """
     
     def init_hostlist(self):
         print_debug ( "init_hostlist()" )

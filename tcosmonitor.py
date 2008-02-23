@@ -155,8 +155,9 @@ class TcosMonitor:
         
         #########  init some elements ###########
         self.init.init_progressbar()
-        self.init.initabout()
+        #self.init.initabout()
         self.init.initask()
+        self.init.initabouttcos()
         #self.init.initpref()
         #self.init.populate_pref()
         #########################################
@@ -164,6 +165,7 @@ class TcosMonitor:
         
         self.actions.update_hostlist()
         self.init.initbuttons()
+        
         
         # make menus
         self.actions.RightClickMenuOne(None)
@@ -186,13 +188,6 @@ class TcosMonitor:
         p = popen2.Popen3("mkdir -p /tmp/tcos_share/")
         p.wait()
     
-    """    
-    def prefwindow_close(self, widget, event):
-        print_debug ( "prefwindow_close() closing preferences window" )
-        self.pref.hide()
-        return True
-    """
-    """
     def search_host(self, widget):
         print_debug ( "search_host()" )
         txt=self.searchtxt.get_text()
@@ -213,12 +208,7 @@ class TcosMonitor:
         ip=model.get_value(iter, 1)
         username=model.get_value(iter, 2)
         if txt != hostname and txt != ip and txt != username:
-            data.append(path)
-    
-    #def exe_cmd(self, cmd):
-    #    print_debug ( "exe_cmd() cmd=%s" %(cmd) )
-    #    self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
-    """
+            data.append(path)    
     
     def write_into_statusbar(self, msg, *args):
         #print_debug("STATUSBAR: Writing \"%s\" into statusbar" % msg)

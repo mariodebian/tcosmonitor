@@ -49,8 +49,7 @@ PACKAGE = "tcosmonitor"
 # version
 version="__VERSION__"
 website="http://www.tcosproject.org"
-website_label=_("TcosMonitor web page")
-
+LICENSE_FILE="/usr/share/common-licenses/GPL-2"
 
 # default debug value (overwrite with --debug or -d)
 debug=False
@@ -120,6 +119,17 @@ DefaultConfig=[
 ["vlc_audio_codec", "mpga", "str"],
 ["show_donate", 1, "int"]
 ]
+
+#
+# IMPORTANT NOTE
+# PLEASE DON'T SET "show__donate" TO "0" by default if you don't have a good reason
+# tcosmonitor need to show this message when loads first time to get some
+# users colaboration.
+#
+# Please contact with developers if you are not agree with this.
+#
+
+
 # method ping is list 0 of combo_scan_method
 
 
@@ -203,7 +213,7 @@ onehost_menuitems=[
  [ _("Audio/Video broadcast") , "menu_broadcast.png" ],             #action=16
  [ _("Send files") , "menu_send.png" ],                       #action=17
  [ _("Demo mode (from this host)") , "menu_tiza.png" ],     #action=18
- [ _("Boot client") , "menu_wol.png" ]                      #action=19
+ [ _("Boot client (WakeOnLan)") , "menu_wol.png" ]                      #action=19
  ]
 
 
@@ -220,7 +230,7 @@ allhost_menuitems=[
  [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=9
  [ _("Audio/Video broadcast") , "menu_broadcast.png" ],                 #action=10
  [ _("Send files") , "menu_send.png" ],                          #action=11
- [ _("Boot All clients") , "menu_wol.png" ]                          #action=12
+ [ _("Boot All clients (WakeOnLan)") , "menu_wol.png" ]                          #action=12
  ]
 
 

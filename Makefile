@@ -103,6 +103,7 @@ install:
 	install -m 644 TcosStaticHosts.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosPreferences.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosCommon.py       $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 WakeOnLan.py        $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 
 	install -m 755 tcosmonitor.py           $(DESTDIR)/$(PREFIX)/bin/tcosmonitor
 	install -m 755 tcospersonalize.py       $(DESTDIR)/$(PREFIX)/bin/tcospersonalize
@@ -226,5 +227,7 @@ patch_unstable: patch_version
 patch_hardy: patch_version
 
 patch_max: patch_version
+	sed -i '/show_donate/s/1/0/g' shared.py
+	
 
 .PHONY: fix-glade es.gmo tcosxmlrpc dbus udev

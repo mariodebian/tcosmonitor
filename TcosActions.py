@@ -34,6 +34,7 @@ import popen2
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
+from WakeOnLan import WakeOnLan
 
 def print_debug(txt):
     if shared.debug:
@@ -119,7 +120,8 @@ class TcosActions:
         self.main.pref.show()
     
     def on_aboutbutton_click(self,widget):
-        self.main.about.show()
+        #self.main.about.show()
+        self.main.abouttcos.show()
     
     def on_fullscreenbutton_click(self, widget):
         if self.main.is_fullscreen:
@@ -175,13 +177,13 @@ class TcosActions:
             self.main.worker.start()
             return
     
-    """    
+        
     def on_searchbutton_click(self, widget):
         if self.main.config.GetVar("xmlrpc_username") == "" or self.main.config.GetVar("xmlrpc_password") == "":
             return
         print_debug ( "on_searchbutton_click()" )
         self.main.search_host(widget)
-    """
+    
     def on_donatebutton_click(self, widget):
         self.main.donatewindow.show()
     
@@ -196,6 +198,22 @@ class TcosActions:
     def on_donateurl_click(self, *args):
         url=self.main.donateurllabel.get_text()
         self.main.common.exe_cmd("x-www-browser %s"%url)
+    
+    def on_weburl_click(self, *args):
+        self.main.common.exe_cmd("x-www-browser %s"%shared.website)
+
+    def on_abouttcos_close(self, *args):
+        self.main.abouttcos.hide()
+        return True
+    
+    def on_abouttcos_donatecheck_change(self, *args):
+        notshowagain=self.main.abouttcos_donatecheck.get_active()
+        if notshowagain:
+            self.main.config.SetVar("show_donate", "0")
+            self.main.config.SaveToFile()
+        else:
+            self.main.config.SetVar("show_donate", "1")
+            self.main.config.SaveToFile()
     ############################################################################
 
     def populate_host_list(self):
@@ -1514,7 +1532,8 @@ class TcosActions:
                     ip, mac=host.split("|")
                     if ip == self.main.selected_ip:
                         print_debug("Send magic packet to mac=%s" %mac)
-                        self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+                        WakeOnLan("%s"%mac)
+                        #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
         
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
@@ -1737,7 +1756,8 @@ class TcosActions:
                 for host in data:
                     mac=host.split("|")[1]
                     print_debug("Send magic packet to mac=%s" %mac)
-                    self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+                    WakeOnLan("%s"%mac)
+                    #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
             return
                 
         # don't make actions in clients not selected

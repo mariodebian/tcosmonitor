@@ -19,7 +19,17 @@ tcosmonitor (0.2.6) unstable; urgency=low
   * debian/control
     - Add etherwake depend
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 22 Feb 2008 13:16:47 +0100
+  [ Mario Izquierdo (mariodebian) ]
+  * Remove etherwake depend and add WakeOnLan.py
+    (with python is very simple to create magic broadcast package)
+  * tcosmonitor.py Initialize.py tcosmonitor.glade
+     - Enable again searchtxt and searchbutton
+  * Initialize.py tcosmonitor.glade
+    - Delete about dialog and create new dialog (KDE like)
+    - Delete Donations window and button (now donate is on abouttcos dialog)
+  * Update tcos-logo.png (add tcosproject text)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 23 Feb 2008 12:56:12 +0100
 
 tcosmonitor (0.2.5) unstable; urgency=low
 
