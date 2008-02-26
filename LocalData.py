@@ -27,8 +27,11 @@ import shared
 import popen2
 import os
 from gettext import gettext as _
-from time import time
+from time import time, ctime, localtime
 from ping import *
+
+import utmp
+from UTMPCONST import *
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 
@@ -63,7 +66,8 @@ class LocalData:
         self.num_process=None
         self.time_login=None
         self.allhostdata=[]
-        self.cache_timeout=self.main.config.GetVar("cache_timeout")
+        if self.main:
+            self.cache_timeout=self.main.config.GetVar("cache_timeout")
     
     def newhost(self, host):
         print_debug ( "newhost(%s)" %(host) )
@@ -277,7 +281,12 @@ class LocalData:
             return True
         except:
             return False
-        
+
+    def GetIpAddress(self, hostname):
+        try:
+            return socket.getaddrinfo(hostname, None)[0][4][0]  
+        except:
+            return None
         
     def GetHostname(self, ip):
         """
@@ -380,7 +389,32 @@ class LocalData:
             return "%s:%s" %(self.GetUsername(ip), ip)
         else:
             return "%s" %(self.GetUsername(ip) )
-    
+
+    def GetLast(self, ip):
+        last=[]
+        data={}
+        if ip != "" and not self.ipValid(ip):
+            ip=self.GetIpAddress(ip)
+        print_debug("GetLast() ip=%s hostname=%s "%(ip, self.GetHostname(ip)) )
+        a = utmp.UtmpRecord(WTMP_FILE)
+        while 1:
+            b=a.getutent()
+            if not b: break
+            if b[0] == USER_PROCESS:
+                if b.ut_host == "%s:0"%(ip):
+                    last=b
+        
+        if last and os.path.isdir("/proc/%s"%last.ut_pid):
+            (year,month,day,hours,minutes,seconds,weekday,jday,DST )=localtime(time()-last.ut_tv[0])
+            # we have date like 1 Jan 1970 1 hour 30 minutes
+            # real hours = hours -1
+            # real days = days -1
+            if day > 1:
+                timelogged="%dd %02d:%02d"%(day-1,hours-1,minutes)
+            else:
+                timelogged="%02d:%02d"%(hours-1,minutes)
+            data={"user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged}
+        return data
     
     def GetUsername(self, ip):
         """
@@ -407,14 +441,20 @@ class LocalData:
         if not self.IsActive(ip):
             print_debug ( "GetUsername(%s) not active, returning NO_LOGIN_MSG" %(ip) )
             return shared.NO_LOGIN_MSG
-
+        
+        output=self.GetLast(ip)
+        if output and output['user']:
+            self.username=output['user']
+            self.add_to_cache( ip, 2 , self.username )
+            return self.username
+        """
         cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:0.*still\" -e \"%s:0.*still\" 2>/dev/null | head -1| awk '{print $1}'" %(ip, self.GetHostname(ip))
         output=self.main.common.exe_cmd(cmd)
         if output != []:
             self.username=output
             self.add_to_cache( ip, 2 , self.username )
             return self.username
-        
+        """
         print_debug ( "GetUsername() fail to search username, return unknow" )
         self.add_to_cache( ip, 2 , self.username )
         return self.username
@@ -484,9 +524,14 @@ class LocalData:
             return "---"
 
         
+        output=self.GetLast(host)
+        if output and output['timelogged']:
+            return output['timelogged']
+        
         # get date
         #cmd="LANG=C date +'%F %H:%M'"
         
+        """
         last=None
         
         cmd="LC_ALL=C LANGUAGE=C LANG=C date +'%b %d %H:%M'"
@@ -528,11 +573,15 @@ class LocalData:
             hlogged=hlogged+24
         print_debug ("TimeLogged() hour=%02d minute=%02d" %(hlogged, mlogged) )
         return "%s%02d:%02d" %(hdays, hlogged, mlogged)
+        """
         
 if __name__ == '__main__':
+    shared.debug=True
     local=LocalData (None)
-    local.GetAllClients()
-    local.GetHostname("192.168.0.2")
-    local.GetHostname("192.168.0.10")
-    local.GetUsername("192.168.0.10")
-    local.GetTimeLogged("192.168.0.10")
+    import sys
+    print local.GetLast(sys.argv[1])
+    #local.GetAllClients()
+    #local.GetHostname("192.168.0.2")
+    #local.GetHostname("192.168.0.10")
+    #local.GetUsername("192.168.0.10")
+    #local.GetTimeLogged("192.168.0.10")

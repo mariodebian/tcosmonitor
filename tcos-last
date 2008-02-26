@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+##########################################################################
+# TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
+#
+#    TcosMonitor version __VERSION__
+#
+# Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+###########################################################################
+
+import sys, os
+import getopt
+if not os.path.isfile("LocalData.py"):
+    sys.path.append("/usr/share/tcosmonitor")
+
+
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["debug", "host=", "tcosdisplay", "user", "time"])
+except getopt.error, msg:
+    print msg
+    print "for command line options use tcos-last --help"
+    sys.exit(2)
+
+ACTION=None
+HOST=""
+# process options
+for o, a in opts:
+    if o in ("-d", "--debug"):
+        print "DEBUG ACTIVE"
+        import shared
+        shared.debug = True
+    if o == "--host":
+        HOST=a
+    if o == "--tcosdisplay":
+        HOST=os.environ['DISPLAY'].split(":")[0]
+    if o == "--user":
+        ACTION="user"
+    elif o == "--time":
+        ACTION="time"
+    
+from LocalData import LocalData
+
+local=LocalData(None)
+data=local.GetLast(HOST)
+if not data:
+    sys.exit(1)
+
+elif not ACTION:
+    sys.exit(1)
+
+elif ACTION == "user":
+    print data['user']
+
+elif ACTION == "time":
+    print data['timelogged']
+
