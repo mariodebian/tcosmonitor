@@ -413,7 +413,7 @@ class LocalData:
                 timelogged="%dd %02d:%02d"%(day-1,hours-1,minutes)
             else:
                 timelogged="%02d:%02d"%(hours-1,minutes)
-            data={"user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged}
+            data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged}
         return data
     
     def GetUsername(self, ip):

@@ -25,13 +25,17 @@
 
 import sys, os
 import getopt
-if not os.path.isfile("LocalData.py"):
-    sys.path.append("/usr/share/tcosmonitor")
+import socket
+from time import time, ctime, localtime
 
+import utmp
+from UTMPCONST import *
 
+def print_debug(txt):
+    print >> sys.stderr, "DEBUG: %s"%(txt)
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["debug", "host=", "tcosdisplay", "user", "time"])
+    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["host=", "tcosdisplay", "user", "time", "pid"])
 except getopt.error, msg:
     print msg
     print "for command line options use tcos-last --help"
@@ -41,10 +45,6 @@ ACTION=None
 HOST=""
 # process options
 for o, a in opts:
-    if o in ("-d", "--debug"):
-        print "DEBUG ACTIVE"
-        import shared
-        shared.debug = True
     if o == "--host":
         HOST=a
     if o == "--tcosdisplay":
@@ -53,11 +53,70 @@ for o, a in opts:
         ACTION="user"
     elif o == "--time":
         ACTION="time"
-    
-from LocalData import LocalData
+    elif o == "--pid":
+        ACTION="pid"
 
-local=LocalData(None)
-data=local.GetLast(HOST)
+def ipValid(ip):
+    # ip is XXX.XXX.XXX.XXX
+    # http://mail.python.org/pipermail/python-list/2006-March/333963.html
+    try:
+        xip=ip.split('.')
+        if len(xip) != 4:
+            return False
+        for block in xip:
+            if int(block) < 0 or int(block) >= 255:
+                return False
+        return Trueutmp.UtmpRecord(WTMP_
+    except:
+        return False
+
+    
+def GetIpAddress(hostname):
+    print_debug("GetIpAddress() hostname=%s "%(hostname) )
+    try:
+        return socket.getaddrinfo(hostname, None)[0][4][0]  
+    except:
+        return None
+
+
+def GetHostname(ip):
+    print_debug("GetHostname() ip=%s "%(ip) )
+    try:
+        hostname = socket.gethostbyaddr(ip)[0]
+        return hostname
+    except:
+        return None
+
+def GetLast(ip):
+    last=[]
+    data={}
+    if ip != "" and not ipValid(ip):
+        ip=GetIpAddress(ip)
+        
+    print_debug("GetLast() ip=%s hostname=%s "%(ip, GetHostname(ip)))
+    a = utmp.UtmpRecord(WTMP_FILE)
+    while 1:
+        b=a.getutent()
+        if not b: break
+        if b[0] == USER_PROCESS:
+            if b.ut_host == "%s:0"%(ip):
+                last=b
+    
+    if last and os.path.isdir("/proc/%s"%last.ut_pid):
+        (year,month,day,hours,minutes,seconds,weekday,jday,DST )=localtime(time()-last.ut_tv[0])
+        # we have date like 1 Jan 1970 1 hour 30 minutes
+        # real hours = hours -1
+        # real days = days -1
+        if day > 1:
+            timelogged="%dd %02d:%02d"%(day-1,hours-1,minutes)
+        else:
+            timelogged="%02d:%02d"%(hours-1,minutes)
+        data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged}
+    return data
+
+data=GetLast(HOST)
+
+# print data
 if not data:
     sys.exit(1)
 
@@ -69,4 +128,7 @@ elif ACTION == "user":
 
 elif ACTION == "time":
     print data['timelogged']
+
+elif ACTION == "pid":
+    print data['pid']
 
