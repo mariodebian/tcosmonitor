@@ -1519,7 +1519,7 @@ class TcosActions:
         
         if action == 19:
             if self.main.config.GetVar("scan_network_method") != "static":
-                msg=_( _("Wake On Lan only works with static list\nEnable scan method \"static\" in Preferences" ))
+                msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
                 shared.info_msg ( msg )
                 return
                         
@@ -1745,7 +1745,7 @@ class TcosActions:
         # boot by wake on lan
         if action == 12:
             if self.main.config.GetVar("scan_network_method") != "static":
-                msg=_( _("Wake On Lan only works with static list\nEnable scan method \"static\" in Preferences" ))
+                msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
                 shared.info_msg ( msg )
                 return
                         

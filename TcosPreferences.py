@@ -84,7 +84,7 @@ class TcosPreferences:
         self.main.pref_open_static.connect('clicked', self.on_button_open_static)
         
         # add signal changed to scan_method to enable/disable button on the fly
-        self.main.pref_combo_scan_method.connect('changed', self.on_scan_method_change)
+        #self.main.pref_combo_scan_method.connect('changed', self.on_scan_method_change)
         
         
         # checkboxes
@@ -225,10 +225,10 @@ class TcosPreferences:
         self.set_active_in_select(self.main.combo_network_interfaces,\
                          self.main.config.GetVar("network_interface"))
                          
-        if self.main.config.GetVar("scan_network_method") != "static":
-            self.main.pref_open_static.set_sensitive(False)
-        else:
-            self.main.pref_open_static.set_sensitive(True)
+        #if self.main.config.GetVar("scan_network_method") != "static":
+        #    self.main.pref_open_static.set_sensitive(False)
+        #else:
+        #    self.main.pref_open_static.set_sensitive(True)
         
         # set value of spin
         self.main.pref_spin_update.set_value( float(self.main.config.GetVar("refresh_interval")) )

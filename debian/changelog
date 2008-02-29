@@ -1,5 +1,6 @@
 tcosmonitor (0.2.7) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * LocalData.py debian/control tcos-last:
     - Use python-utmp to search username and time logged instead of last
   * LocalData.py tcos-last
@@ -10,7 +11,11 @@ tcosmonitor (0.2.7) unstable; urgency=low
     - Use absoulte module name in WakeOnLan
     - Write message in statusbar to show while scanning of xmlrpc port
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 29 Feb 2008 21:48:55 +0100
+  [ Ignacio Vidal ]
+  * TcosActions.py TcosPreferences.py
+    - Activate always static host list
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 29 Feb 2008 22:29:37 +0100
 
 tcosmonitor (0.2.6) unstable; urgency=low
 
