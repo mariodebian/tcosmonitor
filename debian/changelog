@@ -4,8 +4,13 @@ tcosmonitor (0.2.7) unstable; urgency=low
     - Use python-utmp to search username and time logged instead of last
   * LocalData.py tcos-last
     - Add pid to dictionary and copy code to last-tcos to not use external modules (work without DISPLAY)
+  * Move tcos-last to tcos-core package
+  * LocalData.py WakeOnLan.py ping.py TcosActions.py
+    - Add error checking in WakeOnLan and show error in TcosActions
+    - Use absoulte module name in WakeOnLan
+    - Write message in statusbar to show while scanning of xmlrpc port
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 28 Feb 2008 10:57:00 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 29 Feb 2008 21:48:55 +0100
 
 tcosmonitor (0.2.6) unstable; urgency=low
 

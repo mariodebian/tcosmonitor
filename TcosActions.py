@@ -34,7 +34,7 @@ import popen2
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
-from WakeOnLan import WakeOnLan
+import WakeOnLan
 
 def print_debug(txt):
     if shared.debug:
@@ -982,9 +982,12 @@ class TcosActions:
             except:
                 num_process="---"
             
-            try:
+            if self.main.xmlrpc.IsStandalone(ip):
+                time_logged=self.main.xmlrpc.GetStandalone("get_time")
+            else:
                 time_logged=self.main.localdata.GetTimeLogged(ip)
-            except:
+            
+            if not time_logged or time_logged == "":
                 time_logged="---"
             
             
@@ -1524,7 +1527,7 @@ class TcosActions:
             if shared.ask_msg ( msg ):
                 data=[]
                 hostslist=self.main.config.GetVar("statichosts")
-                eth=self.main.config.GetVar("network_interface")
+                #eth=self.main.config.GetVar("network_interface")
                 if hostslist == "": return
                 data=hostslist.split("#")
                 data=data[:-1]
@@ -1532,7 +1535,8 @@ class TcosActions:
                     ip, mac=host.split("|")
                     if ip == self.main.selected_ip:
                         print_debug("Send magic packet to mac=%s" %mac)
-                        WakeOnLan("%s"%mac)
+                        if not WakeOnLan.WakeOnLan("%s"%mac):
+                            self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%mac)
                         #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
         
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
@@ -1749,15 +1753,20 @@ class TcosActions:
             if shared.ask_msg ( msg ):
                 data=[]
                 hostslist=self.main.config.GetVar("statichosts")
-                eth=self.main.config.GetVar("network_interface")
+                #eth=self.main.config.GetVar("network_interface")
                 if hostslist == "": return
                 data=hostslist.split("#")
                 data=data[:-1]
+                errors=[]
                 for host in data:
                     mac=host.split("|")[1]
                     print_debug("Send magic packet to mac=%s" %mac)
-                    WakeOnLan("%s"%mac)
+                    if not WakeOnLan.WakeOnLan("%s"%mac):
+                        errors.append(mac)
                     #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+                if len(errors) >1:
+                    print_debug("menu_event_all() errors=%s"%errors)
+                    self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%" ".join(errors))
             return
                 
         # don't make actions in clients not selected
@@ -2355,7 +2364,7 @@ class TcosActions:
                 process=["PID COMMAND", "66000 can't read process list"]
         else:    
             username=self.main.localdata.GetUsername(ip)
-            cmd="LANG=C ps U \"%s\" -o pid,command" %(username)
+            cmd="LANG=C ps U \"%s\" -o pid,command" %(self.main.localdata.GetUserID(username))
             print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
             process=self.main.common.exe_cmd(cmd, verbose=0)
         

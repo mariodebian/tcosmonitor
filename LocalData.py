@@ -33,6 +33,8 @@ from ping import *
 import utmp
 from UTMPCONST import *
 
+import pwd
+
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 
 
@@ -221,6 +223,7 @@ class LocalData:
             
             # onlys show host running tcosxmlrpc in 8998 port
             if self.main.config.GetVar("onlyshowtcos") == 1:
+                self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
                 hosts=[]
                 for host in self.allclients:
                     # view status of port 8998
@@ -491,6 +494,14 @@ class LocalData:
         else:
             return False
 
+    def GetUserID(self, username):
+        try:
+            uid=pwd.getpwnam(username)[2]
+        except Exception, err:
+            uid=None
+            print_debug("GetUserID Exception error %s"%err)
+        return uid
+
     def GetNumProcess(self, host):
         """
         return number of process
@@ -507,8 +518,9 @@ class LocalData:
         if self.main.xmlrpc.IsStandalone(host):
             return self.main.xmlrpc.GetStandalone("get_process")
         
-        
-        cmd=" ps aux|grep -c \"^%s \"" %(self.username)
+        # use uid to support long usernames (>8)
+        uid=self.GetUserID(self.username)
+        cmd="ps U %s -o pid | grep -c ^[0-9]"%(uid)
         process=self.main.common.exe_cmd(cmd)
         
         print_debug ("GetNumProcess() process=%s" %(process) )
@@ -528,52 +540,8 @@ class LocalData:
         if output and output['timelogged']:
             return output['timelogged']
         
-        # get date
-        #cmd="LANG=C date +'%F %H:%M'"
-        
-        """
-        last=None
-        
-        cmd="LC_ALL=C LANGUAGE=C LANG=C date +'%b %d %H:%M'"
-        date=self.main.common.exe_cmd(cmd)
-        
-        print_debug("GetTimeLogged() local date=%s" %date)
-        
-        if not self.main.xmlrpc.IsStandalone(host):
-            cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:0.*still\" -e \"%s:0.*still\"  2>/dev/null | head -1| awk '{print $(NF-5)\" \"$(NF-4)\" \"$(NF-3)}'" %(host, self.GetHostname(host))
-            print_debug("GetTimeLogged() thin client host %s, get time for last command= %s" %(host, cmd))
-            last=self.main.common.exe_cmd(cmd)
-        else:
-            print_debug("GetTimeLogged() asking for time logged at standalone host %s" %(host))
-            last=self.main.xmlrpc.GetStandalone("get_time")
-            
-
-        print_debug ("TimeLogged() last=\"%s\" date=\"%s\"" %(last, date) )
-        # FORMAT AAAA-MM-DD HH:MM compare
-        if last==date or last==None:
-            print_debug ("GetTimeLogged() last=date or last=None")
-            return "00:00"
-            
-        (monthlast, daylast, hourlast) = last.split(' ')
-        (monthdate, daydate, hourdate) = date.split(' ')
-        if int(daylast) != int(daydate):
-            print_debug ("GetTimeLogged() Login another day daylast=%s daylate=%s!!!!" %(daylast,daydate))
-        (hlast, mlast)= hourlast.split(':')
-        (hdate, mdate)= hourdate.split(':')
-        # diff times
-        hlogged=int(hdate) - int(hlast)
-        mlogged=int(mdate) - int(mlast)
-        print_debug ("TimeLogged() DIFF user=%s date=%s" %(hourlast, hourdate) )
-        hdays=""
-        if mlogged < 0:
-            hlogged=hlogged-1
-            mlogged=mlogged+60
-        if hlogged < 0:
-            hdays="1d "
-            hlogged=hlogged+24
-        print_debug ("TimeLogged() hour=%02d minute=%02d" %(hlogged, mlogged) )
-        return "%s%02d:%02d" %(hdays, hlogged, mlogged)
-        """
+        # no time
+        return "---"
         
 if __name__ == '__main__':
     shared.debug=True

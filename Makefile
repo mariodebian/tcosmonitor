@@ -110,7 +110,6 @@ install:
 	install -m 755 tcos-volume-manager.py   $(DESTDIR)/$(PREFIX)/bin/tcos-volume-manager
 	install -m 755 tcos-devices-ng.py       $(DESTDIR)/$(PREFIX)/bin/tcos-devices-ng
 
-	install -m 755 tcos-last                $(DESTDIR)/$(TCOS_BINS)/tcos-last
 
 	install -m 755 server-utils/tcos-server-utils.py          $(DESTDIR)/$(PREFIX)/sbin/tcos-server-utils
 
@@ -191,7 +190,6 @@ patch_version:
 	sed -i 's/__VERSION__/$(VERSION)/g' tcosmonitor.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcospersonalize.py
 	sed -i 's/__VERSION__/$(VERSION)/g' server-utils/tcos-server-utils.py
-	sed -i 's/__VERSION__/$(VERSION)/g' tcos-last
 
 patch_dapper: patch_version
 	# PATCHING TcosMonitor in Ubuntu DAPPER

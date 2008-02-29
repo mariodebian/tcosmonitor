@@ -93,6 +93,9 @@ class Ping:
             if pingle.status == 2:
                 # only show in list hosts running tcosxmlrpc in 8998 port
                 if self.main.config.GetVar("onlyshowtcos") == 1:
+                    self.main.common.threads_enter("Ping:only show tcos")
+                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
+                    self.main.common.threads_leave("Ping:only show tcos")
                     # view status of port 8998
                     if PingPort(pingle.ip, shared.xmlremote_port, 0.5).get_status() == "OPEN":
                         self.main.xmlrpc.newhost(pingle.ip)
