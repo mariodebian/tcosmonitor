@@ -408,14 +408,29 @@ class LocalData:
                     last=b
         
         if last and os.path.isdir("/proc/%s"%last.ut_pid):
-            (year,month,day,hours,minutes,seconds,weekday,jday,DST )=localtime(time()-last.ut_tv[0])
-            # we have date like 1 Jan 1970 1 hour 30 minutes
-            # real hours = hours -1
-            # real days = days -1
-            if day > 1:
-                timelogged="%dd %02d:%02d"%(day-1,hours-1,minutes)
+            # take diff between now and login time
+            diff=time()-last.ut_tv[0]
+            
+            # get days and set diff to rest
+            days=int(diff/(3600*24))
+            diff=diff-days*3600*24
+
+            # get hours and set diff to rest
+            hours=int(diff/3600)
+            diff=diff-hours*3600
+
+            # get minutes and set seconds to rest
+            minutes=int(diff/60)
+            seconds=int(diff-minutes*60)
+
+            print_debug ("GetLast() days=%s hours=%s minutes=%s seconds=%s"%(days, hours, minutes, diff))
+
+            # only print days if > 0    
+            if days == 0:
+                timelogged="%02d:%02d"%(hours,minutes)
             else:
-                timelogged="%02d:%02d"%(hours-1,minutes)
+                timelogged="%dd %02d:%02d"%(days,hours,minutes)
+            
             data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged}
         return data
     
