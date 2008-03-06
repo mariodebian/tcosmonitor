@@ -2,7 +2,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
-#    TcosMonitor version __VERSION__
+#    TcosMonitor version 0.2.7etch1
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 #
@@ -398,13 +398,15 @@ class LocalData:
         data={}
         if ip != "" and not self.ipValid(ip):
             ip=self.GetIpAddress(ip)
-        print_debug("GetLast() ip=%s hostname=%s "%(ip, self.GetHostname(ip)) )
+        hostname=self.GetHostname(ip)
+        print_debug("GetLast() ip=%s hostname=%s "%(ip, hostname) )
         a = utmp.UtmpRecord(WTMP_FILE)
         while 1:
             b=a.getutent()
             if not b: break
             if b[0] == USER_PROCESS:
-                if b.ut_host == "%s:0"%(ip):
+                #print_debug ("GetLast() searching for ip %s, found %s"%(ip, b.ut_host) )
+                if b.ut_host == "%s:0"%(ip) or b.ut_host == "%s"%(hostname):
                     last=b
         
         if last and os.path.isdir("/proc/%s"%last.ut_pid):

@@ -1,3 +1,10 @@
+tcosmonitor (0.2.7.1) unstable; urgency=low
+
+  * LocalData.py
+    - Fix GetLast, in Debian etch or old versions need to compare with hostname too
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu,  6 Mar 2008 18:45:04 +0100
+
 tcosmonitor (0.2.7) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]
