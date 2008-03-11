@@ -1233,11 +1233,25 @@ class TcosActions:
             volume="85"
             client_type = self.main.xmlrpc.ReadInfo("get_client")
             if client_type == "tcos":
-                ip_unicast="239.255.255.0"
-                remote_cmd="vlc udp://@%s:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver --volume=300" %(ip_unicast)
+                max_uip=255
+                uip=0
+                while uip <= max_uip:
+                    uip_cmd="239.255.%s.0" %(uip)
+                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                    print_debug("Check broadcast ip %s." %(uip_cmd) )
+                    output=self.main.common.exe_cmd(cmd)
+                    uip+=1
+                    if output == "0":
+                        print_debug("Broadcast ip found: %s" %(uip_cmd))
+                        ip_unicast=uip_cmd
+                        break
+                    elif uip == max_uip:
+                        print_debug("Not found an available broadcast ip")
+                        return
+                remote_cmd="vlc udp://@%s:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(ip_unicast)
             else:
                 ip_unicast=self.main.selected_ip
-                remote_cmd="vlc udp://@:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver --volume=300"
+                remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300"
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
@@ -1357,7 +1371,7 @@ class TcosActions:
             
             
             if not os.path.isdir("/tmp/tcos_share"):
-                shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
+                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
                 return
             
             response = dialog.run()
@@ -1974,6 +1988,21 @@ class TcosActions:
                 return
                         
             str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+            max_uip=255
+            uip=0
+            while uip <= max_uip:
+                uip_cmd="239.255.%s.0" %(uip)
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                print_debug("Check broadcast ip %s." %(uip_cmd) )
+                output=self.main.common.exe_cmd(cmd)
+                uip+=1
+                if output == "0":
+                    print_debug("Broadcast ip found: %s" %(uip_cmd))
+                    ip_broadcast=uip_cmd
+                    break
+                elif uip == max_uip:
+                    print_debug("Not found an available broadcast ip")
+                    return
             lock="disable"
             volume="85"
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
@@ -2017,16 +2046,16 @@ class TcosActions:
                     filename=filename.replace("%s" %scape, "\%s" %scape)
                 
                 if response == gtk.RESPONSE_OK:
-                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver" ], shell=False)
+                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec"), ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver" ], shell=False)
                 elif response == 1:
-                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
+                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec"), ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 2:
-                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
+                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=mp4v,acodec=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec"), ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 elif response == 3:
-                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=%s,ab=112,channels=2}:standard{access=udp,mux=ts,dst=239.255.255.0:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec")), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
+                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=mp4v,vb=200,acodec=%s,ab=112,channels=2}:standard{access=udp,mux=ts,dst=%s:1234}\"}" %(self.main.config.GetVar("vlc_audio_codec"), ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm", "--disable-screensaver"], shell=False)
                 # exec this app on client
                 
-                remote_cmd="vlc udp://@239.255.255.0:1234 --brightness=2 --no-x11-shm --no-xvideo-shm --disable-screensaver --volume=300"
+                remote_cmd="vlc udp://@%s:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(ip_broadcast)
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
                 
@@ -2101,7 +2130,7 @@ class TcosActions:
             
             
             if not os.path.isdir("/tmp/tcos_share"):
-                shared.info_msg( _("First create /tmp/tcos_share folder,\nand restart rsync daemon\n/etc/init.d/rsync restart") )
+                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
                 return
             
             response = dialog.run()

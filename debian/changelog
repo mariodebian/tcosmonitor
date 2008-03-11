@@ -1,3 +1,12 @@
+tcosmonitor (0.2.8) unstable; urgency=low
+
+  * TcosActions.py
+    - Update video broadcast for thin clients multitask, now scan a valid ip for broadcast
+    - Fix audio problem for video broadcast
+  * Update translations
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 11 Mar 2008 17:18:53 +0100
+
 tcosmonitor (0.2.7.1) unstable; urgency=low
 
   * LocalData.py
