@@ -2,10 +2,13 @@ tcosmonitor (0.2.8) unstable; urgency=low
 
   * TcosActions.py
     - Update video broadcast for thin clients multitask, now scan a valid ip for broadcast
+    - Add http send video/audio to support distributions with ffmpeg codecs-less
     - Fix audio problem for video broadcast
-  * Update translations
+  * shared.py TcosPreferences.py
+    - Change initializations
+  * Update translations 
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 11 Mar 2008 17:18:53 +0100
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Sat, 15 Mar 2008 17:08:23 +0100
 
 tcosmonitor (0.2.7.1) unstable; urgency=low
 

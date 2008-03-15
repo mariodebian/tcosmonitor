@@ -68,8 +68,8 @@ class TcosPreferences:
         self.main.pref_xmlrpc_password = self.main.ui.get_widget('xmlrpc_password')
         
         self.main.pref_ssh_remote_username = self.main.ui.get_widget('ssh_remote_username')
-        self.main.pref_vlc_audio_codec = self.main.ui.get_widget('vlc_audio_codec')
-        self.populate_select(self.main.pref_vlc_audio_codec, shared.vlc_audio_codecs )
+        self.main.pref_vlc_method_send = self.main.ui.get_widget('vlc_method_send')
+        self.populate_select(self.main.pref_vlc_method_send, shared.vlc_methods_send )
         
         # populate selects (only on startup)
         self.main.combo_network_interfaces = self.main.ui.get_widget('combo_networkinterface') 
@@ -117,10 +117,16 @@ class TcosPreferences:
         
         self.main.config.SetVar("ssh_remote_username", "" + self.main.pref_ssh_remote_username.get_text() )
         
-        if self.main.pref_vlc_audio_codec.get_active() == 0:
-            self.main.config.SetVar("vlc_audio_codec", "mpga")
-        else:
-            self.main.config.SetVar("vlc_audio_codec", "mp3")
+        if self.main.pref_vlc_method_send.get_active() == 0:
+            self.main.config.SetVar("vlc_method_send", "ffmpeg-MPEG4")
+        elif self.main.pref_vlc_method_send.get_active() == 1:
+            self.main.config.SetVar("vlc_method_send", "ffmpeg-MPEG1")
+        elif self.main.pref_vlc_method_send.get_active() == 2:
+            self.main.config.SetVar("vlc_method_send", "x264-MPEG4")
+        elif self.main.pref_vlc_method_send.get_active() == 3:
+            self.main.config.SetVar("vlc_method_send", "http-Theora")
+        elif self.main.pref_vlc_method_send.get_active() == 4:
+            self.main.config.SetVar("vlc_method_send", "http-MPEG1")
         
         self.main.config.SetVar("refresh_interval", float(self.main.pref_spin_update.get_value()) )
         
@@ -247,8 +253,9 @@ class TcosPreferences:
         self.main.pref_ssh_remote_username.set_text(\
                      self.main.config.GetVar("ssh_remote_username").replace('"', '') )
                      
-        self.set_active_in_select(self.main.pref_vlc_audio_codec,\
-                         self.main.config.GetVar("vlc_audio_codec"))
+        self.set_active_in_select(self.main.pref_vlc_method_send,\
+                         self.main.config.GetVar("vlc_method_send"))
+        
         
         # populate checkboxes
         self.populate_checkboxes(self.main.pref_populatelistatstartup, "populate_list_at_startup")

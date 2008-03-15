@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-11 17:29+0100\n"
-"PO-Revision-Date: 2008-03-11 16:38+0100\n"
+"POT-Creation-Date: 2008-03-15 16:48+0100\n"
+"PO-Revision-Date: 2008-03-15 16:49+0100\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
 
 #: Initialize.py:144
 msgid "GPL-2 license file not found"
@@ -103,141 +103,141 @@ msgstr "No se han encontrado equipos"
 msgid "Found %d hosts"
 msgstr "Encontrados %d equipos"
 
-#: shared.py:197
+#: shared.py:207
 msgid "Refresh terminal info"
 msgstr "Actualizar información del terminal"
 
-#: shared.py:198
+#: shared.py:208
 msgid "Clean info about terminal"
 msgstr "Limpiar información del terminal"
 
-#: shared.py:199
+#: shared.py:209
 msgid "Reboot"
 msgstr "Reiniciar"
 
-#: shared.py:200
+#: shared.py:210
 msgid "Poweroff"
 msgstr "Apagar"
 
-#: shared.py:201
+#: shared.py:211
 msgid "Lock screen"
 msgstr "Bloquear pantalla"
 
-#: shared.py:202
+#: shared.py:212
 msgid "Unlock screen"
 msgstr "Desbloquear pantalla"
 
-#: shared.py:203
+#: shared.py:213
 msgid "Connect to remote screen (iTALC)"
 msgstr "Conectar a la pantalla remota (iTALC)"
 
-#: shared.py:204
+#: shared.py:214
 msgid "Connect to remote screen (VNC)"
 msgstr "Conectar a la pantalla remota (VNC)"
 
-#: shared.py:205
+#: shared.py:215
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
-#: shared.py:206
+#: shared.py:216
 msgid "Give a remote xterm"
 msgstr "Ejecutar un terminal xterm en el cliente"
 
-#: shared.py:207
+#: shared.py:217
 msgid "Configure this host"
 msgstr "Configurar este equipo"
 
-#: shared.py:208
+#: shared.py:218
 msgid "Logout client"
 msgstr "Desconectar cliente"
 
-#: shared.py:209
+#: shared.py:219
 msgid "Restart X session with new settings"
 msgstr "Reiniciar sesión X con la nueva configuración"
 
-#: shared.py:210
+#: shared.py:220
 msgid "Exec app on user display"
 msgstr "Ejecutar aplicación en pantalla de usuario"
 
-#: shared.py:211
+#: shared.py:221
 msgid "Send a text message to user"
 msgstr "Enviar un mensaje de texto al usuario"
 
-#: shared.py:212
+#: shared.py:222
 msgid "Show running apps of this client"
 msgstr "Mostrar aplicaciones ejecutadas por este cliente"
 
-#: shared.py:213 shared.py:231
+#: shared.py:223 shared.py:241
 msgid "Audio/Video broadcast"
 msgstr "Difusión de audio/vídeo"
 
-#: shared.py:214 shared.py:232
+#: shared.py:224 shared.py:242
 msgid "Send files"
 msgstr "Enviar archivos"
 
-#: shared.py:215
+#: shared.py:225
 msgid "Demo mode (from this host)"
 msgstr "Modo demo (desde este equipo)"
 
-#: shared.py:216
+#: shared.py:226
 msgid "Boot client (WakeOnLan)"
 msgstr "Arrancar cliente (WakeOnLan)"
 
-#: shared.py:221
+#: shared.py:231
 msgid "Reboot all clients"
 msgstr "Reiniciar todos los clientes"
 
-#: shared.py:222
+#: shared.py:232
 msgid "Poweroff all clients"
 msgstr "Apagar todos los clientes"
 
-#: shared.py:223
+#: shared.py:233
 msgid "Lock all screens"
 msgstr "Bloquear todas las pantallas"
 
-#: shared.py:224
+#: shared.py:234
 msgid "Unlock all screens"
 msgstr "Desbloquear todas las pantallas"
 
-#: shared.py:225
+#: shared.py:235
 msgid "Logout clients"
 msgstr "Desconectar todos los clientes"
 
-#: shared.py:226
+#: shared.py:236
 msgid "Restart X session of all clients"
 msgstr "Reiniciar sesión X de todos los clientes"
 
-#: shared.py:227
+#: shared.py:237
 msgid "Exec same app in all connected users"
 msgstr "Ejecutar misma aplicación en todos los usuarios conectados"
 
-#: shared.py:228
+#: shared.py:238
 msgid "Send a text message to all connected users"
 msgstr "Enviar un mensaje de texto a todos los usuarios conectados"
 
-#: shared.py:229
+#: shared.py:239
 msgid "Enter demo mode, all connected users see my screen"
 msgstr "Entrar en modo demostración, todos los usuarios ven mi pantalla"
 
-#: shared.py:230
+#: shared.py:240
 msgid "Capture All clients screens"
 msgstr "Capturar todas las pantallas"
 
-#: shared.py:233
+#: shared.py:243
 msgid "Boot All clients (WakeOnLan)"
 msgstr "Arrancar todos los clientes (WakeOnLan)"
 
-#: shared.py:391
+#: shared.py:401
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr "PREGUNTA: %(txt)s, RESPUESTA %(response)s"
 
-#: shared.py:403
+#: shared.py:413
 #, python-format
 msgid "INFO: %s"
 msgstr "INFO: %s"
 
-#: shared.py:414
+#: shared.py:424
 #, python-format
 msgid "ERROR: %s"
 msgstr "ERROR: %s"
@@ -299,9 +299,9 @@ msgstr ""
 "<b>Enviar mensaje a:</b>\n"
 "%s"
 
-#: TcosActions.py:393 TcosActions.py:1184 TcosActions.py:1334
-#: TcosActions.py:1427 TcosActions.py:1883 TcosActions.py:2090
-#: TcosActions.py:2186
+#: TcosActions.py:393 TcosActions.py:1184 TcosActions.py:1394
+#: TcosActions.py:1487 TcosActions.py:1943 TcosActions.py:2212
+#: TcosActions.py:2308
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
@@ -632,7 +632,7 @@ msgstr "Buscando información de equipos..."
 msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
-#: TcosActions.py:1072 TcosActions.py:2213
+#: TcosActions.py:1072 TcosActions.py:2335
 msgid "Can't exec this action because you are connected at this host!"
 msgstr ""
 "¡No se puede ejecutar esta acción porque está conectado desde ese equipo!"
@@ -642,7 +642,7 @@ msgstr ""
 msgid "Do you want to reboot %s?"
 msgstr "¿Quiere reiniciar el equipo %s ?"
 
-#: TcosActions.py:1096 TcosActions.py:1819
+#: TcosActions.py:1096 TcosActions.py:1879
 #, python-format
 msgid "Pc will reboot in %s seconds"
 msgstr "El equipo se reiniciará en %s segundos"
@@ -652,7 +652,7 @@ msgstr "El equipo se reiniciará en %s segundos"
 msgid "Do you want to poweroff %s?"
 msgstr "¿Quiere apagar el equipo %s?"
 
-#: TcosActions.py:1105 TcosActions.py:1829
+#: TcosActions.py:1105 TcosActions.py:1889
 #, python-format
 msgid "Pc will shutdown in %s seconds"
 msgstr "El equipo se apagará en %s segundos"
@@ -683,7 +683,7 @@ msgstr "No se pudo desconectar al usuario, no está conectado"
 msgid "Do you want to logout user \"%s\"?"
 msgstr "¿Quiere desconectar al usuario \"%s\"?"
 
-#: TcosActions.py:1170 TcosActions.py:1868
+#: TcosActions.py:1170 TcosActions.py:1928
 #, python-format
 msgid "Session will close in %s seconds"
 msgstr "La sesión se cerrará en %s segundos"
@@ -710,23 +710,23 @@ msgstr "No se pueden enviar mensajes, el usuario no está conectado"
 msgid "Can't send video broadcast, user is not logged"
 msgstr "No se puede enviar la difusión de vídeo, el usuario no está conectado"
 
-#: TcosActions.py:1256 TcosActions.py:2008
+#: TcosActions.py:1313 TcosActions.py:2123
 msgid "Select audio/video file.."
 msgstr "Seleccionar archivo de audio/vídeo..."
 
-#: TcosActions.py:1259 TcosActions.py:2011
+#: TcosActions.py:1316 TcosActions.py:2126
 msgid "Play DVD"
 msgstr "Reproducir DVD"
 
-#: TcosActions.py:1260 TcosActions.py:2012
+#: TcosActions.py:1317 TcosActions.py:2127
 msgid "Play SVCD/VCD"
 msgstr "Reproducir SVCD/VCD"
 
-#: TcosActions.py:1261 TcosActions.py:2013
+#: TcosActions.py:1318 TcosActions.py:2128
 msgid "Play AudioCD"
 msgstr "Reproducir AudioCD"
 
-#: TcosActions.py:1288 TcosActions.py:2041
+#: TcosActions.py:1345 TcosActions.py:2156
 #, python-format
 msgid ""
 "Not allowed white spaces in %s filename.\n"
@@ -735,11 +735,11 @@ msgstr ""
 "No se permiten espacios en el archivo %s.\n"
 "Por favor, renómbrelo."
 
-#: TcosActions.py:1305 TcosActions.py:2060
+#: TcosActions.py:1362 TcosActions.py:2176
 msgid "Waiting for start video transmission..."
 msgstr "Esperando arranque del modo difusión de vídeo..."
 
-#: TcosActions.py:1307 TcosActions.py:2063
+#: TcosActions.py:1364 TcosActions.py:2179
 msgid ""
 "First select the DVD chapter or play movie\n"
 "then press enter to send clients..."
@@ -747,33 +747,33 @@ msgstr ""
 "Primero seleccione el capítulo del DVD o reproduzca el vídeo\n"
 "después, presione «enter» para enviarlo a los clientes..."
 
-#: TcosActions.py:1313 TcosActions.py:1511 TcosActions.py:1939
-#: TcosActions.py:2069
+#: TcosActions.py:1370 TcosActions.py:1571 TcosActions.py:1999
+#: TcosActions.py:2185
 msgid "Error while exec app"
 msgstr "Error cuando se ejecutaba la aplicación"
 
-#: TcosActions.py:1316
+#: TcosActions.py:1373
 msgid "Lock keyboard and mouse on client?"
 msgstr "¿Bloquear teclado y ratón del cliente?"
 
-#: TcosActions.py:1338 TcosActions.py:2095
+#: TcosActions.py:1398 TcosActions.py:2217
 msgid "Running in broadcast video transmission."
 msgstr "Modo difusión de vídeo activo."
 
-#: TcosActions.py:1341
+#: TcosActions.py:1401
 #, python-format
 msgid "Running in broadcast video transmission to host %s"
 msgstr "Ejecutándose el modo de difusión de vídeo al equipo %s"
 
-#: TcosActions.py:1352
+#: TcosActions.py:1412
 msgid "Can't send files, user is not logged"
 msgstr "No se pueden enviar archivos, el usuario no está conectado"
 
-#: TcosActions.py:1357 TcosActions.py:2116
+#: TcosActions.py:1417 TcosActions.py:2238
 msgid "Select file or files..."
 msgstr "Seleccionar archivo o archivos..."
 
-#: TcosActions.py:1374 TcosActions.py:2133
+#: TcosActions.py:1434 TcosActions.py:2255
 msgid ""
 "TcosMonitor need special configuration for rsync daemon.\n"
 "\n"
@@ -785,7 +785,7 @@ msgstr ""
 "Lea la configuración requerida en:\n"
 "/usr/share/doc/tcosmonitor/README.rsync"
 
-#: TcosActions.py:1389 TcosActions.py:2148
+#: TcosActions.py:1449 TcosActions.py:2270
 #, python-format
 msgid ""
 "Special characters used in %s filename.\n"
@@ -794,18 +794,18 @@ msgstr ""
 "Se han usado caracteres especiales en el archivo %s\n"
 "Por favor, renómbrelo."
 
-#: TcosActions.py:1407 TcosActions.py:2166
+#: TcosActions.py:1467 TcosActions.py:2288
 msgid "Waiting for send files..."
 msgstr "Esperando al envío de archivos..."
 
-#: TcosActions.py:1416 TcosActions.py:1418 TcosActions.py:1422
-#: TcosActions.py:1431 TcosActions.py:2175 TcosActions.py:2177
-#: TcosActions.py:2181 TcosActions.py:2190
+#: TcosActions.py:1476 TcosActions.py:1478 TcosActions.py:1482
+#: TcosActions.py:1491 TcosActions.py:2297 TcosActions.py:2299
+#: TcosActions.py:2303 TcosActions.py:2312
 msgid "Teacher"
 msgstr "Profesor"
 
-#: TcosActions.py:1418 TcosActions.py:1431 TcosActions.py:2177
-#: TcosActions.py:2190
+#: TcosActions.py:1478 TcosActions.py:1491 TcosActions.py:2299
+#: TcosActions.py:2312
 #, python-format
 msgid ""
 "Teacher has sent some files to %(teacher)s folder:\n"
@@ -816,53 +816,53 @@ msgstr ""
 "\n"
 "%(basenames)s"
 
-#: TcosActions.py:1428 TcosActions.py:2187
+#: TcosActions.py:1488 TcosActions.py:2309
 msgid "Error creating destination folder."
 msgstr "Error creando directorio destino."
 
-#: TcosActions.py:1433 TcosActions.py:2192
+#: TcosActions.py:1493 TcosActions.py:2314
 msgid "Files sent."
 msgstr "Archivos enviados."
 
-#: TcosActions.py:1442
+#: TcosActions.py:1502
 msgid "Can't start VNC, user is not logged"
 msgstr "No se pudo arrancar VNC, el usuario no está conectado"
 
-#: TcosActions.py:1445
+#: TcosActions.py:1505
 #, python-format
 msgid "Do you want demo mode from %s?"
 msgstr "¿Quiere iniciar el modo demo desde %s?"
 
-#: TcosActions.py:1458 TcosActions.py:1797
+#: TcosActions.py:1518 TcosActions.py:1857
 msgid "No clients selected, do you want to select all?"
 msgstr "No se han seleccionado equipos, ¿quiere seleccionar todos?"
 
-#: TcosActions.py:1472 TcosActions.py:1647
+#: TcosActions.py:1532 TcosActions.py:1707
 #, python-format
 msgid "Connecting with %s to start VNC support"
 msgstr "Conectando a %s para arrancar soporte VNC"
 
-#: TcosActions.py:1495
+#: TcosActions.py:1555
 #, python-format
 msgid "Waiting for start demo mode from host %s..."
 msgstr "Esperando al arranque del modo demo desde el equipo %s..."
 
-#: TcosActions.py:1525 TcosActions.py:1956 TcosActions.py:1987
-#: TcosActions.py:2111
+#: TcosActions.py:1585 TcosActions.py:2016 TcosActions.py:2047
+#: TcosActions.py:2233
 msgid "No users logged."
 msgstr "No hay usuarios conectados."
 
-#: TcosActions.py:1529 TcosActions.py:1960
+#: TcosActions.py:1589 TcosActions.py:2020
 #, python-format
 msgid "Running in demo mode with %s clients."
 msgstr "Ejecutandose en modo demostración con %s equipos."
 
-#: TcosActions.py:1532 TcosActions.py:1964
+#: TcosActions.py:1592 TcosActions.py:2024
 #, python-format
 msgid "Running in demo mode from host %s..."
 msgstr "Ejecutandose en modo demostración desde el equipo %s..."
 
-#: TcosActions.py:1536 TcosActions.py:1762
+#: TcosActions.py:1596 TcosActions.py:1822
 msgid ""
 "Wake On Lan only works with static list.\n"
 "\n"
@@ -874,29 +874,29 @@ msgstr ""
 "Activar método escaneo \"static\" en Preferencias\n"
 "y soporte (wake on lan) en la configuración bios de los clientes."
 
-#: TcosActions.py:1540
+#: TcosActions.py:1600
 #, python-format
 msgid "Do you want boot %s client?"
 msgstr "¿Quiere arrancar el cliente %s ?"
 
-#: TcosActions.py:1553 TcosActions.py:1783
+#: TcosActions.py:1613 TcosActions.py:1843
 #, python-format
 msgid "Not valid MAC address: \"%s\""
 msgstr "Dirección MAC no válida: \"%s\""
 
-#: TcosActions.py:1564 TcosPreferences.py:305
+#: TcosActions.py:1624 TcosPreferences.py:312
 msgid "Stop"
 msgstr "Parar"
 
-#: TcosActions.py:1607
+#: TcosActions.py:1667
 msgid "Demo mode off."
 msgstr "Modo demostración desactivado."
 
-#: TcosActions.py:1633
+#: TcosActions.py:1693
 msgid "Video broadcast stopped."
 msgstr "Difusión de vídeo parada."
 
-#: TcosActions.py:1678
+#: TcosActions.py:1738
 #, python-format
 msgid ""
 "Can't start VNC, error:\n"
@@ -905,155 +905,155 @@ msgstr ""
 "No se pudo arrancar VNC, error:\n"
 "%s"
 
-#: TcosActions.py:1684
+#: TcosActions.py:1744
 msgid "Waiting for start of VNC server..."
 msgstr "Esperando a que comience el servidor VNC..."
 
-#: TcosActions.py:1707
+#: TcosActions.py:1767
 msgid "Can't start VNC, please add X11VNC support"
 msgstr "No se pudo arrancar VNC, por favor añada soporte para X11VNC."
 
-#: TcosActions.py:1741
+#: TcosActions.py:1801
 msgid "Can't start IVS, please add iTALC support"
 msgstr "No se puede arrancar el proceso IVS. Añada soporte para iTALC"
 
-#: TcosActions.py:1766
+#: TcosActions.py:1826
 msgid "Do you want boot all clients?"
 msgstr "¿Quiere arrancar todos los clientes?"
 
-#: TcosActions.py:1810
+#: TcosActions.py:1870
 msgid "No clients connected, press refresh button."
 msgstr "No se encontraron clientes, pulse el botón actualizar."
 
-#: TcosActions.py:1815
+#: TcosActions.py:1875
 #, python-format
 msgid "Do you want to reboot the following hosts:%s?"
 msgstr "¿Quiere reiniciar los siguientes equipos: %s ?"
 
-#: TcosActions.py:1825
+#: TcosActions.py:1885
 #, python-format
 msgid "Do you want to poweroff the following hosts:%s?"
 msgstr "¿Quiere apagar los siguientes equipos: %s?"
 
-#: TcosActions.py:1835
+#: TcosActions.py:1895
 #, python-format
 msgid "Do you want to lock the following screens:%s?"
 msgstr "¿Quiere bloquear la pantalla de los siguientes equipos: %s ?"
 
-#: TcosActions.py:1846
+#: TcosActions.py:1906
 #, python-format
 msgid "Do you want to unlock the following screens:%s?"
 msgstr "¿Quiere desbloquear la pantalla de los siguientes equipos: %s ?"
 
-#: TcosActions.py:1863
+#: TcosActions.py:1923
 #, python-format
 msgid "Do you want to logout the following users:%s?"
 msgstr "¿Quiere reiniciar desconectar a los siguientes usuarios: %s ?"
 
-#: TcosActions.py:1888
+#: TcosActions.py:1948
 #, python-format
 msgid "Do you want to restart X screens:%s?"
 msgstr "¿Quiere reiniciar las sesiones X de los siguientes equipos: %s?"
 
-#: TcosActions.py:1923
+#: TcosActions.py:1983
 msgid "Waiting for start demo mode..."
 msgstr "Esperando al arranque del modo demo..."
 
-#: TcosActions.py:2072
+#: TcosActions.py:2188
 msgid "Lock keyboard and mouse on clients?"
 msgstr "¿Bloquear teclado y ratón en los clientes?"
 
-#: TcosActions.py:2097
+#: TcosActions.py:2219
 msgid "Running in broadcast video transmission"
 msgstr "Ejecutándose el modo difusión de vídeo."
 
-#: TcosActions.py:2202
+#: TcosActions.py:2324
 msgid "Screenshots of all hosts"
 msgstr "Captura de pantalla de todos los equipos"
 
-#: TcosActions.py:2226
+#: TcosActions.py:2348
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr "Realizando acción \"%(action)s\" en equipo %(ip)s..."
 
-#: TcosActions.py:2255 TcosActions.py:2358
+#: TcosActions.py:2377 TcosActions.py:2480
 #, python-format
 msgid "Screenshot of %s"
 msgstr "Captura de pantalla de %s"
 
-#: TcosActions.py:2268
+#: TcosActions.py:2390
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr "Acción \"%(action)s\" terminada en %(ip)s"
 
-#: TcosActions.py:2277
+#: TcosActions.py:2399
 msgid "Waiting for screenshots..."
 msgstr "Esperando a las capturas..."
 
-#: TcosActions.py:2321
+#: TcosActions.py:2443
 msgid "Trying to order terminal to do a screenshot..."
 msgstr "Intentando mandar al terminal que se haga una captura de pantalla"
 
-#: TcosActions.py:2328
+#: TcosActions.py:2450
 msgid "Can't make screenshot, connection error"
 msgstr "No se pudo hacer una captura de pantalla, error de conexión"
 
-#: TcosActions.py:2335
+#: TcosActions.py:2457
 msgid "Get another screenshot"
 msgstr "Hacer otra captura de pantalla"
 
-#: TcosActions.py:2349
+#: TcosActions.py:2471
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr "Captura de pantalla de <span style='font-style: italic'>%s</span>"
 
-#: TcosActions.py:2364
+#: TcosActions.py:2486
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr "Captura de pantalla de %s hecha."
 
-#: TcosActions.py:2383
+#: TcosActions.py:2505
 msgid "User not connected, no processes."
 msgstr "Usuario no conectado, no existen procesos."
 
-#: TcosActions.py:2401
+#: TcosActions.py:2523
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr "Procesos ejecutados por el usuario \"%s\":"
 
-#: TcosActions.py:2405
+#: TcosActions.py:2527
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 "AVISO: Hay varios procesos del sistema ocultos. Puede activarlos en la "
 "ventana de Preferencias."
 
-#: TcosActions.py:2410
+#: TcosActions.py:2532
 msgid "Pid"
 msgstr "Pid"
 
-#: TcosActions.py:2411
+#: TcosActions.py:2533
 msgid "Process command"
 msgstr "Comando del proceso"
 
-#: TcosActions.py:2417
+#: TcosActions.py:2539
 msgid "Kill this process"
 msgstr "Matar este proceso"
 
-#: TcosActions.py:2520
+#: TcosActions.py:2642
 msgid "Actions for selected host"
 msgstr "Acciones para el equipo seleccionado"
 
-#: TcosActions.py:2526
+#: TcosActions.py:2648
 #, python-format
 msgid "Actions for %s"
 msgstr "Acciones para %s"
 
-#: TcosActions.py:2563
+#: TcosActions.py:2685
 msgid "Actions for selected hosts"
 msgstr "Acciones para los equipos seleccionados"
 
-#: TcosActions.py:2565
+#: TcosActions.py:2687
 msgid "Actions for all hosts"
 msgstr "Acciones para todos los equipos"
 
@@ -1532,8 +1532,8 @@ msgid "SSH remote username"
 msgstr "Usuario remoto SSH"
 
 #: tcosmonitor.glade:1118
-msgid "VLC audio codec"
-msgstr "Codec de audio para VLC"
+msgid "VLC method to send"
+msgstr "VLC método de envio"
 
 #: tcosmonitor.glade:1180
 msgid "General settings"
@@ -1888,7 +1888,7 @@ msgstr "¿Borrar archivo de configuración de %s?"
 msgid "Deleted!"
 msgstr "¡Borrado!"
 
-#: TcosPreferences.py:200
+#: TcosPreferences.py:206
 msgid "New settings saved."
 msgstr "Configuración guardada."
 
@@ -1976,6 +1976,12 @@ msgid ""
 msgstr ""
 "El usuario o la contraseña están vacíos,\n"
 "por favor, verifique el dialogo de preferencias"
+
+#~ msgid "VLC audio codec"
+#~ msgstr "Codec de audio para VLC"
+
+#~ msgid "VLC video codec"
+#~ msgstr "Codec de video para VLC"
 
 #~ msgid ""
 #~ "First create /tmp/tcos_share folder,\n"

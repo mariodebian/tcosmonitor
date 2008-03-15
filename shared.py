@@ -82,9 +82,19 @@ scan_methods=[
 "static"
 ]
 
-vlc_audio_codecs=[
-"mpga", 
-"mp3"
+vcodecs=["mp4v", "mp1v", "h264", "theo"]
+vencs=["ffmpeg", "x264", "theora"]
+acodecs=["mpga", "vorb"]
+aencs=["ffmpeg", "vorbis"]
+accesss=["udp", "http"]
+muxs=["ts", "ogg"]
+
+vlc_methods_send=[
+"ffmpeg-MPEG4",
+"ffmpeg-MPEG1",
+"x264-MPEG4",
+"http-Theora",
+"http-MPEG1"
 ]
 
 
@@ -116,7 +126,7 @@ DefaultConfig=[
 ["selectedhosts", 0, "int"],
 ["statichosts", "", "str"],
 ["ssh_remote_username", "root", "str"],
-["vlc_audio_codec", "mpga", "str"],
+["vlc_method_send", "ffmpeg-MPEG4", "str"],
 ["show_donate", 1, "int"]
 ]
 
