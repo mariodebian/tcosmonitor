@@ -2455,11 +2455,12 @@ class TcosActions:
         print_debug ( "get_screenshot() creating button..." )
         
         slabel=_("Get another screenshot")
+        self.main.common.threads_enter("TcosActions::get_screenshot creating button")
         self.main.another_screenshot_button=None
         self.main.another_screenshot_button=gtk.Button(label=slabel )
         self.main.another_screenshot_button.connect("clicked", self.on_another_screenshot_button_click, ip)
         self.main.another_screenshot_button.show()
-        
+        self.main.common.threads_leave("TcosActions::get_screenshot creating button")
             
         
         print_debug ( "get_screenshot() creating button..." )
@@ -2472,13 +2473,14 @@ class TcosActions:
         block_txt+="<span style='font-size: medium'> %s </span>" %(datetxt)
         block_txt+="<span> </span><input type='button' name='self.main.another_screenshot_button' label='%s' />" %( slabel )
          
+        self.main.common.threads_enter("TcosActions::get_screenshot show capture")
         url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
         self.main.datatxt.clean()
         self.main.datatxt.insert_block( block_txt )
                                  
         self.main.datatxt.insert_html( "<img src='%s' alt='%s'/>\n"\
                                  %(url, _("Screenshot of %s" %(ip) )) )
-        
+        self.main.common.threads_leave("TcosActions::get_screenshot show capture")
         
         #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions::get_screenshot END")

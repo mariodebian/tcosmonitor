@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-15 16:48+0100\n"
+"POT-Creation-Date: 2008-03-15 18:52+0100\n"
 "PO-Revision-Date: 2008-03-15 16:49+0100\n"
 "Last-Translator: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Initialize.py:144
 msgid "GPL-2 license file not found"
@@ -976,7 +976,7 @@ msgstr "Captura de pantalla de todos los equipos"
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr "Realizando acción \"%(action)s\" en equipo %(ip)s..."
 
-#: TcosActions.py:2377 TcosActions.py:2480
+#: TcosActions.py:2377 TcosActions.py:2482
 #, python-format
 msgid "Screenshot of %s"
 msgstr "Captura de pantalla de %s"
@@ -1002,58 +1002,58 @@ msgstr "No se pudo hacer una captura de pantalla, error de conexión"
 msgid "Get another screenshot"
 msgstr "Hacer otra captura de pantalla"
 
-#: TcosActions.py:2471
+#: TcosActions.py:2472
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr "Captura de pantalla de <span style='font-style: italic'>%s</span>"
 
-#: TcosActions.py:2486
+#: TcosActions.py:2488
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr "Captura de pantalla de %s hecha."
 
-#: TcosActions.py:2505
+#: TcosActions.py:2507
 msgid "User not connected, no processes."
 msgstr "Usuario no conectado, no existen procesos."
 
-#: TcosActions.py:2523
+#: TcosActions.py:2525
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr "Procesos ejecutados por el usuario \"%s\":"
 
-#: TcosActions.py:2527
+#: TcosActions.py:2529
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 "AVISO: Hay varios procesos del sistema ocultos. Puede activarlos en la "
 "ventana de Preferencias."
 
-#: TcosActions.py:2532
+#: TcosActions.py:2534
 msgid "Pid"
 msgstr "Pid"
 
-#: TcosActions.py:2533
+#: TcosActions.py:2535
 msgid "Process command"
 msgstr "Comando del proceso"
 
-#: TcosActions.py:2539
+#: TcosActions.py:2541
 msgid "Kill this process"
 msgstr "Matar este proceso"
 
-#: TcosActions.py:2642
+#: TcosActions.py:2644
 msgid "Actions for selected host"
 msgstr "Acciones para el equipo seleccionado"
 
-#: TcosActions.py:2648
+#: TcosActions.py:2650
 #, python-format
 msgid "Actions for %s"
 msgstr "Acciones para %s"
 
-#: TcosActions.py:2685
+#: TcosActions.py:2687
 msgid "Actions for selected hosts"
 msgstr "Acciones para los equipos seleccionados"
 
-#: TcosActions.py:2687
+#: TcosActions.py:2689
 msgid "Actions for all hosts"
 msgstr "Acciones para todos los equipos"
 

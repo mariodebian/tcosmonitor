@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-15 16:48+0100\n"
+"POT-Creation-Date: 2008-03-15 18:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -933,7 +933,7 @@ msgstr ""
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr ""
 
-#: TcosActions.py:2377 TcosActions.py:2480
+#: TcosActions.py:2377 TcosActions.py:2482
 #, python-format
 msgid "Screenshot of %s"
 msgstr ""
@@ -959,56 +959,56 @@ msgstr ""
 msgid "Get another screenshot"
 msgstr ""
 
-#: TcosActions.py:2471
+#: TcosActions.py:2472
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr ""
 
-#: TcosActions.py:2486
+#: TcosActions.py:2488
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr ""
 
-#: TcosActions.py:2505
+#: TcosActions.py:2507
 msgid "User not connected, no processes."
 msgstr ""
 
-#: TcosActions.py:2523
+#: TcosActions.py:2525
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr ""
 
-#: TcosActions.py:2527
+#: TcosActions.py:2529
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 
-#: TcosActions.py:2532
+#: TcosActions.py:2534
 msgid "Pid"
 msgstr ""
 
-#: TcosActions.py:2533
+#: TcosActions.py:2535
 msgid "Process command"
 msgstr ""
 
-#: TcosActions.py:2539
+#: TcosActions.py:2541
 msgid "Kill this process"
 msgstr ""
 
-#: TcosActions.py:2642
+#: TcosActions.py:2644
 msgid "Actions for selected host"
 msgstr ""
 
-#: TcosActions.py:2648
+#: TcosActions.py:2650
 #, python-format
 msgid "Actions for %s"
 msgstr ""
 
-#: TcosActions.py:2685
+#: TcosActions.py:2687
 msgid "Actions for selected hosts"
 msgstr ""
 
-#: TcosActions.py:2687
+#: TcosActions.py:2689
 msgid "Actions for all hosts"
 msgstr ""
 
