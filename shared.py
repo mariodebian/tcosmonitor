@@ -483,10 +483,8 @@ class Workers:
         print_debug ( "watch_dog() FINISHED" )
         
     def start(self):
-        try:
+        if hasattr(self.main, "progressbutton"):
             self.main.progressbutton.set_sensitive(True)
-        except:
-            pass
         
         if self.main.worker_running == False:
             self.set_started()  # config var as started

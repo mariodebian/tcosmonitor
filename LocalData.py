@@ -2,7 +2,7 @@
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
 #
-#    TcosMonitor version 0.2.7etch1
+#    TcosMonitor version __VERSION__
 #
 # Copyright (c) 2006 Mario Izquierdo <mariodebian@gmail.com>
 #
@@ -223,7 +223,8 @@ class LocalData:
             
             # onlys show host running tcosxmlrpc in 8998 port
             if self.main.config.GetVar("onlyshowtcos") == 1:
-                self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
+                if hasattr(self.main, "write_into_statusbar"):
+                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
                 hosts=[]
                 for host in self.allclients:
                     # view status of port 8998
