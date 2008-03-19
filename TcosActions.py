@@ -157,6 +157,9 @@ class TcosActions:
         
         # clear cached ips and ports
         self.main.xmlrpc.resethosts()
+        self.datatxt = self.main.datatxt
+        # clear datatxt if len allclients is 0
+        self.datatxt.clean()
         
         if self.main.config.GetVar("scan_network_method") == "ping":
             self.model.clear()
@@ -302,7 +305,6 @@ class TcosActions:
                                 str_image=""
                         else:
                             str_image=image_name
-                        
                                     
             if len(str_exec) <1:
                 shared.error_msg( _("%s is not application") %(os.path.basename(desktop[7:])) )
@@ -366,31 +368,26 @@ class TcosActions:
         self.main.ask.show()
         return True
                 
-    def exe_app_in_client(self, mode, timeout=0, msg="", users=[]):
-        connected_users=[]
-        for client in users:
-            if self.main.localdata.IsLogged(client):
-                connected_users.append(self.main.localdata.GetUsernameAndHost(client))  
-  
+    def exe_app_in_client(self, mode, timeout=0, msg="", users=[], connected_users=[]):
         remote_cmd=("/usr/lib/tcos/session-cmd-send %s %s %s" %(mode.upper(), timeout, msg))
         action="down-controller %s %s" %(mode, timeout)
         print_debug("exe_app_in_client() usernames=%s" %users)
         
-        newusernames=[]
+        if len(connected_users) != 0 and connected_users[0] != shared.NO_LOGIN_MSG:
+            newusernames=[]
+            for user in connected_users:
+                if user.find(":") != -1:
+                    # we have a standalone user...
+                    usern, ip = user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    self.main.xmlrpc.DBus("exec", remote_cmd )
+                else:
+                    newusernames.append(user)
+                                
+            result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
                 
-        for user in connected_users:
-            if user.find(":") != -1:
-                # we have a standalone user...
-                usern, ip = user.split(":")
-                self.main.xmlrpc.newhost(ip)
-                self.main.xmlrpc.DBus("exec", remote_cmd )
-            else:
-                newusernames.append(user)
-                            
-        result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
-            
-        if not result:
-            shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+            if not result:
+                shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
         
         self.main.worker=shared.Workers(self.main, None, None)
         self.main.worker.set_for_all_action(self.action_for_clients,\
@@ -429,12 +426,11 @@ class TcosActions:
             result = self.main.dbus_action.do_message( newusernames , arg)
             if not result:
                 shared.error_msg ( _("Error while send message:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-                    
         self.main.ask_dragdrop.hide()
         self.main.ask_fixed.hide()
         self.main.image_entry.hide()                
         self.main.ask.hide()
-        self.main.ask_entry.set_text("")                
+        self.main.ask_entry.set_text("")
         dbus_action=None
         self.ask_mode=None
         return 
@@ -977,6 +973,9 @@ class TcosActions:
             hostname=self.main.localdata.GetHostname(ip)
             username=self.main.localdata.GetUsername(ip)
             
+            if username.startswith('error: tcos-last'):
+                username="---"
+            
             try:
                 num_process=self.main.localdata.GetNumProcess(ip)
             except:
@@ -987,7 +986,7 @@ class TcosActions:
             else:
                 time_logged=self.main.localdata.GetTimeLogged(ip)
             
-            if not time_logged or time_logged == "":
+            if not time_logged or time_logged == "" or time_logged.startswith('error: tcos-last'):
                 time_logged="---"
             
             
@@ -1072,10 +1071,24 @@ class TcosActions:
             shared.info_msg ( _("Can't exec this action because you are connected at this host!") )
             return
         
+        connected_users=[]
+        newallclients=[]
+        allclients_logged=[]
+        self.main.xmlrpc.newhost(self.main.selected_ip)
+        client_type = self.main.xmlrpc.ReadInfo("get_client")
+        host=self.main.localdata.GetHostname(self.main.selected_ip)
+
+        if self.main.localdata.IsLogged(self.main.selected_ip):
+            connected_users.append(self.main.localdata.GetUsernameAndHost(self.main.selected_ip))
+            newallclients.append(self.main.selected_ip)
+            allclients_logged.append(self.main.selected_ip)
+        elif not self.main.xmlrpc.IsStandalone(self.main.selected_ip):
+            allclients_logged.append(self.main.selected_ip)
+        
         if action == 0:
             # refresh terminal
             # call to read remote info
-            self.main.xmlrpc.newhost(self.main.selected_ip)
+            #self.main.xmlrpc.newhost(self.main.selected_ip)
             self.main.xmlrpc.ip=self.main.selected_ip
             
             self.main.worker=shared.Workers( self.main,\
@@ -1088,25 +1101,26 @@ class TcosActions:
             
         if action == 2:
             # Ask for reboot reboot
-            ip=self.main.selected_ip
-            host=self.main.localdata.GetHostname(self.main.selected_ip)
             msg=_( _("Do you want to reboot %s?" ) %(host) )
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
                 msg=(_("Pc will reboot in %s seconds") %timeout)
-                self.exe_app_in_client("reboot", timeout, msg, users=[self.main.selected_ip])
+                self.exe_app_in_client("reboot", timeout, msg, users=[self.main.selected_ip], connected_users=connected_users)
             
         if action == 3:
             # Ask for poweroff reboot
-            host=self.main.localdata.GetHostname(self.main.selected_ip)
             msg=_( _("Do you want to poweroff %s?" ) %(host) )
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
                 msg=(_("Pc will shutdown in %s seconds") %timeout)
-                self.exe_app_in_client("poweroff", timeout, msg, users=[self.main.selected_ip])
+                self.exe_app_in_client("poweroff", timeout, msg, users=[self.main.selected_ip], connected_users=connected_users)
         
         if action == 4:
             # lock screen
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No user logged.") )
+                return
+            
             if not self.main.xmlrpc.lockscreen():
                 shared.error_msg( _("Can't connect to tcosxmlrpc.\nPlease verify user and password in prefences!") )
                 return
@@ -1114,6 +1128,10 @@ class TcosActions:
         
         if action == 5:
             # unlock screen
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No user logged.") )
+                return
+            
             if not self.main.xmlrpc.unlockscreen():
                 shared.error_msg( _("Can't connect to tcosxmlrpc.\nPlease verify user and password in prefences!") )
                 return
@@ -1121,17 +1139,29 @@ class TcosActions:
         
         if action == 6:
             # start ivs
-            self.main.worker=shared.Workers(self.main, target=self.start_ivs, args=([self.main.selected_ip]) )
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No user logged.") )
+                return
+            
+            self.main.worker=shared.Workers(self.main, target=self.start_ivs, args=(allclients_logged) )
             self.main.worker.start()
             
         if action == 7:
             # start vnc
-            self.main.worker=shared.Workers(self.main, target=self.start_vnc, args=([self.main.selected_ip]) )
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No user logged.") )
+                return
+            
+            self.main.worker=shared.Workers(self.main, target=self.start_vnc, args=(allclients_logged) )
             self.main.worker.start()
             
         if action == 8:
             # screenshot !!!
-            self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=[self.main.selected_ip])
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No user logged.") )
+                return
+            
+            self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=allclients_logged)
             self.main.worker.start()
         
         if action == 9:
@@ -1143,7 +1173,6 @@ class TcosActions:
             
         if action == 10:
             # launch personalize settings if client is TCOS (PXES and LTSP not supported)
-            client_type = self.main.xmlrpc.ReadInfo("get_client")
             if client_type == "tcos":
                 cmd="gksu \"tcospersonalize --host=%s\"" %(self.main.selected_ip)
                 print_debug ( "menu_event_one(%d) cmd=%s" %(action, cmd) )
@@ -1152,31 +1181,27 @@ class TcosActions:
                 shared.info_msg( _("%s is not supported to personalize!") %(client_type) )
                     
         if action == 11:
-            # reset xorg
+            # logout session
             # Ask for it
             
-            if not self.main.localdata.IsLogged(self.main.selected_ip):
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg ( _("Can't logout, user is not logged") )
                 return
-                
-            user=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
+                            
+            print_debug("menu_event_one() user=%s" %connected_users[0])
             
-            print_debug("menu_event_one() user=%s" %user)
-            
-            msg=_( _("Do you want to logout user \"%s\"?" ) %(user) )
+            msg=_( _("Do you want to logout user \"%s\"?" ) %(connected_users[0]) )
             if shared.ask_msg ( msg ):
                 newusernames=[]
                 timeout=self.main.config.GetVar("actions_timeout")
                 msg=_("Session will close in %s seconds") %timeout
                 remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT %s %s" %(timeout, msg)
                 
-                if user.find(":") != -1:
+                if connected_users[0].find(":") != -1:
                     # we have a standalone user...
-                    usern, ip = user.split(":")
-                    self.main.xmlrpc.newhost(ip)
                     self.main.xmlrpc.DBus("exec", remote_cmd )
                 else:
-                    newusernames.append(user)
+                    newusernames.append(connected_users[0])
                         
                 result = self.main.dbus_action.do_exec(newusernames ,remote_cmd )
             
@@ -1186,7 +1211,6 @@ class TcosActions:
         if action == 12:
             # restart xorg with new settings
             # thin client must download again XXX.XXX.XXX.XXX.conf and rebuild xorg.conf
-            client_type = self.main.xmlrpc.ReadInfo("get_client")
             if client_type == "tcos":
                 msg=_( "Restart X session of %s with new config?" ) %(self.main.selected_ip)
                 if shared.ask_msg ( msg ):
@@ -1200,19 +1224,22 @@ class TcosActions:
         
         if action == 13:
             # exec app
-            if not self.main.localdata.IsLogged(self.main.selected_ip):
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg ( _("Can't exec application, user is not logged") )
                 return
-            self.askfor(mode="exec", users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)])
+            self.askfor(mode="exec", users=connected_users)
             
         if action == 14:
             # send message
-            if not self.main.localdata.IsLogged(self.main.selected_ip):
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg ( _("Can't send message, user is not logged") )
                 return
-            self.askfor(mode="mess", users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)] )
+            self.askfor(mode="mess", users=connected_users)
             
         if action == 15:
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg ( _("Can't show runnings apps, user is not logged") )
+                return
             print_debug ("menu_event_one() show running apps" )
             self.get_user_processes(self.main.selected_ip)
             
@@ -1222,16 +1249,14 @@ class TcosActions:
             # start video broadcast mode
             # Stream to single client unicast
             eth=self.main.config.GetVar("network_interface")
-            users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
             
-            if not self.main.localdata.IsLogged(self.main.selected_ip):
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg ( _("Can't send video broadcast, user is not logged") )
                 return
                         
             str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
             lock="disable"
             volume="85"
-            client_type = self.main.xmlrpc.ReadInfo("get_client")
             
             if self.main.pref_vlc_method_send.get_active() == 0:
                 vcodec=shared.vcodecs[0]
@@ -1376,11 +1401,9 @@ class TcosActions:
                 
                 newusernames=[]
 
-                for user in users:
+                for user in connected_users:
                     if user.find(":") != -1:
                         # we have a standalone user...
-                        usern, ip = user.split(":")
-                        self.main.xmlrpc.newhost(ip)
                         if access == "http":
                             server=self.main.xmlrpc.GetStandalone("get_server")
                             remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(server, ip_unicast)
@@ -1396,9 +1419,8 @@ class TcosActions:
                 self.main.xmlrpc.vlc( self.main.selected_ip, volume, lock )
                 
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-                host=self.main.localdata.GetHostname(self.main.selected_ip)    
                 # new mode to Stop Button
-                self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":[self.main.selected_ip]}, _("Running in broadcast video transmission to host %s") %(host))
+                self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":newallclients}, _("Running in broadcast video transmission to host %s") %(host))
             else:
                 dialog.destroy()
                                                     
@@ -1406,9 +1428,7 @@ class TcosActions:
             # action sent by vidal_joshur at gva dot es
             # envio ficheros
             # search for connected users
-            users=[self.main.localdata.GetUsernameAndHost(self.main.selected_ip)]
-            
-            if not self.main.localdata.IsLogged(self.main.selected_ip):
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg ( _("Can't send files, user is not logged") )
                 return
             
@@ -1468,10 +1488,10 @@ class TcosActions:
                 
                 newusernames=[]
                 
-                for user in users:
+                for user in connected_users:
                     if user.find(":") != -1:
-                        usern, ip=user.split(":")
-                        self.main.xmlrpc.newhost(ip)
+                        #usern, ip=user.split(":")
+                        #self.main.xmlrpc.newhost(ip)
                         server=self.main.xmlrpc.GetStandalone("get_server")
                         standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), server, rsync_filenames_client.strip() )
                         self.main.xmlrpc.DBus("exec", standalone_cmd )
@@ -1489,17 +1509,15 @@ class TcosActions:
                 else:
                     result = self.main.dbus_action.do_message(newusernames ,
                                 _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
-                    
                 self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
         
         if action == 18:
             print_debug ("menu_event_one() demo mode from not teacher host" )
+            hostname=host
             ip=self.main.selected_ip
-            hostname=self.main.localdata.GetHostname(self.main.selected_ip)
-            
-            if not self.main.localdata.IsLogged(ip):
-                shared.error_msg ( _("Can't start VNC, user is not logged") )
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg ( _("Can't start demo mode, user is not logged") )
                 return
                 
             msg=_( _("Do you want demo mode from %s?" ) %(hostname) )
@@ -1518,11 +1536,11 @@ class TcosActions:
                     msg=_( _("No clients selected, do you want to select all?" ) )
                     if shared.ask_msg ( msg ):
                         allclients=self.main.localdata.allclients
-                    if len(allclients) == 0: return
             else:
                 # get all clients connected
                 allclients=self.main.localdata.allclients
                 
+            if len(allclients) == 0: return
             
             # force kill x11vnc in client
             self.main.xmlrpc.newhost(ip)
@@ -1551,7 +1569,7 @@ class TcosActions:
             # start x11vnc in remote host
             self.main.xmlrpc.vnc("genpass", ip, passwd )
             self.main.xmlrpc.vnc("startserver", ip )
-                        
+            
             self.main.write_into_statusbar( _("Waiting for start demo mode from host %s...") %(ip) )
                 
             # need to wait for start, PingPort loop
@@ -1854,21 +1872,36 @@ class TcosActions:
                 if model.get_value(iter, COL_SEL_ST):
                     allclients.append(model.get_value(iter, COL_IP))
             if len(allclients) == 0:
-                msg=_( _("No clients selected, do you want to select all?" ) )
-                if shared.ask_msg ( msg ):
-                    allclients=self.main.localdata.allclients
-                if len(allclients) == 0: return
+                #msg=_( _("No clients selected, do you want to select all?" ) )
+                #if shared.ask_msg ( msg ):
+                allclients=self.main.localdata.allclients
+                #if len(allclients) == 0: return
         else:
             # get all clients connected
             allclients=self.main.localdata.allclients
-            
-        allclients_txt=""
-        for client in allclients:
-            allclients_txt+="\n %s" %(client)
-            
-        if len(self.main.localdata.allclients) == 0:
+
+        if len(allclients) == 0:
             shared.info_msg ( _("No clients connected, press refresh button.") )
             return
+             
+        connected_users=[]
+        allclients_txt=""
+        newallclients=[]
+        newallclients_txt=""
+        allclients_logged=[]
+        allclients_logged_txt=""
+            
+        for client in allclients:
+            allclients_txt+="\n %s" %(client)
+            if self.main.localdata.IsLogged(client):
+                connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                newallclients.append(client)
+                newallclients_txt+="\n %s" %(client)
+                allclients_logged.append(client)
+                allclients_logged_txt+="\n %s" %(client)
+            elif not self.main.xmlrpc.IsStandalone(client):
+                allclients_logged.append(client)
+                allclients_logged_txt+="\n %s" %(client)
             
         if action == 0:
             # Ask for reboot
@@ -1877,7 +1910,7 @@ class TcosActions:
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
                 msg=(_("Pc will reboot in %s seconds") %timeout)
-                self.exe_app_in_client("reboot", timeout, msg, users=allclients)
+                self.exe_app_in_client("reboot", timeout, msg, users=allclients, connected_users=connected_users)
             return
         
         if action == 1:
@@ -1887,41 +1920,48 @@ class TcosActions:
             if shared.ask_msg ( msg ):
                 timeout=self.main.config.GetVar("actions_timeout")
                 msg=(_("Pc will shutdown in %s seconds") %timeout)
-                self.exe_app_in_client("poweroff", timeout, msg, users=allclients)
+                self.exe_app_in_client("poweroff", timeout, msg, users=allclients, connected_users=connected_users)
             return
         
         if action == 2:
             # Ask for lock screens
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No users logged.") )
+                return
+            
             msg=_( _("Do you want to lock the following screens:%s?" )\
-                                                 %(allclients_txt) )
+                                                 %(allclients_logged_txt) )
             if shared.ask_msg ( msg ):
                 #gobject.timeout_add( 50, self.action_for_clients, allclients, "lockscreen" )
                 self.main.worker=shared.Workers(self.main, None, None)
                 self.main.worker.set_for_all_action(self.action_for_clients,\
-                                                     allclients, "lockscreen" )
+                                                     allclients_logged, "lockscreen" )
             return
         
         if action == 3:
             # Ask for unlock screens
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No users logged.") )
+                return
+            
             msg=_( _("Do you want to unlock the following screens:%s?" )\
-                                                     %(allclients_txt) )
+                                                     %(allclients_logged_txt) )
             if shared.ask_msg ( msg ):
                 #gobject.timeout_add( 50, self.action_for_clients, allclients, "unlockscreen" )
                 self.main.worker=shared.Workers(self.main, None, None)
                 self.main.worker.set_for_all_action(self.action_for_clients,\
-                                                    allclients, "unlockscreen" )
+                                                    allclients_logged, "unlockscreen" )
             return    
         
         if action == 4:
-            connected_users=[]
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))  
+            print_debug("menu_event_all() allclients=%s" %newallclients)
             
-            print_debug("menu_event_all() allclients=%s" %allclients)
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg( _("No users logged.") )
+                return
             
             msg=_( _("Do you want to logout the following users:%s?" )\
-                                                     %(allclients_txt) )
+                                                     %(newallclients_txt) )
             if shared.ask_msg ( msg ):
                 newusernames=[]
                 timeout=self.main.config.GetVar("actions_timeout")
@@ -1945,41 +1985,55 @@ class TcosActions:
         
         if action == 5:
             # Ask for restart X session
-            msg=_( _("Do you want to restart X screens:%s?" )\
-                                             %(allclients_txt) )
+            onlythinclients=[]
+            onlythinclients_txt=""
+            
+            for client in allclients:
+                if not self.main.xmlrpc.IsStandalone(client):
+                    onlythinclients.append(client)
+                    onlythinclients_txt+="\n %s" %(client)
+                    
+            if len(onlythinclients) == 0:
+                shared.error_msg( _("No thin clients found.") )
+                return
+                    
+            msg=_( _("Do you want to restart X screens (only thin clients):%s?" )\
+                                             %(onlythinclients_txt) )
             if shared.ask_msg ( msg ):
                 #gobject.timeout_add( 50, self.action_for_clients, allclients, "restartx" )
                 self.main.worker=shared.Workers(self.main, None, None)
                 self.main.worker.set_for_all_action(self.action_for_clients,\
-                                                     allclients, "restartx" )
+                                                     onlythinclients, "restartx" )
             return
         
         if action == 6:
-            connected_users=[]
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-                    print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
+            print_debug("menu_event_all() clients=%s" %(connected_users) )
             self.askfor(mode="exec", users=connected_users)
         
         if action == 7:
-            connected_users=[]
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):                  
-                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-                    print_debug("menu_event_all() client=%s username=%s" %(client, connected_users[-1]) )
+            print_debug("menu_event_all() clients=%s" %(connected_users) )
             self.askfor(mode="mess", users=connected_users)
         
         if action == 8:
             # demo mode
             #generate password vnc
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg( _("No users logged.") )
+                return
+            
+            msg=_( _("Do you want to start demo mode the following users:%s?" )\
+                                                     %(newallclients_txt) )
+                                                    
+            if not shared.ask_msg ( msg ):
+                return
+            
             passwd=''.join( Random().sample(string.letters+string.digits, 12) )
             self.main.common.exe_cmd("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
                                     %(passwd, os.path.expanduser('~/.tcosvnc')), background=True )
             
             # start x11vnc in local 
             p=popen2.Popen3(["x11vnc", "-shared", "-noshm", "-viewonly", "-forever", "-rfbauth", "%s" %( os.path.expanduser('~/.tcosvnc') ) ])
-                        
+            
             self.main.write_into_statusbar( _("Waiting for start demo mode...") )
             
             # need to wait for start, PingPort loop
@@ -1999,18 +2053,15 @@ class TcosActions:
                 self.main.write_into_statusbar( _("Error while exec app"))
                 return
                         
-            newallclients=[]
             total=0
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                    self.main.xmlrpc.vnc("genpass", client, passwd )
-                    # get server ip
-                    server_ip=self.main.xmlrpc.GetStandalone("get_server")
-                    print_debug("menu_event_all() vnc server ip=%s" %(server_ip))
-                    # start vncviewer
-                    self.main.xmlrpc.vnc("startclient", client, server_ip )
-                    total+=1
-                    newallclients.append(client)
+            for client in newallclients:
+                self.main.xmlrpc.vnc("genpass", client, passwd )
+                # get server ip
+                server_ip=self.main.xmlrpc.GetStandalone("get_server")
+                print_debug("menu_event_all() vnc server ip=%s" %(server_ip))
+                # start vncviewer
+                self.main.xmlrpc.vnc("startclient", client, server_ip )
+                total+=1
             
             if total < 1:
                 self.main.write_into_statusbar( _("No users logged.") )
@@ -2018,17 +2069,20 @@ class TcosActions:
                 self.main.common.exe_cmd("kill -9 %s 2>/dev/null" %(p.pid), background=True)
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
-                server_ip=self.main.xmlrpc.GetStandalone("get_server")
-                hostname=self.main.localdata.GetHostname(server_ip)
+                #server_ip=self.main.xmlrpc.GetStandalone("get_server")
+                #hostname=self.main.localdata.GetHostname(server_ip)
                 # new mode Stop Button
-                self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from host %s...") %(hostname) )
+                self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from server") )
                 
         if action == 9:
             # capture screenshot of all and show minis
-            # Ask for unlock screens
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No users logged.") )
+                return
+            
             self.main.worker=shared.Workers(self.main, None, None)
             self.main.worker.set_for_all_action(self.action_for_clients,\
-                                                    allclients, "screenshot" )
+                                                    allclients_logged, "screenshot" )
 
         if action == 10:
             # action sent by vidal_joshur at gva dot es
@@ -2036,12 +2090,6 @@ class TcosActions:
             # search for connected users
             # Stream to multiple clients
             eth=self.main.config.GetVar("network_interface")
-            connected_users=[]
-            newallclients=[]
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                    connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-                    newallclients.append(client)
             
             if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg( _("No users logged.") )
@@ -2174,7 +2222,6 @@ class TcosActions:
                     remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(ip_broadcast)
 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
-                
             
                 msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
                 shared.info_msg( msg )
@@ -2213,7 +2260,7 @@ class TcosActions:
                 
                 for client in newallclients:
                     self.main.xmlrpc.vlc( client, volume, lock )
-                
+                    
                 self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
                 # new mode Stop Button
                 self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": newallclients}, _("Running in broadcast video transmission"))
@@ -2224,11 +2271,6 @@ class TcosActions:
             # action sent by vidal_joshur at gva dot es
             # envio ficheros
             # search for connected users
-            connected_users=[]
-            for client in allclients:
-                if self.main.localdata.IsLogged(client):
-                   connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-            
             if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg( _("No users logged.") )
                 return
@@ -2310,7 +2352,7 @@ class TcosActions:
                 else:
                     result = self.main.dbus_action.do_message(newusernames ,
                                 _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
-                                    
+                
                 self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
 
@@ -2372,12 +2414,14 @@ class TcosActions:
                     
                     url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
                     hostname=self.main.localdata.GetHostname(ip)
+                    self.main.common.threads_enter("TcosActions:action_for_clients screenshot")
                     self.main.datatxt.insert_html( 
                      "<span style='background-color:#f3d160'>" +
                      "\n\t<img src='%s' title='%s' title_rotate='90' /> " %(url,_( "Screenshot of %s" ) %(hostname) ) +
                      "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>" +
                      #"\n<span style='background-color:#FFFFFF; color: #FFFFFF; margin-left: 20px; margin-right: 20px'>____</span>"+
                      "")
+                    self.main.common.threads_leave("TcosActions:action_for_clients screenshot")
                 else:
                     self.main.xmlrpc.Exe(action)
             except:
@@ -2427,7 +2471,6 @@ class TcosActions:
         # change image if ip is the same.
         if model.get_value(iter, COL_IP) == ip:
             model.set_value(iter, COL_BLOCKED, image)
-    
     
     def get_screenshot(self, ip):
         # PingPort class put timeout very low to have more speed
@@ -2534,7 +2577,6 @@ class TcosActions:
         <br/><div style='margin-left: 135px; margin-right: 200px;background-color:#ead196;color:blue'>""" + _("Pid") + "\t" 
         + "\t" + _("Process command") +"</div>" )
         
-        
         counter=0
         self.main.kill_proc_buttons=None
         self.main.kill_proc_buttons=[]
@@ -2555,7 +2597,6 @@ class TcosActions:
             
             if is_hidden:
                 continue
-            
             
             kill_button=gtk.Button(label=blabel)
             kill_button.connect("clicked", self.on_kill_button_click, pid, username)
