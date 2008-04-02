@@ -1,3 +1,11 @@
+tcosmonitor (0.2.10) unstable; urgency=low
+
+  * tcosmonitor.glade:
+    - Edit Preferences window, add new tab (Advanced settings)
+    - Window is now more simple and smaller
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 02 Apr 2008 10:42:32 +0200
+
 tcosmonitor (0.2.9) unstable; urgency=low
 
   * TcosActions.py
