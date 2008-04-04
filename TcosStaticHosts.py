@@ -30,7 +30,6 @@ import urllib2
 from os import remove, path
 from threading import Thread
 from subprocess import Popen, PIPE, STDOUT
-import popen2
 
 from time import sleep, localtime
 import gobject

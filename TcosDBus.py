@@ -30,7 +30,7 @@ import dbus.glib
 import gobject
 import os
 import signal
-import subprocess
+import subprocess,threading
 import pwd
 import sys
 from gettext import gettext as _
@@ -180,6 +180,13 @@ class TcosDBusServer:
                     print_debug ( "new_message() ERROR, unknow type of message=\"%s\"" %(msg_type) )
                 print_debug ( "new_message() finish !!!" )
 
+    def cleanproc(self, proc):
+        try:
+            os.waitpid(proc.pid, os.WCONTINUED)
+        except os.error, err:
+            print_debug("OSError exception: %s" %err)
+            pass
+    
     def user_kill(self, pid):
         print_debug ( "user_kill() %s" %(pid) )
         pid=int(pid)
@@ -191,18 +198,39 @@ class TcosDBusServer:
     
     def user_killall(self, app):
         print_debug ( "user_killall() %s" %(app) )
-        subprocess.Popen("killall %s" %(app), shell=True)
+        p = subprocess.Popen("killall -s KILL %s" %(app), shell=True, close_fds=True)
+        try:
+            th=threading.Thread(target=self.cleanproc, args=(p,) )
+            #th.setDaemon(1)
+            th.start()
+            print_debug("Threads count: %s" %threading.activeCount())
+        except:
+            pass
         return
         
     def user_exec(self, cmd):
         print_debug ( "user_exec() %s" %(cmd) )
-        subprocess.Popen(cmd, shell=True)
+        p = subprocess.Popen(cmd, shell=True, close_fds=True)
+        try:
+            th=threading.Thread(target=self.cleanproc, args=(p,) )
+            #th.setDaemon(1)
+            th.start()
+            print_debug("Threads count: %s" %threading.activeCount())
+        except:
+            pass
         return
         
     def user_msg(self, txt):
         print_debug ( "user_msg() %s" %(txt) )
         # use pynotify better???
-        subprocess.Popen(['zenity', '--info', '--text=' + txt + ' ', '--title='+_("Message from admin")])
+        p = subprocess.Popen("zenity --info --text='%s' --title='%s'" %(txt, _("Message from admin")), shell=True, close_fds=True)
+        try:
+            th=threading.Thread(target=self.cleanproc, args=(p,) )
+            #th.setDaemon(1)
+            th.start()
+            print_debug("Threads count: %s" %threading.activeCount())
+        except:
+            pass
         return
     
     def start(self):

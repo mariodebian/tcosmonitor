@@ -120,6 +120,7 @@ DefaultConfig=[
 ["xorginfo", 0, "int"], 
 ["soundserverinfo", 0, "int"], 
 ["systemprocess", 0, "int"], 
+["threadscontrol", 1, "int"], 
 ["tcosmonitorversion", version, "str"],
 ["blockactioninthishost", 1, "int"],
 ["onlyshowtcos", 1, "int"],
@@ -157,7 +158,7 @@ xmlremote_port=8998
 xmlremote_url="/RPC2"
 
 pulseaudio_soundserver_port=4713
-sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux", "vol", "pcm", "line", "cd", "mic"]
+sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux", "Headphone", "vol", "pcm", "line", "cd", "mic"]
 
 hidden_network_ifaces=["lo", "sit0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
 
@@ -237,10 +238,11 @@ allhost_menuitems=[
  [ _("Exec same app in all connected users") , "menu_exec.png" ] ,#action=6
  [ _("Send a text message to all connected users") , "menu_msg.png" ], #action=7
  [ _("Enter demo mode, all connected users see my screen") , "menu_tiza.png" ], #action=8
- [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=9
- [ _("Audio/Video broadcast") , "menu_broadcast.png" ],                 #action=10
- [ _("Send files") , "menu_send.png" ],                          #action=11
- [ _("Boot All clients (WakeOnLan)") , "menu_wol.png" ]                          #action=12
+ [ _("Enter conference mode, all connected users can hear me") , "menu_rtp.png" ], #action=9
+ [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=10
+ [ _("Audio/Video broadcast") , "menu_broadcast.png" ],                 #action=11
+ [ _("Send files") , "menu_send.png" ],                          #action=12
+ [ _("Boot All clients (WakeOnLan)") , "menu_wol.png" ]                          #action=13
  ]
 
 

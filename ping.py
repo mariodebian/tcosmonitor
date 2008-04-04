@@ -18,6 +18,7 @@ import fcntl
 import struct
 from gettext import gettext as _
 from time import sleep
+from subprocess import Popen, PIPE, STDOUT
 
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
@@ -38,14 +39,17 @@ class pingip(Thread):
       self.lifeline = re.compile(r"(\d) received")
    def run(self):
       #print_debug ( "pingip() %s" %(self.ip) )
-      pingaling = os.popen("ping -q -W 1 -c2 "+self.ip,"r")
+      #pingaling = self.main.common.exe_cmd("ping -q -W1 -c2 %s" %self.ip, verbose=0, background=False, lines=1)
+      pingalingout = Popen(["ping", "-q", "-W1", "-c2", "%s" %self.ip], shell=False, stdout=PIPE, stderr=STDOUT, close_fds=True)
+      pingalingout.wait()
+      pingaling = pingalingout.stdout
       while 1:
         line = pingaling.readline()
         if not line: break
         igot = re.findall(self.lifeline,line)
         if igot:
             self.status = int(igot[0])
-
+                
 class Ping:
     def __init__(self, main):
         print_debug ( "__init__()" )

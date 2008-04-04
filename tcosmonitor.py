@@ -38,7 +38,6 @@ import gtk.glade
 from time import time, sleep
 import getopt
 from gettext import gettext as _
-import popen2
 from threading import Thread
 #import threading
 
@@ -185,8 +184,16 @@ class TcosMonitor:
             self.populate_host_list()
         
         # create tmp dir
-        p = popen2.Popen3("mkdir -p /tmp/tcos_share/")
-        p.wait()
+        try:
+            f=open("/etc/rsyncd.conf", 'r')
+            output = f.readlines()
+            f.close()
+            for line in output:
+                if line.find("/tmp/tcos_share") != -1:
+                    os.mkdir("/tmp/tcos_share")
+                    break
+        except:
+            pass
     
     def search_host(self, widget):
         print_debug ( "search_host()" )
@@ -220,8 +227,17 @@ class TcosMonitor:
     def quitapp(self,*args):
         print_debug ( _("Exiting") )
         #gtk.main_quit()
-        p = popen2.Popen3("rm -rf /tmp/tcos_share/")
-        p = popen2.Popen3("rm -f %s" % os.path.expanduser('~/.tcosvnc'))
+        try:
+            for filename in os.listdir("/tmp/tcos_share/"):
+                if os.path.isfile("/tmp/tcos_share/%s" %filename):
+                    os.remove("/tmp/tcos_share/%s" %filename)
+            os.rmdir("/tmp/tcos_share")
+        except:
+            pass
+        try:
+            os.remove(os.path.expanduser('~/.tcosvnc'))
+        except:
+            pass
         self.mainloop.quit()
 
 

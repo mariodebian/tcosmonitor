@@ -24,7 +24,6 @@
 
 import shared
 
-import popen2
 import os
 from gettext import gettext as _
 from time import time, ctime, localtime
@@ -357,8 +356,7 @@ class LocalData:
         else:
             cmd="grep -A 3 -B 3 \"fixed.*%s;\" /etc/dhcp3/dhcpd.conf|grep -v \"^#\"|grep host|awk '{print $2}'" %(ip)
             print_debug ( "GetHostname(%s) cmd=\"%s\"" %(ip, cmd) )
-            (stdout, stdin) = popen2.popen2(cmd)
-            stdin.close()
+            stdout = self.main.common.exe_cmd(cmd, verbose=0, background=False, lines=1)
             output = stdout.readlines()
             if len(output) > 1:
                 print_debug ( "GetHostname() DHCP have many leases=%s" %(output) )
@@ -430,9 +428,9 @@ class LocalData:
 
             # only print days if > 0    
             if days == 0:
-                timelogged="%02d:%02d"%(hours,minutes)
+                timelogged="%02dh:%02dm"%(hours,minutes)
             else:
-                timelogged="%dd %02d:%02d"%(days,hours,minutes)
+                timelogged="%dd %02dh:%02dm"%(days,hours,minutes)
             
             data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged}
         return data
@@ -538,7 +536,7 @@ class LocalData:
         
         # use uid to support long usernames (>8)
         uid=self.GetUserID(self.username)
-        cmd="ps U %s -o pid | grep -c ^[0-9]"%(uid)
+        cmd="ps U %s -o pid | sed 's/[[:blank:]]//g' | grep -c ^[0-9]"%(uid)
         process=self.main.common.exe_cmd(cmd)
         
         print_debug ("GetNumProcess() process=%s" %(process) )

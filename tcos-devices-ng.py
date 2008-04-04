@@ -233,7 +233,7 @@ class TcosDevicesNG:
             sys.exit(1)
 
     def get_desktop_patch(self):
-        desktop=self.common.exe_cmd("/usr/lib/tcos/rsync-controller")
+        desktop=self.common.exe_cmd("/usr/lib/tcos/rsync-controller", verbose=1, background=False, lines=0, cthreads=0)
         if not os.path.isdir(desktop):
             desktop=os.path.expanduser("~/Desktop")
         return desktop
@@ -510,7 +510,9 @@ class TcosDevicesNG:
         if mode == "mount":
             if not os.path.isdir(local_mount_point):
                 os.mkdir (local_mount_point)
-            output=self.common.exe_cmd("ltspfs %s:%s %s 2>&1" %(self.host, remote_mnt, local_mount_point) )
+                # wait until appear in desktop icon folder
+                time.sleep(2)
+            output=self.common.exe_cmd("ltspfs %s:%s %s 2>&1" %(self.host, remote_mnt, local_mount_point), verbose=1, background=False, lines=0, cthreads=0)
             if "ERROR" in output:
                 self.show_notification( _("Error mounting LTSPFS, check versions of LTSPFS packages"), urgency=pynotify.URGENCY_CRITICAL)
                 return False
@@ -525,8 +527,8 @@ class TcosDevicesNG:
         if mode == "umount":
             if os.path.isdir(local_mount_point):
                 print_debug ( "mounter_local() umounting %s" %(local_mount_point) )
-                self.common.exe_cmd("fusermount -u %s" %(local_mount_point) )
-                self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %(local_mount_point) )
+                self.common.exe_cmd("fusermount -u %s" %(local_mount_point), verbose=1, background=False, lines=0, cthreads=0 )
+                self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %(local_mount_point), verbose=1, background=False, lines=0, cthreads=0 )
                 print_debug ( "mounter_local() removing dir %s" %(local_mount_point) )
                 try:
                     os.rmdir(local_mount_point)
@@ -842,7 +844,7 @@ class TcosDevicesNG:
                 return
             # umount local fuse
             # check if fuse is mounted
-            status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point) )
+            status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point), verbose=1, background=False, lines=0, cthreads=0 )
             if int(status) != 0:
                 self.mounter_local(local_mount_point, remote_mnt, device=device, label=_("Cdrom_%s") %devid, mode="umount")
             
@@ -974,7 +976,7 @@ class TcosDevicesNG:
                     return
                 # umount local fuse
                 # check if fuse is mounted
-                status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point) )
+                status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point), verbose=1, background=False, lines=0, cthreads=0 )
                 if int(status) != 0:
                     self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="umount")
                 
@@ -1111,7 +1113,7 @@ class TcosDevicesNG:
                     return
                 # umount local fuse
                 # check if fuse is mounted
-                status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point) )
+                status=self.common.exe_cmd("mount |grep -c %s" %(local_mount_point), verbose=1, background=False, lines=0, cthreads=0 )
                 if int(status) != 0:
                     self.mounter_local(local_mount_point, remote_mnt, device=device, label=label, mode="umount")
                 
@@ -1289,9 +1291,9 @@ class TcosDevicesNG:
 
 
     def get_desktop(self):    
-        is_gnome=self.common.exe_cmd("ps ux |grep gnome-panel  |grep -c -v grep"  )
-        is_kde = self.common.exe_cmd("ps ux |grep   startkde   |grep -c -v grep"  )
-        is_xfce= self.common.exe_cmd("ps ux |grep xfce4-panel  |grep -c -v grep"  )
+        is_gnome=self.common.exe_cmd("ps ux |grep gnome-panel  |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
+        is_kde = self.common.exe_cmd("ps ux |grep   startkde   |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
+        is_xfce= self.common.exe_cmd("ps ux |grep xfce4-panel  |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
         if int(is_gnome) > 0:
             return "gnome"
         elif int(is_kde) > 0:
@@ -1320,13 +1322,13 @@ class TcosDevicesNG:
         os.system(args[0])         
 
     def umount_all(self):
-        mounted=self.common.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]) )
+        mounted=self.common.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]), verbose=1, background=False, lines=0, cthreads=0 )
         if type(mounted) == type(""):
             mounted=[mounted]
         for mount in mounted:
             print_debug( "umount_all() umounting %s..." %mount )
-            self.common.exe_cmd("fusermount -u %s 2>&1" %mount)
-            self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %mount)
+            self.common.exe_cmd("fusermount -u %s 2>&1" %mount, verbose=1, background=False, lines=0, cthreads=0)
+            self.common.exe_cmd("fusermount -uz %s 2>/dev/null" %mount, verbose=1, background=False, lines=0, cthreads=0)
             # delete dir
             try:
                 os.rmdir(mount)

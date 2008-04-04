@@ -28,8 +28,11 @@ import fcntl
 import struct
 import pwd
 import shared
-import popen2
+import signal
+import threading
 from subprocess import Popen, PIPE, STDOUT
+from gettext import gettext as _
+
 
 from time import sleep
 
@@ -59,15 +62,38 @@ class TcosCommon:
             if group in groups: return True
             else: return False
         return False
-
-    def exe_cmd(self, cmd, verbose=1, background=False):
-        if background:
-            self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
-            return
+    
+    def cleanproc(self, proc):
+        try:
+            os.waitpid(proc.pid, os.WCONTINUED)
+        except os.error, err:
+            print_debug("OSError exception: %s" %err)
+            pass
+            
+    def exe_cmd(self, cmd, verbose=1, background=False, lines=0, cthreads=1):
+        self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        
+        if self.main.config.GetVar("threadscontrol") == 1 and cthreads == 1:
+            try:
+                th=threading.Thread(target=self.cleanproc, args=(self.p,) )
+                th.setDaemon(1)
+                th.start()
+            except:
+                msg= _("ThreadController: Found error executing %s\n\nIf problem persist, disable Thread Controller\nin Preferences and report bug." %cmd)
+                print_debug(msg)
+                self.threads_enter("TcosCommon:exe_cmd ThreadController error")
+                shared.error_msg(msg)
+                self.threads_leave("TcosCommon:exe_cmd ThreadController error")
+            
+            print_debug("Threads count: %s" %threading.activeCount())
+        
+        if background: return
+        
         output=[]
-        (stdout, stdin) = popen2.popen2(cmd)
-        stdin.close()
-        for line in stdout:
+        stdout = self.p.stdout
+        if lines == 1:
+            return stdout
+        for line in stdout.readlines():
             if line != '\n':
                 line=line.replace('\n', '')
                 output.append(line)

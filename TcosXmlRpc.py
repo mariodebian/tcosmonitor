@@ -27,10 +27,10 @@ from time import time, sleep
 import sys
 import os
 import re
-import popen2
 import shared
 from gettext import gettext as _
 import socket
+from subprocess import Popen, PIPE, STDOUT
 
 
 if "DISPLAY" in os.environ:
@@ -106,7 +106,9 @@ class TcosXmlRpc:
             return cached
         
         print_debug( "isLive(%s) make ping..." %(ip) )
-        pingaling = os.popen("ping -W 1 -q -c1 "+ip,"r")
+        pingalingout = Popen(["ping", "-q", "-W1", "-c1", "%s" %ip], shell=False, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        pingalingout.wait()
+        pingaling = pingalingout.stdout
         lifeline = re.compile(r"(\d) received")
         while 1:
             line = pingaling.readline()
@@ -612,6 +614,18 @@ class TcosXmlRpc:
                                 self.main.config.GetVar("xmlrpc_username"), \
                                 self.main.config.GetVar("xmlrpc_password") )
             
+    def rtp(self, action, ip, broadcast=None):
+        self.newhost(ip)
+        if action == "startrtp":
+            return self.tc.tcos.rtp("startrtp", broadcast, \
+                                self.main.config.GetVar("xmlrpc_username"), \
+                                self.main.config.GetVar("xmlrpc_password") )
+                                
+        elif action == "stoprtp":
+            return self.tc.tcos.rtp("stoprtp", "", \
+                                self.main.config.GetVar("xmlrpc_username"), \
+                                self.main.config.GetVar("xmlrpc_password") )
+    
     def vlc(self, ip, volume, lock):
         self.newhost(ip)
         return self.tc.tcos.vlc("%s" %volume, "%s" %lock, \

@@ -26,11 +26,12 @@ from time import time, sleep, localtime
 import gobject
 import gtk
 from gettext import gettext as _
-import os,subprocess
+import os
 import socket
 import string
 from random import Random
-import popen2
+import subprocess,signal
+from shutil import copy
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
@@ -59,7 +60,7 @@ class TcosActions:
         print_debug ( "on_openvolumecontrol_button_click() ip=%s" %(ip) )
         cmd="PULSE_SERVER=\"%s\" pavucontrol" %(ip)
         if os.path.isdir("/dev/shm"):
-            self.main.common.exe_cmd( cmd, background=True )
+            self.main.common.exe_cmd( cmd, verbose=0, background=True )
         else:
             shared.error_msg ( _("PulseAudio apps need /dev/shm.") )
         
@@ -67,7 +68,7 @@ class TcosActions:
         print_debug ( "on_openvolumemeter_button_click()  ip=%s" %(ip) )
         cmd="PULSE_SERVER=\"%s\" pavumeter" %(ip)
         if os.path.isdir("/dev/shm"):
-            self.main.common.exe_cmd( cmd, background=True )
+            self.main.common.exe_cmd( cmd, verbose=0, background=True )
         else:
             shared.error_msg ( _("PulseAudio apps need /dev/shm.") )
     
@@ -75,7 +76,7 @@ class TcosActions:
         print_debug ( "on_volumemanager_button_click() ip=%s" %(ip) )
         cmd="PULSE_SERVER=\"%s\" paman" %(ip)
         if os.path.isdir("/dev/shm"):
-            self.main.common.exe_cmd( cmd, background=True )
+            self.main.common.exe_cmd( cmd, verbose=0, background=True )
         else:
             shared.error_msg ( _("PulseAudio apps need /dev/shm.") )
 
@@ -864,11 +865,23 @@ class TcosActions:
                 pulseaudioinfo=pulseaudioinfo.replace('\n','').split('|')
                 #print pulseaudioinfo
                 allpulseaudioinfo=[]
+                output=[]
                 for line in pulseaudioinfo:
                     if line != "" and line.find(":") != -1:
                         key, value = line.split(':')
-                        allpulseaudioinfo.append([ key+":", value ])
-                self.datatxt.insert_list( allpulseaudioinfo )
+                        allpulseaudioinfo.append(value)
+                output.append( ["%s:" %( _("Currently in use")), allpulseaudioinfo[0] ])
+                output.append( ["%s:" %( _("Allocated during whole lifetime")), allpulseaudioinfo[1] ])
+                output.append( ["%s:" %( _("Sample cache size")), allpulseaudioinfo[2] ])
+                output.append( ["%s:" %( _("User name")), allpulseaudioinfo[3] ])
+                output.append( ["%s:" %( _("Host Name")), allpulseaudioinfo[4] ])
+                output.append( ["%s:" %( _("Server Name")), allpulseaudioinfo[5] ])
+                output.append( ["%s:" %( _("Server Version")), allpulseaudioinfo[6] ])
+                output.append( ["%s:" %( _("Default Sample Specification")), allpulseaudioinfo[7] ])
+                output.append( ["%s:" %( _("Default Sink")), allpulseaudioinfo[8] ])
+                output.append( ["%s:" %( _("Default Source")), allpulseaudioinfo[9] ])
+                output.append( ["%s:" %( _("Cookie")), allpulseaudioinfo[10] ])
+                self.datatxt.insert_list( output )
                 
             else:
                 self.datatxt.insert_block ( "Sound server is not running", image=shared.IMG_DIR + "info_sound_ko.png")
@@ -1169,14 +1182,14 @@ class TcosActions:
             pass_msg=_("Enter password of remote thin client (if asked for it)")
             cmd="xterm -e \"echo '%s'; ssh %s@%s || sleep 5\"" %(pass_msg, self.main.config.GetVar("ssh_remote_username"),self.main.selected_ip)
             print_debug ( "menu_event_one(%d) cmd=%s" %(action, cmd) )
-            th=self.main.common.exe_cmd( cmd, background=True )
+            th=self.main.common.exe_cmd( cmd, verbose=0, background=True )
             
         if action == 10:
             # launch personalize settings if client is TCOS (PXES and LTSP not supported)
             if client_type == "tcos":
                 cmd="gksu \"tcospersonalize --host=%s\"" %(self.main.selected_ip)
                 print_debug ( "menu_event_one(%d) cmd=%s" %(action, cmd) )
-                th=self.main.common.exe_cmd( cmd, background=True )
+                th=self.main.common.exe_cmd( cmd, verbose=0, background=True )
             else:
                 shared.info_msg( _("%s is not supported to personalize!") %(client_type) )
                     
@@ -1375,13 +1388,13 @@ class TcosActions:
                     filename=filename.replace("%s" %scape, "\%s" %scape)
                 
                 if response == gtk.RESPONSE_OK:
-                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 elif response == 1:
-                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 elif response == 2:
-                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 elif response == 3:
-                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 # exec this app on client
                 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
@@ -1451,9 +1464,13 @@ class TcosActions:
             
             
             if not os.path.isdir("/tmp/tcos_share"):
-                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
+                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
                 return
             
+            for filename in os.listdir("/tmp/tcos_share/"):
+                if os.path.isfile("/tmp/tcos_share/%s" %filename):
+                    os.remove("/tmp/tcos_share/%s" %filename)
+                        
             response = dialog.run()
             
             if response == gtk.RESPONSE_OK:
@@ -1477,13 +1494,9 @@ class TcosActions:
                     rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
                     rsync_filenames_server += "%s " %( abspath_scape )
                     basenames += "%s\n" %( os.path.basename(filename) )
-                
-                p = popen2.Popen3("rm -f /tmp/tcos_share/*")
-                p.wait()
-                
-                p = popen2.Popen3("rsync -avx --timeout=30 --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
-                p.wait()
-                
+                    copy(filename, "/tmp/tcos_share/")
+                    os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
+                    
                 self.main.write_into_statusbar( _("Waiting for send files...") )
                 
                 newusernames=[]
@@ -1564,7 +1577,7 @@ class TcosActions:
             #generate password vnc
             passwd=''.join( Random().sample(string.letters+string.digits, 12) )
             self.main.common.exe_cmd("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
-                                    %(passwd, os.path.expanduser('~/.tcosvnc')), background=True )
+                                    %(passwd, os.path.expanduser('~/.tcosvnc')), verbose=0, background=True )
                 
             # start x11vnc in remote host
             self.main.xmlrpc.vnc("genpass", ip, passwd )
@@ -1605,7 +1618,7 @@ class TcosActions:
                 self.main.xmlrpc.vnc("stopserver", ip )
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
-                p=popen2.Popen3(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc') ])
+                p=subprocess.Popen(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
                 # new mode for stop button
                 self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %(hostname) )
         
@@ -1666,9 +1679,9 @@ class TcosActions:
                         self.main.xmlrpc.vnc("stopclient", client)
                 # kill only in server one vncviewer
                 if "pid" in args:
-                    self.main.common.exe_cmd("kill -9 %s 2>/dev/null" %(args['pid']), background=True)
+                    os.kill(args['pid'], signal.SIGKILL)
                 else:
-                    self.main.common.exe_cmd("killall -s KILL vncviewer", background=True)
+                    self.main.common.exe_cmd("killall -s KILL vncviewer", verbose=0, background=True)
                 self.main.xmlrpc.newhost(args['ip'])
                 self.main.xmlrpc.vnc("stopserver", args['ip'] )
             else:
@@ -1678,11 +1691,19 @@ class TcosActions:
                         self.main.xmlrpc.newhost(client)
                         self.main.xmlrpc.vnc("stopclient", client)
                 if "pid" in args:
-                    self.main.common.exe_cmd ("sleep 2; kill -9 %s 2>/dev/null" %(args['pid']), background=True)
+                    os.kill(args['pid'], signal.SIGKILL)
                 else:
-                    self.main.common.exe_cmd("killall -s KILL x11vnc", background=True)
+                    self.main.common.exe_cmd("killall -s KILL x11vnc", verbose=0, background=True)
                 
             self.main.write_into_statusbar( _("Demo mode off.") )
+        
+        elif args['target'] == "rtp":
+            for client in args['allclients']:
+                self.main.xmlrpc.newhost(client)
+                self.main.xmlrpc.rtp("stoprtp", client)
+            if "pid" in args:
+                self.main.common.exe_cmd("pactl unload-module %s" %args['pid'])
+            self.main.write_into_statusbar( _("Conference mode off.") )
         
         elif args['target'] == "vlc":
             connected_users=[]
@@ -1705,9 +1726,9 @@ class TcosActions:
             result = self.main.dbus_action.do_killall( newusernames , "-s KILL vlc" )
             
             if "pid" in args:
-                self.main.common.exe_cmd("kill -9 %s" %(args['pid']), background=True ) 
+                os.kill(args['pid'], signal.SIGKILL) 
             else:
-                self.main.common.exe_cmd("killall -s KILL vlc", background=True)
+                self.main.common.exe_cmd("killall -s KILL vlc", verbose=0, background=True)
             self.main.write_into_statusbar( _("Video broadcast stopped.") )
 
         return
@@ -1778,7 +1799,7 @@ class TcosActions:
             if status == "OPEN":
                 cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
                 print_debug ( "start_process() threading \"%s\"" %(cmd) )
-                self.main.common.exe_cmd (cmd, background=True)            
+                self.main.common.exe_cmd (cmd, verbose=0, background=True)            
         except:
             #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions:start_vnc print x11vnc support msg")
@@ -1823,7 +1844,7 @@ class TcosActions:
                 
         cmd = "icv " + ip + " root"
         print_debug ( "start_process() threading \"%s\"" %(cmd) )
-        self.main.common.exe_cmd (cmd, background=True)
+        self.main.common.exe_cmd (cmd, verbose=0, background=True)
         
         #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:start_ivs END")
@@ -1835,7 +1856,7 @@ class TcosActions:
     def menu_event_all(self, action):
         start1=time()
         # boot by wake on lan
-        if action == 12:
+        if action == 13:
             if self.main.config.GetVar("scan_network_method") != "static":
                 msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
                 shared.info_msg ( msg )
@@ -2029,10 +2050,10 @@ class TcosActions:
             
             passwd=''.join( Random().sample(string.letters+string.digits, 12) )
             self.main.common.exe_cmd("x11vnc -storepasswd %s %s >/dev/null 2>&1" \
-                                    %(passwd, os.path.expanduser('~/.tcosvnc')), background=True )
+                                    %(passwd, os.path.expanduser('~/.tcosvnc')), verbose=0, background=True )
             
             # start x11vnc in local 
-            p=popen2.Popen3(["x11vnc", "-shared", "-noshm", "-viewonly", "-forever", "-rfbauth", "%s" %( os.path.expanduser('~/.tcosvnc') ) ])
+            p=subprocess.Popen(["x11vnc", "-shared", "-noshm", "-viewonly", "-forever", "-rfbauth", "%s" %( os.path.expanduser('~/.tcosvnc') ) ], shell=False, bufsize=0, close_fds=True)
             
             self.main.write_into_statusbar( _("Waiting for start demo mode...") )
             
@@ -2066,7 +2087,7 @@ class TcosActions:
             if total < 1:
                 self.main.write_into_statusbar( _("No users logged.") )
                 # kill x11vnc
-                self.main.common.exe_cmd("kill -9 %s 2>/dev/null" %(p.pid), background=True)
+                os.kill(p.pid, signal.SIGKILL)
             else:
                 self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
                 #server_ip=self.main.xmlrpc.GetStandalone("get_server")
@@ -2074,7 +2095,54 @@ class TcosActions:
                 # new mode Stop Button
                 self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":newallclients}, _("Running in demo mode from server") )
                 
+        
         if action == 9:
+            # conference mode
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg( _("No users logged.") )
+                return
+            
+            msg=_( _("Do you want to start conference mode the following users:%s?" )\
+                                                     %(newallclients_txt) )
+                                                    
+            if not shared.ask_msg ( msg ):
+                return
+            
+            max_uip=255
+            uip=0
+            while uip <= max_uip:
+                uip_cmd="239.255.%s.0" %(uip)
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                print_debug("Check broadcast ip %s." %(uip_cmd) )
+                output=self.main.common.exe_cmd(cmd)
+                uip+=1
+                if output == "0":
+                    print_debug("Broadcast ip found: %s" %(uip_cmd))
+                    ip_broadcast="%s" %uip_cmd
+                    break
+                elif uip == max_uip:
+                    print_debug("Not found an available broadcast ip")
+                    return
+                
+            output = self.main.common.exe_cmd("pactl load-module module-rtp-send destination=%s loop=1 port=1234" %ip_broadcast)
+                        
+            self.main.write_into_statusbar( _("Waiting for start conference mode...") )
+                        
+            total=0
+            for client in newallclients:
+                self.main.xmlrpc.rtp("startrtp", client, ip_broadcast )
+                total+=1
+            
+            if total < 1:
+                self.main.write_into_statusbar( _("No users logged.") )
+                # kill x11vnc
+                self.main.common.exe_cmd("pactl unload-module %s" %output)
+            else:
+                self.main.write_into_statusbar( _("Running in conference mode with %s clients.") %(total) )
+                # new mode Stop Button
+                self.add_progressbox( {"target": "rtp", "ip":"", "pid":output, "allclients":newallclients}, _("Running in conference mode from server") )
+        
+        if action == 10:
             # capture screenshot of all and show minis
             if len(allclients_logged) == 0:
                 shared.error_msg( _("No users logged.") )
@@ -2084,7 +2152,7 @@ class TcosActions:
             self.main.worker.set_for_all_action(self.action_for_clients,\
                                                     allclients_logged, "screenshot" )
 
-        if action == 10:
+        if action == 11:
             # action sent by vidal_joshur at gva dot es
             # start video broadcast mode
             # search for connected users
@@ -2209,13 +2277,13 @@ class TcosActions:
                     filename=filename.replace("%s" %scape, "\%s" %scape)
                 
                 if response == gtk.RESPONSE_OK:
-                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 elif response == 1:
-                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 elif response == 2:
-                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 elif response == 3:
-                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False)
+                    p=subprocess.Popen(["vlc", "cdda://", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
                 # exec this app on client
                 
                 if access == "udp":
@@ -2267,7 +2335,7 @@ class TcosActions:
             else:
                 dialog.destroy()
                                                     
-        if action == 11:
+        if action == 12:
             # action sent by vidal_joshur at gva dot es
             # envio ficheros
             # search for connected users
@@ -2294,9 +2362,13 @@ class TcosActions:
             
             
             if not os.path.isdir("/tmp/tcos_share"):
-                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
+                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
                 return
             
+            for filename in os.listdir("/tmp/tcos_share/"):
+                if os.path.isfile("/tmp/tcos_share/%s" %filename):
+                    os.remove("/tmp/tcos_share/%s" %filename)
+                        
             response = dialog.run()
             
             if response == gtk.RESPONSE_OK:
@@ -2320,12 +2392,8 @@ class TcosActions:
                     rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
                     rsync_filenames_server += "%s " %( abspath_scape )
                     basenames += "%s\n" %( os.path.basename(filename) )
-                
-                p = popen2.Popen3("rm -f /tmp/tcos_share/*")
-                p.wait()
-
-                p = popen2.Popen3("rsync -avx --timeout=30 --no-p --no-g --chmod=ugo-wx,u+rw,go+r %s /tmp/tcos_share" %( rsync_filenames_server.strip() ) )
-                p.wait()
+                    copy(filename, "/tmp/tcos_share/")
+                    os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
                 
                 self.main.write_into_statusbar( _("Waiting for send files...") )
                 

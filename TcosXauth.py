@@ -61,7 +61,7 @@ class TcosXauth:
             return self.cookie
         
         print_debug ( "read_cookie() exec \"xauth list\"" )
-        p = Popen("xauth -n list", shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT)
+        p = Popen(["xauth", "-n", "list"], shell=False, bufsize=0, stdout=PIPE, stderr=STDOUT, close_fds=True)
         readed=p.stdout.read()
         readed=readed.split('\n')[0:-1]
         print_debug ( "read_cookie() %s" %readed )

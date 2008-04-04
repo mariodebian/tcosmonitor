@@ -40,7 +40,6 @@ from time import time, sleep
 import getopt
 from gettext import gettext as _
 from subprocess import Popen, PIPE, STDOUT
-import popen2
 
 import gobject
 

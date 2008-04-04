@@ -1,10 +1,24 @@
 tcosmonitor (0.2.10) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * tcosmonitor.glade:
     - Edit Preferences window, add new tab (Advanced settings)
     - Window is now more simple and smaller
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 02 Apr 2008 10:42:32 +0200
+  [ Ignacio Vidal ]
+  * TcosActions.py ping.py TcosXmlRpc.py tcosmonitor.py TcosCommon.py TcosDBus.py
+    - Update popen actions to avoid defuncts /bin/sh (experimental)
+  * TcosActions.py:
+    - Add Conference Mode, now mic in server can share and users hear
+    - Translate pulseaudio info
+  * TcosXmlRpc.py:
+    - Add support for rtp sound
+  * tcosmonitor.glade:
+    - Add checkbox for enable/disable experimental Thread Controller
+  * shared.py:
+    - In some cases need headphone volume control if exists
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 04 Apr 2008 15:18:30 +0200
 
 tcosmonitor (0.2.9) unstable; urgency=low
 
