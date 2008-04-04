@@ -41,6 +41,8 @@ class TcosPreferences:
         self.main=main
         self.ui=self.main.ui
         
+        self.visible_menu_items=[]
+        
         # init pref window and buttons
         self.main.pref = self.main.ui.get_widget('prefwindow')            
         self.main.pref.hide()
@@ -105,6 +107,10 @@ class TcosPreferences:
         self.main.pref_networkinfo = self.main.ui.get_widget('ck_networkinfo')
         self.main.pref_xorginfo = self.main.ui.get_widget('ck_xorginfo')
         self.main.pref_soundserverinfo = self.main.ui.get_widget('ck_soundserverinfo')
+        
+        # menus show hide
+        for menu in shared.preferences_menus:
+            setattr(self.main, "pref_" + menu, self.main.ui.get_widget(menu) )
 
 
     def SaveSettings(self):
@@ -170,8 +176,16 @@ class TcosPreferences:
         # read all combo values and save text
         self.main.config.SetVar("network_interface", \
                 self.read_select_value(self.main.combo_network_interfaces, "network_interface") )
-                
-                
+        
+        visible_menus=[]
+        for menu in shared.preferences_menus:
+            pref_name=menu.replace('ck_menu_', '')
+            widget=getattr(self.main, "pref_" + menu)
+            if widget.get_active():
+                visible_menus.append(pref_name)
+        # convert array into string separated by comas
+        self.main.config.SetVar("visible_menus", ",".join(visible_menus) )
+        
         self.main.config.SaveToFile()
 
     def read_checkbox(self, widget, varname):
@@ -278,6 +292,43 @@ class TcosPreferences:
         self.populate_checkboxes(self.main.pref_xorginfo, "xorginfo")
         self.populate_checkboxes(self.main.pref_soundserverinfo, "soundserverinfo")
         
+        # menus show hide
+        visible_menus=[]
+        visible_menu_items=[]
+        first_run=False
+        
+        visible_menus_txt=self.main.config.GetVar("visible_menus")
+        if visible_menus_txt != "":
+            visible_menus=visible_menus_txt.split(',')
+        else:
+            first_run=self.main.config.IsNew("visible_menus")
+        
+        
+        for menu in shared.preferences_menus:
+            pref_name=menu.replace('ck_menu_', '')
+            widget=getattr(self.main, "pref_" + menu)
+            if first_run:
+                # first run, set defaults
+                widget.set_active(shared.preferences_menus[menu][0])
+                visible_menu_items.append(menu)
+                continue
+                
+            if pref_name in visible_menus:
+                widget.set_active(1)
+                visible_menu_items.append(menu)
+            else:
+                widget.set_active(0)
+        
+        self.visible_menu_items={"menuone":[], "menuall":[]}
+        for item in visible_menu_items:
+            self.visible_menu_items["menuone"]+=shared.preferences_menus[item][1]
+            self.visible_menu_items["menuall"]+=shared.preferences_menus[item][2]
+            
+        print_debug("visible_menu_items() %s"%self.visible_menu_items)
+        # make menus
+        self.main.actions.RightClickMenuOne(None)
+        self.main.actions.RightClickMenuAll()
+        print_debug("populate_pref() done")
     
     def populate_checkboxes(self, widget, varname):
         checked=self.main.config.GetVar(varname)

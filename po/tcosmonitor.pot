@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-04 15:09+0200\n"
+"POT-Creation-Date: 2008-04-04 18:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,7 +65,7 @@ msgstr ""
 msgid "Selected network inteface (%s) don't have IP address"
 msgstr ""
 
-#: LocalData.py:226 ping.py:101
+#: LocalData.py:226 ping.py:104
 #, python-format
 msgid "Testing if found clients have %s port open..."
 msgstr ""
@@ -78,163 +78,163 @@ msgid ""
 "hosts."
 msgstr ""
 
-#: ping.py:80
+#: ping.py:83
 #, python-format
 msgid "Ping to %s..."
 msgstr ""
 
-#: ping.py:91
+#: ping.py:94
 msgid "Waiting for pings..."
 msgstr ""
 
-#: ping.py:122
+#: ping.py:125
 msgid "No host found"
 msgstr ""
 
-#: ping.py:131 TcosActions.py:178
+#: ping.py:134 TcosActions.py:178
 #, python-format
 msgid "Found %d hosts"
 msgstr ""
 
-#: shared.py:208
+#: shared.py:209
 msgid "Refresh terminal info"
 msgstr ""
 
-#: shared.py:209
+#: shared.py:210
 msgid "Clean info about terminal"
 msgstr ""
 
-#: shared.py:210
+#: shared.py:211
 msgid "Reboot"
 msgstr ""
 
-#: shared.py:211
+#: shared.py:212
 msgid "Poweroff"
 msgstr ""
 
-#: shared.py:212
+#: shared.py:213
 msgid "Lock screen"
 msgstr ""
 
-#: shared.py:213
+#: shared.py:214
 msgid "Unlock screen"
 msgstr ""
 
-#: shared.py:214
+#: shared.py:215
 msgid "Connect to remote screen (iTALC)"
 msgstr ""
 
-#: shared.py:215
+#: shared.py:216
 msgid "Connect to remote screen (VNC)"
 msgstr ""
 
-#: shared.py:216
+#: shared.py:217
 msgid "Screenshot"
 msgstr ""
 
-#: shared.py:217
+#: shared.py:218
 msgid "Give a remote xterm"
 msgstr ""
 
-#: shared.py:218
+#: shared.py:219
 msgid "Configure this host"
 msgstr ""
 
-#: shared.py:219
+#: shared.py:220
 msgid "Logout client"
 msgstr ""
 
-#: shared.py:220
+#: shared.py:221
 msgid "Restart X session with new settings"
 msgstr ""
 
-#: shared.py:221
+#: shared.py:222
 msgid "Exec app on user display"
 msgstr ""
 
-#: shared.py:222
+#: shared.py:223
 msgid "Send a text message to user"
 msgstr ""
 
-#: shared.py:223
+#: shared.py:224
 msgid "Show running apps of this client"
 msgstr ""
 
-#: shared.py:224 shared.py:243
+#: shared.py:225 shared.py:244
 msgid "Audio/Video broadcast"
 msgstr ""
 
-#: shared.py:225 shared.py:244
+#: shared.py:226 shared.py:245 tcosmonitor.glade:1961
 msgid "Send files"
 msgstr ""
 
-#: shared.py:226
+#: shared.py:227
 msgid "Demo mode (from this host)"
 msgstr ""
 
-#: shared.py:227
+#: shared.py:228
 msgid "Boot client (WakeOnLan)"
 msgstr ""
 
-#: shared.py:232
+#: shared.py:233
 msgid "Reboot all clients"
 msgstr ""
 
-#: shared.py:233
+#: shared.py:234
 msgid "Poweroff all clients"
 msgstr ""
 
-#: shared.py:234
+#: shared.py:235
 msgid "Lock all screens"
 msgstr ""
 
-#: shared.py:235
+#: shared.py:236
 msgid "Unlock all screens"
 msgstr ""
 
-#: shared.py:236
+#: shared.py:237
 msgid "Logout clients"
 msgstr ""
 
-#: shared.py:237
+#: shared.py:238
 msgid "Restart X session of all clients"
 msgstr ""
 
-#: shared.py:238
+#: shared.py:239
 msgid "Exec same app in all connected users"
 msgstr ""
 
-#: shared.py:239
+#: shared.py:240
 msgid "Send a text message to all connected users"
 msgstr ""
 
-#: shared.py:240
+#: shared.py:241
 msgid "Enter demo mode, all connected users see my screen"
 msgstr ""
 
-#: shared.py:241
+#: shared.py:242
 msgid "Enter conference mode, all connected users can hear me"
 msgstr ""
 
-#: shared.py:242
+#: shared.py:243
 msgid "Capture All clients screens"
 msgstr ""
 
-#: shared.py:245
+#: shared.py:246
 msgid "Boot All clients (WakeOnLan)"
 msgstr ""
 
-#: shared.py:403
+#: shared.py:429
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr ""
 
-#: shared.py:415
+#: shared.py:441
 #, python-format
 msgid "INFO: %s"
 msgstr ""
 
-#: shared.py:426
+#: shared.py:452
 #, python-format
 msgid "ERROR: %s"
 msgstr ""
@@ -478,7 +478,7 @@ msgstr ""
 msgid "Data send(tx): "
 msgstr ""
 
-#: TcosActions.py:703 tcosmonitor.glade:1624
+#: TcosActions.py:703 tcosmonitor.glade:1616
 msgid "Xorg info"
 msgstr ""
 
@@ -902,7 +902,7 @@ msgstr ""
 msgid "Not valid MAC address: \"%s\""
 msgstr ""
 
-#: TcosActions.py:1655 TcosPreferences.py:315
+#: TcosActions.py:1655 TcosPreferences.py:366
 msgid "Stop"
 msgstr ""
 
@@ -1089,20 +1089,20 @@ msgstr ""
 msgid "Kill this process"
 msgstr ""
 
-#: TcosActions.py:2753
+#: TcosActions.py:2763
 msgid "Actions for selected host"
 msgstr ""
 
-#: TcosActions.py:2759
+#: TcosActions.py:2769
 #, python-format
 msgid "Actions for %s"
 msgstr ""
 
-#: TcosActions.py:2796
+#: TcosActions.py:2809
 msgid "Actions for selected hosts"
 msgstr ""
 
-#: TcosActions.py:2798
+#: TcosActions.py:2811
 msgid "Actions for all hosts"
 msgstr ""
 
@@ -1453,7 +1453,7 @@ msgstr ""
 msgid "About this app"
 msgstr ""
 
-#: tcosmonitor.glade:317 tcosmonitor.glade:2416 tcosmonitor.glade:2799
+#: tcosmonitor.glade:317 tcosmonitor.glade:2863 tcosmonitor.glade:3246
 msgid "Cancel"
 msgstr ""
 
@@ -1500,7 +1500,7 @@ msgid "Only do all actions on selected hosts (requires restart TcosMonitor)"
 msgstr ""
 
 #: tcosmonitor.glade:805
-msgid "General settings"
+msgid "Settings"
 msgstr ""
 
 #: tcosmonitor.glade:838
@@ -1566,8 +1566,8 @@ msgid ""
 "( if you have problems, disable it )"
 msgstr ""
 
-#: tcosmonitor.glade:1257
-msgid "Advanced Settings"
+#: tcosmonitor.glade:1257 tcospersonalize.glade:763
+msgid "Advanced"
 msgstr ""
 
 #: tcosmonitor.glade:1290
@@ -1581,109 +1581,174 @@ msgstr ""
 #: tcosmonitor.glade:1388
 msgid ""
 "<b>NOTE:</b>\n"
-"This values are needed to do some actions\n"
-"on thin client, if you don't use \n"
-"<b>update-tcospasswd</b> app, default\n"
-"user is <b>root</b> and default password is <b>root</b>.\n"
+"Default user is <b>root</b> and default password is <b>root</b>.\n"
 "\n"
-"To change it you have to edit /etc/tcos/tcos.conf and change\n"
-"TCOS_ROOT_PASSWD var value. Then regenerate images with\n"
-"<b>gentcos</b> or <b>tcosconfig</b>.\n"
+"For <u>thin clients</u> change TCOS_ROOT_PASSWD or use TcosConfig and "
+"regenerate boot images again.\n"
 "\n"
-"Using TcosMonitor in PXES or LTSP networks require to use\n"
-"<b>update-tcospasswd</b> script, run it as root, and follow\n"
-"instructions. This will generate a tcospasswd file with asked data.\n"
+"For <u>standalone</u> users you can use a system account (root) but this is "
+"not recomended. Install tcos-standalone and start it by root. Set user and "
+"password, this will create a <b>/etc/tcospasswd</b> file only used by TCOS "
+"and your root acount will be secure."
 msgstr ""
 
-#: tcosmonitor.glade:1435
+#: tcosmonitor.glade:1427
 msgid "Authentication "
 msgstr ""
 
-#: tcosmonitor.glade:1465
+#: tcosmonitor.glade:1457
 msgid "<b>Info avalaible from tcosxmlrpc</b>"
 msgstr ""
 
-#: tcosmonitor.glade:1491
+#: tcosmonitor.glade:1483
 msgid "Tcos general info"
 msgstr ""
 
-#: tcosmonitor.glade:1510
+#: tcosmonitor.glade:1502
 msgid "Cpu info"
 msgstr ""
 
-#: tcosmonitor.glade:1529
+#: tcosmonitor.glade:1521
 msgid "Kernel and modules info"
 msgstr ""
 
-#: tcosmonitor.glade:1548
+#: tcosmonitor.glade:1540
 msgid "PCI bus info"
 msgstr ""
 
-#: tcosmonitor.glade:1567
+#: tcosmonitor.glade:1559
 msgid "Ram and swap info"
 msgstr ""
 
-#: tcosmonitor.glade:1586
+#: tcosmonitor.glade:1578
 msgid "Process info"
 msgstr ""
 
-#: tcosmonitor.glade:1605
+#: tcosmonitor.glade:1597
 msgid "Network info"
 msgstr ""
 
-#: tcosmonitor.glade:1643
+#: tcosmonitor.glade:1635
 msgid "Sound server info"
 msgstr ""
 
-#: tcosmonitor.glade:1671
+#: tcosmonitor.glade:1663
 msgid "Avalaible info"
 msgstr ""
 
-#: tcosmonitor.glade:1752
+#: tcosmonitor.glade:1693
+msgid "<b>Show / hide menu items</b>"
+msgstr ""
+
+#: tcosmonitor.glade:1728
+msgid "Lock and unlock screen"
+msgstr ""
+
+#: tcosmonitor.glade:1750
+msgid "Connect using iTALC"
+msgstr ""
+
+#: tcosmonitor.glade:1772
+msgid "Connect using VNC"
+msgstr ""
+
+#: tcosmonitor.glade:1794
+msgid "Remote SSH shell"
+msgstr ""
+
+#: tcosmonitor.glade:1816
+msgid "Configure Xorg settings"
+msgstr ""
+
+#: tcosmonitor.glade:1838
+msgid "Restart session with new settings"
+msgstr ""
+
+#: tcosmonitor.glade:1873
+msgid "Exe app on user display"
+msgstr ""
+
+#: tcosmonitor.glade:1895
+msgid "Send a text message"
+msgstr ""
+
+#: tcosmonitor.glade:1917
+msgid "Show running apps"
+msgstr ""
+
+#: tcosmonitor.glade:1939
+msgid "Send video broadcast"
+msgstr ""
+
+#: tcosmonitor.glade:1983
+msgid "Demo mode"
+msgstr ""
+
+#: tcosmonitor.glade:2018
+msgid "Wake on LAN"
+msgstr ""
+
+#: tcosmonitor.glade:2040
+msgid "Audio conference mode"
+msgstr ""
+
+#: tcosmonitor.glade:2062
+msgid "Screenshots"
+msgstr ""
+
+#: tcosmonitor.glade:2084
+msgid "Reboot and poweroff"
+msgstr ""
+
+#: tcosmonitor.glade:2118
+msgid "Menus"
+msgstr ""
+
+#: tcosmonitor.glade:2199
 msgid "Question"
 msgstr ""
 
-#: tcosmonitor.glade:1827
+#: tcosmonitor.glade:2274
 msgid "You can drag and drop launcher file to this box"
 msgstr ""
 
-#: tcosmonitor.glade:1852
+#: tcosmonitor.glade:2299
 msgid "<b>Run app in unknow host</b>"
 msgstr ""
 
-#: tcosmonitor.glade:1946
+#: tcosmonitor.glade:2393
 msgid "Static hosts list"
 msgstr ""
 
-#: tcosmonitor.glade:1969
+#: tcosmonitor.glade:2416
 msgid "<span size=\"x-large\">Static Hosts list</span>"
 msgstr ""
 
-#: tcosmonitor.glade:2078
+#: tcosmonitor.glade:2525
 msgid "Add"
 msgstr ""
 
-#: tcosmonitor.glade:2156
+#: tcosmonitor.glade:2603
 msgid "Modify"
 msgstr ""
 
-#: tcosmonitor.glade:2234
+#: tcosmonitor.glade:2681
 msgid "Delete"
 msgstr ""
 
-#: tcosmonitor.glade:2313
+#: tcosmonitor.glade:2760
 msgid "Get from connected"
 msgstr ""
 
-#: tcosmonitor.glade:2494 tcosmonitor.glade:2877
+#: tcosmonitor.glade:2941 tcosmonitor.glade:3324
 msgid "Save"
 msgstr ""
 
-#: tcosmonitor.glade:2540
+#: tcosmonitor.glade:2987
 msgid "New or edit hosts"
 msgstr ""
 
-#: tcosmonitor.glade:2594
+#: tcosmonitor.glade:3041
 msgid ""
 "You can add a simple host, \n"
 "   example: <b>192.168.0.100</b>\n"
@@ -1694,45 +1759,45 @@ msgid ""
 "MAC address is optional"
 msgstr ""
 
-#: tcosmonitor.glade:2635
+#: tcosmonitor.glade:3082
 msgid "IP address *"
 msgstr ""
 
-#: tcosmonitor.glade:2663 TcosStaticHosts.py:159
+#: tcosmonitor.glade:3110 TcosStaticHosts.py:159
 msgid "MAC address"
 msgstr ""
 
-#: tcosmonitor.glade:2921
+#: tcosmonitor.glade:3368
 msgid "About TCOS"
 msgstr ""
 
-#: tcosmonitor.glade:3007
+#: tcosmonitor.glade:3454
 msgid "<span size=\"xx-large\">TcosMonitor</span>"
 msgstr ""
 
-#: tcosmonitor.glade:3038
+#: tcosmonitor.glade:3485
 msgid "<b>Version:</b>"
 msgstr ""
 
-#: tcosmonitor.glade:3095
+#: tcosmonitor.glade:3542
 msgid ""
 "Thin client and standalone\n"
 "monitoring tool."
 msgstr ""
 
-#: tcosmonitor.glade:3163
+#: tcosmonitor.glade:3610
 msgid "Project web site"
 msgstr ""
 
-#: tcosmonitor.glade:3241
+#: tcosmonitor.glade:3688
 msgid "About"
 msgstr ""
 
-#: tcosmonitor.glade:3299
+#: tcosmonitor.glade:3746
 msgid "License"
 msgstr ""
 
-#: tcosmonitor.glade:3332
+#: tcosmonitor.glade:3779
 msgid ""
 "Main developers:\n"
 "  * Mario Izquierdo <mariodebian at gmail.com>\n"
@@ -1746,23 +1811,23 @@ msgid ""
 "  Comunidad de Madrid, MaX group (Spain)"
 msgstr ""
 
-#: tcosmonitor.glade:3376
+#: tcosmonitor.glade:3823
 msgid "Authors"
 msgstr ""
 
-#: tcosmonitor.glade:3405
+#: tcosmonitor.glade:3852
 msgid "Translated to your language by:"
 msgstr ""
 
-#: tcosmonitor.glade:3430
+#: tcosmonitor.glade:3877
 msgid "Mario Izquierdo <mariodebian@gmail.com>"
 msgstr ""
 
-#: tcosmonitor.glade:3465
+#: tcosmonitor.glade:3912
 msgid "Translators"
 msgstr ""
 
-#: tcosmonitor.glade:3494
+#: tcosmonitor.glade:3941
 msgid ""
 "TCOS is a free software project that need a lot of work to be the best thin "
 "client plataform.\n"
@@ -1776,15 +1841,15 @@ msgid ""
 "Click on next url to get some info."
 msgstr ""
 
-#: tcosmonitor.glade:3566
+#: tcosmonitor.glade:4013
 msgid "<u>http://wiki.tcosproject.org/TcosProject:Site_support</u>"
 msgstr ""
 
-#: tcosmonitor.glade:3604
+#: tcosmonitor.glade:4051
 msgid "Don't show donations message on start."
 msgstr ""
 
-#: tcosmonitor.glade:3628
+#: tcosmonitor.glade:4075
 msgid "Donate"
 msgstr ""
 
@@ -1836,10 +1901,6 @@ msgstr ""
 msgid "Addons"
 msgstr ""
 
-#: tcospersonalize.glade:763
-msgid "Advanced"
-msgstr ""
-
 #: tcospersonalize.glade:877
 msgid "Delete Config"
 msgstr ""
@@ -1873,7 +1934,7 @@ msgstr ""
 msgid "Deleted!"
 msgstr ""
 
-#: TcosPreferences.py:208
+#: TcosPreferences.py:222
 msgid "New settings saved."
 msgstr ""
 

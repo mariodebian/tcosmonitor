@@ -2743,6 +2743,16 @@ class TcosActions:
         model.set_value (iter, COL_PROCESS, num_process )
         model.set_value (iter, COL_TIME, time_logged)
 
+
+    def MustShowMenu(self, number, menutype):
+        if number in shared.preferences_menus_always_show[menutype]:
+            return True
+        if number in self.main.preferences.visible_menu_items[menutype]:
+            #print_debug("MustShow() number %s found at %s menutype %s"%(number, self.main.preferences.visible_menu_items[menutype], menutype))
+            return True
+        return False
+
+
     def RightClickMenuOne(self, path):
         """ menu for one client"""
         print_debug ( "RightClickMenuOne() creating menu" )
@@ -2784,8 +2794,11 @@ class TcosActions:
                 menu_items = gtk.MenuItem(buf)
                 
             self.main.menu.append(menu_items)
-            menu_items.connect("activate", self.on_rightclickmenuone_click, i)
-            menu_items.show()
+            if self.MustShowMenu(i, "menuone"):
+                menu_items.connect("activate", self.on_rightclickmenuone_click, i)
+                menu_items.show()
+            else:
+                menu_items.hide()
             
     def RightClickMenuAll(self):
         """ menu for ALL clients"""
@@ -2821,8 +2834,11 @@ class TcosActions:
                 menu_items = gtk.MenuItem(buf)
                 
             self.main.allmenu.append(menu_items)
-            menu_items.connect("activate", self.on_rightclickmenuall_click, i)
-            menu_items.show()
+            if self.MustShowMenu(i, "menuall"):
+                menu_items.connect("activate", self.on_rightclickmenuall_click, i)
+                menu_items.show()
+            else:
+                menu_items.hide()
         
         
         

@@ -97,10 +97,11 @@ class TcosXmlRpc:
             if not self.lock: return
             sleep(0.1)
 
+    """
     def isLive(self, ip):
-        """
-        check if host is accesible by network
-        """
+        #
+        #check if host is accesible by network
+        #
         cached=self.cache(ip, "")
         if cached != None:
             return cached
@@ -124,7 +125,7 @@ class TcosXmlRpc:
                     print_debug ( "isLive(%s) False" %(ip) )
                     self.ports.append( [ip, "", False, time()] )
                     return False
-    
+    """
 
     def isPortListening(self, ip, port):
         """

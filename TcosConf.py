@@ -149,10 +149,17 @@ class TcosConf:
             if _var[0] == varname:
                 print_debug ( "GetVar() NEW VAR FOUND, %s, adding to list \"\""\
                                                  %(varname) )
-                self.vars.append([_var[0],_var[1]])
+                self.vars.append( [_var[0],_var[1], "new"] )
                 return _var[1]
         print_debug ( "GetVar() not found, %s, returning \"\"" %(varname) )
         return ""
+    
+    def IsNew(self, varname):
+        for var in self.vars:
+            #print_debug("IsNew() searching in var %s" %var)
+            if var[0] == varname and len(var) == 3 and var[2] == "new":
+                return True
+        return False
     
         
 if __name__ == '__main__':

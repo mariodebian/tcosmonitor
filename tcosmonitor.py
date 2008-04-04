@@ -167,8 +167,8 @@ class TcosMonitor:
         
         
         # make menus
-        self.actions.RightClickMenuOne(None)
-        self.actions.RightClickMenuAll()
+        #self.actions.RightClickMenuOne(None)
+        #self.actions.RightClickMenuAll()
         
         # init hostlist
         self.init.init_hostlist()

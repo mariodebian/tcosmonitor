@@ -18,7 +18,20 @@ tcosmonitor (0.2.10) unstable; urgency=low
   * shared.py:
     - In some cases need headphone volume control if exists
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 04 Apr 2008 15:18:30 +0200
+  [ Mario Izquierdo (mariodebian) ]
+  * tcosmonitor.glade shared.py TcosConf.py TcosPreferences.py
+    - Create new tab on preferences window to show/hide menus 
+    - Reload menus when preferences are saved.
+  * tcosmonitor.py
+    - Disable menu creation on start, build it in TcosPreferences 
+  * ping.py
+    - Catch wait() exception 
+  * TcosXmlRpc.py
+    - Comment IsLive function (seem to be not used, mark as removable) 
+  * po/tcosmonitor.pot po/es.po
+    - Update translations
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 04 Apr 2008 20:14:00 +0200
 
 tcosmonitor (0.2.9) unstable; urgency=low
 

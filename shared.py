@@ -128,7 +128,8 @@ DefaultConfig=[
 ["statichosts", "", "str"],
 ["ssh_remote_username", "root", "str"],
 ["vlc_method_send", "ffmpeg-MPEG4", "str"],
-["show_donate", 1, "int"]
+["show_donate", 1, "int"],
+["visible_menus", "", "str"]
 ]
 
 #
@@ -245,6 +246,29 @@ allhost_menuitems=[
  [ _("Boot All clients (WakeOnLan)") , "menu_wol.png" ]                          #action=13
  ]
 
+preferences_menus_always_show={"menuone":[0,1,11], "menuall":[4]}
+
+# format
+#glade_widget,  [default_enabled,   menuone , menuall]
+preferences_menus={
+"ck_menu_lock":[        True,  [4,5],  [2,3] ],
+"ck_menu_italc":[       False, [6],    [] ],
+"ck_menu_vnc":[         True,  [7],    [] ],
+"ck_menu_reboot":[      True,  [2,3],  [0,1] ],
+"ck_menu_screenshots":[ True,  [8],    [10]],
+"ck_menu_shell":[       False, [9],    []],
+"ck_menu_xorg":[        True,  [10,11], [] ],
+"ck_menu_restartx":[    True,  [12],   [5] ],
+"ck_menu_exe":[         True,  [13],   [6] ],
+"ck_menu_text":[        True,  [14],   [7] ],
+"ck_menu_show":[        True,  [15],   [] ],
+"ck_menu_video":[       True,  [16],   [11] ],
+"ck_menu_send":[        True,  [17],   [12] ],
+"ck_menu_demo":[        True,  [18],   [8] ],
+"ck_menu_wakeonlan":[   False, [19],   [13] ],
+"ck_menu_conference":[  True,  [],     [9] ],
+}
+
 
 # this list contains all process to not show in user processes
 system_process=[
@@ -282,7 +306,9 @@ system_process=[
  "[sh]",
  "tcos-volume-manager",
  "notification-daemon",
- "bash"
+ "bash",
+ "gvfsd",
+ "gconf-helper"
 ]
 
 

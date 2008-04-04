@@ -41,7 +41,10 @@ class pingip(Thread):
       #print_debug ( "pingip() %s" %(self.ip) )
       #pingaling = self.main.common.exe_cmd("ping -q -W1 -c2 %s" %self.ip, verbose=0, background=False, lines=1)
       pingalingout = Popen(["ping", "-q", "-W1", "-c2", "%s" %self.ip], shell=False, stdout=PIPE, stderr=STDOUT, close_fds=True)
-      pingalingout.wait()
+      try:
+          pingalingout.wait()
+      except Exception, err:
+          print_debug("pingip() Exception in wait() error: %s"%err)
       pingaling = pingalingout.stdout
       while 1:
         line = pingaling.readline()
