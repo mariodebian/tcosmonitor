@@ -489,7 +489,10 @@ class TcosActions:
         
         info_percent=0.0
         info_items=0
-        for key, value in self.main.config.vars:
+        for elem in self.main.config.vars:
+            # elem can have 2 or 3 elements (don't use key,value in for)
+            key=elem[0]
+            value=elem[1]
             if self.main.config.GetVar(key) == 1:
                 info_items +=1
         if info_items != 0:
