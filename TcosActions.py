@@ -868,23 +868,28 @@ class TcosActions:
                 pulseaudioinfo=pulseaudioinfo.replace('\n','').split('|')
                 #print pulseaudioinfo
                 allpulseaudioinfo=[]
+                allpulseaudioinfo_trans=[]
                 output=[]
                 for line in pulseaudioinfo:
                     if line != "" and line.find(":") != -1:
                         key, value = line.split(':')
-                        allpulseaudioinfo.append(value)
-                output.append( ["%s:" %( _("Currently in use")), allpulseaudioinfo[0] ])
-                output.append( ["%s:" %( _("Allocated during whole lifetime")), allpulseaudioinfo[1] ])
-                output.append( ["%s:" %( _("Sample cache size")), allpulseaudioinfo[2] ])
-                output.append( ["%s:" %( _("User name")), allpulseaudioinfo[3] ])
-                output.append( ["%s:" %( _("Host Name")), allpulseaudioinfo[4] ])
-                output.append( ["%s:" %( _("Server Name")), allpulseaudioinfo[5] ])
-                output.append( ["%s:" %( _("Server Version")), allpulseaudioinfo[6] ])
-                output.append( ["%s:" %( _("Default Sample Specification")), allpulseaudioinfo[7] ])
-                output.append( ["%s:" %( _("Default Sink")), allpulseaudioinfo[8] ])
-                output.append( ["%s:" %( _("Default Source")), allpulseaudioinfo[9] ])
-                output.append( ["%s:" %( _("Cookie")), allpulseaudioinfo[10] ])
-                self.datatxt.insert_list( output )
+                        allpulseaudioinfo.append([ key+":", value ]) 
+                        allpulseaudioinfo_trans.append(value)
+                if len(allpulseaudioinfo_trans) == 11:
+                    output.append( ["%s:" %( _("Currently in use")), allpulseaudioinfo_trans[0] ])
+                    output.append( ["%s:" %( _("Allocated during whole lifetime")), allpulseaudioinfo_trans[1] ])
+                    output.append( ["%s:" %( _("Sample cache size")), allpulseaudioinfo_trans[2] ])
+                    output.append( ["%s:" %( _("User name")), allpulseaudioinfo_trans[3] ])
+                    output.append( ["%s:" %( _("Host Name")), allpulseaudioinfo_trans[4] ])
+                    output.append( ["%s:" %( _("Server Name")), allpulseaudioinfo_trans[5] ])
+                    output.append( ["%s:" %( _("Server Version")), allpulseaudioinfo_trans[6] ])
+                    output.append( ["%s:" %( _("Default Sample Specification")), allpulseaudioinfo_trans[7] ])
+                    output.append( ["%s:" %( _("Default Sink")), allpulseaudioinfo_trans[8] ])
+                    output.append( ["%s:" %( _("Default Source")), allpulseaudioinfo_trans[9] ])
+                    output.append( ["%s:" %( _("Cookie")), allpulseaudioinfo_trans[10] ])
+                    self.datatxt.insert_list( output )
+                else:
+                    self.datatxt.insert_list( allpulseaudioinfo )
                 
             else:
                 self.datatxt.insert_block ( "Sound server is not running", image=shared.IMG_DIR + "info_sound_ko.png")
