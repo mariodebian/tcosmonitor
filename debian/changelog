@@ -7,8 +7,10 @@ tcosmonitor (0.2.11) unstable; urgency=low
   [ Ignacio Vidal ]
   * TcosActions.py:
     - Fix pulseaudio info
+  * LocalData.py:
+    - Fix getlast()
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 08 Apr 2008 12:09:50 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 08 Apr 2008 23:50:52 +0200
 
 tcosmonitor (0.2.10) unstable; urgency=low
 

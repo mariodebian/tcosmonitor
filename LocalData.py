@@ -405,7 +405,7 @@ class LocalData:
             if not b: break
             if b[0] == USER_PROCESS:
                 #print_debug ("GetLast() searching for ip %s, found %s"%(ip, b.ut_host) )
-                if b.ut_host == "%s:0"%(ip) or b.ut_host == "%s"%(hostname):
+                if b.ut_host == "%s:0"%(ip) or b.ut_host == "%s:0.0"%(ip) or b.ut_host == "%s"%(hostname):
                     last=b
         
         if last and os.path.isdir("/proc/%s"%last.ut_pid):
