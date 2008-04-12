@@ -2486,23 +2486,34 @@ class TcosActions:
                     #gtk.gdk.threads_leave()
                     self.main.common.threads_leave("TcosActions::action_for_clients lockscreen")
                 elif action == "screenshot":
-                    self.main.xmlrpc.screenshot( self.main.config.GetVar("miniscrot_size") ) 
-                    
-                    url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
-                    hostname=self.main.localdata.GetHostname(ip)
-                    self.main.common.threads_enter("TcosActions:action_for_clients screenshot")
-                    self.main.datatxt.insert_html( 
+                    # use Base64 screenshot
+                    scrot=self.main.xmlrpc.getscreenshot(self.main.config.GetVar("miniscrot_size"))
+                    if scrot and scrot[0] == "ok":
+                        #print_debug("getscreenshot() base64 ok %s "%scrot)
+                        hostname=self.main.localdata.GetHostname(ip)
+                        self.main.common.threads_enter("TcosActions:action_for_clients screenshot")
+                        self.main.datatxt.insert_html( 
                      "<span style='background-color:#f3d160'>" +
-                     "\n\t<img src='%s' title='%s' title_rotate='90' /> " %(url,_( "Screenshot of %s" ) %(hostname) ) +
-                     "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>" +
-                     #"\n<span style='background-color:#FFFFFF; color: #FFFFFF; margin-left: 20px; margin-right: 20px'>____</span>"+
+                     "\n\t<img base64='%s' title='%s' title_rotate='90' /> " %(scrot[1],_( "Screenshot of %s" ) %(hostname) ) +
+                     "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>"+
                      "")
-                    self.main.common.threads_leave("TcosActions:action_for_clients screenshot")
+                        self.main.common.threads_leave("TcosActions:action_for_clients screenshot")
+                    #self.main.xmlrpc.screenshot( self.main.config.GetVar("miniscrot_size") ) 
+                    
+                    #url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
+                    #hostname=self.main.localdata.GetHostname(ip)
+                    #self.main.common.threads_enter("TcosActions:action_for_clients screenshot")
+                    #self.main.datatxt.insert_html( 
+                    # "<span style='background-color:#f3d160'>" +
+                    # "\n\t<img src='%s' title='%s' title_rotate='90' /> " %(url,_( "Screenshot of %s" ) %(hostname) ) +
+                    # "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>" +
+                    # #"\n<span style='background-color:#FFFFFF; color: #FFFFFF; margin-left: 20px; margin-right: 20px'>____</span>"+
+                    # "")
+                    #self.main.common.threads_leave("TcosActions:action_for_clients screenshot")
                 else:
                     self.main.xmlrpc.Exe(action)
-            except:
-                print_debug ( "action_for_clients() error while exec %s in %s"\
-                                         %(action, ip) )
+            except Exception, err:
+                print_debug ( "action_for_clients() error while exec %s in %s error: %s" %(action, ip, err) )
                 pass
         
             #gtk.gdk.threads_enter()
@@ -2563,10 +2574,13 @@ class TcosActions:
         #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions::get_screenshot writing wait msg")
         
-        if not self.main.xmlrpc.screenshot( self.main.config.GetVar("scrot_size") ):
+        # use Base64 screenshot
+        scrot=self.main.xmlrpc.getscreenshot( self.main.config.GetVar("scrot_size") )
+        if scrot[0] != "ok":
+        #if not self.main.xmlrpc.screenshot( self.main.config.GetVar("scrot_size") ):
             #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions::get_screenshot writing error msg")
-            self.main.write_into_statusbar( _("Can't make screenshot, connection error") )
+            self.main.write_into_statusbar( _("Can't make screenshot, error: %s") %scrot[1] )
             #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions::get_screenshot writing error msg")
             return False
@@ -2593,12 +2607,16 @@ class TcosActions:
         block_txt+="<span> </span><input type='button' name='self.main.another_screenshot_button' label='%s' />" %( slabel )
          
         self.main.common.threads_enter("TcosActions::get_screenshot show capture")
-        url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
+        #url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
         self.main.datatxt.clean()
         self.main.datatxt.insert_block( block_txt )
                                  
-        self.main.datatxt.insert_html( "<img src='%s' alt='%s'/>\n"\
-                                 %(url, _("Screenshot of %s" %(ip) )) )
+        #self.main.datatxt.insert_html( "<img src='%s' alt='%s'/>\n"\
+        #                         %(url, _("Screenshot of %s" %(ip) )) )
+        
+        # Use Base64 data
+        self.main.datatxt.insert_html("""\n<img base64="%s" />\n"""%(scrot[1]))
+        
         self.main.common.threads_leave("TcosActions::get_screenshot show capture")
         
         #gtk.gdk.threads_enter()

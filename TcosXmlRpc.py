@@ -585,7 +585,19 @@ class TcosXmlRpc:
         except Exception, err:
             print_debug ("screenshot() Exception, error: %s" %err)
             return False
-        
+
+    def getscreenshot(self, size="65"):
+        try:
+            result=self.tc.tcos.getscreenshot(\
+                     "%s" %(size),\
+                     self.main.config.GetVar("xmlrpc_username"), \
+                     self.main.config.GetVar("xmlrpc_password"))
+            
+            print_debug ( "getscreenshot(size=%s percent) done result=%s" %(size, result[0]) )
+            return result
+        except Exception, err:
+            print_debug ("getscreenshot() Exception, error: %s" %err)
+            return [False, err]
         
     def vnc(self, action, ip, *args):
         self.newhost(ip)

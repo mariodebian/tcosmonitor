@@ -31,6 +31,9 @@ from cStringIO import StringIO
 import urllib2
 import operator
 
+import base64
+import gc
+
 __all__ = ['HtmlTextView']
 
 whitespace_rx = re.compile("\\s+")
@@ -392,6 +395,8 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
         elif name == 'img':
             title=None
             title_rotate=None
+            b64=None
+            pixbuf=None
         
             try:
                 imgfile = attrs['file']
@@ -404,10 +409,15 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                 title=None
             
             try:
+                b64=attrs['base64']
+            except:
+                b64=None
+            
+            try:
                 title_rotate=attrs['title_rotate']
             except KeyError:
                 title_rotate=None
-                
+            
             if imgfile:
                 #print "############"
                 #print attrs['file']
@@ -432,21 +442,34 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                     pixbuf=None
                     
             else:
-                try:
-                    ## Max image size = 10 MB (to try to prevent DoS)
-                    mem = urllib2.urlopen(attrs['src']).read(10*1024*1024)
-                    ## Caveat: GdkPixbuf is known not to be safe to load
-                    ## images from network... this program is now potentially
-                    ## hackable ;)
-                    loader = gtk.gdk.PixbufLoader()
-                    loader.write(mem); loader.close()
-                    pixbuf = loader.get_pixbuf()
-                except Exception, ex:
-                    pixbuf = None
+                if b64:
                     try:
-                        alt = attrs['alt']
-                    except KeyError:
-                        alt = "Broken image"
+                        #print "loading image from base64"
+                        loader = gtk.gdk.PixbufLoader()
+                        loader.write(base64.decodestring(b64))
+                        loader.close()
+                        pixbuf = loader.get_pixbuf()
+                        del loader
+                        gc.collect()
+                        #print pixbuf
+                    except Exception, err:
+                        print "WARNING Exception loading base64 error: %s"%err
+                else:
+                    try:
+                        ## Max image size = 10 MB (to try to prevent DoS)
+                        mem = urllib2.urlopen(attrs['src']).read(10*1024*1024)
+                        ## Caveat: GdkPixbuf is known not to be safe to load
+                        ## images from network... this program is now potentially
+                        ## hackable ;)
+                        loader = gtk.gdk.PixbufLoader()
+                        loader.write(mem); loader.close()
+                        pixbuf = loader.get_pixbuf()
+                    except Exception, ex:
+                        pixbuf = None
+                        try:
+                            alt = attrs['alt']
+                        except KeyError:
+                            alt = "Broken image"
                         
                 if pixbuf is not None:
                     tags = self._get_style_tags()

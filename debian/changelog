@@ -1,3 +1,13 @@
+tcosmonitor (0.2.12) unstable; urgency=low
+
+  * TcosActions.py htmltextview.py TcosXmlRpc.py
+    - Use tcos.getscreenshot() to retrieve Base64 screenshots
+  * debian/control
+    - Depends on tcos-core >= 0.89~rc0 and Conclicts with << 0.88.16
+  * Update translations
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 12 Apr 2008 12:04:01 +0200
+
 tcosmonitor (0.2.11) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]
@@ -10,7 +20,10 @@ tcosmonitor (0.2.11) unstable; urgency=low
   * LocalData.py:
     - Fix getlast()
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 08 Apr 2008 23:50:52 +0200
+  [ Mario Izquierdo (mariodebian) ]
+  * TcosActions.py htmltextview.py TcosXmlRpc.py
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 12 Apr 2008 12:03:51 +0200
 
 tcosmonitor (0.2.10) unstable; urgency=low
 
