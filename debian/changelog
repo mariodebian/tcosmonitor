@@ -5,8 +5,10 @@ tcosmonitor (0.2.12) unstable; urgency=low
   * debian/control
     - Depends on tcos-core >= 0.89~rc0 and Conclicts with << 0.88.16
   * Update translations
+  * README.rsync
+    - Fix typo in rsync configuration file
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 12 Apr 2008 12:04:01 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 13 Apr 2008 11:41:48 +0200
 
 tcosmonitor (0.2.11) unstable; urgency=low
 

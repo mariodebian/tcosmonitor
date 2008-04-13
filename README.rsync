@@ -1,4 +1,4 @@
-   TCosMOnitor allow to send files using rsync.
+   TcosMonitor allow to send files using rsync.
 
 
   In standalone mode you need to make some aditional work.
@@ -17,12 +17,14 @@
 
      Add:
 
-     read_only = no
+     ###############################
+     read only = no
      use chroot = no
 
      [tcos_share]
          path = /tmp/tcos_share
          comment = Tcos Share
+     ###############################
 
   4.- Then restart rsync daemon:
 
