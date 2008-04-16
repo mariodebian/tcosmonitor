@@ -159,6 +159,8 @@ class TcosConf:
             #print_debug("IsNew() searching in var %s" %var)
             if var[0] == varname and len(var) == 3 and var[2] == "new":
                 return True
+        print_debug("IsNew() self.vars=%s"%self.vars)
+        print_debug("IsNew() var %s not found in self.vars"%varname)
         return False
     
         

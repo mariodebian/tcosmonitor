@@ -40,15 +40,19 @@ def crono(start, txt):
 
 
 class TcosTrayIcon:
-    def __init__(self, quit=True):
+    def __init__(self, disable_quit=True, allow_reboot_poweroff=True):
         self.actions={}
         self.args={}
         #self.statusIcon = gtk.StatusIcon()
         self.menu=gtk.Menu()
-        if quit:
+        if not disable_quit:
             self.items={ "quit": [_("Quit"), "menu_kill.png", True, None]  }
         else:
             self.items={}
+        
+        if allow_reboot_poweroff:
+            self.items["reboot"]=[_("Reboot"), "menu_reboot.png", True, None]
+            self.items["poweroff"]=[_("Poweroff"), "menu_poweroff.png", True, None]
         
         self.InitMenu()
         self.InitStatusIcon()

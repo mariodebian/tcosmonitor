@@ -299,9 +299,12 @@ class TcosPreferences:
         
         visible_menus_txt=self.main.config.GetVar("visible_menus")
         if visible_menus_txt != "":
+            print_debug("visible_menus is not empty")
             visible_menus=visible_menus_txt.split(',')
         else:
             first_run=self.main.config.IsNew("visible_menus")
+            first_run=True
+            print_debug("visible_menus is empty first_run=%s"%first_run)
         
         
         for menu in shared.preferences_menus:

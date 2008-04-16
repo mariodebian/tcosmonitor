@@ -118,12 +118,12 @@ class TcosDevicesNG:
         self.loadconf(CONF_FILE)
         self.loadconf(ALL_CONF_FILE)
         
-        ######## read floppys #############
-        if self.mntconf.has_key("disable_quit") and self.mntconf['disable_quit'] == "1" :
-            self.systray=TcosTrayIcon(quit=False)
-        else:
-            self.systray=TcosTrayIcon(quit=True)
-
+        ######## Create icon #############
+        disable_quit=self.mntconf.has_key("disable_quit") and self.mntconf['disable_quit'] == "1"
+        enable_reboot_and_poweroff=self.mntconf.has_key("enable_reboot_poweroff") and self.mntconf['enable_reboot_poweroff'] == "1"
+        self.systray=TcosTrayIcon(disable_quit=disable_quit, allow_reboot_poweroff=enable_reboot_and_poweroff)
+        
+        
         self.systray.status=True
         
         self.initremote()
@@ -150,7 +150,13 @@ class TcosDevicesNG:
         self.quitting=False
         
         # register quit event
-        self.systray.register_action("quit", lambda w: self.exit() )
+        if not disable_quit:
+            self.systray.register_action("quit", lambda w: self.exit() )
+        
+        # register reboot and poweroff
+        if enable_reboot_and_poweroff:
+            self.systray.register_action("reboot", self.menu_remote_reboot_poweroff, 'reboot'  )
+            self.systray.register_action("poweroff", self.menu_remote_reboot_poweroff, 'poweroff' )
         
         self.udev_events={ 
         "insert":         {"ID_BUS":  "usb",         "ACTION":"add"}, 
@@ -164,7 +170,38 @@ class TcosDevicesNG:
         "mount-flash":    {"DEVPATH": "/block/sd*",   "ACTION":"mount"},
         "umount-flash":   {"DEVPATH": "/block/sd*",   "ACTION":"umount"}
         }
-    
+
+    def menu_remote_reboot_poweroff(self, *args):
+        try:
+            action=args[0][0]
+        except:
+            return
+        remote_hostname=self.xauth.get_hostname()
+        xauth_cookie=self.xauth.get_cookie()
+        if self.mntconf.has_key("reboot_poweroff_timeout"):
+            timeout=self.mntconf['reboot_poweroff_timeout']
+        else:
+            timeout="5"
+        
+        self.show_notification( _("Doing action %(action)s in %(timeout)s seconds") %({"action":action, "timeout":timeout}) )
+        print_debug("remote_reboot_poweroff() action=%s, remote_hostname=%s, xauth_cookie=%s"%(action, remote_hostname, xauth_cookie))
+        cmd=threading.Thread(target=self.remote_reboot_poweroff, args=[action, timeout,  xauth_cookie, remote_hostname] )
+        cmd.start()
+        return
+
+    def remote_reboot_poweroff(self, action, timeout, xauth_cookie, remote_hostname):
+        print_debug("remote_reboot_poweroff() waiting %s seconds"%timeout)
+        time.sleep(int(timeout))
+        try:
+            result=self.xmlrpc.tc.tcos.rebootpoweroff( action, xauth_cookie, remote_hostname)
+            print_debug("remote_reboot_poweroff() result=%s"%result.strip())
+            if result.startswith("error"):
+                self.show_notification( _("ERROR during action %(action)s:\n%(errortxt)s") %({"action":action, "errortxt":result.replace('error: ','')} ) )
+        except Exception, err:
+            print_debug("remote_reboot_poweroff() Exception: %s"%err)
+            self.show_notification( _("ERROR during action %(action)s:\n%(errortxt)s") %({"action":action, "errortxt":err}) )
+            return
+
     def loadconf(self, conffile):
         print_debug ( "loadconf() __init__ conffile=%s" %conffile )
         conf=os.path.expanduser(conffile)
