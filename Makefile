@@ -17,7 +17,7 @@ dist-clean:
 	
 
 clean:
-	rm -f *~ *.pyc *.orig *.bak *-stamp
+	rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup
 	cd po && rm -rf es/
 	rm -f po/*~
 	$(MAKE) -f Makefile.ltsp clean

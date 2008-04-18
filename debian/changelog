@@ -5,8 +5,9 @@ tcosmonitor (0.2.13) unstable; urgency=low
   * Update translations
   * server-utils/tcos-server-utils.py:
     - Fix init in TcosDBusActions (need self.main param)
+  * Put icons in preferences tabs (better look&feel)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 18 Apr 2008 10:24:06 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 18 Apr 2008 15:56:11 +0200
 
 tcosmonitor (0.2.12) unstable; urgency=low
 
