@@ -3,8 +3,10 @@ tcosmonitor (0.2.13) unstable; urgency=low
   * Add support to reboot&poweroff to tcos-devices-ng
   * Fix IsNew and empty menus first time
   * Update translations
+  * server-utils/tcos-server-utils.py:
+    - Fix init in TcosDBusActions (need self.main param)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 17 Apr 2008 00:07:12 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 18 Apr 2008 10:24:06 +0200
 
 tcosmonitor (0.2.12) unstable; urgency=low
 

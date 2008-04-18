@@ -161,7 +161,7 @@ class ServerUtils:
                     print ( "Connected users: %s" %connected_users)
                         
                 from TcosDBus import TcosDBusAction
-                self.dbus_action=TcosDBusAction( \
+                self.dbus_action=TcosDBusAction( self, \
                     admin=self.config.GetVar("xmlrpc_username"), \
                     passwd=self.config.GetVar("xmlrpc_password") )
                 
