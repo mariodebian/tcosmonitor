@@ -225,6 +225,8 @@ patch_etch: patch_version
 
 patch_unstable: patch_version
 
+patch_testing: patch_version
+
 patch_hardy: patch_version
 
 patch_max: patch_version
