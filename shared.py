@@ -159,7 +159,7 @@ xmlremote_port=8998
 xmlremote_url="/RPC2"
 
 pulseaudio_soundserver_port=4713
-sound_only_channels=["Master", "PCM", "Line", "CD", "Mic", "Aux", "Headphone", "vol", "pcm", "line", "cd", "mic"]
+sound_only_channels=["Master", "Master Front", "PCM", "Line", "CD", "Mic", "Aux", "Headphone", "vol", "pcm", "line", "cd", "mic"]
 
 hidden_network_ifaces=["lo", "sit0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
 

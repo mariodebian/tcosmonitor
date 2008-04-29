@@ -1,5 +1,6 @@
 tcosmonitor (0.2.13) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * Add support to reboot&poweroff to tcos-devices-ng
   * Fix IsNew and empty menus first time
   * Update translations
@@ -7,7 +8,19 @@ tcosmonitor (0.2.13) unstable; urgency=low
     - Fix init in TcosDBusActions (need self.main param)
   * Put icons in preferences tabs (better look&feel)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 18 Apr 2008 15:56:11 +0200
+  [ Ignacio Vidal ]
+  * tcos-devices-ng.py:
+    - Need fix gettext
+    - Use down-controller with timeout instead sleep
+  * shared.py:
+    - Some thin clients like etc2500 only have "Master Front" audio
+  * tcosmonitor.py:
+    - Pre-add commented check user group
+    - Fix mkdir /tmp/tcos_share
+  * TcosConf.py:
+    - Update chmod
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 29 Apr 2008 15:32:55 +0200
 
 tcosmonitor (0.2.12) unstable; urgency=low
 

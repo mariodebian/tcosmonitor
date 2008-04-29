@@ -48,6 +48,7 @@ gtk.gdk.threads_init()
 import gobject
 
 import shared
+#import grp,pwd
 
 
 
@@ -84,7 +85,6 @@ for o, a in opts:
         usage()
         sys.exit()
 
-
 import TcosCommon
 import Initialize
 import TcosXmlRpc
@@ -103,7 +103,16 @@ class TcosMonitor:
         self.name="TcosMonitor"
         
         self.worker_running=False
-        
+     
+        #nogroup=True
+        #for group in os.getgroups():
+        #    if grp.getgrgid(group)[0] == "tcos":
+        #        nogroup=False
+
+        #if nogroup and os.getuid() != 0:
+        #    shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\".\n\nIf you are system administrator, add user to the group tcos." %pwd.getpwuid(os.getuid())[0]))
+        #    sys.exit(1)
+
         #import shared
         gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
         gtk.glade.textdomain(shared.PACKAGE)
@@ -185,12 +194,19 @@ class TcosMonitor:
         
         # create tmp dir
         try:
-            f=open("/etc/rsyncd.conf", 'r')
-            output = f.readlines()
-            f.close()
-            for line in output:
-                if line.find("/tmp/tcos_share") != -1:
-                    os.mkdir("/tmp/tcos_share")
+            f1=open("/etc/default/rsync", 'r')
+            f2=open("/etc/rsyncd.conf", 'r')
+            output1 = f1.readlines()
+            output2 = f2.readlines()
+            f1.close()
+            f2.close()
+            for line1 in output1:
+                if line1.upper().find("RSYNC_ENABLE=TRUE") != -1:
+                    for line2 in output2:
+                        if line2.find("/tmp/tcos_share") != -1:
+                            os.mkdir("/tmp/tcos_share")
+                            #os.chmod("/tmp/tcos_share", 0644)
+                            break
                     break
         except:
             pass

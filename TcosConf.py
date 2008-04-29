@@ -108,7 +108,7 @@ class TcosConf:
             fd.write("%s=%s\n" %(key, value) )
         fd.close
         # make chmod 600
-        os.system ("chmod 600 %s" %(shared.config_file) )
+        os.chmod(shared.config_file, 0600)
         self.FirstRunning=True
         
     def SetVar(self, varname, value):
@@ -134,7 +134,7 @@ class TcosConf:
         for i in range(len(self.vars)):
             fd.write("%s=%s\n" %(self.vars[i][0], self.vars[i][1]))
         fd.close
-        os.system ("chmod 600 %s" %(shared.config_file) )
+        os.chmod(shared.config_file, 0600)
         print_debug ( "SaveToFile() new settings SAVED!!!")   
         return
     

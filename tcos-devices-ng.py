@@ -183,7 +183,7 @@ class TcosDevicesNG:
         else:
             timeout="5"
         
-        self.show_notification( _("Doing action %(action)s in %(timeout)s seconds") %({"action":action, "timeout":timeout}) )
+        self.show_notification( _("Doing action %(action)s in %(timeout)s seconds") %{"action":action, "timeout":timeout} )
         print_debug("remote_reboot_poweroff() action=%s, remote_hostname=%s, xauth_cookie=%s"%(action, remote_hostname, xauth_cookie))
         cmd=threading.Thread(target=self.remote_reboot_poweroff, args=[action, timeout,  xauth_cookie, remote_hostname] )
         cmd.start()
@@ -191,15 +191,15 @@ class TcosDevicesNG:
 
     def remote_reboot_poweroff(self, action, timeout, xauth_cookie, remote_hostname):
         print_debug("remote_reboot_poweroff() waiting %s seconds"%timeout)
-        time.sleep(int(timeout))
+        #time.sleep(int(timeout))
         try:
-            result=self.xmlrpc.tc.tcos.rebootpoweroff( action, xauth_cookie, remote_hostname)
+            result=self.xmlrpc.tc.tcos.rebootpoweroff( action, timeout, xauth_cookie, remote_hostname)
             print_debug("remote_reboot_poweroff() result=%s"%result.strip())
             if result.startswith("error"):
-                self.show_notification( _("ERROR during action %(action)s:\n%(errortxt)s") %({"action":action, "errortxt":result.replace('error: ','')} ) )
+                self.show_notification( _("ERROR during action %(action)s:\n%(errortxt)s") %{"action":action, "errortxt":result.replace('error: ','')} )
         except Exception, err:
             print_debug("remote_reboot_poweroff() Exception: %s"%err)
-            self.show_notification( _("ERROR during action %(action)s:\n%(errortxt)s") %({"action":action, "errortxt":err}) )
+            self.show_notification( _("ERROR during action %(action)s:\n%(errortxt)s") %{"action":action, "errortxt":err} )
             return
 
     def loadconf(self, conffile):
