@@ -19,8 +19,13 @@ tcosmonitor (0.2.13) unstable; urgency=low
     - Fix mkdir /tmp/tcos_share
   * TcosConf.py:
     - Update chmod
+  * Localdata.py
+    - Getlast: use who instead last method
+  * TcosActions.py
+    - Vlc not recognize module cdda://
+    - vncviewer in server show mouse of client
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 29 Apr 2008 15:32:55 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 06 May 2008 17:00:47 +0200
 
 tcosmonitor (0.2.12) unstable; urgency=low
 

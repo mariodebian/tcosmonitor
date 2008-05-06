@@ -399,15 +399,13 @@ class LocalData:
             ip=self.GetIpAddress(ip)
         hostname=self.GetHostname(ip)
         print_debug("GetLast() ip=%s hostname=%s "%(ip, hostname) )
-        a = utmp.UtmpRecord(WTMP_FILE)
-        while 1:
-            b=a.getutent()
-            if not b: break
-            if b[0] == USER_PROCESS:
+        a = utmp.UtmpRecord()
+        for b in a:
+            if b.ut_type == USER_PROCESS:
                 #print_debug ("GetLast() searching for ip %s, found %s"%(ip, b.ut_host) )
                 if b.ut_host == "%s:0"%(ip) or b.ut_line == "%s:0"%(ip) or b.ut_host == "%s"%hostname :
                     last=b
-        
+        a.endutent()
         if last and os.path.isdir("/proc/%s"%last.ut_pid):
             # take diff between now and login time
             diff=time()-last.ut_tv[0]
