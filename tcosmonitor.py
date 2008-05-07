@@ -48,7 +48,7 @@ gtk.gdk.threads_init()
 import gobject
 
 import shared
-#import grp,pwd
+import grp,pwd
 
 
 
@@ -103,15 +103,16 @@ class TcosMonitor:
         self.name="TcosMonitor"
         
         self.worker_running=False
-     
-        #nogroup=True
-        #for group in os.getgroups():
-        #    if grp.getgrgid(group)[0] == "tcos":
-        #        nogroup=False
+        
+        if shared.check_tcosmonitor_user_group:
+            nogroup=True
+            for group in os.getgroups():
+                if grp.getgrgid(group)[0] == "tcos":
+                    nogroup=False
 
-        #if nogroup and os.getuid() != 0:
-        #    shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\".\n\nIf you are system administrator, add user to the group tcos." %pwd.getpwuid(os.getuid())[0]))
-        #    sys.exit(1)
+            if nogroup and os.getuid() != 0:
+                shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\".\n\nIf you are system administrator, add user to the group tcos." %pwd.getpwuid(os.getuid())[0]))
+                sys.exit(1)
 
         #import shared
         gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)

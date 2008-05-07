@@ -163,6 +163,11 @@ sound_only_channels=["Master", "Master Front", "PCM", "Line", "CD", "Mic", "Aux"
 
 hidden_network_ifaces=["lo", "sit0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
 
+# for enable exclude users, change to "tcosmonitor-exclude"
+dont_show_users_in_group=None
+
+check_tcosmonitor_user_group=False
+
 cache_timeout=20
 
 wait_between_many_host=0.1

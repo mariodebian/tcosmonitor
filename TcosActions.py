@@ -892,7 +892,7 @@ class TcosActions:
                     self.datatxt.insert_list( allpulseaudioinfo )
                 
             else:
-                self.datatxt.insert_block ( "Sound server is not running", image=shared.IMG_DIR + "info_sound_ko.png")
+                self.datatxt.insert_block ( _("Sound server is not running"), image=shared.IMG_DIR + "info_sound_ko.png")
         
         #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:populate_datatxt end")
@@ -947,7 +947,7 @@ class TcosActions:
         
         #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:populate_hostlist show progressbar")
-
+        
         if shared.disable_textview_on_update: self.main.tabla.set_sensitive(False)
 
         #disable refresh button
@@ -991,8 +991,20 @@ class TcosActions:
             self.main.xmlrpc.newhost (host)
             
             ip=host
-            hostname=self.main.localdata.GetHostname(ip)
+            
             username=self.main.localdata.GetUsername(ip)
+            
+            if shared.dont_show_users_in_group != None:
+                if self.main.xmlrpc.IsStandalone(ip):
+                    groupexclude=self.main.xmlrpc.GetStandalone("get_exclude", shared.dont_show_users_in_group)
+                else:
+                    groupexclude=self.main.localdata.isExclude(ip, shared.dont_show_users_in_group)
+            
+                if groupexclude: 
+                    print_debug("Host %s excluded, blacklisted by group" %ip)
+                    continue
+                
+            hostname=self.main.localdata.GetHostname(ip)
             
             if username.startswith('error: tcos-last'):
                 username="---"

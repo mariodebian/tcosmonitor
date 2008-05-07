@@ -32,7 +32,7 @@ from ping import *
 import utmp
 from UTMPCONST import *
 
-import pwd
+import pwd,grp
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 
@@ -392,7 +392,7 @@ class LocalData:
         else:
             return "%s" %(self.GetUsername(ip) )
 
-    def GetLast(self, ip):
+    def GetLast(self, ip, ingroup=None):
         last=[]
         data={}
         if ip != "" and not self.ipValid(ip):
@@ -429,8 +429,19 @@ class LocalData:
                 timelogged="%02dh:%02dm"%(hours,minutes)
             else:
                 timelogged="%dd %02dh:%02dm"%(days,hours,minutes)
+                
+            exclude="noexclude"
+            if ingroup != None:
+                try:
+                    usersingroup=grp.getgrnam(ingroup)[3]
+                except Exception, err:
+                    usersingroup=[]
+                
+                for user in usersingroup:
+                    if last.ut_user == user:
+                        exclude="exclude"
             
-            data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged}
+            data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged, "exclude":exclude}
         return data
     
     def GetUsername(self, ip):
@@ -507,6 +518,15 @@ class LocalData:
             return True
         else:
             return False
+        
+    def isExclude(self, host, ingroup=None):
+        if self.username == shared.NO_LOGIN_MSG:
+            return False
+
+        output=self.GetLast(host, ingroup)
+        if output and output['exclude'] == "exclude":
+            return True
+        return False
 
     def GetUserID(self, username):
         try:

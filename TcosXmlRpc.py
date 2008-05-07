@@ -321,13 +321,13 @@ class TcosXmlRpc:
         return False
     
 
-    def GetStandalone(self, item):
+    def GetStandalone(self, item, ingroup=None):
         if item == "get_user":
             if not self.connected:
                 print_debug ( "GetStandalone() NO CONNECTION" )
                 return shared.NO_LOGIN_MSG
             try:
-                result=self.tc.tcos.standalone("get_user").replace('\n', '')
+                result=self.tc.tcos.standalone("get_user", "").replace('\n', '')
             except Exception, err:
                 print_debug("GetStandalone(get_user) Exception error: %s"%err)
                 return shared.NO_LOGIN_MSG
@@ -341,24 +341,38 @@ class TcosXmlRpc:
                 
         elif item == "get_process":
             try:
-                return self.tc.tcos.standalone("get_process").replace('\n', '')
+                return self.tc.tcos.standalone("get_process", "").replace('\n', '')
             except Exception, err:
                 print_debug("GetStandalone(get_process) Exception error: %s"%err)
                 return ""
         
         elif item == "get_server":
             try:
-                return self.tc.tcos.standalone("get_server").replace('\n', '')
+                return self.tc.tcos.standalone("get_server", "").replace('\n', '')
             except Exception, err:
                 print_debug("GetStandalone(get_server) Exception error %s"%err)
                 return ""
         
         elif item == "get_time":
             try:
-                return self.tc.tcos.standalone("get_time").replace('\n', '')
+                return self.tc.tcos.standalone("get_time", "").replace('\n', '')
             except Exception, err:
                 print_debug("GetStandalone(get_time) Exception error %s"%err)
                 return None
+            
+        elif item == "get_exclude":
+            if not self.connected:
+                print_debug ( "GetStandalone() NO CONNECTION" )
+                return False
+            try:
+                result=self.tc.tcos.standalone("get_exclude", "%s" %ingroup).replace('\n', '')
+                if result.find('error') == 0 or result == "" or result == "noexclude":
+                    return False
+                else:
+                    return True
+            except Exception, err:
+                print_debug("GetStandalone(get_exclude) Exception error %s"%err)
+                return False
             
         else:
             return ""

@@ -14,18 +14,20 @@ tcosmonitor (0.2.13) unstable; urgency=low
     - Use down-controller with timeout instead sleep
   * shared.py:
     - Some thin clients like etc2500 only have "Master Front" audio
-  * tcosmonitor.py:
-    - Pre-add commented check user group
+  * tcosmonitor.py shared.py
+    - Enable/disable check if user are in allowed group to use Tcosmonitor
     - Fix mkdir /tmp/tcos_share
   * TcosConf.py:
     - Update chmod
   * Localdata.py
     - Getlast: use who instead last method
-  * TcosActions.py
+  * TcosActions.py TcosXmlRpc.py shared.py LocalData.py
     - Vlc not recognize module cdda://
     - vncviewer in server show mouse of client
+    - Exclude control in Tcosmonitor over users in blacklist group, specified in shared.py
+    - Update translation Pulseaudio not running 
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 06 May 2008 17:00:47 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 07 May 2008 23:16:11 +0200
 
 tcosmonitor (0.2.12) unstable; urgency=low
 
