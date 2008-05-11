@@ -129,7 +129,8 @@ DefaultConfig=[
 ["ssh_remote_username", "root", "str"],
 ["vlc_method_send", "ffmpeg-MPEG4", "str"],
 ["show_donate", 1, "int"],
-["visible_menus", "", "str"]
+["visible_menus", "", "str"],
+["enable_sslxmlrpc", 0, "int"]
 ]
 
 #
@@ -156,6 +157,7 @@ module_conf_file="/etc/tcos/tcosmonitor.conf"
 httpd_port=8081
 
 xmlremote_port=8998
+xmlremote_sslport=8999
 xmlremote_url="/RPC2"
 
 pulseaudio_soundserver_port=4713

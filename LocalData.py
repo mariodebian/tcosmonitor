@@ -265,6 +265,25 @@ class LocalData:
                             self.allclients.append(newip)
                 else:
                     self.allclients.append(ip)
+            # try if client is connected
+            if self.main.config.GetVar("onlyshowtcos") == 1:
+                if hasattr(self.main, "write_into_statusbar"):
+                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
+                hosts=[]
+                for host in self.allclients:
+                    # view status of port 8998
+                    if PingPort(host, shared.xmlremote_port, 0.5).get_status() == "OPEN":
+                        self.main.xmlrpc.newhost(host)
+                        if self.main.xmlrpc.GetVersion():
+                            print_debug("GetAllClients() host=%s port 8998 OPEN" %(host))
+                            hosts.append(host)
+                        else:
+                            print_debug("GetAllClients() host=%s port 8998 OPEN but not tcosxmlrpc" %(host))
+                    else:
+                        print_debug("GetAllClients() host=%s port 8998 CLOSED" %(host))
+                        #hosts.append(host)
+                self.allclients=hosts
+                print_debug("GetAllClients() returning static list %s"%self.allclients)
             return self.allclients
 
     

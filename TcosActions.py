@@ -961,6 +961,7 @@ class TcosActions:
         
         inactive_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'inactive.png')
         active_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active.png')
+        active_ssl_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active_ssl.png')
         
         logged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'logged.png')
         unlogged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlogged.png')
@@ -1022,9 +1023,11 @@ class TcosActions:
             if not time_logged or time_logged == "" or time_logged.startswith('error: tcos-last'):
                 time_logged="---"
             
-            
             if self.main.localdata.IsActive(ip):
-                image_active=active_image
+                if self.main.xmlrpc.sslconnection:
+                    image_active=active_ssl_image
+                else:
+                    image_active=active_image
             else:
                 image_active=inactive_image
             
@@ -2748,6 +2751,7 @@ class TcosActions:
         
         inactive_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'inactive.png')
         active_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active.png')
+        active_ssl_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active_ssl.png')
         
         logged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'logged.png')
         unlogged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlogged.png')
@@ -2759,7 +2763,10 @@ class TcosActions:
         self.main.localdata.cache_timeout=0
            
         if self.main.localdata.IsActive(ip):
-            image_active=active_image
+            if self.main.xmlrpc.sslconnection:
+                image_active=active_ssl_image
+            else:
+                image_active=active_image
         else:
             image_active=inactive_image
             

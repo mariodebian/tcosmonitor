@@ -1,3 +1,14 @@
+tcosmonitor (0.2.14) unstable; urgency=low
+
+  * TcosActions.py TcosXmlRpc.py tcosmonitor.glade shared.py
+    LocalData.py TcosPreferences.py images/active_ssl.png
+    - Enable SSL connections between TcosMonitor and XMLRPC daemon
+    - Show SSL icon in active column
+    - Only show running hosts in static method
+  * Update transaltions
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 11 May 2008 12:03:59 +0200
+
 tcosmonitor (0.2.13) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]
