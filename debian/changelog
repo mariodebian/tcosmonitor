@@ -6,8 +6,10 @@ tcosmonitor (0.2.14) unstable; urgency=low
     - Show SSL icon in active column
     - Only show running hosts in static method
   * Update transaltions
+  * TcosXmlRpc.py
+    - Reset self.sslconnection to False when newhost is called
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 11 May 2008 12:03:59 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 11 May 2008 12:51:08 +0200
 
 tcosmonitor (0.2.13) unstable; urgency=low
 

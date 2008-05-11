@@ -173,8 +173,10 @@ class TcosXmlRpc:
             self.resethosts()
         
         self.lasthost=ip 
+        # reset SSL status too
+        self.sslconnection=False
         
-        print_debug("newhost() enable_sslxmlrpc='%s'" %(self.main.config.GetVar("enable_sslxmlrpc")) )
+        #print_debug("newhost() enable_sslxmlrpc='%s'" %(self.main.config.GetVar("enable_sslxmlrpc")) )
         
         if self.main.config.GetVar("enable_sslxmlrpc") == 1:
             print_debug("newhost() SSL enabled, trying to ping %s port" %(shared.xmlremote_sslport))
@@ -201,6 +203,7 @@ class TcosXmlRpc:
         except Exception, err:
             print_debug("newhost() ERROR conection unavalaible !!! error: %s"%err)
             self.connected=False
+            self.sslconnection=True
         
 
     def GetVersion(self):
