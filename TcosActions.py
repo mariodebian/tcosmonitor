@@ -242,6 +242,7 @@ class TcosActions:
             %(self.main.selected_host, self.main.selected_ip) )
             
         # call to read remote info
+        #self.main.localdata.newhost(self.main.selected_ip)
         self.main.xmlrpc.newhost(self.main.selected_ip)
         self.main.xmlrpc.ip=self.main.selected_ip
         if not self.main.xmlrpc.isPortListening(self.main.selected_ip, shared.xmlremote_port):
@@ -967,6 +968,8 @@ class TcosActions:
         unlogged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlogged.png')
         
         locked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+        locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
+        locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
         unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
         
         i=0
@@ -1037,6 +1040,20 @@ class TcosActions:
                 image_logged=unlogged_image
             
             if self.main.localdata.IsBlocked(host):
+                blocked_screen=True
+            else:
+                blocked_screen=False
+            
+            if self.main.localdata.IsBlockedNet(host):
+                blocked_net=True
+            else:
+                blocked_net=False
+                
+            if blocked_screen and blocked_net:
+                image_blocked=locked_net_screen_image
+            elif blocked_screen == False and blocked_net:
+                image_blocked=locked_net_image
+            elif blocked_screen and blocked_net == False:
                 image_blocked=locked_image
             else:
                 image_blocked=unlocked_image
@@ -1110,6 +1127,7 @@ class TcosActions:
         connected_users=[]
         newallclients=[]
         allclients_logged=[]
+        self.main.localdata.newhost(self.main.selected_ip)
         self.main.xmlrpc.newhost(self.main.selected_ip)
         client_type = self.main.xmlrpc.ReadInfo("get_client")
         host=self.main.localdata.GetHostname(self.main.selected_ip)
@@ -1210,7 +1228,10 @@ class TcosActions:
         if action == 10:
             # launch personalize settings if client is TCOS (PXES and LTSP not supported)
             if client_type == "tcos":
-                cmd="gksu \"tcospersonalize --host=%s\"" %(self.main.selected_ip)
+                if self.main.ingroup_tcos == False and os.getuid() != 0:
+                    cmd="gksu \"tcospersonalize --host=%s\"" %(self.main.selected_ip)
+                else:
+                    cmd="tcospersonalize --host=%s" %(self.main.selected_ip)
                 print_debug ( "menu_event_one(%d) cmd=%s" %(action, cmd) )
                 th=self.main.common.exe_cmd( cmd, verbose=0, background=True )
             else:
@@ -1403,7 +1424,7 @@ class TcosActions:
                 dialog.destroy()
                 
                 if filename.find(" ") != -1:
-                    msg=_("Not allowed white spaces in %s filename.\nPlease rename it." %os.path.basename(filename) )
+                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
                     shared.info_msg( msg )
                     return
                 
@@ -1506,7 +1527,7 @@ class TcosActions:
                 for filename in filenames:
                     if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
                         dialog.destroy()
-                        msg=_("Special characters used in %s filename.\nPlease rename it." %os.path.basename(filename) )
+                        msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
                         shared.info_msg( msg )
                         return
                     basename_scape=os.path.basename(filename)
@@ -1671,6 +1692,50 @@ class TcosActions:
                         if not WakeOnLan.WakeOnLan("%s"%mac):
                             self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%mac)
                         #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+                        
+        if action == 20:
+            ip=self.main.selected_ip
+            eth=self.main.config.GetVar("network_interface")
+            ports="--ports=%s" %self.main.config.GetVar("ports_tnc")
+            timeout=0
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled"))
+            act="disable-internet"
+            
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg ( _("Can't disable internet, user is not logged") )
+                return
+            
+            if client_type == "tcos":
+                result = self.main.localdata.BlockNet(act, connected_users[0], ports, eth)
+                if result == "disabled":
+                    self.main.dbus_action.do_exec(connected_users , remote_cmd)
+            else:
+                result = self.main.xmlrpc.tnc(act, connected_users[0].split(":")[0], ports)
+                if result == "disabled":
+                    self.main.xmlrpc.DBus("exec", remote_cmd)
+            
+            self.change_lockscreen(ip)
+            
+        if action == 21:
+            ip=self.main.selected_ip
+            timeout=0
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled"))
+            act="enable-internet"
+            
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg ( _("Can't enable internet, user is not logged") )
+                return
+            
+            if client_type == "tcos":
+                result = self.main.localdata.BlockNet(act, connected_users[0])
+                if result == "enabled":
+                    self.main.dbus_action.do_exec(connected_users , remote_cmd)
+            else:
+                result = self.main.xmlrpc.tnc(act, connected_users[0].split(":")[0])
+                if result == "enabled":
+                    self.main.xmlrpc.DBus("exec", remote_cmd)
+            
+            self.change_lockscreen(ip)
         
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
@@ -1947,6 +2012,7 @@ class TcosActions:
             
         for client in allclients:
             allclients_txt+="\n %s" %(client)
+            self.main.localdata.newhost(client)
             if self.main.localdata.IsLogged(client):
                 connected_users.append(self.main.localdata.GetUsernameAndHost(client))
                 newallclients.append(client)
@@ -2302,7 +2368,7 @@ class TcosActions:
                 dialog.destroy()
 
                 if filename.find(" ") != -1:
-                    msg=_("Not allowed white spaces in %s filename.\nPlease rename it." %os.path.basename(filename) )
+                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
                     shared.info_msg( msg )
                     return
                     
@@ -2414,7 +2480,7 @@ class TcosActions:
                 for filename in filenames:
                     if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
                         dialog.destroy()
-                        msg=_("Special characters used in %s filename.\nPlease rename it." %os.path.basename(filename) )
+                        msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
                         shared.info_msg( msg )
                         return
                     basename_scape=os.path.basename(filename)
@@ -2456,7 +2522,83 @@ class TcosActions:
                 
                 self.main.write_into_statusbar( _("Files sent.") )
             dialog.destroy()
-
+        
+        if action == 14:
+            # disable internet
+            eth=self.main.config.GetVar("network_interface")
+            ports="--ports=%s" %self.main.config.GetVar("ports_tnc")
+            timeout=0
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled"))
+            act="disable-internet"
+            
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg( _("No users logged.") )
+                return
+            
+            msg=_( _("Do you want disable internet to following users:%s?" )\
+                                                     %(newallclients_txt) )
+                                                    
+            if not shared.ask_msg ( msg ):
+                return
+            
+            newusernames=[]
+                
+            for user in connected_users:
+                if user.find(":") != -1:
+                    usern, ip=user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    result = self.main.xmlrpc.tnc(act, usern, ports)
+                    if result == "disabled":
+                        self.main.xmlrpc.DBus("exec", remote_cmd)
+                else:
+                    result = self.main.localdata.BlockNet(act, user, ports, eth)
+                    if result == "disabled":
+                        newusernames.append(user)
+                    
+            result = self.main.dbus_action.do_exec(newusernames , remote_cmd)
+            
+            for client in newallclients:
+                self.main.localdata.newhost(client)
+                self.main.xmlrpc.newhost(client)
+                self.change_lockscreen(client)
+        
+        if action == 15:
+            # enable internet
+            timeout=0
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled"))
+            act="enable-internet"
+            
+            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+                shared.error_msg( _("No users logged.") )
+                return
+            
+            msg=_( _("Do you want enable internet to following users:%s?" )\
+                                                     %(newallclients_txt) )
+                                                    
+            if not shared.ask_msg ( msg ):
+                return
+            
+            newusernames=[]
+                
+            for user in connected_users:
+                if user.find(":") != -1:
+                    usern, ip=user.split(":")
+                    self.main.xmlrpc.newhost(ip)
+                    result = self.main.xmlrpc.tnc(act, usern)
+                    if result == "enabled":
+                        self.main.xmlrpc.DBus("exec", remote_cmd)
+                else:
+                    result = self.main.localdata.BlockNet(act, user)
+                    if result == "enabled":
+                        newusernames.append(user)
+                    
+            result = self.main.dbus_action.do_exec(newusernames , remote_cmd)
+            
+            for client in newallclients:
+                self.main.localdata.newhost(client)
+                self.main.xmlrpc.newhost(client)
+                self.change_lockscreen(client)
+        
         crono(start1, "menu_event[%d]=\"%s\"" %(action, shared.allhost_menuitems[action] ) )
 
 
@@ -2491,7 +2633,8 @@ class TcosActions:
             self.set_progressbar( _("Doing action \"%(action)s\" in %(ip)s...") %mydict , percent )
             #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions::action_for_clients doing action")
-        
+            
+            self.main.localdata.newhost(ip)
             self.main.xmlrpc.newhost(ip)
             try:
                 if action == "unlockscreen":
@@ -2566,12 +2709,23 @@ class TcosActions:
            status=True   icon=locked.png
            status=False  icon=unlocked.png
         """
-        status=self.main.xmlrpc.status_lockscreen()
-        print_debug ( "change_lockscreen(%s)=%s" %(ip, status) )
-        if status:
-            image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+        status_net=self.main.localdata.IsBlockedNet(ip)
+        status_screen=self.main.localdata.IsBlocked(ip)
+        print_debug ( "change_lockscreen(%s)=%s,%s" %(ip, status_screen, status_net) )
+        
+        locked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+        locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
+        locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
+        unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
+        
+        if status_screen and status_net:
+            image=locked_net_screen_image
+        elif status_screen == False and status_net:
+            image=locked_net_image
+        elif status_screen and status_net == False:
+            image=locked_image
         else:
-            image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
+            image=unlocked_image
         
         model=self.main.tabla.get_model()
         notvalid=[]
@@ -2757,10 +2911,15 @@ class TcosActions:
         unlogged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlogged.png')
         
         locked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+        locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
+        locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
         unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
         
         # disable cache
         self.main.localdata.cache_timeout=0
+        
+        hostname=self.main.localdata.GetHostname(ip)
+        username=self.main.localdata.GetUsername(ip)
            
         if self.main.localdata.IsActive(ip):
             if self.main.xmlrpc.sslconnection:
@@ -2776,13 +2935,24 @@ class TcosActions:
             image_logged=unlogged_image
             
         if self.main.localdata.IsBlocked(ip):
+            blocked_screen=True
+        else:
+            blocked_screen=False
+            
+        if self.main.localdata.IsBlockedNet(ip):
+            blocked_net=True
+        else:
+            blocked_net=False
+                
+        if blocked_screen and blocked_net:
+            image_blocked=locked_net_screen_image
+        elif blocked_screen == False and blocked_net:
+            image_blocked=locked_net_image
+        elif blocked_screen and blocked_net == False:
             image_blocked=locked_image
         else:
             image_blocked=unlocked_image
         
-        
-        hostname=self.main.localdata.GetHostname(ip)
-        username=self.main.localdata.GetUsername(ip)
         num_process=self.main.localdata.GetNumProcess(ip)
         time_logged=self.main.localdata.GetTimeLogged(ip)
         

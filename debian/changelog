@@ -1,5 +1,6 @@
 tcosmonitor (0.2.14) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * TcosActions.py TcosXmlRpc.py tcosmonitor.glade shared.py
     LocalData.py TcosPreferences.py images/active_ssl.png
     - Enable SSL connections between TcosMonitor and XMLRPC daemon
@@ -9,7 +10,14 @@ tcosmonitor (0.2.14) unstable; urgency=low
   * TcosXmlRpc.py
     - Reset self.sslconnection to False when newhost is called
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 11 May 2008 12:51:08 +0200
+  [ Ignacio Vidal ]
+  * TcosActions.py TcosXmlRpc.py shared.py LocalData.py
+    - Add support for lock/unlock internet in clients
+    - If we are member of group tcos, not need to be root to execute tcospersonalize
+  * TcosPreferences.py TcosConf.py shared.py
+    - config_file_secrets, user and password generic for all tcosmonitor users (in group tcos)
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 21 May 2008 16:47:28 +0200
 
 tcosmonitor (0.2.13) unstable; urgency=low
 

@@ -49,6 +49,7 @@ else:
         sys.path.append('./')
         
 import shared
+import pwd,grp
 
 
 debug_name="tcospersonalize"
@@ -101,7 +102,12 @@ class TcosPersonalize:
             shared.error_msg ( _("Need a host to configure!!!\nTry exec:\n tcospersonalize --host=XXX.XXX.XXX.XXX") )
             sys.exit(1)
         
-        if os.geteuid() != 0:
+        nogroup=True
+        for group in os.getgroups():
+            if grp.getgrgid(group)[0] == "tcos":
+                nogroup=False
+        
+        if nogroup and os.getuid() != 0:
             shared.error_msg( "You must be root to exec tcospersonalize." )
             sys.exit(1)
         

@@ -48,7 +48,9 @@ class TcosConf:
         # reset memory data
         self.data=""
         self.vars=None
+        self.use_secrets=False
         self.vars=[]
+        self.vars_secrets=[]
         
         if openfile:
             self.CheckConfFile()
@@ -63,6 +65,8 @@ class TcosConf:
         self.data=""
         self.vars=None
         self.vars=[]
+        self.use_secrets=False
+        self.vars_secrets=[]
         self.OpenFile()
     
     def OpenFile(self):
@@ -90,6 +94,19 @@ class TcosConf:
             if conf[i].find("#") != 0:
                 (var,value)=conf[i].split("=", 1)
                 self.vars.append([var,value])
+                
+        if os.path.isfile(shared.config_file_secrets):
+            if self.main.ingroup_tcos == False and os.getuid() != 0: return
+            try:
+                fd=file(shared.config_file_secrets, 'r')
+            except:
+                return
+            self.data=fd.readline()
+            fd.close()
+            if self.data != "\n":
+                (var1,var2)=self.data.replace("\n", "").split(":")
+                self.vars_secrets.append([var1,var2])
+                self.use_secrets=True
         return
     
     def CheckConfFile(self):
@@ -139,6 +156,11 @@ class TcosConf:
         return
     
     def GetVar(self, varname):
+        if self.use_secrets:
+            if varname == "xmlrpc_username":
+                return self.vars_secrets[0][0]
+            elif varname == "xmlrpc_password":
+                return self.vars_secrets[0][1]
         for i in range( len(self.vars) ):
             if self.vars[i][0].find(varname) == 0:
                 if self.vars[i][1] == "1":

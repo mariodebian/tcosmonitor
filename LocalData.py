@@ -481,7 +481,8 @@ class LocalData:
         
         if self.main.xmlrpc.IsStandalone(ip=ip):
             print_debug("GetUsername(%s) standalone" %ip)
-            return self.main.xmlrpc.GetStandalone("get_user")
+            self.username=self.main.xmlrpc.GetStandalone("get_user")
+            return self.username
         
         print_debug("GetUsername(%s) NO standalone" %ip)
         
@@ -523,7 +524,10 @@ class LocalData:
         """
         return True if is logged
         """
-        if self.GetUsername(host) != shared.NO_LOGIN_MSG:
+        self.main.xmlrpc.newhost(host)
+        if self.username != None and self.username != shared.NO_LOGIN_MSG and self.username != "---":
+            return True
+        elif self.GetUsername(host) != shared.NO_LOGIN_MSG:
             return True
         else:
             return False
@@ -537,6 +541,43 @@ class LocalData:
             return True
         else:
             return False
+    
+    def IsBlockedNet(self, host):
+        
+        self.main.xmlrpc.newhost(host)
+        if self.username != None and self.username != shared.NO_LOGIN_MSG and self.username != "---":
+            username=self.username
+        elif self.IsLogged(host):
+            username=self.username
+        else:
+            return False
+                    
+        if self.main.xmlrpc.IsStandalone(host):
+            if self.main.xmlrpc.tnc("status", username) == "disabled":
+                return True
+            else:
+                return False
+        
+        cmd="/usr/lib/tcos/tnc status %s"%(username)
+        output=self.main.common.exe_cmd(cmd)
+        
+        if output == "disabled":
+            return True
+        elif output == "enabled":
+            return False
+        elif output == "denied":
+            print_debug("You don't have permission to execute tcos-net controller /usr/lib/tcos/tnc")
+            return False
+        return False
+    
+    def BlockNet(self, action, username, ports=None, iface=None):
+        
+        if ports == None: ports=""
+        if iface == None: iface=""
+        cmd="/usr/lib/tcos/tnc %s %s %s %s"%(action, ports, iface, username)
+        output=self.main.common.exe_cmd(cmd)
+        
+        return output
         
     def isExclude(self, host, ingroup=None):
         if self.username == shared.NO_LOGIN_MSG:
@@ -559,14 +600,15 @@ class LocalData:
         """
         return number of process
         """
-        self.username=self.GetUsername(host)
-        
-        if self.username == None:
+        self.main.xmlrpc.newhost(host)
+        if self.username != None and self.username != shared.NO_LOGIN_MSG and self.username != "---":
+            username=self.username
+        elif self.IsLogged(host):
+            username=self.username
+        else:
             return "---"
         
-            
-        if self.username == shared.NO_LOGIN_MSG:
-            return "---"
+        #self.username=self.GetUsername(host)
         
         if self.main.xmlrpc.IsStandalone(host):
             return self.main.xmlrpc.GetStandalone("get_process")

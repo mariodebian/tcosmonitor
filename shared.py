@@ -75,6 +75,8 @@ else:
 
 # config file
 config_file=os.path.expanduser('~/.tcosmonitor.conf')
+config_file_secrets=('/etc/tcos/secrets/tcosmonitor-secret')
+
 
 scan_methods=[
 "netstat", 
@@ -130,7 +132,8 @@ DefaultConfig=[
 ["vlc_method_send", "ffmpeg-MPEG4", "str"],
 ["show_donate", 1, "int"],
 ["visible_menus", "", "str"],
-["enable_sslxmlrpc", 0, "int"]
+["enable_sslxmlrpc", 0, "int"],
+["ports_tnc", "", "str"]
 ]
 
 #
@@ -180,7 +183,7 @@ dbus_disabled=False
 disable_textview_on_update=True
 
 
-NO_LOGIN_MSG="----"
+NO_LOGIN_MSG="---"
 
 ##
 ##  entry completion example apps
@@ -232,7 +235,9 @@ onehost_menuitems=[
  [ _("Audio/Video broadcast") , "menu_broadcast.png" ],             #action=16
  [ _("Send files") , "menu_send.png" ],                       #action=17
  [ _("Demo mode (from this host)") , "menu_tiza.png" ],     #action=18
- [ _("Boot client (WakeOnLan)") , "menu_wol.png" ]                      #action=19
+ [ _("Boot client (WakeOnLan)") , "menu_wol.png" ],                      #action=19
+ [ _("Lock internet"), "menu_locknet.png" ] ,                 #action=20
+ [ _("Unlock internet"), "menu_unlocknet.png" ]                 #action=21
  ]
 
 
@@ -241,7 +246,7 @@ allhost_menuitems=[
  [ _("Poweroff all clients"), "menu_poweroff.png"] ,              #action=1
  [ _("Lock all screens"), "menu_lock.png" ] ,                     #action=2
  [ _("Unlock all screens"), "menu_unlock.png" ] ,                 #action=3
- [ _("Logout clients"), "menu_restartx.png" ] ,   # FIXME need an icon           #action=4
+ [ _("Logout clients"), "menu_restartx.png" ] ,                   #action=4
  [ _("Restart X session of all clients"),  "menu_newconf.png" ] ,#action=5
  [ _("Exec same app in all connected users") , "menu_exec.png" ] ,#action=6
  [ _("Send a text message to all connected users") , "menu_msg.png" ], #action=7
@@ -250,7 +255,9 @@ allhost_menuitems=[
  [ _("Capture All clients screens") , "menu_screenshot.png" ],    #action=10
  [ _("Audio/Video broadcast") , "menu_broadcast.png" ],                 #action=11
  [ _("Send files") , "menu_send.png" ],                          #action=12
- [ _("Boot All clients (WakeOnLan)") , "menu_wol.png" ]                          #action=13
+ [ _("Boot All clients (WakeOnLan)") , "menu_wol.png" ],                          #action=13
+ [ _("Lock internet in all connected users"), "menu_locknet.png" ] ,                 #action=14
+ [ _("Unlock internet in all connected users"), "menu_unlocknet.png" ]                 #action=15
  ]
 
 preferences_menus_always_show={"menuone":[0,1,11], "menuall":[4]}
@@ -274,6 +281,7 @@ preferences_menus={
 "ck_menu_demo":[        True,  [18],   [8] ],
 "ck_menu_wakeonlan":[   False, [19],   [13] ],
 "ck_menu_conference":[  True,  [],     [9] ],
+"ck_menu_net":[         True,  [20,21],[14,15] ],
 }
 
 

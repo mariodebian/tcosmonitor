@@ -70,6 +70,7 @@ class TcosPreferences:
         self.main.pref_xmlrpc_password = self.main.ui.get_widget('xmlrpc_password')
         
         self.main.pref_ssh_remote_username = self.main.ui.get_widget('ssh_remote_username')
+        self.main.pref_ports_tnc = self.main.ui.get_widget('ports_net_controller')
         self.main.pref_vlc_method_send = self.main.ui.get_widget('vlc_method_send')
         self.populate_select(self.main.pref_vlc_method_send, shared.vlc_methods_send )
         
@@ -124,6 +125,7 @@ class TcosPreferences:
         self.main.config.SetVar("xmlrpc_password", "" + self.main.pref_xmlrpc_password.get_text() )
         
         self.main.config.SetVar("ssh_remote_username", "" + self.main.pref_ssh_remote_username.get_text() )
+        self.main.config.SetVar("ports_tnc", "" + self.main.pref_ports_tnc.get_text() )
         
         if self.main.pref_vlc_method_send.get_active() == 0:
             self.main.config.SetVar("vlc_method_send", "ffmpeg-MPEG4")
@@ -262,14 +264,25 @@ class TcosPreferences:
         self.main.pref_miniscrotsize.set_value( float(self.main.config.GetVar("miniscrot_size")) )
         
         # set value of text widgets
-        self.main.pref_xmlrpc_username.set_text(\
-                     self.main.config.GetVar("xmlrpc_username").replace('"', '') )
+        if self.main.config.use_secrets == False:
+            self.main.pref_xmlrpc_username.set_sensitive(True)
+            self.main.pref_xmlrpc_password.set_sensitive(True)
+            self.main.pref_xmlrpc_username.set_text(\
+                        self.main.config.GetVar("xmlrpc_username").replace('"', '') )
                      
-        self.main.pref_xmlrpc_password.set_text(\
-                     self.main.config.GetVar("xmlrpc_password").replace('"', '') )
+            self.main.pref_xmlrpc_password.set_text(\
+                        self.main.config.GetVar("xmlrpc_password").replace('"', '') )
+        else:
+            self.main.pref_xmlrpc_username.set_text("")
+            self.main.pref_xmlrpc_password.set_text("")
+            self.main.pref_xmlrpc_username.set_sensitive(False)
+            self.main.pref_xmlrpc_password.set_sensitive(False)
         
         self.main.pref_ssh_remote_username.set_text(\
                      self.main.config.GetVar("ssh_remote_username").replace('"', '') )
+                    
+        self.main.pref_ports_tnc.set_text(\
+                     self.main.config.GetVar("ports_tnc").replace('"', '') )
                      
         self.set_active_in_select(self.main.pref_vlc_method_send,\
                          self.main.config.GetVar("vlc_method_send"))

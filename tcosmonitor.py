@@ -103,14 +103,14 @@ class TcosMonitor:
         self.name="TcosMonitor"
         
         self.worker_running=False
+        self.ingroup_tcos=False
         
         if shared.check_tcosmonitor_user_group:
-            nogroup=True
             for group in os.getgroups():
                 if grp.getgrgid(group)[0] == "tcos":
-                    nogroup=False
+                    self.ingroup_tcos=True
 
-            if nogroup and os.getuid() != 0:
+            if self.ingroup_tcos == False and os.getuid() != 0:
                 shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\".\n\nIf you are system administrator, add user to the group tcos." %pwd.getpwuid(os.getuid())[0]))
                 sys.exit(1)
 
