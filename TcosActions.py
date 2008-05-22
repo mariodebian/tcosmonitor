@@ -2833,7 +2833,7 @@ class TcosActions:
                 process=["PID COMMAND", "66000 can't read process list"]
         else:    
             username=self.main.localdata.GetUsername(ip)
-            cmd="LANG=C ps U \"%s\" -o pid,command | unaccent UTF8" %(self.main.localdata.GetUserID(username))
+            cmd="LANG=C ps U \"%s\" -o pid,command | /usr/lib/tcos/clean_string.sh " %(self.main.localdata.GetUserID(username))
             print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
             process=self.main.common.exe_cmd(cmd, verbose=0)
         

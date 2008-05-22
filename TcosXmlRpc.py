@@ -137,10 +137,10 @@ class TcosXmlRpc:
         if not port: return False
         
         # this avoid to scan same ip a lot of times, but can give errors FIXME
-        if self.lasthost == ip and self.aliveStatus == "OPEN":
+        if self.lasthost == ip and self.lastport == port and self.aliveStatus == "OPEN":
             print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s OPEN" %(ip,port))
             return True
-        elif self.lasthost == ip and self.aliveStatus == "CLOSED":
+        elif self.lasthost == ip and self.lastport == port and self.aliveStatus == "CLOSED":
             print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s CLOSED" %(ip,port))
             return False
         
@@ -165,7 +165,7 @@ class TcosXmlRpc:
         
         # this avoid to scan same ip a lot of times, but can give errors FIXME
         if self.lasthost == ip and self.connected:
-            print_debug("newhost() not scanning again, using lastip=%s" %(ip))
+            print_debug("newhost() not scanning again, using lastip=%s lastport=%s SSL=%s" %(ip,self.lastport, self.sslconnection))
             return
         
         # change ip, force new
@@ -185,7 +185,9 @@ class TcosXmlRpc:
                 self.sslconnection=True
         
         elif not self.isPortListening(ip, shared.xmlremote_port):
+            print_debug("newhost() SSL disabled, trying to ping %s port" %(shared.xmlremote_port))
             self.connected=False
+            self.sslconnection=False
             return
         
         if self.main.config.GetVar("enable_sslxmlrpc") == 1 and self.sslconnection:
@@ -195,7 +197,7 @@ class TcosXmlRpc:
         try:
             # set min socket timeout to 2 secs
             socket.setdefaulttimeout(2)
-            self.tc = xmlrpclib.Server(self.url)
+            self.tc = xmlrpclib.ServerProxy(self.url,verbose=False)
             self.connected=True
             # save socket default timeout
             socket.setdefaulttimeout(shared.socket_default_timeout)
@@ -203,7 +205,8 @@ class TcosXmlRpc:
         except Exception, err:
             print_debug("newhost() ERROR conection unavalaible !!! error: %s"%err)
             self.connected=False
-            self.sslconnection=True
+        
+        print_debug( {'conected':self.connected, 'ssl':self.sslconnection, 'ip':self.lasthost, 'port':self.lastport} )
         
 
     def GetVersion(self):
