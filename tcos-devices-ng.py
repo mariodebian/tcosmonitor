@@ -182,8 +182,14 @@ class TcosDevicesNG:
             timeout=self.mntconf['reboot_poweroff_timeout']
         else:
             timeout="5"
-        
-        self.show_notification( _("Doing action %(action)s in %(timeout)s seconds") %{"action":action, "timeout":timeout} )
+
+        if action == "reboot":
+            self.show_notification( _("Rebooting in %s seconds") %(timeout) )
+        elif action == "poweroff":
+            self.show_notification( _("Shutting down in %s seconds") %(timeout) )
+        else:
+            # unknow signal
+            return
         print_debug("remote_reboot_poweroff() action=%s, remote_hostname=%s, xauth_cookie=%s"%(action, remote_hostname, xauth_cookie))
         cmd=threading.Thread(target=self.remote_reboot_poweroff, args=[action, timeout,  xauth_cookie, remote_hostname] )
         cmd.start()

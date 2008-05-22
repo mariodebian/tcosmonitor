@@ -13,6 +13,8 @@ tcosmonitor (0.2.14) unstable; urgency=low
     - Revert last change unaccent => clean_string.sh
   * TcosXmlRpc.py:
     - Add more debug info and change Server() => ServerProxy()
+  * tcos-devices-ng.py
+    - Fix reboot and poweroff notification
 
   [ Ignacio Vidal ]
   * TcosActions.py TcosXmlRpc.py shared.py LocalData.py
@@ -21,7 +23,7 @@ tcosmonitor (0.2.14) unstable; urgency=low
   * TcosPreferences.py TcosConf.py shared.py
     - config_file_secrets, user and password generic for all tcosmonitor users (in group tcos)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 22 May 2008 23:05:35 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 22 May 2008 23:11:40 +0200
 
 tcosmonitor (0.2.13) unstable; urgency=low
 
