@@ -22,8 +22,10 @@ tcosmonitor (0.2.14) unstable; urgency=low
     - If we are member of group tcos, not need to be root to execute tcospersonalize
   * TcosPreferences.py TcosConf.py shared.py
     - config_file_secrets, user and password generic for all tcosmonitor users (in group tcos)
+  * debian/*
+    - Fix postrm and prerm
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 22 May 2008 23:11:40 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 23 May 2008 10:50:52 +0200
 
 tcosmonitor (0.2.13) unstable; urgency=low
 
