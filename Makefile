@@ -1,4 +1,4 @@
-all: fix-glade es.gmo dbus
+all: fix-glade dbus
 
 include common.mk
 
@@ -18,8 +18,7 @@ dist-clean:
 
 clean:
 	rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup
-	cd po && rm -rf es/
-	rm -f po/*~
+	cd po && make clean
 	$(MAKE) -f Makefile.ltsp clean
 	cd dbus && $(MAKE) clean
 	cd extensions && $(MAKE) clean
@@ -41,23 +40,17 @@ gedit:
 gedit-cvs:
 	gedit-cvs *.py >/dev/null 2>&1 &
 
-po_files:
-	find -type f -name "*.py" -o -name "*.glade"| sed 's|\./||g' | sort | uniq > po/FILES
 pot:
-	xgettext  -o po/tcosmonitor.pot --files-from=po/FILES
+	cd po && make pot
 
 es.po:
-	rm -f po/$(PACKAGE).glade.pot
-	msginit --input po/$(PACKAGE).pot -o po/es-new.po
-	msgmerge -o po/es-new.po po/es.po po/$(PACKAGE).pot
-	##################################################
-	#           translate po/es-new.po               #
-	##################################################
+	############################################################
+	#   OBSOLETE Makefile target => cd po and make into it     #
+	############################################################
+	@exit 1
 
-es.gmo:
-	if [ -f po/es-new.po ]; then  mv po/es-new.po po/es.po ; fi
-	mkdir -p po/es/LC_MESSAGES/
-	msgfmt -o po/es/LC_MESSAGES/$(PACKAGE).mo po/es.po
+es.gmo: es.po
+
 
 dbus:
 	cd dbus && $(MAKE)
@@ -114,8 +107,7 @@ install:
 	install -m 755 server-utils/tcos-server-utils.py          $(DESTDIR)/$(PREFIX)/sbin/tcos-server-utils
 
 	# locales
-	install -d $(DESTDIR)/$(PREFIX)/share/locale/es/LC_MESSAGES/
-	install -m 644 po/es/LC_MESSAGES/$(PACKAGE).mo $(DESTDIR)/$(PREFIX)/share/locale/es/LC_MESSAGES/$(PACKAGE).mo
+	cd po && make install DESTDIR=$(DESTDIR)
 	
 	# dbus
 	cd dbus && $(MAKE) install PREFIX=$(PREFIX) DESTDIR=$(DESTDIR)
@@ -233,4 +225,4 @@ patch_max: patch_version
 	sed -i '/show_donate/s/1/0/g' shared.py
 	
 
-.PHONY: fix-glade es.gmo tcosxmlrpc dbus udev
+.PHONY: fix-glade tcosxmlrpc dbus udev

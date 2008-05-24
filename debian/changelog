@@ -1,3 +1,11 @@
+tcosmonitor (0.2.14.1) unstable; urgency=low
+
+  * Change translation model (obtained from private/tcosmonitor)
+  * Add translation pt_BR:
+    (thanks Maria del Mar Alejo Campos (mymalejo) and Luis Méndez Alejo (gnumax))
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 24 May 2008 19:41:29 +0200
+
 tcosmonitor (0.2.14) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]
