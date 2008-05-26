@@ -727,19 +727,22 @@ class HtmlTextView(gtk.TextView):
         for line in txt:
             if line == "":
                 continue
-            PID = line.split()[0]
-            Uid = line.split()[1]
-            VmSize = line.split()[2]
-            Stat = line.split()[3]
-            Command = " ".join(line.split()[4:]).replace('<', '&lt;').replace('>','&gt,')
+            data=line.split()
+            #print "data=%s len=%s"%(data, len(data) )
+            if len(data) < 2: continue
+            PID = data[0]
+            Uid = data[1]
+            #VmSize = data[2]
+            #Stat = data[3]
+            Command = " ".join(data[2:]).replace('<', '&lt;').replace('>','&gt,')
             if PID == "PID":
-                self.insert_html("\n<div style='background-color:#CCAA66;color:blue'>%8s %6s %5s %5s %s</div>\n" \
-                        %(PID, Uid, VmSize, Stat, Command) )
+                self.insert_html("\n<div style='background-color:#CCAA66;color:blue'>%8s %6s %s</div>\n" \
+                        %(PID, Uid, Command) )
                 continue
             #PID, Uid, VmSize, Stat, Command = line.split(' ', 5)
             if not Command == "":
                 #print "%8s %6s %5s %5s %s" %(PID, Uid, VmSize, Stat, Command)
-                self.insert_html("\n%8s %6s %5s %5s %s<br />" %(PID, Uid, VmSize, Stat, Command) )
+                self.insert_html("\n%8s %6s %s<br />" %(PID, Uid, Command) )
         self.insert_html("\n</div>\n")
 
 if gobject.pygtk_version < (2, 8):

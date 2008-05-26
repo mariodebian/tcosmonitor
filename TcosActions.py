@@ -1706,6 +1706,10 @@ class TcosActions:
                 return
             
             if client_type == "tcos":
+                if not self.main.localdata.user_in_group(None, 'tcos'):
+                    msg=(_("In order to lock and unlock internet you need to be in 'tcos' group.\n\nExe by root: adduser %s tcos" ) %(self.main.localdata.get_username()))
+                    shared.error_msg ( msg )
+                    return
                 result = self.main.localdata.BlockNet(act, connected_users[0], ports, eth)
                 if result == "disabled":
                     self.main.dbus_action.do_exec(connected_users , remote_cmd)
@@ -1725,8 +1729,11 @@ class TcosActions:
             if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
                 shared.error_msg ( _("Can't enable internet, user is not logged") )
                 return
-            
             if client_type == "tcos":
+                if not self.main.localdata.user_in_group(None, 'tcos'):
+                    msg=(_("In order to lock and unlock internet you need to be in 'tcos' group.\n\nExe by root: adduser %s tcos" ) %(self.main.localdata.get_username()))
+                    shared.error_msg ( msg )
+                    return
                 result = self.main.localdata.BlockNet(act, connected_users[0])
                 if result == "enabled":
                     self.main.dbus_action.do_exec(connected_users , remote_cmd)
@@ -2524,6 +2531,10 @@ class TcosActions:
             dialog.destroy()
         
         if action == 14:
+            if not self.main.localdata.user_in_group(None, 'tcos'):
+                msg=(_("In order to lock and unlock internet you need to be in 'tcos' group.\n\nExe by root: adduser %s tcos" ) %(self.main.localdata.get_username()))
+                shared.error_msg ( msg )
+                return
             # disable internet
             eth=self.main.config.GetVar("network_interface")
             ports="--ports=%s" %self.main.config.GetVar("ports_tnc")
@@ -2563,6 +2574,10 @@ class TcosActions:
                 self.change_lockscreen(client)
         
         if action == 15:
+            if not self.main.localdata.user_in_group(None, 'tcos'):
+                msg=(_("In order to lock and unlock internet you need to be in 'tcos' group.\n\nExe by root: adduser %s tcos" ) %(self.main.localdata.get_username()))
+                shared.error_msg ( msg )
+                return
             # enable internet
             timeout=0
             remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled"))

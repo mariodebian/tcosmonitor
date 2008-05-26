@@ -132,7 +132,23 @@ class LocalData:
                 self.allhostdata[i][6]=time()
         
         #print_debug ( self.allhostdata )
-    
+
+    def get_username(self):
+        return pwd.getpwuid(os.getuid())[0]
+
+    def get_userid(self):
+        return os.getuid()
+
+    def user_in_group(self, user=None, group=None):
+        #tcos.libs.conf.debug_enabled=True
+        if not user:
+            user=self.get_username()
+        sgroups=grp.getgrall()
+        for (sgroup, spass, sid, susers) in sgroups:
+            if sgroup == group and user in susers:
+                print_debug("user %s is in group %s"%(user, sgroup), console.name(__name__) )
+                return True
+        return False
     
     def sorted_copy(self, alist):
         # inspired by Alex Martelli
@@ -412,19 +428,23 @@ class LocalData:
             return "%s" %(self.GetUsername(ip) )
 
     def GetLast(self, ip, ingroup=None):
-        last=[]
+        last=None
         data={}
         if ip != "" and not self.ipValid(ip):
             ip=self.GetIpAddress(ip)
         hostname=self.GetHostname(ip)
         print_debug("GetLast() ip=%s hostname=%s "%(ip, hostname) )
-        a = utmp.UtmpRecord()
-        for b in a:
-            if b.ut_type == USER_PROCESS:
-                #print_debug ("GetLast() searching for ip %s, found %s"%(ip, b.ut_host) )
+
+        a = utmp.UtmpRecord(WTMP_FILE)
+        while 1:
+            b = a.getutent()
+            if not b:
+                break
+            if b[0] == USER_PROCESS:
+                #print_debug("  => Searching for host \"%s:0\" found host=%s ut_line=%s"%(ip, b.ut_host,b.ut_line))
                 if b.ut_host == "%s:0"%(ip) or b.ut_line == "%s:0"%(ip) or b.ut_host == "%s"%hostname :
                     last=b
-        a.endutent()
+        
         if last and os.path.isdir("/proc/%s"%last.ut_pid):
             # take diff between now and login time
             diff=time()-last.ut_tv[0]
@@ -461,6 +481,7 @@ class LocalData:
                         exclude="exclude"
             
             data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged, "exclude":exclude}
+            print_debug("IsLast() data=%s"%data)
         return data
     
     def GetUsername(self, ip):
@@ -571,12 +592,12 @@ class LocalData:
         return False
     
     def BlockNet(self, action, username, ports=None, iface=None):
-        
+        print_debug("BlockNet() action=%s username=%s ports=%s iface=%s"%(action, username, ports, iface))
         if ports == None: ports=""
         if iface == None: iface=""
         cmd="/usr/lib/tcos/tnc %s %s %s %s"%(action, ports, iface, username)
         output=self.main.common.exe_cmd(cmd)
-        
+        print_debug("output=%s"%output)
         return output
         
     def isExclude(self, host, ingroup=None):

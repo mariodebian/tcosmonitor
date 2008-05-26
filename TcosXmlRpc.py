@@ -603,6 +603,7 @@ class TcosXmlRpc:
         return False
     
     def tnc(self, action, username, ports=None, ip=None):
+        print_debug("tnc() action=%s username=%s ports=%s ip=%s"%(action, username, ports, ip))
         if ip: self.newhost(ip)
         if action == "status":
             return self.tc.tcos.tnc("%s" %action, "", "%s" %username, \
