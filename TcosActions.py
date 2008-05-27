@@ -1650,6 +1650,7 @@ class TcosActions:
             newallclients=[]
             total=1
             for client in allclients:
+                self.main.localdata.newhost(client)
                 if self.main.localdata.IsLogged(client) and client != ip:
                     self.main.xmlrpc.vnc("genpass", client, passwd )
                     self.main.xmlrpc.vnc("startclient", client, ip )
@@ -1774,6 +1775,7 @@ class TcosActions:
         if args['target'] == "vnc":
             if args['ip'] != "":
                 for client in args['allclients']:
+                    self.main.localdata.newhost(client)
                     if self.main.localdata.IsLogged(client):
                         self.main.xmlrpc.newhost(client)
                         self.main.xmlrpc.vnc("stopclient", client)
@@ -1787,6 +1789,7 @@ class TcosActions:
             else:
                 # get all users at this demo mode and not kill others demo modes, in some cases need SIGKILL
                 for client in args['allclients']:
+                    self.main.localdata.newhost(client)
                     if self.main.localdata.IsLogged(client):
                         self.main.xmlrpc.newhost(client)
                         self.main.xmlrpc.vnc("stopclient", client)
@@ -1808,6 +1811,7 @@ class TcosActions:
         elif args['target'] == "vlc":
             connected_users=[]
             for client in args['allclients']:
+                self.main.localdata.newhost(client)
                 if self.main.localdata.IsLogged(client):
                     if args['lock'] == "enable": self.main.xmlrpc.unlockcontroller("lockvlc", client)
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
@@ -2116,6 +2120,7 @@ class TcosActions:
             onlythinclients_txt=""
             
             for client in allclients:
+                self.main.localdata.newhost(client)
                 if not self.main.xmlrpc.IsStandalone(client):
                     onlythinclients.append(client)
                     onlythinclients_txt+="\n %s" %(client)

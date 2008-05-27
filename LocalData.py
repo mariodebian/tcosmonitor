@@ -144,6 +144,8 @@ class LocalData:
         if not user:
             user=self.get_username()
         sgroups=grp.getgrall()
+        if user == "root":
+            return True
         for (sgroup, spass, sid, susers) in sgroups:
             if sgroup == group and user in susers:
                 print_debug("user %s is in group %s"%(user, sgroup), console.name(__name__) )
@@ -434,16 +436,24 @@ class LocalData:
             ip=self.GetIpAddress(ip)
         hostname=self.GetHostname(ip)
         print_debug("GetLast() ip=%s hostname=%s "%(ip, hostname) )
-
-        a = utmp.UtmpRecord(WTMP_FILE)
-        while 1:
-            b = a.getutent()
-            if not b:
-                break
-            if b[0] == USER_PROCESS:
-                #print_debug("  => Searching for host \"%s:0\" found host=%s ut_line=%s"%(ip, b.ut_host,b.ut_line))
-                if b.ut_host == "%s:0"%(ip) or b.ut_line == "%s:0"%(ip) or b.ut_host == "%s"%hostname :
-                    last=b
+        
+        for i in range(10):
+            last_file=WTMP_FILE
+            if i != 0:
+                last_file=WTMP_FILE+".%d" %i
+            if os.path.isfile(last_file):
+                print_debug("GetLast() Searching in %s" %last_file)
+                a = utmp.UtmpRecord(last_file)
+                while 1:
+                    b = a.getutent()
+                    if not b:
+                        break
+                    if b[0] == USER_PROCESS:
+                        #print_debug("  => Searching for host \"%s:0\" found host=%s ut_line=%s"%(ip, b.ut_host,b.ut_line))
+                        if b.ut_host == "%s:0"%(ip) or b.ut_line == "%s:0"%(ip) or b.ut_host == "%s"%hostname :
+                            last=b
+                a.endutent()
+                if last: break
         
         if last and os.path.isdir("/proc/%s"%last.ut_pid):
             # take diff between now and login time
