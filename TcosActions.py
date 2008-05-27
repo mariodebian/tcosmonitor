@@ -1666,7 +1666,7 @@ class TcosActions:
                 cmd=("LC_ALL=C LC_MESSAGES=C vncviewer --version 2>&1| grep built |grep -c \"4.1\"")
                 output=self.main.common.exe_cmd(cmd)
                 if output == "1":
-                    p=subprocess.Popen(["vncviewer", ip, "-UseLocalCursor=0", "-passwd", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
+                    p=subprocess.Popen(["vncviewer", ip, "-UseLocalCursor=0", "-PasswordFile", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
                 else:
                     p=subprocess.Popen(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
                 # new mode for stop button
