@@ -1,3 +1,10 @@
+tcosmonitor (0.2.14.3) unstable; urgency=low
+
+  * LocalData.py
+    - Fix Getlast break
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 28 May 2008 09:50:03 +0200
+
 tcosmonitor (0.2.14.2) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]

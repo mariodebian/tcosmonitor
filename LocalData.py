@@ -453,7 +453,7 @@ class LocalData:
                         if b.ut_host == "%s:0"%(ip) or b.ut_line == "%s:0"%(ip) or b.ut_host == "%s"%hostname :
                             last=b
                 a.endutent()
-                if last: break
+                if last and os.path.isdir("/proc/%s"%last.ut_pid): break
         
         if last and os.path.isdir("/proc/%s"%last.ut_pid):
             # take diff between now and login time
