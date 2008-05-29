@@ -64,6 +64,10 @@ class Ping:
         pinglist = []
         reachip =[]
         server_ips=self.get_server_ips()
+        xmlremote_port=shared.xmlremote_port
+        if self.main.config.GetVar("enable_sslxmlrpc") == 1:
+            xmlremote_port=shared.xmlremote_sslport
+            
         for i in range(1,255):
             iprange=selfip.split(".")[:-1]
             ip=".".join(iprange)+"."+str(i)
@@ -98,21 +102,21 @@ class Ping:
         for pingle in pinglist:
             pingle.join()
             if pingle.status == 2:
-                # only show in list hosts running tcosxmlrpc in 8998 port
+                # only show in list hosts running tcosxmlrpc in 8998 or 8999 port
                 if self.main.config.GetVar("onlyshowtcos") == 1:
                     self.main.common.threads_enter("Ping:only show tcos")
-                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
+                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(xmlremote_port) )
                     self.main.common.threads_leave("Ping:only show tcos")
-                    # view status of port 8998
-                    if PingPort(pingle.ip, shared.xmlremote_port, 0.5).get_status() == "OPEN":
+                    # view status of port 8998 or 8999
+                    if PingPort(pingle.ip, xmlremote_port, 0.5).get_status() == "OPEN":
                         self.main.xmlrpc.newhost(pingle.ip)
                         if self.main.xmlrpc.GetVersion():
-                            print_debug("ping_iprange() host=%s port 8998 OPEN" %(pingle.ip))
+                            print_debug("ping_iprange() host=%s port %s OPEN" %(pingle.ip,xmlremote_port))
                             reachip.append(pingle.ip)
                         else:
-                            print_debug("ping_iprange() host=%s port 8998 OPEN but not tcosxmlrpc" %(pingle.ip))
+                            print_debug("ping_iprange() host=%s port %s OPEN but not tcosxmlrpc" %(pingle.ip,xmlremote_port))
                     else:
-                        print_debug("ping_iprange() host=%s port 8998 closed" %(pingle.ip))
+                        print_debug("ping_iprange() host=%s port %s closed" %(pingle.ip,xmlremote_port))
                 else:
                     reachip.append(pingle.ip)
         

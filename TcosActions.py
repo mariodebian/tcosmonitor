@@ -245,7 +245,7 @@ class TcosActions:
         #self.main.localdata.newhost(self.main.selected_ip)
         self.main.xmlrpc.newhost(self.main.selected_ip)
         self.main.xmlrpc.ip=self.main.selected_ip
-        if not self.main.xmlrpc.isPortListening(self.main.selected_ip, shared.xmlremote_port):
+        if not self.main.xmlrpc.isPortListening(self.main.selected_ip, self.main.xmlrpc.xmlremote_port):
             print_debug ( "on_host_list_click() XMLRPC not running in %s" %(self.main.selected_ip) )
             self.main.write_into_statusbar ( _("Error connecting to tcosxmlrpc in %s") %(self.main.selected_ip) )
             return
@@ -1369,10 +1369,10 @@ class TcosActions:
                         elif uip == max_uip:
                             print_debug("Not found an available broadcast ip")
                             return
-                    remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(ip_unicast)
+                    remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
                 else:
                     ip_unicast="%s:1234" %self.main.selected_ip
-                    remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300"
+                    remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3"
             else:
                 max_uip=50255
                 uip=50000
@@ -1390,7 +1390,7 @@ class TcosActions:
                         print_debug("Not found an available broadcast ip")
                         return
                 if client_type == "tcos":
-                    remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(ip_unicast)
+                    remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
             
             dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                                None,
@@ -1463,7 +1463,7 @@ class TcosActions:
                         # we have a standalone user...
                         if access == "http":
                             server=self.main.xmlrpc.GetStandalone("get_server")
-                            remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(server, ip_unicast)
+                            remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_unicast)
                         self.main.xmlrpc.DBus("exec", remote_cmd )
                     else:
                         newusernames.append(user)
@@ -2398,7 +2398,8 @@ class TcosActions:
                 # exec this app on client
                 
                 if access == "udp":
-                    remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(ip_broadcast)
+                    remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(ip_broadcast)
+                    remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
 
                 self.main.write_into_statusbar( _("Waiting for start video transmission...") )
             
@@ -2424,15 +2425,15 @@ class TcosActions:
                         self.main.xmlrpc.newhost(ip)
                         if access == "http":
                             server=self.main.xmlrpc.GetStandalone("get_server")
-                            remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(server, ip_broadcast)
-                        self.main.xmlrpc.DBus("exec", remote_cmd )
+                            remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_broadcast)
+                        self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
                     else:
                         newusernames.append(user)
                             
                 if access == "http":
-                    remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300" %(ip_broadcast)
+                    remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
                         
-                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
+                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd_thin )
                 
                 if not result:
                     shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )

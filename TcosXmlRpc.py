@@ -62,6 +62,9 @@ class TcosXmlRpc:
         self.sslconnection=False
         self.ports=[]
         self.resethosts()
+        self.xmlremote_port=shared.xmlremote_port
+        if self.main.config.GetVar("enable_sslxmlrpc") == 1:
+            self.xmlremote_port=shared.xmlremote_sslport
         
         if self.main != None:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
@@ -175,6 +178,7 @@ class TcosXmlRpc:
         self.lasthost=ip 
         # reset SSL status too
         self.sslconnection=False
+        self.xmlremote_port=shared.xmlremote_port
         
         #print_debug("newhost() enable_sslxmlrpc='%s'" %(self.main.config.GetVar("enable_sslxmlrpc")) )
         
@@ -182,6 +186,7 @@ class TcosXmlRpc:
             print_debug("newhost() SSL enabled, trying to ping %s port" %(shared.xmlremote_sslport))
             if self.isPortListening(ip, shared.xmlremote_sslport):
                 print_debug("newhost() SSL enabled **********")
+                self.xmlremote_port=shared.xmlremote_sslport
                 self.sslconnection=True
         
         elif not self.isPortListening(ip, shared.xmlremote_port):
@@ -543,7 +548,7 @@ class TcosXmlRpc:
 
     def lockscreen(self, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, shared.xmlremote_port):
+        if self.isPortListening(self.ip, self.xmlremote_port):
             try:
                 self.tc.tcos.lockscreen( \
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -556,7 +561,7 @@ class TcosXmlRpc:
         
     def unlockscreen(self, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, shared.xmlremote_port):
+        if self.isPortListening(self.ip, self.xmlremote_port):
             try:
                 self.tc.tcos.unlockscreen(\
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -569,7 +574,7 @@ class TcosXmlRpc:
     
     def lockcontroller(self, action, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, shared.xmlremote_port):
+        if self.isPortListening(self.ip, self.xmlremote_port):
             try:
                 self.tc.tcos.lockcontroller("%s" %action, \
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -582,7 +587,7 @@ class TcosXmlRpc:
         
     def unlockcontroller(self, action, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, shared.xmlremote_port):
+        if self.isPortListening(self.ip, self.xmlremote_port):
             try:
                 self.tc.tcos.unlockcontroller("%s" %action, \
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -595,7 +600,7 @@ class TcosXmlRpc:
 
     def status_lockscreen(self, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, shared.xmlremote_port):
+        if self.isPortListening(self.ip, self.xmlremote_port):
             #self.login ()
             result=self._ParseResult(self.GetStatus("lockscreen"))
             print_debug ( "lockscreen() %s" %(result) )

@@ -2,8 +2,12 @@ tcosmonitor (0.2.14.3) unstable; urgency=low
 
   * LocalData.py
     - Fix Getlast break
+  * TcosActions.py ping.py TcosXmlRpc.py LocalData.py
+    - Fix use xmlrpc with ssl port
+  * TcosActions.py
+    - Fix aspect ratio problem in certain videos and fullscreen in standalone
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 28 May 2008 09:50:03 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Thu, 29 May 2008 17:44:47 +0200
 
 tcosmonitor (0.2.14.2) unstable; urgency=low
 

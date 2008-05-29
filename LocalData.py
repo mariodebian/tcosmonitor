@@ -196,7 +196,10 @@ class LocalData:
         OTHER BEST METHOD??? "who" ???
         read netstat -putan|grep 6000|awk '{print $5}'| awk -F ":" '{print $2}| sort|uniq'
         """
-        
+        xmlremote_port=shared.xmlremote_port
+        if self.main.config.GetVar("enable_sslxmlrpc") == 1:
+            xmlremote_port=shared.xmlremote_sslport
+            
         if method == "ping":
             interface=self.main.config.GetVar("network_interface")
             print_debug ( "GetAllClients() using method \"ping\" in interface %s" %(interface) )
@@ -238,22 +241,22 @@ class LocalData:
             # sort numeric
             self.allclients = self.sorted_copy(self.allclients)
             
-            # onlys show host running tcosxmlrpc in 8998 port
+            # onlys show host running tcosxmlrpc in 8998 or 8999 port
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 if hasattr(self.main, "write_into_statusbar"):
-                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
+                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(xmlremote_port) )
                 hosts=[]
                 for host in self.allclients:
-                    # view status of port 8998
-                    if PingPort(host, shared.xmlremote_port, 0.5).get_status() == "OPEN":
+                    # view status of port 8998 or 8999
+                    if PingPort(host, xmlremote_port, 0.5).get_status() == "OPEN":
                         self.main.xmlrpc.newhost(host)
                         if self.main.xmlrpc.GetVersion():
-                            print_debug("GetAllClients() host=%s port 8998 OPEN" %(host))
+                            print_debug("GetAllClients() host=%s port %s OPEN" %(host,xmlremote_port))
                             hosts.append(host)
                         else:
-                            print_debug("GetAllClients() host=%s port 8998 OPEN but not tcosxmlrpc" %(host))
+                            print_debug("GetAllClients() host=%s port %s OPEN but not tcosxmlrpc" %(host,xmlremote_port))
                     else:
-                        print_debug("GetAllClients() host=%s port 8998 CLOSED" %(host))
+                        print_debug("GetAllClients() host=%s port %s CLOSED" %(host,xmlremote_port))
                         hosts.append(host)
                 self.allclients=hosts
             
@@ -286,19 +289,19 @@ class LocalData:
             # try if client is connected
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 if hasattr(self.main, "write_into_statusbar"):
-                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(shared.xmlremote_port) )
+                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(xmlremote_port) )
                 hosts=[]
                 for host in self.allclients:
-                    # view status of port 8998
-                    if PingPort(host, shared.xmlremote_port, 0.5).get_status() == "OPEN":
+                    # view status of port 8998 or 8999
+                    if PingPort(host, xmlremote_port, 0.5).get_status() == "OPEN":
                         self.main.xmlrpc.newhost(host)
                         if self.main.xmlrpc.GetVersion():
-                            print_debug("GetAllClients() host=%s port 8998 OPEN" %(host))
+                            print_debug("GetAllClients() host=%s port %s OPEN" %(host,xmlremote_port))
                             hosts.append(host)
                         else:
-                            print_debug("GetAllClients() host=%s port 8998 OPEN but not tcosxmlrpc" %(host))
+                            print_debug("GetAllClients() host=%s port %s OPEN but not tcosxmlrpc" %(host,xmlremote_port))
                     else:
-                        print_debug("GetAllClients() host=%s port 8998 CLOSED" %(host))
+                        print_debug("GetAllClients() host=%s port %s CLOSED" %(host,xmlremote_port))
                         #hosts.append(host)
                 self.allclients=hosts
                 print_debug("GetAllClients() returning static list %s"%self.allclients)
@@ -544,6 +547,7 @@ class LocalData:
         use xmlrpc echo
         """
         #print_debug ( "IsActive(%s) = %s " %(host, self.main.xmlrpc.GetVersion()) )
+        self.main.xmlrpc.newhost(host)
         if self.main.xmlrpc.GetVersion() != None:
             print_debug ( "IsActive(%s)=True" %(host) )
             return True
