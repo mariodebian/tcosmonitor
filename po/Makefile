@@ -1,4 +1,4 @@
-LANGUAGES=es pt_BR
+LANGUAGES=es pt_BR ca
 
 all: gmo
 

@@ -157,17 +157,32 @@ class TcosXmlRpc:
         else:
             print_debug ( "isPortListening(%s:%s) PinPort => CLOSED" %(ip,port) )
             return False
+
+    def resync(self, err, target):
+        if self.recursion:
+            return "error: too many recursion connecting with %s"%ip
+            
+        if err[0] == 111:
+            self.newhost(ip, force=True)
+        
+        if not self.connected:
+            return "error: connecting with %s"%ip
+        
+        self.recursion=True
+        f=getattr(self, target['function'])
+        return f(target['args'])
         
                 
-    def newhost(self, ip):
+    def newhost(self, ip, force=False):
         #print_debug ( "newhost(%s)" %(ip) )
         self.ip=ip
         self.version=None
         self.logged=None
         cached = None
+        self.recursion=False
         
         # this avoid to scan same ip a lot of times, but can give errors FIXME
-        if self.lasthost == ip and self.connected:
+        if not force and self.lasthost == ip and self.connected:
             print_debug("newhost() not scanning again, using lastip=%s lastport=%s SSL=%s" %(ip,self.lastport, self.sslconnection))
             return
         
@@ -225,6 +240,7 @@ class TcosXmlRpc:
             return self.version
         except Exception, err:
             print_debug("GetVersion() Exception error %s"%err)
+            self.resync(err, {'function':'GetVersion', 'args':None})
             return None
     
         
