@@ -196,9 +196,6 @@ class LocalData:
         OTHER BEST METHOD??? "who" ???
         read netstat -putan|grep 6000|awk '{print $5}'| awk -F ":" '{print $2}| sort|uniq'
         """
-        xmlremote_port=shared.xmlremote_port
-        if self.main.config.GetVar("enable_sslxmlrpc") == 1:
-            xmlremote_port=shared.xmlremote_sslport
             
         if method == "ping":
             interface=self.main.config.GetVar("network_interface")
@@ -244,20 +241,19 @@ class LocalData:
             # onlys show host running tcosxmlrpc in 8998 or 8999 port
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 if hasattr(self.main, "write_into_statusbar"):
-                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(xmlremote_port) )
+                    self.main.write_into_statusbar( _("Testing if found clients have %s or %s ports open...") %(shared.xmlremote_port, shared.xmlremote_sslport) )
                 hosts=[]
                 for host in self.allclients:
                     # view status of port 8998 or 8999
-                    if PingPort(host, xmlremote_port, 0.5).get_status() == "OPEN":
-                        self.main.xmlrpc.newhost(host)
+                    if self.main.xmlrpc.newhost(host):
                         if self.main.xmlrpc.GetVersion():
-                            print_debug("GetAllClients() host=%s port %s OPEN" %(host,xmlremote_port))
+                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN" %(host))
                             hosts.append(host)
                         else:
-                            print_debug("GetAllClients() host=%s port %s OPEN but not tcosxmlrpc" %(host,xmlremote_port))
+                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN but not tcosxmlrpc" %(host))
                     else:
-                        print_debug("GetAllClients() host=%s port %s CLOSED" %(host,xmlremote_port))
-                        hosts.append(host)
+                        print_debug("GetAllClients() host=%s ports 8998 or 8999 CLOSED" %(host))
+                        #hosts.append(host)
                 self.allclients=hosts
             
             print_debug ( "GetAllClients() Host connected=%s" %(self.allclients) )
@@ -289,19 +285,18 @@ class LocalData:
             # try if client is connected
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 if hasattr(self.main, "write_into_statusbar"):
-                    self.main.write_into_statusbar( _("Testing if found clients have %s port open...") %(xmlremote_port) )
+                    self.main.write_into_statusbar( _("Testing if found clients have %s or %s ports open...") %(shared.xmlremote_port, shared.xmlremote_sslport) )
                 hosts=[]
                 for host in self.allclients:
                     # view status of port 8998 or 8999
-                    if PingPort(host, xmlremote_port, 0.5).get_status() == "OPEN":
-                        self.main.xmlrpc.newhost(host)
+                    if self.main.xmlrpc.newhost(host):
                         if self.main.xmlrpc.GetVersion():
-                            print_debug("GetAllClients() host=%s port %s OPEN" %(host,xmlremote_port))
+                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN" %(host))
                             hosts.append(host)
                         else:
-                            print_debug("GetAllClients() host=%s port %s OPEN but not tcosxmlrpc" %(host,xmlremote_port))
+                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN but not tcosxmlrpc" %(host))
                     else:
-                        print_debug("GetAllClients() host=%s port %s CLOSED" %(host,xmlremote_port))
+                        print_debug("GetAllClients() host=%s ports 8998 or 8999 CLOSED" %(host))
                         #hosts.append(host)
                 self.allclients=hosts
                 print_debug("GetAllClients() returning static list %s"%self.allclients)
@@ -427,10 +422,16 @@ class LocalData:
         return self.hostname
 
     def GetUsernameAndHost(self,ip):
-        if self.main.xmlrpc.IsStandalone(ip=ip):
-            return "%s:%s" %(self.GetUsername(ip), ip)
+        print_debug("GetUsernameAndHost() => get username and host")
+        if self.username != None and self.username != shared.NO_LOGIN_MSG:
+            username=self.username
         else:
-            return "%s" %(self.GetUsername(ip) )
+            username=self.GetUsername(ip)
+            
+        if self.main.xmlrpc.IsStandalone(ip=ip):
+            return "%s:%s" %(username, ip)
+        else:
+            return "%s" %(username)
 
     def GetLast(self, ip, ingroup=None):
         last=None
@@ -560,12 +561,16 @@ class LocalData:
         return True if is logged
         """
         self.main.xmlrpc.newhost(host)
-        if self.username != None and self.username != shared.NO_LOGIN_MSG and self.username != "---":
-            return True
-        elif self.GetUsername(host) != shared.NO_LOGIN_MSG:
-            return True
-        else:
+        print_debug("IsLogged() => Username=%s" %self.username)
+        
+        if self.username == None:
+            self.GetUsername(host)
+
+        if self.username == shared.NO_LOGIN_MSG or self.username == None:
             return False
+        elif self.username != None and self.username != shared.NO_LOGIN_MSG:
+            return True
+            
             
     def IsBlocked(self, host):
         """
@@ -577,11 +582,12 @@ class LocalData:
         else:
             return False
     
-    def IsBlockedNet(self, host):
+    def IsBlockedNet(self, host, username=None):
         
         self.main.xmlrpc.newhost(host)
-        if self.username != None and self.username != shared.NO_LOGIN_MSG and self.username != "---":
-            username=self.username
+
+        if username != None and username != shared.NO_LOGIN_MSG:
+            username=username
         elif self.IsLogged(host):
             username=self.username
         else:
@@ -615,9 +621,9 @@ class LocalData:
         return output
         
     def isExclude(self, host, ingroup=None):
-        if self.username == shared.NO_LOGIN_MSG:
+        if self.username == None or self.username == shared.NO_LOGIN_MSG:
             return False
-
+        
         output=self.GetLast(host, ingroup)
         if output and output['exclude'] == "exclude":
             return True
@@ -636,14 +642,10 @@ class LocalData:
         return number of process
         """
         self.main.xmlrpc.newhost(host)
-        if self.username != None and self.username != shared.NO_LOGIN_MSG and self.username != "---":
-            username=self.username
-        elif self.IsLogged(host):
-            username=self.username
-        else:
-            return "---"
         
         #self.username=self.GetUsername(host)
+        if self.username == None or self.username == shared.NO_LOGIN_MSG:
+            return "---"
         
         if self.main.xmlrpc.IsStandalone(host):
             return self.main.xmlrpc.GetStandalone("get_process")
@@ -659,12 +661,10 @@ class LocalData:
     
         
     def GetTimeLogged(self, host):
-        #if self.username == None:
-        #    self.username=self.GetUsername(host)
-        #
-        if self.username == shared.NO_LOGIN_MSG:
+        self.main.xmlrpc.newhost(host)
+        
+        if self.username == shared.NO_LOGIN_MSG or self.username == None:
             return "---"
-
         
         output=self.GetLast(host)
         if output and output['timelogged']:

@@ -1,3 +1,10 @@
+tcosmonitor (0.2.14.4) unstable; urgency=low
+
+  *  TcosActions.py ping.py TcosXmlRpc.py LocalData.py
+    - Fix use xmlrpc and port listening with ssl port
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Mon, 02 Jun 2008 15:26:26 +0200
+
 tcosmonitor (0.2.14.3) unstable; urgency=low
 
   * LocalData.py

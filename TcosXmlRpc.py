@@ -62,9 +62,6 @@ class TcosXmlRpc:
         self.sslconnection=False
         self.ports=[]
         self.resethosts()
-        self.xmlremote_port=shared.xmlremote_port
-        if self.main.config.GetVar("enable_sslxmlrpc") == 1:
-            self.xmlremote_port=shared.xmlremote_sslport
         
         if self.main != None:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
@@ -131,7 +128,7 @@ class TcosXmlRpc:
                     return False
     """
 
-    def isPortListening(self, ip, port):
+    def isPortListening(self, ip, port,force=False):
         """
         check if ip and port is live and running something (using sockets)
         
@@ -140,10 +137,10 @@ class TcosXmlRpc:
         if not port: return False
         
         # this avoid to scan same ip a lot of times, but can give errors FIXME
-        if self.lasthost == ip and self.lastport == port and self.aliveStatus == "OPEN":
+        if not force and self.lasthost == ip and self.lastport == port and self.aliveStatus == "OPEN":
             print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s OPEN" %(ip,port))
             return True
-        elif self.lasthost == ip and self.lastport == port and self.aliveStatus == "CLOSED":
+        elif not force and self.lasthost == ip and self.lastport == port and self.aliveStatus == "CLOSED":
             print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s CLOSED" %(ip,port))
             return False
         
@@ -165,11 +162,12 @@ class TcosXmlRpc:
         self.version=None
         self.logged=None
         cached = None
+        force=False
         
         # this avoid to scan same ip a lot of times, but can give errors FIXME
         if self.lasthost == ip and self.connected:
             print_debug("newhost() not scanning again, using lastip=%s lastport=%s SSL=%s" %(ip,self.lastport, self.sslconnection))
-            return
+            return True
         
         # change ip, force new
         if self.lasthost != ip:
@@ -178,22 +176,24 @@ class TcosXmlRpc:
         self.lasthost=ip 
         # reset SSL status too
         self.sslconnection=False
-        self.xmlremote_port=shared.xmlremote_port
+        self.connected=False
+        self.lastport=shared.xmlremote_port
         
         #print_debug("newhost() enable_sslxmlrpc='%s'" %(self.main.config.GetVar("enable_sslxmlrpc")) )
         
         if self.main.config.GetVar("enable_sslxmlrpc") == 1:
             print_debug("newhost() SSL enabled, trying to ping %s port" %(shared.xmlremote_sslport))
+            force=True
             if self.isPortListening(ip, shared.xmlremote_sslport):
                 print_debug("newhost() SSL enabled **********")
-                self.xmlremote_port=shared.xmlremote_sslport
                 self.sslconnection=True
         
-        elif not self.isPortListening(ip, shared.xmlremote_port):
-            print_debug("newhost() SSL disabled, trying to ping %s port" %(shared.xmlremote_port))
-            self.connected=False
-            self.sslconnection=False
-            return
+        if not self.sslconnection:
+            if not self.isPortListening(ip, shared.xmlremote_port,force):
+                print_debug("newhost() SSL disabled, trying to ping %s port" %(shared.xmlremote_port))
+                self.connected=False
+                self.sslconnection=False
+                return False
         
         if self.main.config.GetVar("enable_sslxmlrpc") == 1 and self.sslconnection:
             self.url = 'https://%s:%d/RPC2' %(self.ip, shared.xmlremote_sslport)
@@ -207,11 +207,13 @@ class TcosXmlRpc:
             # save socket default timeout
             socket.setdefaulttimeout(shared.socket_default_timeout)
             print_debug ( "newhost() tcosxmlrpc running on %s" %(self.url) )
+            print_debug( {'conected':self.connected, 'ssl':self.sslconnection, 'ip':self.lasthost, 'port':self.lastport} )
+            return True
         except Exception, err:
             print_debug("newhost() ERROR conection unavalaible !!! error: %s"%err)
             self.connected=False
+            return False
         
-        print_debug( {'conected':self.connected, 'ssl':self.sslconnection, 'ip':self.lasthost, 'port':self.lastport} )
         
 
     def GetVersion(self):
@@ -548,7 +550,7 @@ class TcosXmlRpc:
 
     def lockscreen(self, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, self.xmlremote_port):
+        if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.lockscreen( \
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -561,7 +563,7 @@ class TcosXmlRpc:
         
     def unlockscreen(self, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, self.xmlremote_port):
+        if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.unlockscreen(\
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -574,7 +576,7 @@ class TcosXmlRpc:
     
     def lockcontroller(self, action, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, self.xmlremote_port):
+        if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.lockcontroller("%s" %action, \
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -587,7 +589,7 @@ class TcosXmlRpc:
         
     def unlockcontroller(self, action, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, self.xmlremote_port):
+        if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.unlockcontroller("%s" %action, \
                     self.main.config.GetVar("xmlrpc_username"), \
@@ -600,7 +602,7 @@ class TcosXmlRpc:
 
     def status_lockscreen(self, ip=None):
         if ip: self.newhost(ip)
-        if self.isPortListening(self.ip, self.xmlremote_port):
+        if self.isPortListening(self.ip, self.lastport):
             #self.login ()
             result=self._ParseResult(self.GetStatus("lockscreen"))
             print_debug ( "lockscreen() %s" %(result) )

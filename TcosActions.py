@@ -245,7 +245,7 @@ class TcosActions:
         #self.main.localdata.newhost(self.main.selected_ip)
         self.main.xmlrpc.newhost(self.main.selected_ip)
         self.main.xmlrpc.ip=self.main.selected_ip
-        if not self.main.xmlrpc.isPortListening(self.main.selected_ip, self.main.xmlrpc.xmlremote_port):
+        if not self.main.xmlrpc.isPortListening(self.main.selected_ip, self.main.xmlrpc.lastport):
             print_debug ( "on_host_list_click() XMLRPC not running in %s" %(self.main.selected_ip) )
             self.main.write_into_statusbar ( _("Error connecting to tcosxmlrpc in %s") %(self.main.selected_ip) )
             return
@@ -996,6 +996,7 @@ class TcosActions:
             
             ip=host
             
+            print_debug("populate_hostlist() => get username")
             username=self.main.localdata.GetUsername(ip)
             
             if shared.dont_show_users_in_group != None:
@@ -1007,17 +1008,20 @@ class TcosActions:
                 if groupexclude: 
                     print_debug("Host %s excluded, blacklisted by group" %ip)
                     continue
-                
+            
+            print_debug("populate_hostlist() => get hostname")
             hostname=self.main.localdata.GetHostname(ip)
             
             if username.startswith('error: tcos-last'):
                 username="---"
             
             try:
+                print_debug("populate_hostlist() => get num process")
                 num_process=self.main.localdata.GetNumProcess(ip)
             except:
                 num_process="---"
             
+            print_debug("populate_hostlist() => get time logged")
             if self.main.xmlrpc.IsStandalone(ip):
                 time_logged=self.main.xmlrpc.GetStandalone("get_time")
             else:
@@ -1026,6 +1030,7 @@ class TcosActions:
             if not time_logged or time_logged == "" or time_logged.startswith('error: tcos-last'):
                 time_logged="---"
             
+            print_debug("populate_hostlist() => get active connection")
             if self.main.localdata.IsActive(ip):
                 if self.main.xmlrpc.sslconnection:
                     image_active=active_ssl_image
@@ -1034,17 +1039,20 @@ class TcosActions:
             else:
                 image_active=inactive_image
             
+            print_debug("populate_hostlist() => get is logged")
             if self.main.localdata.IsLogged(ip):
                 image_logged=logged_image
             else:
                 image_logged=unlogged_image
             
+            print_debug("populate_hostlist() => get is blocked")
             if self.main.localdata.IsBlocked(host):
                 blocked_screen=True
             else:
                 blocked_screen=False
             
-            if self.main.localdata.IsBlockedNet(host):
+            print_debug("populate_hostlist() => get is blocked net")
+            if self.main.localdata.IsBlockedNet(host,username):
                 blocked_net=True
             else:
                 blocked_net=False
@@ -2120,7 +2128,6 @@ class TcosActions:
             onlythinclients_txt=""
             
             for client in allclients:
-                self.main.localdata.newhost(client)
                 if not self.main.xmlrpc.IsStandalone(client):
                     onlythinclients.append(client)
                     onlythinclients_txt+="\n %s" %(client)
@@ -2655,7 +2662,7 @@ class TcosActions:
             #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions::action_for_clients doing action")
             
-            self.main.localdata.newhost(ip)
+            #self.main.localdata.newhost(ip)
             self.main.xmlrpc.newhost(ip)
             try:
                 if action == "unlockscreen":
@@ -2730,6 +2737,7 @@ class TcosActions:
            status=True   icon=locked.png
            status=False  icon=unlocked.png
         """
+        #self.main.localdata.newhost(ip)
         status_net=self.main.localdata.IsBlockedNet(ip)
         status_screen=self.main.localdata.IsBlocked(ip)
         print_debug ( "change_lockscreen(%s)=%s,%s" %(ip, status_screen, status_net) )
