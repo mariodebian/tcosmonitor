@@ -118,6 +118,7 @@ class TcosPersonalize:
         gtk.glade.textdomain(shared.PACKAGE)
         
         # Widgets
+        print_debug("loading %s" %(shared.GLADE_DIR + 'tcospersonalize.glade'))
         self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcospersonalize.glade')
         self.main = self.ui.get_widget('mainwindow')
 
