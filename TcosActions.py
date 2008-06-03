@@ -1280,9 +1280,13 @@ class TcosActions:
                 msg=_( "Restart X session of %s with new config?" ) %(self.main.selected_ip)
                 if shared.ask_msg ( msg ):
                     # see xmlrpc/xorg.h, rebuild will download and sed xorg.conf.tpl
-                    self.main.xmlrpc.tc.tcos.xorg("rebuild", "--restartxorg", \
-                        self.main.xmlrpc.username, \
-                        self.main.xmlrpc.password  )
+                    try:
+                        self.main.xmlrpc.tc.tcos.xorg("rebuild", "--restartxorg", \
+                            self.main.config.GetVar("xmlrpc_username"), \
+                            self.main.config.GetVar("xmlrpc_password")  )
+                    except Exception, err:
+                        print_debug("Exe() Exception error %s"%err)
+                        pass
                     self.refresh_client_info(self.main.selected_ip)
             else:
                 shared.info_msg( _("%s is not supported to restart Xorg!") %(client_type) )
@@ -2930,7 +2934,7 @@ class TcosActions:
             
             
     def set_client_data(self, ip, model, iter):
-        print_debug ( "refresh_client_info2() updating host data..." )
+        print_debug ( "set_client_data() updating host data..." )
         
         inactive_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'inactive.png')
         active_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active.png')
@@ -2947,9 +2951,28 @@ class TcosActions:
         # disable cache
         self.main.localdata.cache_timeout=0
         
-        hostname=self.main.localdata.GetHostname(ip)
+        print_debug("set_client_data() => get username")
         username=self.main.localdata.GetUsername(ip)
-           
+        
+        print_debug("set_client_data() => get hostname")
+        hostname=self.main.localdata.GetHostname(ip)
+        
+        if username.startswith('error: tcos-last'):
+            username="---"
+            
+        try:
+            print_debug("set_client_data() => get num process")
+            num_process=self.main.localdata.GetNumProcess(ip)
+        except:
+            num_process="---"
+        
+        print_debug("set_client_data() => get time logged")
+        time_logged=self.main.localdata.GetTimeLogged(ip)
+            
+        if not time_logged or time_logged == "" or time_logged.startswith('error: tcos-last'):
+            time_logged="---"
+        
+        print_debug("set_client_data() => get active connection")
         if self.main.localdata.IsActive(ip):
             if self.main.xmlrpc.sslconnection:
                 image_active=active_ssl_image
@@ -2957,18 +2980,21 @@ class TcosActions:
                 image_active=active_image
         else:
             image_active=inactive_image
-            
+        
+        print_debug("set_client_data() => get is logged")
         if self.main.localdata.IsLogged(ip):
             image_logged=logged_image
         else:
             image_logged=unlogged_image
-            
+        
+        print_debug("set_client_data() => get is blocked")
         if self.main.localdata.IsBlocked(ip):
             blocked_screen=True
         else:
             blocked_screen=False
-            
-        if self.main.localdata.IsBlockedNet(ip):
+        
+        print_debug("set_client_data() => get is blocked net")
+        if self.main.localdata.IsBlockedNet(ip,username):
             blocked_net=True
         else:
             blocked_net=False
@@ -2981,10 +3007,7 @@ class TcosActions:
             image_blocked=locked_image
         else:
             image_blocked=unlocked_image
-        
-        num_process=self.main.localdata.GetNumProcess(ip)
-        time_logged=self.main.localdata.GetTimeLogged(ip)
-        
+                
         #enable cache again
         self.main.localdata.cache_timeout=shared.cache_timeout
         
