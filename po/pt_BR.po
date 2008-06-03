@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-02 14:59+0200\n"
+"POT-Creation-Date: 2008-06-03 08:49+0200\n"
 "PO-Revision-Date: 2008-05-24 18:58+0200\n"
 "Last-Translator: Luis Méndez Alejo (gnumax) <gnumax@gmail.com>\n"
 "Language-Team: Português/Brazil <pt_BR@li.org>\n"
@@ -54,7 +54,7 @@ msgstr ""
 "\n"
 "Se você é administrador do sistema, adicione o usuário ao grupo tcos."
 
-#: ../tcosmonitor.py:245 ../tcospersonalize.py:422
+#: ../tcosmonitor.py:245 ../tcospersonalize.py:423
 #: ../tcos-volume-manager.py:335
 msgid "Exiting"
 msgstr "Saindo"
@@ -624,51 +624,23 @@ msgstr "Carregar drivers disponíveis"
 msgid "Display Settings"
 msgstr "Configuración gráfica"
 
-#: ../tcospersonalize.glade:416
-msgid "Extra modules"
-msgstr "Módulos extra"
-
-#: ../tcospersonalize.glade:471
-msgid "Kernel modules"
-msgstr "Módulos do kernel"
-
-#: ../tcospersonalize.glade:501
-msgid "<b>Extra modules avalaible</b>"
-msgstr "<b>Módulos extra disponíveis</b>"
-
-#: ../tcospersonalize.glade:527
-msgid "Add X11vnc support"
-msgstr "Adicionar suporte X11vnc"
-
-#: ../tcospersonalize.glade:546
-msgid "Add iTALC support"
-msgstr "Adicionar suporte iTALC"
-
-#: ../tcospersonalize.glade:565
-msgid "Add FreeNX support"
-msgstr "Adicionar suporte FreeNX"
-
-#: ../tcospersonalize.glade:605
-msgid "Addons"
-msgstr "Adicionados"
-
-#: ../tcospersonalize.glade:648 ../TcosActions.py:753
+#: ../tcospersonalize.glade:426 ../TcosActions.py:753
 msgid "X Horiz sync"
 msgstr "Sincronização horizontal"
 
-#: ../tcospersonalize.glade:676 ../TcosActions.py:755
+#: ../tcospersonalize.glade:454 ../TcosActions.py:755
 msgid "X Vert sync"
 msgstr "Sincronização vertical"
 
-#: ../tcospersonalize.glade:763 ../tcosmonitor.glade:1381
+#: ../tcospersonalize.glade:541 ../tcosmonitor.glade:1381
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: ../tcospersonalize.glade:877
+#: ../tcospersonalize.glade:655
 msgid "Delete Config"
 msgstr "Apagar configurações"
 
-#: ../TcosXmlRpc.py:79
+#: ../TcosXmlRpc.py:76
 msgid ""
 "Username or password are empty,\n"
 "please edit in preferences dialog!"
@@ -732,17 +704,17 @@ msgstr "Canais secundários"
 msgid "unknow"
 msgstr "desconhecido"
 
-#: ../LocalData.py:210
+#: ../LocalData.py:207
 #, python-format
 msgid "Selected network inteface (%s) don't have IP address"
 msgstr "A interfase de rede selecionado (%s) não tem endereço de IP"
 
-#: ../LocalData.py:247 ../LocalData.py:292 ../ping.py:108
-#, python-format
-msgid "Testing if found clients have %s port open..."
+#: ../LocalData.py:244 ../LocalData.py:288 ../ping.py:105
+#, fuzzy
+msgid "Testing if found clients have 8998 or 8999 port open..."
 msgstr "Comprovando se os clientes encontrados tem o porto %s aberto..."
 
-#: ../LocalData.py:269
+#: ../LocalData.py:265
 msgid ""
 "Static list method configured but no hosts in list.\n"
 "\n"
@@ -759,7 +731,7 @@ msgstr ""
 msgid "New settings saved."
 msgstr "Configuração guardada."
 
-#: ../TcosPreferences.py:385 ../TcosActions.py:1756
+#: ../TcosPreferences.py:385 ../TcosActions.py:1764
 msgid "Stop"
 msgstr "Parar"
 
@@ -773,42 +745,42 @@ msgstr ""
 "Experimente executar:\n"
 " tcospersonalize --host=XXX.XXX.XXX.XXX"
 
-#: ../tcospersonalize.py:157
+#: ../tcospersonalize.py:158
 msgid "host: "
 msgstr "equipo: "
 
-#: ../tcospersonalize.py:389
+#: ../tcospersonalize.py:390
 msgid "Host down, can't connect to tcosxmlrpc."
 msgstr "Equipo inacessível, não pôde conectar a tcosxmlrpc."
 
-#: ../tcospersonalize.py:397
+#: ../tcospersonalize.py:398
 #, python-format
 msgid "New %d drivers loaded from terminal."
 msgstr "Carregados %d drivers desde o terminal."
 
-#: ../tcospersonalize.py:415
+#: ../tcospersonalize.py:416
 #, python-format
 msgid "Really delete config of %s?"
 msgstr "Apagar arquivo de configuração de %s?"
 
-#: ../tcospersonalize.py:418
+#: ../tcospersonalize.py:419
 msgid "Deleted!"
 msgstr "Apagado!"
 
-#: ../ping.py:87
+#: ../ping.py:84
 #, python-format
 msgid "Ping to %s..."
 msgstr "Fazendo ping a %s..."
 
-#: ../ping.py:98
+#: ../ping.py:95
 msgid "Waiting for pings..."
 msgstr "Esperando os pings..."
 
-#: ../ping.py:129
+#: ../ping.py:125
 msgid "No host found"
 msgstr "Não foi encontrado equipos"
 
-#: ../ping.py:138 ../TcosActions.py:178
+#: ../ping.py:134 ../TcosActions.py:178
 #, python-format
 msgid "Found %d hosts"
 msgstr "Encontrados %d equipos"
@@ -934,9 +906,9 @@ msgstr ""
 "<b>Enviar mensagem a:</b>\n"
 "%s"
 
-#: ../TcosActions.py:392 ../TcosActions.py:1266 ../TcosActions.py:1474
-#: ../TcosActions.py:1564 ../TcosActions.py:2114 ../TcosActions.py:2439
-#: ../TcosActions.py:2530
+#: ../TcosActions.py:392 ../TcosActions.py:1274 ../TcosActions.py:1482
+#: ../TcosActions.py:1572 ../TcosActions.py:2122 ../TcosActions.py:2446
+#: ../TcosActions.py:2537
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
@@ -1254,36 +1226,36 @@ msgstr "Buscando informação de equipos..."
 msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
-#: ../TcosActions.py:1124 ../TcosActions.py:2641
+#: ../TcosActions.py:1132 ../TcosActions.py:2648
 msgid "Can't exec this action because you are connected at this host!"
 msgstr "¡Não pode executar esta ação por que esta conectado desde este equipo!"
 
-#: ../TcosActions.py:1158
+#: ../TcosActions.py:1166
 #, python-format
 msgid "Do you want to reboot %s?"
 msgstr "Quer reiniciar o equipo %s ?"
 
-#: ../TcosActions.py:1161 ../TcosActions.py:2043
+#: ../TcosActions.py:1169 ../TcosActions.py:2051
 #, python-format
 msgid "Pc will reboot in %s seconds"
 msgstr "O equipo se reiniciará en %s segundos"
 
-#: ../TcosActions.py:1166
+#: ../TcosActions.py:1174
 #, python-format
 msgid "Do you want to poweroff %s?"
 msgstr "Quer desligar o equipo %s?"
 
-#: ../TcosActions.py:1169 ../TcosActions.py:2053
+#: ../TcosActions.py:1177 ../TcosActions.py:2061
 #, python-format
 msgid "Pc will shutdown in %s seconds"
 msgstr "O equipo vai desligar em %s segundos"
 
-#: ../TcosActions.py:1175 ../TcosActions.py:1186 ../TcosActions.py:1197
-#: ../TcosActions.py:1206 ../TcosActions.py:1215
+#: ../TcosActions.py:1183 ../TcosActions.py:1194 ../TcosActions.py:1205
+#: ../TcosActions.py:1214 ../TcosActions.py:1223
 msgid "No user logged."
 msgstr "Usuário não conectado."
 
-#: ../TcosActions.py:1179 ../TcosActions.py:1190
+#: ../TcosActions.py:1187 ../TcosActions.py:1198
 msgid ""
 "Can't connect to tcosxmlrpc.\n"
 "Please verify user and password in prefences!"
@@ -1291,74 +1263,74 @@ msgstr ""
 "Não  pode conectar a tcosxmlrpc.\n"
 "Por favor verifique o usuário e a senha nas preferências."
 
-#: ../TcosActions.py:1223
+#: ../TcosActions.py:1231
 msgid "Enter password of remote thin client (if asked for it)"
 msgstr "Introduza senha do cliente remoto (se perguntar)"
 
-#: ../TcosActions.py:1238
+#: ../TcosActions.py:1246
 #, python-format
 msgid "%s is not supported to personalize!"
 msgstr "¡%s não está suportado para personalizar!"
 
-#: ../TcosActions.py:1245
+#: ../TcosActions.py:1253
 msgid "Can't logout, user is not logged"
 msgstr "Não pode desconectar ao usuário, não está conectado"
 
-#: ../TcosActions.py:1250
+#: ../TcosActions.py:1258
 #, python-format
 msgid "Do you want to logout user \"%s\"?"
 msgstr "Quer desconectar ao usuário \"%s\"?"
 
-#: ../TcosActions.py:1254 ../TcosActions.py:2099
+#: ../TcosActions.py:1262 ../TcosActions.py:2107
 #, python-format
 msgid "Session will close in %s seconds"
 msgstr "A sessão fechará em %s segundos"
 
-#: ../TcosActions.py:1272
+#: ../TcosActions.py:1280
 #, python-format
 msgid "Restart X session of %s with new config?"
 msgstr "Reiniciar sessão X de %s com a nova configuração?"
 
-#: ../TcosActions.py:1280
+#: ../TcosActions.py:1288
 #, python-format
 msgid "%s is not supported to restart Xorg!"
 msgstr "¡%s não permite reiniciar Xorg!"
 
-#: ../TcosActions.py:1285
+#: ../TcosActions.py:1293
 msgid "Can't exec application, user is not logged"
 msgstr "Não podem executar aplicações, o usuário não esta conectado"
 
-#: ../TcosActions.py:1292
+#: ../TcosActions.py:1300
 msgid "Can't send message, user is not logged"
 msgstr "Não podem enviar mensagens, o usuário não está conectado"
 
-#: ../TcosActions.py:1298
+#: ../TcosActions.py:1306
 msgid "Can't show runnings apps, user is not logged"
 msgstr ""
 "Não podem ver as aplicações executadas,\n"
 "o usuário não está conectado."
 
-#: ../TcosActions.py:1311
+#: ../TcosActions.py:1319
 msgid "Can't send video broadcast, user is not logged"
 msgstr "Não se pode enviar a difusão de video, o usuário não esta conectado"
 
-#: ../TcosActions.py:1395 ../TcosActions.py:2350
+#: ../TcosActions.py:1403 ../TcosActions.py:2357
 msgid "Select audio/video file.."
 msgstr "Selecionar arquivo de audio/vídeo..."
 
-#: ../TcosActions.py:1398 ../TcosActions.py:2353
+#: ../TcosActions.py:1406 ../TcosActions.py:2360
 msgid "Play DVD"
 msgstr "Reproduzir DVD"
 
-#: ../TcosActions.py:1399 ../TcosActions.py:2354
+#: ../TcosActions.py:1407 ../TcosActions.py:2361
 msgid "Play SVCD/VCD"
 msgstr "Reproduzir SVCD/VCD"
 
-#: ../TcosActions.py:1400 ../TcosActions.py:2355
+#: ../TcosActions.py:1408 ../TcosActions.py:2362
 msgid "Play AudioCD"
 msgstr "Reproduzir AudioCD"
 
-#: ../TcosActions.py:1427 ../TcosActions.py:2383
+#: ../TcosActions.py:1435 ../TcosActions.py:2390
 #, fuzzy, python-format
 msgid ""
 "Not allowed white spaces in \"%s\".\n"
@@ -1367,11 +1339,11 @@ msgstr ""
 "Não é permitido espaços no arquivo %s.\n"
 "Por favor, renomear."
 
-#: ../TcosActions.py:1444 ../TcosActions.py:2404
+#: ../TcosActions.py:1452 ../TcosActions.py:2411
 msgid "Waiting for start video transmission..."
 msgstr "Esperando arranque do modo difusão de vídeo..."
 
-#: ../TcosActions.py:1446 ../TcosActions.py:2406
+#: ../TcosActions.py:1454 ../TcosActions.py:2413
 msgid ""
 "First select the DVD chapter or play movie\n"
 "then press enter to send clients..."
@@ -1379,33 +1351,33 @@ msgstr ""
 "Primeiro selecione o capitulo do DVD ou reproduza o vídeo\n"
 "despois, pressione «enter» para enviar-lo aos clientes..."
 
-#: ../TcosActions.py:1452 ../TcosActions.py:1646 ../TcosActions.py:2185
-#: ../TcosActions.py:2412
+#: ../TcosActions.py:1460 ../TcosActions.py:1654 ../TcosActions.py:2192
+#: ../TcosActions.py:2419
 msgid "Error while exec app"
 msgstr "Erro quando se executava a aplicação"
 
-#: ../TcosActions.py:1455
+#: ../TcosActions.py:1463
 msgid "Lock keyboard and mouse on client?"
 msgstr "Bloquear teclado e mouse do cliente?"
 
-#: ../TcosActions.py:1478 ../TcosActions.py:2444
+#: ../TcosActions.py:1486 ../TcosActions.py:2451
 msgid "Running in broadcast video transmission."
 msgstr "Modo difusão de video ativado."
 
-#: ../TcosActions.py:1480
+#: ../TcosActions.py:1488
 #, python-format
 msgid "Running in broadcast video transmission to host %s"
 msgstr "Executando-se o modo de difusão de video ao equipo %s"
 
-#: ../TcosActions.py:1489
+#: ../TcosActions.py:1497
 msgid "Can't send files, user is not logged"
 msgstr "Não pode enviar arquivos, o usuário não está conectado"
 
-#: ../TcosActions.py:1494 ../TcosActions.py:2460
+#: ../TcosActions.py:1502 ../TcosActions.py:2467
 msgid "Select file or files..."
 msgstr "Selecionar arquivo ou arquivos..."
 
-#: ../TcosActions.py:1511 ../TcosActions.py:2477
+#: ../TcosActions.py:1519 ../TcosActions.py:2484
 msgid ""
 "TcosMonitor need special configuration for rsync daemon to send files.\n"
 "\n"
@@ -1418,7 +1390,7 @@ msgstr ""
 "Leia a configuração requerida em:\n"
 "/usr/share/doc/tcosmonitor/README.rsync"
 
-#: ../TcosActions.py:1530 ../TcosActions.py:2496
+#: ../TcosActions.py:1538 ../TcosActions.py:2503
 #, fuzzy, python-format
 msgid ""
 "Special characters used in \"%s\".\n"
@@ -1427,18 +1399,18 @@ msgstr ""
 "Foi usado caracteres especiais no arquivo %s\n"
 "Por favor, renomear."
 
-#: ../TcosActions.py:1544 ../TcosActions.py:2510
+#: ../TcosActions.py:1552 ../TcosActions.py:2517
 msgid "Waiting for send files..."
 msgstr "Esperando ao envio de arquivos..."
 
-#: ../TcosActions.py:1553 ../TcosActions.py:1555 ../TcosActions.py:1559
-#: ../TcosActions.py:1568 ../TcosActions.py:2519 ../TcosActions.py:2521
-#: ../TcosActions.py:2525 ../TcosActions.py:2534
+#: ../TcosActions.py:1561 ../TcosActions.py:1563 ../TcosActions.py:1567
+#: ../TcosActions.py:1576 ../TcosActions.py:2526 ../TcosActions.py:2528
+#: ../TcosActions.py:2532 ../TcosActions.py:2541
 msgid "Teacher"
 msgstr "Professor"
 
-#: ../TcosActions.py:1555 ../TcosActions.py:1568 ../TcosActions.py:2521
-#: ../TcosActions.py:2534
+#: ../TcosActions.py:1563 ../TcosActions.py:1576 ../TcosActions.py:2528
+#: ../TcosActions.py:2541
 #, python-format
 msgid ""
 "Teacher has sent some files to %(teacher)s folder:\n"
@@ -1449,58 +1421,58 @@ msgstr ""
 "\n"
 "%(basenames)s"
 
-#: ../TcosActions.py:1565 ../TcosActions.py:2531
+#: ../TcosActions.py:1573 ../TcosActions.py:2538
 msgid "Error creating destination folder."
 msgstr "Erro criando diretório destino."
 
-#: ../TcosActions.py:1569 ../TcosActions.py:2536
+#: ../TcosActions.py:1577 ../TcosActions.py:2543
 msgid "Files sent."
 msgstr "Arquivos enviados."
 
-#: ../TcosActions.py:1577
+#: ../TcosActions.py:1585
 msgid "Can't start demo mode, user is not logged"
 msgstr ""
 "Não pôde arrancar modo demostração,\n"
 "o usuário não esta conectado"
 
-#: ../TcosActions.py:1580
+#: ../TcosActions.py:1588
 #, python-format
 msgid "Do you want demo mode from %s?"
 msgstr "Quer iniciar o modo demostração desde %s?"
 
-#: ../TcosActions.py:1593
+#: ../TcosActions.py:1601
 msgid "No clients selected, do you want to select all?"
 msgstr "Não foi selecionado equipos, quer selecionar todos?"
 
-#: ../TcosActions.py:1607 ../TcosActions.py:1850
+#: ../TcosActions.py:1615 ../TcosActions.py:1858
 #, python-format
 msgid "Connecting with %s to start VNC support"
 msgstr "Conectando a %s para arrancar soporte VNC"
 
-#: ../TcosActions.py:1630
+#: ../TcosActions.py:1638
 #, python-format
 msgid "Waiting for start demo mode from host %s..."
 msgstr "Esperando ao arranque do modo demostração desde o equipo %s..."
 
-#: ../TcosActions.py:1661 ../TcosActions.py:2060 ../TcosActions.py:2075
-#: ../TcosActions.py:2091 ../TcosActions.py:2153 ../TcosActions.py:2199
-#: ../TcosActions.py:2213 ../TcosActions.py:2248 ../TcosActions.py:2259
-#: ../TcosActions.py:2274 ../TcosActions.py:2455 ../TcosActions.py:2552
-#: ../TcosActions.py:2593
+#: ../TcosActions.py:1669 ../TcosActions.py:2068 ../TcosActions.py:2083
+#: ../TcosActions.py:2099 ../TcosActions.py:2160 ../TcosActions.py:2206
+#: ../TcosActions.py:2220 ../TcosActions.py:2255 ../TcosActions.py:2266
+#: ../TcosActions.py:2281 ../TcosActions.py:2462 ../TcosActions.py:2559
+#: ../TcosActions.py:2600
 msgid "No users logged."
 msgstr "Não há usuários conectados."
 
-#: ../TcosActions.py:1665 ../TcosActions.py:2203
+#: ../TcosActions.py:1673 ../TcosActions.py:2210
 #, python-format
 msgid "Running in demo mode with %s clients."
 msgstr "Executando em modo demostração com %s equipos."
 
-#: ../TcosActions.py:1673
+#: ../TcosActions.py:1681
 #, python-format
 msgid "Running in demo mode from host %s..."
 msgstr "Executando em modo demostração desde o equipo %s..."
 
-#: ../TcosActions.py:1677 ../TcosActions.py:1970
+#: ../TcosActions.py:1685 ../TcosActions.py:1978
 msgid ""
 "Wake On Lan only works with static list.\n"
 "\n"
@@ -1512,27 +1484,27 @@ msgstr ""
 "Ativar método escaneio \"static\" en Preferências\n"
 "e suporte (wake on lan) na configuração bios dos clientes."
 
-#: ../TcosActions.py:1681
+#: ../TcosActions.py:1689
 #, python-format
 msgid "Do you want boot %s client?"
 msgstr "Quer arrancar o cliente %s ?"
 
-#: ../TcosActions.py:1694 ../TcosActions.py:1991
+#: ../TcosActions.py:1702 ../TcosActions.py:1999
 #, python-format
 msgid "Not valid MAC address: \"%s\""
 msgstr "Endereço MAC não válida: \"%s\""
 
-#: ../TcosActions.py:1702 ../TcosActions.py:2548
+#: ../TcosActions.py:1710 ../TcosActions.py:2555
 msgid "Internet connection has been disabled"
 msgstr ""
 
-#: ../TcosActions.py:1706
+#: ../TcosActions.py:1714
 #, fuzzy
 msgid "Can't disable internet, user is not logged"
 msgstr "Não pode enviar arquivos, o usuário não está conectado"
 
-#: ../TcosActions.py:1711 ../TcosActions.py:1735 ../TcosActions.py:2541
-#: ../TcosActions.py:2584
+#: ../TcosActions.py:1719 ../TcosActions.py:1743 ../TcosActions.py:2548
+#: ../TcosActions.py:2591
 #, python-format
 msgid ""
 "In order to lock and unlock internet you need to be in 'tcos' group.\n"
@@ -1540,28 +1512,28 @@ msgid ""
 "Exe by root: adduser %s tcos"
 msgstr ""
 
-#: ../TcosActions.py:1727 ../TcosActions.py:2589
+#: ../TcosActions.py:1735 ../TcosActions.py:2596
 msgid "Internet connection has been enabled"
 msgstr ""
 
-#: ../TcosActions.py:1731
+#: ../TcosActions.py:1739
 #, fuzzy
 msgid "Can't enable internet, user is not logged"
 msgstr "Não pode enviar arquivos, o usuário não está conectado"
 
-#: ../TcosActions.py:1801
+#: ../TcosActions.py:1809
 msgid "Demo mode off."
 msgstr "Modo demostração desativado."
 
-#: ../TcosActions.py:1809
+#: ../TcosActions.py:1817
 msgid "Conference mode off."
 msgstr "Modo conferência desativado."
 
-#: ../TcosActions.py:1836
+#: ../TcosActions.py:1844
 msgid "Video broadcast stopped."
 msgstr "Difusão de vídeo parada."
 
-#: ../TcosActions.py:1881
+#: ../TcosActions.py:1889
 #, python-format
 msgid ""
 "Can't start VNC, error:\n"
@@ -1570,199 +1542,199 @@ msgstr ""
 "Não pôde arrancar VNC, erro:\n"
 "%s"
 
-#: ../TcosActions.py:1887
+#: ../TcosActions.py:1895
 msgid "Waiting for start of VNC server..."
 msgstr "Esperando que comece o servidor VNC..."
 
-#: ../TcosActions.py:1915
+#: ../TcosActions.py:1923
 msgid "Can't start VNC, please add X11VNC support"
 msgstr "Não pôde arrancar VNC, por favor adicione suporte para X11VNC."
 
-#: ../TcosActions.py:1949
+#: ../TcosActions.py:1957
 msgid "Can't start IVS, please add iTALC support"
 msgstr "Não pôde arrancar o processo IVS. Adicione suporte para iTALC"
 
-#: ../TcosActions.py:1974
+#: ../TcosActions.py:1982
 msgid "Do you want boot all clients?"
 msgstr "Quer arrancar todos os clientes?"
 
-#: ../TcosActions.py:2014
+#: ../TcosActions.py:2022
 msgid "No clients connected, press refresh button."
 msgstr "Não foram encontrados clientes, clique o botão atualizar."
 
-#: ../TcosActions.py:2039
+#: ../TcosActions.py:2047
 #, python-format
 msgid "Do you want to reboot the following hosts:%s?"
 msgstr "Quer reiniciar os seguintes equipos: %s ?"
 
-#: ../TcosActions.py:2049
+#: ../TcosActions.py:2057
 #, python-format
 msgid "Do you want to poweroff the following hosts:%s?"
 msgstr "Quer desligar os seguintes equipos: %s?"
 
-#: ../TcosActions.py:2063
+#: ../TcosActions.py:2071
 #, python-format
 msgid "Do you want to lock the following screens:%s?"
 msgstr "Quer bloquear a tela dos seguintes equipos: %s ?"
 
-#: ../TcosActions.py:2078
+#: ../TcosActions.py:2086
 #, python-format
 msgid "Do you want to unlock the following screens:%s?"
 msgstr "Quer desbloquear a tela dos seguintes equipos: %s ?"
 
-#: ../TcosActions.py:2094
+#: ../TcosActions.py:2102
 #, python-format
 msgid "Do you want to logout the following users:%s?"
 msgstr "Quer desconectar os seguintes usuários: %s ?"
 
-#: ../TcosActions.py:2129
+#: ../TcosActions.py:2136
 msgid "No thin clients found."
 msgstr "Não se encontraram clientes ligeros."
 
-#: ../TcosActions.py:2132
+#: ../TcosActions.py:2139
 #, python-format
 msgid "Do you want to restart X screens (only thin clients):%s?"
 msgstr ""
 "Quer reiniciar as sessões X dos seguintes equipos (somente clientes "
 "ligeros): %s?"
 
-#: ../TcosActions.py:2156
+#: ../TcosActions.py:2163
 #, python-format
 msgid "Do you want to start demo mode the following users:%s?"
 msgstr "Quer iniciar modo demostração aos seguintes usuários: %s ?"
 
-#: ../TcosActions.py:2169
+#: ../TcosActions.py:2176
 msgid "Waiting for start demo mode..."
 msgstr "Esperando ao arranque do modo demostração..."
 
-#: ../TcosActions.py:2207
+#: ../TcosActions.py:2214
 msgid "Running in demo mode from server"
 msgstr "Executando-se em modo demostração desde o servidor..."
 
-#: ../TcosActions.py:2216
+#: ../TcosActions.py:2223
 #, python-format
 msgid "Do you want to start conference mode the following users:%s?"
 msgstr "Quer iniciar modo conferência aos seguintes usuários: %s ?"
 
-#: ../TcosActions.py:2240
+#: ../TcosActions.py:2247
 msgid "Waiting for start conference mode..."
 msgstr "Esperando ao arranque do modo confêrencia..."
 
-#: ../TcosActions.py:2252
+#: ../TcosActions.py:2259
 #, python-format
 msgid "Running in conference mode with %s clients."
 msgstr "Executando-se em modo conferência com %s equipos."
 
-#: ../TcosActions.py:2254
+#: ../TcosActions.py:2261
 msgid "Running in conference mode from server"
 msgstr "Executando-se em modo conferência desde o servidor..."
 
-#: ../TcosActions.py:2415
+#: ../TcosActions.py:2422
 msgid "Lock keyboard and mouse on clients?"
 msgstr "Bloquear teclado e mouse nos clientes?"
 
-#: ../TcosActions.py:2446
+#: ../TcosActions.py:2453
 msgid "Running in broadcast video transmission"
 msgstr "Executando o modo difusão de video."
 
-#: ../TcosActions.py:2555
+#: ../TcosActions.py:2562
 #, fuzzy, python-format
 msgid "Do you want disable internet to following users:%s?"
 msgstr "Quer iniciar modo conferência aos seguintes usuários: %s ?"
 
-#: ../TcosActions.py:2596
+#: ../TcosActions.py:2603
 #, fuzzy, python-format
 msgid "Do you want enable internet to following users:%s?"
 msgstr "Quer desconectar os seguintes usuários: %s ?"
 
-#: ../TcosActions.py:2630
+#: ../TcosActions.py:2637
 msgid "Screenshots of all hosts"
 msgstr "Captura de tela de todos os equipos"
 
-#: ../TcosActions.py:2654
+#: ../TcosActions.py:2661
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr "Realizando ação \"%(action)s\" em equipo %(ip)s..."
 
-#: ../TcosActions.py:2686
+#: ../TcosActions.py:2693
 #, python-format
 msgid "Screenshot of %s"
 msgstr "Captura de tela de %s"
 
-#: ../TcosActions.py:2710
+#: ../TcosActions.py:2717
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr "Ação \"%(action)s\" terminada em %(ip)s"
 
-#: ../TcosActions.py:2719
+#: ../TcosActions.py:2726
 msgid "Waiting for screenshots..."
 msgstr "Esperando as capturas..."
 
-#: ../TcosActions.py:2773
+#: ../TcosActions.py:2781
 msgid "Trying to order terminal to do a screenshot..."
 msgstr "tentando mandar ao terminal  que faça uma captura de tela"
 
-#: ../TcosActions.py:2783
+#: ../TcosActions.py:2791
 #, python-format
 msgid "Can't make screenshot, error: %s"
 msgstr "Não pôde fazer uma captura de tela, erro: %s"
 
-#: ../TcosActions.py:2790
+#: ../TcosActions.py:2798
 msgid "Get another screenshot"
 msgstr "Fazer outra captura de tela"
 
-#: ../TcosActions.py:2805
+#: ../TcosActions.py:2813
 #, python-format
 msgid "Screenshot of <span style='font-style: italic'>%s</span>"
 msgstr "Captura de tela de <span style='font-style: italic'>%s</span>"
 
-#: ../TcosActions.py:2825
+#: ../TcosActions.py:2833
 #, python-format
 msgid "Screenshot of %s, done."
 msgstr "Captura de tela de %s feita."
 
-#: ../TcosActions.py:2844
+#: ../TcosActions.py:2852
 msgid "User not connected, no processes."
 msgstr "Usuário não conectado, não existem processos."
 
-#: ../TcosActions.py:2862
+#: ../TcosActions.py:2870
 #, python-format
 msgid "Running processes for user \"%s\": "
 msgstr "Processos executados pelo usuário \"%s\":"
 
-#: ../TcosActions.py:2866
+#: ../TcosActions.py:2874
 msgid ""
 "ALERT: There are some system process hidden. Enable it in Preferences dialog."
 msgstr ""
 "AVISO: Há vários processos do sistema ocultos. Pode ativar na janela de "
 "Preferências."
 
-#: ../TcosActions.py:2871
+#: ../TcosActions.py:2879
 msgid "Pid"
 msgstr "Pid"
 
-#: ../TcosActions.py:2872
+#: ../TcosActions.py:2880
 msgid "Process command"
 msgstr "Comando do processo"
 
-#: ../TcosActions.py:2877
+#: ../TcosActions.py:2885
 msgid "Kill this process"
 msgstr "Matar este processo"
 
-#: ../TcosActions.py:3009
+#: ../TcosActions.py:3017
 msgid "Actions for selected host"
 msgstr "Ações para o equipo selecionado"
 
-#: ../TcosActions.py:3015
+#: ../TcosActions.py:3023
 #, python-format
 msgid "Actions for %s"
 msgstr "Ações para %s"
 
-#: ../TcosActions.py:3055
+#: ../TcosActions.py:3063
 msgid "Actions for selected hosts"
 msgstr "Ações para os equipos selecionados"
 
-#: ../TcosActions.py:3057
+#: ../TcosActions.py:3065
 msgid "Actions for all hosts"
 msgstr "Ações para todos os equipos"
 
@@ -2271,6 +2243,27 @@ msgstr ""
 "\n"
 "Se o problema persistir, desative Thread Controller\n"
 "em preferências e reporte o bug."
+
+#~ msgid "Extra modules"
+#~ msgstr "Módulos extra"
+
+#~ msgid "Kernel modules"
+#~ msgstr "Módulos do kernel"
+
+#~ msgid "<b>Extra modules avalaible</b>"
+#~ msgstr "<b>Módulos extra disponíveis</b>"
+
+#~ msgid "Add X11vnc support"
+#~ msgstr "Adicionar suporte X11vnc"
+
+#~ msgid "Add iTALC support"
+#~ msgstr "Adicionar suporte iTALC"
+
+#~ msgid "Add FreeNX support"
+#~ msgstr "Adicionar suporte FreeNX"
+
+#~ msgid "Addons"
+#~ msgstr "Adicionados"
 
 #~ msgid "Doing action %(action)s in %(timeout)s seconds"
 #~ msgstr "Realizando ação %(action)s em %(ip)s segundos"

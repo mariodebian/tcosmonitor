@@ -241,7 +241,7 @@ class LocalData:
             # onlys show host running tcosxmlrpc in 8998 or 8999 port
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 if hasattr(self.main, "write_into_statusbar"):
-                    self.main.write_into_statusbar( _("Testing if found clients have %s or %s ports open...") %(shared.xmlremote_port, shared.xmlremote_sslport) )
+                    self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open...") )
                 hosts=[]
                 for host in self.allclients:
                     # view status of port 8998 or 8999
@@ -285,7 +285,7 @@ class LocalData:
             # try if client is connected
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 if hasattr(self.main, "write_into_statusbar"):
-                    self.main.write_into_statusbar( _("Testing if found clients have %s or %s ports open...") %(shared.xmlremote_port, shared.xmlremote_sslport) )
+                    self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open..."))
                 hosts=[]
                 for host in self.allclients:
                     # view status of port 8998 or 8999
