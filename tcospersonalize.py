@@ -54,6 +54,28 @@ import pwd,grp
 
 debug_name="tcospersonalize"
 
+PXELINUX_CFG=[
+    "default __TCOS_METHOD__",
+    "prompt 0",
+    "timeout 50",
+    "label default",
+    "  kernel vmlinuz-__TCOS_KERNEL__",
+    "  append ramdisk_size=65536 boot=tcos root=/dev/ram0 initrd=initramfs-__TCOS_KERNEL__ __TCOS_CMDLINE__",
+    "label nfs",
+    "  kernel vmlinuz-__TCOS_KERNEL__",
+    "  append ramdisk_size=32768 boot=tcos root=/dev/ram0 initrd=initramfs-__TCOS_KERNEL__-nfs forcenfs __TCOS_CMDLINE__",
+    "",
+    "#kernel=__TCOS_KERNEL__",
+    "#method=__TCOS_METHOD__",
+    "#cmdline='__TCOS_CMDLINE__'",
+]
+
+PXE_METHODS=[
+"default",
+"nfs"
+]
+
+PXELINUX_CMDLINE="quiet splash"
 
 def print_debug(txt):
     if shared.debug:
@@ -149,9 +171,16 @@ class TcosPersonalize:
         self.ck_xdpms=self.ui.get_widget('ck_xdpms')
         
         # get textboxes
-        self.text_extramodules=self.ui.get_widget('txt_extramodules')
+        #self.text_extramodules=self.ui.get_widget('txt_extramodules')
         self.text_xhorizsync=self.ui.get_widget('txt_xhorizsync')
         self.text_xvertsync=self.ui.get_widget('txt_xvertsync')
+        
+        # boot options
+        self.combo_kernel=self.ui.get_widget('combo_kernel')
+        self.combo_method=self.ui.get_widget('combo_method')
+        self.text_cmdline=self.ui.get_widget('txt_cmdline')
+        self.buttonapply=self.ui.get_widget('apply_button')
+        self.buttonapply.connect('clicked', self.on_buttonapply_click )
         
         # host label
         self.hostlabel=self.ui.get_widget('label_host')
@@ -196,6 +225,36 @@ class TcosPersonalize:
         
         self.populate_textboxes( self.text_xhorizsync, self.GetVar("xhorizsync") )
         self.populate_textboxes( self.text_xvertsync, self.GetVar("xvertsync") )
+        
+        kernels=self.getkernels()
+        
+        self.bootfilename=self.get_hexfilename(shared.remotehost)
+        self.bootparams={'kernel':'', 'method':'default', 'cmdline':'quiet splash'}
+        
+        if os.path.isfile(self.bootfilename):
+            f=open(self.bootfilename, 'r')
+            for line in f.readlines():
+                if line.startswith("#kernel"):
+                    self.bootparams['kernel']=line.split('=')[1].strip()
+                if line.startswith("#method"):
+                    self.bootparams['method']=line.split('=')[1].strip()
+                if line.startswith("#cmeline"):
+                    self.bootparams['cmdline']=line.split('=')[1].strip()
+            f.close()
+        else:
+            if len(kernels) == 1:
+                self.bootparams['kernel']=kernels[0]
+            else:
+                self.buttonapply.set_sensitive(False)
+                self.combo_kernel.connect('changed', self.on_combo_kernel_change)
+        
+        self.populate_select(self.combo_kernel, kernels )
+        self.set_active_in_select(self.combo_kernel, self.bootparams['kernel']  )
+            
+        
+        self.populate_select(self.combo_method, PXE_METHODS )
+        self.set_active_in_select(self.combo_method, self.bootparams['method']  )
+        self.text_cmdline.set_text(PXELINUX_CMDLINE)
         
         # populate textboxes
         # NOTHING
@@ -401,6 +460,38 @@ class TcosPersonalize:
         print_debug ( "on_buttonok_click()" )
         self.SaveSettings()
         self.quitapp()
+
+    def on_combo_kernel_change(self, widget):
+        if self.read_select_value(widget, 'kernel') != '':
+            self.buttonapply.set_sensitive(True)
+    
+    def get_hexfilename(self, ip):
+        name=""
+        for a in ip.split('.'):
+            hexn="%X" %int(a)
+            if len(hexn) == 1:
+                hexn="0%s"%hexn
+            name="%s%s"%(name, hexn )
+        return os.path.join("/var/lib/tcos/tftp/pxelinux.cfg" , name )
+    
+    def on_buttonapply_click(self, widget):
+        print_debug("on_buttonapply_click()")
+        kernel=self.read_select_value(self.combo_kernel, 'kernel')
+        method=self.read_select_value(self.combo_method, 'method')
+        cmdline=self.text_cmdline.get_text()
+        
+        try:
+            f=open(self.bootfilename, 'w')
+        except:
+            print_debug("Error opening %s"%filename)
+            return
+        
+        for line in PXELINUX_CFG:
+            out=line.replace('__TCOS_KERNEL__', kernel)
+            out=out.replace('__TCOS_METHOD__', method)
+            out=out.replace('__TCOS_CMDLINE__', cmdline)
+            f.write(out + '\n')
+        f.close()
     
     def on_buttoncancel_click(self, widget):
         print_debug ( "on_buttoncancel_click()" )
@@ -418,6 +509,33 @@ class TcosPersonalize:
             os.remove(self.remotehost_config)
         shared.info_msg ( _("Deleted!") )
         self.quitapp()
+
+    def getkernels(self):
+        # valid kernel >= 2.6.12
+        # perpahps we can try to build initrd image instead of initramfs
+        # in kernel < 2.6.12, this require a lot of work in gentcos and init scripts
+        kernels=[]
+        #print_debug ("getkernels() read all vmlinuz in /boot/")
+        #for _file in os.listdir(shared.chroot + '/boot'):
+        # FIXME need to detect chroot kernels
+        for _file in os.listdir('/var/lib/tcos/tftp'):
+            # FIXME, in vmlinuz valid names are vmlinuz-X.X.X-extra or vmlinuz-X.X.X_extra
+            # if need more string separators add into pattern=re.compile ('[-_]')
+            # http://libertonia.escomposlinux.org/story/2006/1/5/223624/2276
+            if _file.find('vmlinuz') == 0 :
+                kernel=_file.replace('vmlinuz-','')
+                # split only 3 times
+                (kmay, kmed, kmin) = kernel.split('.',2)
+                import re
+                pattern = re.compile ('[-_.+]')
+                (kmin, kextra) = pattern.split(kmin,1)
+                # need kernel >= 2.6.12
+                if int(kmay)==2 and int(kmed)==6 and int(kmin)>=12:
+                    #print_debug( "getkernels() VALID kernel %s" %(kernel) )
+                    kernels.append(kernel)
+                else:
+                    print_debug( "getkernels() INVALID OLD kernel %s" %(kernel) )
+        return kernels
 
     def quitapp(self,*args):
         print_debug ( _("Exiting") )

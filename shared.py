@@ -336,7 +336,7 @@ xsession_values=[
 "XDMCP",  
 "local", 
 "sshX",
-"FreeNX"
+"FreeNX",
 "rDesktop"
 ]
 xsession_default="XDMCP"

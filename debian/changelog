@@ -1,3 +1,11 @@
+tcosmonitor (0.2.14.6) unstable; urgency=low
+
+  * TcosPersonalize:
+    - Add new tab to configure boot options
+  * Update translation template and spanish po file
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 09 Jun 2008 09:49:38 +0200
+
 tcosmonitor (0.2.14.5) unstable; urgency=low
 
   * TcosActions.py
