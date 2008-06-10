@@ -4,7 +4,7 @@
 
 DISPLAY_HOST=$(echo $DISPLAY| awk -F ":" '{print $1}')
 
-if [ "x${DISPLAY_HOST}" != "x" ]; then
+if [ ! -z ${DISPLAY_HOST} ]; then
 
   # launch tcos-dbus-client
   tcos-dbus-client &
