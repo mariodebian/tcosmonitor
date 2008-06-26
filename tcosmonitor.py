@@ -102,6 +102,22 @@ class TcosMonitor:
         self.updating=False
         self.name="TcosMonitor"
         
+        # FIXME change PATH
+        self.groupconf=self.loadconf( os.path.abspath(shared.GLOBAL_CONF) )
+        
+        try:
+            if int(self.groupconf['check_tcosmonitor_user_group']) == 1:
+                shared.check_tcosmonitor_user_group=True
+        except:
+            pass
+        
+        if self.groupconf['dont_show_users_in_group'] != '':
+            shared.dont_show_users_in_group=self.groupconf['dont_show_users_in_group']
+        else:
+            shared.dont_show_users_in_group=None
+            
+        ##################################################
+        
         self.worker_running=False
         self.ingroup_tcos=False
         
@@ -111,7 +127,7 @@ class TcosMonitor:
                     self.ingroup_tcos=True
 
             if self.ingroup_tcos == False and os.getuid() != 0:
-                shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\".\n\nIf you are system administrator, add user to the group tcos." %pwd.getpwuid(os.getuid())[0]))
+                shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\" to exec tcosmonitor.\n\nIf you are system administrator, add your user to tcos group." %pwd.getpwuid(os.getuid())[0]))
                 sys.exit(1)
 
         #import shared
@@ -211,7 +227,30 @@ class TcosMonitor:
                     break
         except:
             pass
-    
+
+    def loadconf(self, conffile):
+        conf={}
+        print_debug ( "loadconf() conffile=%s" %conffile )
+        if os.path.isfile(conffile):
+            print_debug ("loadconf() found conf file %s" %conffile)
+            f=open(conffile, "r")
+            data=f.readlines()
+            f.close()
+            for line in data:
+                if line == '\n': continue
+                if line.find('#') == 0: continue
+                line=line.replace('\n', '')
+                if "=" in line:
+                    try:
+                        conf["%s"%line.split('=')[0]] = line.split('=')[1].replace('"', '')
+                    except Exception, err:
+                        print_debug("loadconf() Exception: %s" %err)
+                        pass
+        print_debug( "loadconf conf=%s" %conf )
+        return conf
+
+
+
     def search_host(self, widget):
         print_debug ( "search_host()" )
         txt=self.searchtxt.get_text()

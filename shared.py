@@ -64,6 +64,7 @@ if os.path.isdir('./debian') and os.path.isdir('./po') and os.path.isdir('extens
     IMG_DIR = "./images/"
     EXTENSIONS="./extensions"
     tcos_config_file="./tcos.conf"
+    GLOBAL_CONF='./tcosmonitor.conf'
     #print "exec in sources dir"
 else:
     tcos_config_file="/etc/tcos/tcos.conf"
@@ -71,6 +72,7 @@ else:
     IMG_DIR = "/usr/share/tcosmonitor/images/"
     LOCALE_DIR = "/usr/share/locale"
     EXTENSIONS="/usr/share/tcosmonitor/extensions/"
+    GLOBAL_CONF='/etc/tcos/tcosmonitor.conf'
 
 
 # config file

@@ -25,6 +25,7 @@
 
 import sys
 import os
+import glob
 
 if not os.path.isfile("Initialize.py"):
         #print "DEBUG: append tcosmonitor dir"
@@ -182,6 +183,9 @@ class TcosPersonalize:
         self.buttonapply=self.ui.get_widget('apply_button')
         self.buttonapply.connect('clicked', self.on_buttonapply_click )
         
+        self.deleteboot=self.ui.get_widget('delete_boot_button')
+        self.deleteboot.connect('clicked', self.on_deleteboot_click )
+        
         # host label
         self.hostlabel=self.ui.get_widget('label_host')
         self.hostlabel.set_markup ( "<b>" + _("host: ") + shared.remotehost + "</b>" )
@@ -241,12 +245,14 @@ class TcosPersonalize:
                 if line.startswith("#cmeline"):
                     self.bootparams['cmdline']=line.split('=')[1].strip()
             f.close()
+            self.deleteboot.set_sensitive(True)
         else:
             if len(kernels) == 1:
                 self.bootparams['kernel']=kernels[0]
             else:
                 self.buttonapply.set_sensitive(False)
                 self.combo_kernel.connect('changed', self.on_combo_kernel_change)
+            self.deleteboot.set_sensitive(False)
         
         self.populate_select(self.combo_kernel, kernels )
         self.set_active_in_select(self.combo_kernel, self.bootparams['kernel']  )
@@ -492,6 +498,15 @@ class TcosPersonalize:
             out=out.replace('__TCOS_CMDLINE__', cmdline)
             f.write(out + '\n')
         f.close()
+        self.deleteboot.set_sensitive(True)
+    
+    def on_deleteboot_click(self, widget):
+        print_debug("on_deleteboot_click() ")
+        try:
+            os.unlink(self.bootfilename)
+            self.deleteboot.set_sensitive(False)
+        except Exception, err:
+            print_debug("on_deleteboot_click() Exception deleting: %s"%err)
     
     def on_buttoncancel_click(self, widget):
         print_debug ( "on_buttoncancel_click()" )
@@ -518,23 +533,30 @@ class TcosPersonalize:
         #print_debug ("getkernels() read all vmlinuz in /boot/")
         #for _file in os.listdir(shared.chroot + '/boot'):
         # FIXME need to detect chroot kernels
-        for _file in os.listdir('/var/lib/tcos/tftp'):
-            # FIXME, in vmlinuz valid names are vmlinuz-X.X.X-extra or vmlinuz-X.X.X_extra
-            # if need more string separators add into pattern=re.compile ('[-_]')
-            # http://libertonia.escomposlinux.org/story/2006/1/5/223624/2276
-            if _file.find('vmlinuz') == 0 :
-                kernel=_file.replace('vmlinuz-','')
-                # split only 3 times
+        #for _file in os.listdir('/var/lib/tcos/tftp'):
+        for _file in glob.glob('/var/lib/tcos/tftp/vmlinuz*'):
+            try:
+                os.stat(_file)
+            except:
+                print_debug("getkernels() link %s broken" %_file)
+                continue
+            kernel=os.path.basename(_file).replace('vmlinuz-','')
+            print_debug("getkernels() found %s"%kernel)
+            # split only 3 times
+            try:
                 (kmay, kmed, kmin) = kernel.split('.',2)
-                import re
-                pattern = re.compile ('[-_.+]')
-                (kmin, kextra) = pattern.split(kmin,1)
-                # need kernel >= 2.6.12
-                if int(kmay)==2 and int(kmed)==6 and int(kmin)>=12:
-                    #print_debug( "getkernels() VALID kernel %s" %(kernel) )
-                    kernels.append(kernel)
-                else:
-                    print_debug( "getkernels() INVALID OLD kernel %s" %(kernel) )
+            except Exception, err:
+                print_debug("getkernels() exception spliting kernel '%s' version, %s"%(kernel,err))
+                continue
+            import re
+            pattern = re.compile ('[-_.+]')
+            (kmin, kextra) = pattern.split(kmin,1)
+            # need kernel >= 2.6.12
+            if int(kmay)==2 and int(kmed)==6 and int(kmin)>=12:
+                #print_debug( "getkernels() VALID kernel %s" %(kernel) )
+                kernels.append(kernel)
+            else:
+                print_debug( "getkernels() INVALID OLD kernel %s" %(kernel) )
         return kernels
 
     def quitapp(self,*args):

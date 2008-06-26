@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-09 09:44+0200\n"
+"POT-Creation-Date: 2008-06-26 11:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,15 +41,15 @@ msgstr ""
 msgid "User not allowed to run this dbus call."
 msgstr ""
 
-#: ../tcosmonitor.py:114
+#: ../tcosmonitor.py:130
 #, python-format
 msgid ""
-"The user \"%s\" must be member of the group \"tcos\".\n"
+"The user \"%s\" must be member of the group \"tcos\" to exec tcosmonitor.\n"
 "\n"
-"If you are system administrator, add user to the group tcos."
+"If you are system administrator, add your user to tcos group."
 msgstr ""
 
-#: ../tcosmonitor.py:245 ../tcospersonalize.py:541
+#: ../tcosmonitor.py:284 ../tcospersonalize.py:563
 #: ../tcos-volume-manager.py:335
 msgid "Exiting"
 msgstr ""
@@ -363,161 +363,161 @@ msgstr ""
 msgid "No hosts found, please click on Refresh button using another method."
 msgstr ""
 
-#: ../shared.py:219
+#: ../shared.py:221
 msgid "Refresh terminal info"
 msgstr ""
 
-#: ../shared.py:220
+#: ../shared.py:222
 msgid "Clean info about terminal"
 msgstr ""
 
-#: ../shared.py:221 ../TcosTrayIcon.py:54
+#: ../shared.py:223 ../TcosTrayIcon.py:54
 msgid "Reboot"
 msgstr ""
 
-#: ../shared.py:222 ../TcosTrayIcon.py:55
+#: ../shared.py:224 ../TcosTrayIcon.py:55
 msgid "Poweroff"
 msgstr ""
 
-#: ../shared.py:223
+#: ../shared.py:225
 msgid "Lock screen"
 msgstr ""
 
-#: ../shared.py:224
+#: ../shared.py:226
 msgid "Unlock screen"
 msgstr ""
 
-#: ../shared.py:225
+#: ../shared.py:227
 msgid "Connect to remote screen (iTALC)"
 msgstr ""
 
-#: ../shared.py:226
+#: ../shared.py:228
 msgid "Connect to remote screen (VNC)"
 msgstr ""
 
-#: ../shared.py:227
+#: ../shared.py:229
 msgid "Screenshot"
 msgstr ""
 
-#: ../shared.py:228
+#: ../shared.py:230
 msgid "Give a remote xterm"
 msgstr ""
 
-#: ../shared.py:229
+#: ../shared.py:231
 msgid "Configure this host"
 msgstr ""
 
-#: ../shared.py:230
+#: ../shared.py:232
 msgid "Logout client"
 msgstr ""
 
-#: ../shared.py:231
+#: ../shared.py:233
 msgid "Restart X session with new settings"
 msgstr ""
 
-#: ../shared.py:232
+#: ../shared.py:234
 msgid "Exec app on user display"
 msgstr ""
 
-#: ../shared.py:233
+#: ../shared.py:235
 msgid "Send a text message to user"
 msgstr ""
 
-#: ../shared.py:234
+#: ../shared.py:236
 msgid "Show running apps of this client"
 msgstr ""
 
-#: ../shared.py:235 ../shared.py:256
+#: ../shared.py:237 ../shared.py:258
 msgid "Audio/Video broadcast"
 msgstr ""
 
-#: ../shared.py:236 ../shared.py:257 ../tcosmonitor.glade:2152
+#: ../shared.py:238 ../shared.py:259 ../tcosmonitor.glade:2152
 msgid "Send files"
 msgstr ""
 
-#: ../shared.py:237
+#: ../shared.py:239
 msgid "Demo mode (from this host)"
 msgstr ""
 
-#: ../shared.py:238
+#: ../shared.py:240
 msgid "Boot client (WakeOnLan)"
 msgstr ""
 
-#: ../shared.py:239
+#: ../shared.py:241
 msgid "Lock internet"
 msgstr ""
 
-#: ../shared.py:240
+#: ../shared.py:242
 msgid "Unlock internet"
 msgstr ""
 
-#: ../shared.py:245
+#: ../shared.py:247
 msgid "Reboot all clients"
 msgstr ""
 
-#: ../shared.py:246
+#: ../shared.py:248
 msgid "Poweroff all clients"
 msgstr ""
 
-#: ../shared.py:247
+#: ../shared.py:249
 msgid "Lock all screens"
 msgstr ""
 
-#: ../shared.py:248
+#: ../shared.py:250
 msgid "Unlock all screens"
 msgstr ""
 
-#: ../shared.py:249
+#: ../shared.py:251
 msgid "Logout clients"
 msgstr ""
 
-#: ../shared.py:250
+#: ../shared.py:252
 msgid "Restart X session of all clients"
 msgstr ""
 
-#: ../shared.py:251
+#: ../shared.py:253
 msgid "Exec same app in all connected users"
 msgstr ""
 
-#: ../shared.py:252
+#: ../shared.py:254
 msgid "Send a text message to all connected users"
 msgstr ""
 
-#: ../shared.py:253
+#: ../shared.py:255
 msgid "Enter demo mode, all connected users see my screen"
 msgstr ""
 
-#: ../shared.py:254
+#: ../shared.py:256
 msgid "Enter conference mode, all connected users can hear me"
 msgstr ""
 
-#: ../shared.py:255
+#: ../shared.py:257
 msgid "Capture All clients screens"
 msgstr ""
 
-#: ../shared.py:258
+#: ../shared.py:260
 msgid "Boot All clients (WakeOnLan)"
 msgstr ""
 
-#: ../shared.py:259
+#: ../shared.py:261
 msgid "Lock internet in all connected users"
 msgstr ""
 
-#: ../shared.py:260
+#: ../shared.py:262
 msgid "Unlock internet in all connected users"
 msgstr ""
 
-#: ../shared.py:444
+#: ../shared.py:446
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr ""
 
-#: ../shared.py:456
+#: ../shared.py:458
 #, python-format
 msgid "INFO: %s"
 msgstr ""
 
-#: ../shared.py:467
+#: ../shared.py:469
 #, python-format
 msgid "ERROR: %s"
 msgstr ""
@@ -618,11 +618,11 @@ msgstr ""
 msgid "Command line"
 msgstr ""
 
-#: ../tcospersonalize.glade:764
+#: ../tcospersonalize.glade:801
 msgid "Boot options"
 msgstr ""
 
-#: ../tcospersonalize.glade:878
+#: ../tcospersonalize.glade:915
 msgid "Delete Config"
 msgstr ""
 
@@ -713,32 +713,32 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: ../tcospersonalize.py:124
+#: ../tcospersonalize.py:125
 msgid ""
 "Need a host to configure!!!\n"
 "Try exec:\n"
 " tcospersonalize --host=XXX.XXX.XXX.XXX"
 msgstr ""
 
-#: ../tcospersonalize.py:187
+#: ../tcospersonalize.py:191
 msgid "host: "
 msgstr ""
 
-#: ../tcospersonalize.py:449
+#: ../tcospersonalize.py:455
 msgid "Host down, can't connect to tcosxmlrpc."
 msgstr ""
 
-#: ../tcospersonalize.py:457
+#: ../tcospersonalize.py:463
 #, python-format
 msgid "New %d drivers loaded from terminal."
 msgstr ""
 
-#: ../tcospersonalize.py:507
+#: ../tcospersonalize.py:522
 #, python-format
 msgid "Really delete config of %s?"
 msgstr ""
 
-#: ../tcospersonalize.py:510
+#: ../tcospersonalize.py:525
 msgid "Deleted!"
 msgstr ""
 
