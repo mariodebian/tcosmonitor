@@ -8,16 +8,16 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: devhelp\n"
+"Project-Id-Version: qcv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-30 09:48+0200\n"
-"PO-Revision-Date: 2008-06-30 09:30+0200\n"
-"Last-Translator:  <>\n"
-"Language-Team:  <en@li.org>\n"
+"PO-Revision-Date: 2008-06-30 14:32+0200\n"
+"Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
+"Language-Team: Valencian <lliurex@gva.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
 
 #: ../TcosDBus.py:77
 msgid "TcosDBus not allowed in local display"
@@ -2217,7 +2217,7 @@ msgstr "Traduït al vostre idioma per:"
 
 #: ../tcosmonitor.glade:4120
 msgid "Mario Izquierdo <mariodebian@gmail.com>"
-msgstr "Mario Izquierdo <mariodebian@gmail.com>"
+msgstr "Pilar Embid <embid_mar@gva.es>"
 
 #: ../tcosmonitor.glade:4155
 msgid "Translators"
