@@ -1,10 +1,14 @@
 tcosmonitor (0.2.14.7) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * tcosmonitor.conf shared.py tcosmonitor.py
     - Read tcosmonitor.conf for group and exclude vars
   * Update translation
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 26 Jun 2008 11:16:45 +0200
+  [ Ignacio Vidal ]
+  * Add valencian translation by Lliurex
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Mon, 30 Jun 2008 09:58:31 +0200
 
 tcosmonitor (0.2.14.6) unstable; urgency=low
 
