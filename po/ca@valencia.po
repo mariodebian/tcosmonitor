@@ -11,13 +11,13 @@ msgstr ""
 "Project-Id-Version: qcv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-30 09:48+0200\n"
-"PO-Revision-Date: 2008-06-30 14:32+0200\n"
+"PO-Revision-Date: 2008-07-01 14:32+0200\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: Valencian <lliurex@gva.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../TcosDBus.py:77
 msgid "TcosDBus not allowed in local display"
@@ -26,7 +26,7 @@ msgstr "El TcosDBus no està permés en pantalla local."
 #: ../TcosDBus.py:106
 #, python-format
 msgid "Seems that tcosxmlrpc isn't running on host=\"%s\""
-msgstr "Sembla que el tcosxmlrpc no s'està executant en l'equip=«%s»"
+msgstr "Sembla que el tcosxmlrpc no s'està executant en l'equip=\"%s\""
 
 #: ../TcosDBus.py:127
 msgid "tcosxmlrpc ERROR conection unavalaible."
@@ -52,7 +52,7 @@ msgid ""
 "\n"
 "If you are system administrator, add your user to tcos group."
 msgstr ""
-"L'usuari «%s» ha de ser membre del grup «tcos».\n"
+"L'usuari \"%s\" ha de ser membre del grup \"tcos\".\n"
 "\n"
 "Si sou administrador del sistema, afegiu l'usuari al grup tcos."
 
@@ -150,7 +150,7 @@ msgstr "Partició desmuntada del disc dur."
 
 #: ../tcos-devices-ng.py:406
 msgid "Audio cdrom mounted., you can listen music opening wav files."
-msgstr "Cdrom d'àudio muntat., ara podeu obrir els fitxers wav i música."
+msgstr "Cdrom d'àudio muntat., ara podeu obrir els fitxers de música wav."
 
 #: ../tcos-devices-ng.py:408
 msgid "Cdrom mounted. Ready for use."
@@ -186,11 +186,11 @@ msgstr ""
 
 #: ../tcos-devices-ng.py:633
 msgid "usbdisk"
-msgstr "disc usb"
+msgstr "disc-usb"
 
 #: ../tcos-devices-ng.py:635
 msgid "firewiredisk"
-msgstr "disc firewire"
+msgstr "disc-firewire"
 
 #: ../tcos-devices-ng.py:660
 msgid "Can't mount floppy"
@@ -793,7 +793,7 @@ msgstr "Esborrat!"
 #: ../ping.py:84
 #, python-format
 msgid "Ping to %s..."
-msgstr "Fa ping a %s..."
+msgstr "Ping a %s..."
 
 #: ../ping.py:95
 msgid "Waiting for pings..."
@@ -871,7 +871,7 @@ msgstr "S'està emmudint el canal %s..."
 #: ../tcos-volume-manager.py:311 ../TcosActions.py:937
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
-msgstr "L'estat del canal %(channel)s és «%(newvalue)s»"
+msgstr "L'estat del canal %(channel)s és \"%(newvalue)s\""
 
 #: ../TcosActions.py:65 ../TcosActions.py:73 ../TcosActions.py:81
 msgid "PulseAudio apps need /dev/shm."
@@ -1304,7 +1304,7 @@ msgstr "No es pot desconnectar l'usuari, no està connectat"
 #: ../TcosActions.py:1258
 #, python-format
 msgid "Do you want to logout user \"%s\"?"
-msgstr "Voleu desconnectar l'usuari «%s»?"
+msgstr "Voleu desconnectar l'usuari \"%s\"?"
 
 #: ../TcosActions.py:1262 ../TcosActions.py:2111
 #, python-format
@@ -1360,7 +1360,7 @@ msgid ""
 "Not allowed white spaces in \"%s\".\n"
 "Please rename it."
 msgstr ""
-"No es permeten espais en «%s».\n"
+"No es permeten espais en \"%s\".\n"
 "Reanomeneu-lo."
 
 #: ../TcosActions.py:1456 ../TcosActions.py:2415
@@ -1386,7 +1386,7 @@ msgstr "Voleu bloquejar el teclat i el ratolí del client?"
 
 #: ../TcosActions.py:1490 ../TcosActions.py:2455
 msgid "Running in broadcast video transmission."
-msgstr "S'està executant en mode de difusió de vídeo actiu."
+msgstr "S'està executant en mode de difusió de vídeo."
 
 #: ../TcosActions.py:1492
 #, python-format
@@ -1420,7 +1420,7 @@ msgid ""
 "Special characters used in \"%s\".\n"
 "Please rename it."
 msgstr ""
-"S'han usat caràcters especials en «%s»\n"
+"S'han usat caràcters especials en \"%s\"\n"
 "Per favor, reanomeu-lo."
 
 #: ../TcosActions.py:1556 ../TcosActions.py:2521
@@ -1503,8 +1503,8 @@ msgid ""
 msgstr ""
 "L'arrancada per xarxa només funciona amb llista estática.\n"
 "\n"
-"Activa el mètode d'escaneig «static» en Preferències\n"
-"i el suport (desperta per xarxa) en la bios dels clients."
+"Activa el mètode d'escaneig \"static\" en Preferències\n"
+"i el suport (wake on lan) en la bios dels clients."
 
 #: ../TcosActions.py:1693
 #, python-format
@@ -1514,7 +1514,7 @@ msgstr "Voleu arrancar el client %s ?"
 #: ../TcosActions.py:1706 ../TcosActions.py:2003
 #, python-format
 msgid "Not valid MAC address: \"%s\""
-msgstr "L'adreça MAC no és vàlida: «%s»"
+msgstr "L'adreça MAC no és vàlida: \"%s\""
 
 #: ../TcosActions.py:1714 ../TcosActions.py:2559
 msgid "Internet connection has been disabled"
@@ -1658,7 +1658,7 @@ msgstr "Voleu bloquejar el teclat i el ratolí en els clients?"
 
 #: ../TcosActions.py:2457
 msgid "Running in broadcast video transmission"
-msgstr "S'està executant la manera difusió de vídeo."
+msgstr "S'està executant en mode de difusió de vídeo."
 
 #: ../TcosActions.py:2566
 #, python-format
@@ -1677,7 +1677,7 @@ msgstr "Captura de pantalla de tots els equips"
 #: ../TcosActions.py:2665
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
-msgstr "S'està realitzant l'acció «%(action)s» en l'equip %(ip)s..."
+msgstr "S'està realitzant l'acció \"%(action)s\" en l'equip %(ip)s..."
 
 #: ../TcosActions.py:2697
 #, python-format
@@ -1687,7 +1687,7 @@ msgstr "Captura de pantalla de %s"
 #: ../TcosActions.py:2721
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
-msgstr "L'acció «%(action)s» s'ha acabat en %(ip)s"
+msgstr "L'acció \"%(action)s\" s'ha acabat en %(ip)s"
 
 #: ../TcosActions.py:2730
 msgid "Waiting for screenshots..."
@@ -1700,7 +1700,7 @@ msgstr "S'està intentant manar al terminal que faça una captura de pantalla...
 #: ../TcosActions.py:2795
 #, python-format
 msgid "Can't make screenshot, error: %s"
-msgstr "S'ha produït un error, no es pot fer una captura de pantalla: %s"
+msgstr "No es pot fer una captura de pantalla, error: %s"
 
 #: ../TcosActions.py:2802
 msgid "Get another screenshot"
@@ -1723,7 +1723,7 @@ msgstr "L'usuari no està connectat, no existixen processos."
 #: ../TcosActions.py:2874
 #, python-format
 msgid "Running processes for user \"%s\": "
-msgstr "S'estan executant els processos per a l'usuari «%s»:"
+msgstr "S'estan executant els processos per a l'usuari \"%s\":"
 
 #: ../TcosActions.py:2878
 msgid ""
