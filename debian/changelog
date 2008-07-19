@@ -1,3 +1,9 @@
+tcosmonitor (0.2.15) unstable; urgency=low
+
+  * New release 0.2.15
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 19 Jul 2008 20:37:45 +0200
+
 tcosmonitor (0.2.14.9) unstable; urgency=low
 
   * Update pt_BR translation, thanks to Aécio dos Santos Pires <aecio at comunicacaodigital.org>
