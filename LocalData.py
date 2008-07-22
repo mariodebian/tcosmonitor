@@ -148,7 +148,7 @@ class LocalData:
             return True
         for (sgroup, spass, sid, susers) in sgroups:
             if sgroup == group and user in susers:
-                print_debug("user %s is in group %s"%(user, sgroup), console.name(__name__) )
+                print_debug("user %s is in group %s"%(user, sgroup))
                 return True
         return False
     

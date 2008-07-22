@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qcv\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-30 09:48+0200\n"
-"PO-Revision-Date: 2008-07-01 14:32+0200\n"
+"POT-Creation-Date: 2008-07-22 09:18+0200\n"
+"PO-Revision-Date: 2008-07-07 10:34+0200\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: Valencian <lliurex@gva.es>\n"
 "MIME-Version: 1.0\n"
@@ -149,6 +149,7 @@ msgid "Hard disk partition umounted."
 msgstr "Partició desmuntada del disc dur."
 
 #: ../tcos-devices-ng.py:406
+#, fuzzy
 msgid "Audio cdrom mounted., you can listen music opening wav files."
 msgstr "Cdrom d'àudio muntat., ara podeu obrir els fitxers de música wav."
 
@@ -1385,6 +1386,7 @@ msgid "Lock keyboard and mouse on client?"
 msgstr "Voleu bloquejar el teclat i el ratolí del client?"
 
 #: ../TcosActions.py:1490 ../TcosActions.py:2455
+#, fuzzy
 msgid "Running in broadcast video transmission."
 msgstr "S'està executant en mode de difusió de vídeo."
 
@@ -1431,7 +1433,7 @@ msgstr "S'està esperant l'enviament de fitxers..."
 #: ../TcosActions.py:1580 ../TcosActions.py:2530 ../TcosActions.py:2532
 #: ../TcosActions.py:2536 ../TcosActions.py:2545
 msgid "Teacher"
-msgstr "Mestre o mestra"
+msgstr "Mestre"
 
 #: ../TcosActions.py:1567 ../TcosActions.py:1580 ../TcosActions.py:2532
 #: ../TcosActions.py:2545
@@ -1957,10 +1959,10 @@ msgstr ""
 "<b>NOTA:</b>\n"
 "L'usuari per defecte és <b>root</b> i la contrasenya és <b>root</b>.\n"
 "\n"
-"Per a <o>clients lleugers</o> canvieu el TCOS_ROOT_PASSWD o utilitzeu el "
+"Per a <u>clients lleugers</u> canvieu el TCOS_ROOT_PASSWD o utilitzeu el "
 "TcosConfig i regenereu les imatges d'arrancada de nou.\n"
 "\n"
-"Per a equips <o>autònoms(standalone)</o> podeu utilitzar el compte del "
+"Per a equips <u>autònoms(standalone)</u> podeu utilitzar el compte del "
 "sistema (root) però això no és recomandable. Instal·leu el paquet tcos-"
 "standalone i executeu-ho com a administrador. Establiu un usuari i una "
 "contrasenya.La contrasenya es guardarà en <b>/etc/tcospasswd</b>, fitxer que "
@@ -2217,7 +2219,7 @@ msgstr "Traduït al vostre idioma per:"
 
 #: ../tcosmonitor.glade:4120
 msgid "Mario Izquierdo <mariodebian@gmail.com>"
-msgstr "Pilar Embid <embid_mar@gva.es>"
+msgstr "Pilar Embid (Lliurex) <embid_mar@gva.es>"
 
 #: ../tcosmonitor.glade:4155
 msgid "Translators"

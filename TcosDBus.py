@@ -59,7 +59,7 @@ class TcosDBusServer:
         self.bus = dbus.SystemBus()
 
     def auth(self):
-        print_debug ( "self.admin=%s self.passwd=%s" %(self.admin, self.passwd) )
+        #print_debug ( "self.admin=%s self.passwd=%s" %(self.admin, self.passwd) )
         if not self.admin or not self.passwd:
             print_debug ( "Need admin and passwd data to do this action" )
             return False
@@ -145,7 +145,7 @@ class TcosDBusServer:
         pass
 
     def parse_dbus_str(self, data):
-        print_debug( "parse_dbus_str() data=%s type=%s" %(data, type(data)) )
+        #print_debug( "parse_dbus_str() data=%s type=%s" %(data, type(data)) )
         if type(data) == dbus.String:
             return str(data)
         return(data)
@@ -223,7 +223,7 @@ class TcosDBusServer:
     def user_msg(self, txt):
         print_debug ( "user_msg() %s" %(txt) )
         # use pynotify better???
-        p = subprocess.Popen("zenity --info --text='%s' --title='%s'" %(txt, _("Message from admin")), shell=True, close_fds=True)
+        p = subprocess.Popen("zenity --info --text="'%s'" --title='%s'" %(txt, _("Message from admin")), shell=True, close_fds=True)
         try:
             th=threading.Thread(target=self.cleanproc, args=(p,) )
             #th.setDaemon(1)
