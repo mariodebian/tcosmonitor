@@ -20,7 +20,7 @@ Conflicts: initramfs-tools-tcos (<= 0.88.16)
 XB-Python-Version: ${python:Versions}
 Description: Thin client monitor
  TCOS, thin Client Operating System is a method to create small embedded os
- based on debian/ubuntu with normal debian kernel's.
+ based on Debian/Ubuntu with normal Debian kernel's.
  .
  tcosmonitor is a small pygtk app to monitor thin clients
  .

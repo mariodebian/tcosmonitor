@@ -11,13 +11,13 @@ msgstr ""
 "Project-Id-Version: qcv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-22 09:18+0200\n"
-"PO-Revision-Date: 2008-07-07 10:34+0200\n"
+"PO-Revision-Date: 2008-07-22 10:37+0200\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: Valencian <lliurex@gva.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
 
 #: ../TcosDBus.py:77
 msgid "TcosDBus not allowed in local display"
@@ -149,7 +149,6 @@ msgid "Hard disk partition umounted."
 msgstr "Partició desmuntada del disc dur."
 
 #: ../tcos-devices-ng.py:406
-#, fuzzy
 msgid "Audio cdrom mounted., you can listen music opening wav files."
 msgstr "Cdrom d'àudio muntat., ara podeu obrir els fitxers de música wav."
 
@@ -1386,7 +1385,6 @@ msgid "Lock keyboard and mouse on client?"
 msgstr "Voleu bloquejar el teclat i el ratolí del client?"
 
 #: ../TcosActions.py:1490 ../TcosActions.py:2455
-#, fuzzy
 msgid "Running in broadcast video transmission."
 msgstr "S'està executant en mode de difusió de vídeo."
 

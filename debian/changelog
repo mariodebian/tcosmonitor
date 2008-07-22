@@ -1,9 +1,10 @@
 tcosmonitor (0.2.15.1) unstable; urgency=low
 
   * LocalData.py TcosDBus.py
-    - Fix typos 
+    - Fix typos
+  * Fix translation problem
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 22 Jul 2008 09:17:29 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 22 Jul 2008 13:56:32 +0200
 
 tcosmonitor (0.2.15) unstable; urgency=low
 

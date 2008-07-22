@@ -371,7 +371,7 @@ class TcosActions:
         return True
                 
     def exe_app_in_client(self, mode, timeout=0, msg="", users=[], connected_users=[]):
-        remote_cmd=("/usr/lib/tcos/session-cmd-send %s %s %s" %(mode.upper(), timeout, msg))
+        remote_cmd=("/usr/lib/tcos/session-cmd-send %s %s %s" %(mode.upper(), timeout, msg.replace("'", "´")))
         action="down-controller %s %s" %(mode, timeout)
         print_debug("exe_app_in_client() usernames=%s" %users)
         
@@ -405,6 +405,9 @@ class TcosActions:
                 or arg.startswith('mv ') or arg.find(" mv ") != -1 \
                 or arg.startswith('cp ') or arg.find(" cp ") != -1:
             arg=""
+        
+        if self.ask_mode == "mess":
+            arg=arg.replace("'", "´")
             
         for user in usernames:
             if user.find(":") != -1:
@@ -1260,7 +1263,7 @@ class TcosActions:
                 newusernames=[]
                 timeout=self.main.config.GetVar("actions_timeout")
                 msg=_("Session will close in %s seconds") %timeout
-                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT %s %s" %(timeout, msg)
+                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT %s %s" %(timeout, msg.replace("'", "´"))
                 
                 if connected_users[0].find(":") != -1:
                     # we have a standalone user...
@@ -1711,7 +1714,7 @@ class TcosActions:
             eth=self.main.config.GetVar("network_interface")
             ports="--ports=%s" %self.main.config.GetVar("ports_tnc")
             timeout=0
-            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled"))
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled").replace("'", "´"))
             act="disable-internet"
             
             if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
@@ -1736,7 +1739,7 @@ class TcosActions:
         if action == 21:
             ip=self.main.selected_ip
             timeout=0
-            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled"))
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled").replace("'", "´"))
             act="enable-internet"
             
             if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
@@ -2109,7 +2112,7 @@ class TcosActions:
                 newusernames=[]
                 timeout=self.main.config.GetVar("actions_timeout")
                 msg=_("Session will close in %s seconds") %timeout
-                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT %s %s" %(timeout, msg)
+                remote_cmd="/usr/lib/tcos/session-cmd-send LOGOUT %s %s" %(timeout, msg.replace("'", "´"))
                 
                 for user in connected_users:
                     if user.find(":") != -1:
@@ -2556,7 +2559,7 @@ class TcosActions:
             eth=self.main.config.GetVar("network_interface")
             ports="--ports=%s" %self.main.config.GetVar("ports_tnc")
             timeout=0
-            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled"))
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled").replace("'", "´"))
             act="disable-internet"
             
             if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
@@ -2597,7 +2600,7 @@ class TcosActions:
                 return
             # enable internet
             timeout=0
-            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled"))
+            remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled").replace("'", "´"))
             act="enable-internet"
             
             if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:

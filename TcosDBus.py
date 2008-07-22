@@ -223,7 +223,7 @@ class TcosDBusServer:
     def user_msg(self, txt):
         print_debug ( "user_msg() %s" %(txt) )
         # use pynotify better???
-        p = subprocess.Popen("zenity --info --text="'%s'" --title='%s'" %(txt, _("Message from admin")), shell=True, close_fds=True)
+        p = subprocess.Popen("zenity --info --text='%s' --title='%s'" %(txt.replace("'", "´"), _("Message from admin")), shell=True, close_fds=True)
         try:
             th=threading.Thread(target=self.cleanproc, args=(p,) )
             #th.setDaemon(1)
