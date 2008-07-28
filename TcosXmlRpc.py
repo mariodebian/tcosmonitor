@@ -98,36 +98,6 @@ class TcosXmlRpc:
             if not self.lock: return
             sleep(0.1)
 
-    """
-    def isLive(self, ip):
-        #
-        #check if host is accesible by network
-        #
-        cached=self.cache(ip, "")
-        if cached != None:
-            return cached
-        
-        print_debug( "isLive(%s) make ping..." %(ip) )
-        pingalingout = Popen(["ping", "-q", "-W1", "-c1", "%s" %ip], shell=False, stdout=PIPE, stderr=STDOUT, close_fds=True)
-        pingalingout.wait()
-        pingaling = pingalingout.stdout
-        lifeline = re.compile(r"(\d) received")
-        while 1:
-            line = pingaling.readline()
-            if not line: break
-            igot = re.findall(lifeline,line)
-            if igot:
-                status = int(igot[0])
-                if status == 1:
-                    print_debug ( "isLive(%s) True" %(ip) )
-                    self.ports.append( [ip, "", True, time()] )
-                    return True
-                else:
-                    print_debug ( "isLive(%s) False" %(ip) )
-                    self.ports.append( [ip, "", False, time()] )
-                    return False
-    """
-
     def isPortListening(self, ip, port,force=False):
         """
         check if ip and port is live and running something (using sockets)
@@ -304,13 +274,13 @@ class TcosXmlRpc:
 
     def ReadInfo(self, string):
         """
-        server.tcos.info("cpu_model").replace('\n', '')
+        server.tcos.info("cpu_model")
         """
         if not self.connected:
             print_debug ( "ReadInfo() NO CONNECTION" )
             return None
         try:
-            result=self.tc.tcos.info(string).replace('\n', '')
+            result=self.tc.tcos.info(string)
         except Exception, err:
             print_debug ( "ReadInfo(%s): ERROR, can't connect to XMLRPC server!!! error %s" %(string,err) )
             return ""
@@ -352,7 +322,7 @@ class TcosXmlRpc:
                 print_debug ( "GetStandalone() NO CONNECTION" )
                 return shared.NO_LOGIN_MSG
             try:
-                result=self.tc.tcos.standalone("get_user", "").replace('\n', '')
+                result=self.tc.tcos.standalone("get_user", "")
             except Exception, err:
                 print_debug("GetStandalone(get_user) Exception error: %s"%err)
                 return shared.NO_LOGIN_MSG
@@ -366,21 +336,21 @@ class TcosXmlRpc:
                 
         elif item == "get_process":
             try:
-                return self.tc.tcos.standalone("get_process", "").replace('\n', '')
+                return self.tc.tcos.standalone("get_process", "")
             except Exception, err:
                 print_debug("GetStandalone(get_process) Exception error: %s"%err)
                 return ""
         
         elif item == "get_server":
             try:
-                return self.tc.tcos.standalone("get_server", "").replace('\n', '')
+                return self.tc.tcos.standalone("get_server", "")
             except Exception, err:
                 print_debug("GetStandalone(get_server) Exception error %s"%err)
                 return ""
         
         elif item == "get_time":
             try:
-                return self.tc.tcos.standalone("get_time", "").replace('\n', '')
+                return self.tc.tcos.standalone("get_time", "")
             except Exception, err:
                 print_debug("GetStandalone(get_time) Exception error %s"%err)
                 return None
@@ -390,7 +360,7 @@ class TcosXmlRpc:
                 print_debug ( "GetStandalone() NO CONNECTION" )
                 return False
             try:
-                result=self.tc.tcos.standalone("get_exclude", "%s" %ingroup).replace('\n', '')
+                result=self.tc.tcos.standalone("get_exclude", "%s" %ingroup)
                 if result.find('error') == 0 or result == "" or result == "noexclude":
                     return False
                 else:
@@ -410,7 +380,7 @@ class TcosXmlRpc:
         cmd="--auth='%s:%s' --type=%s --text='%s' --username=%s" %(remote_user, remote_passwd, action, data, username )
         print_debug ("DBus() cmd=%s" %(cmd) )
         try:
-            return self.tc.tcos.dbus(cmd, remote_user, remote_passwd).replace('\n', '')
+            return self.tc.tcos.dbus(cmd, remote_user, remote_passwd)
         except Exception, err:
             print_debug("DBus Exception error %s"%err)
             return None
@@ -444,7 +414,7 @@ class TcosXmlRpc:
             return None
             
         try:
-            result=self.tc.tcos.sound("--showcontrols", "", user, passwd ).replace('\n', '')
+            result=self.tc.tcos.sound("--showcontrols", "", user, passwd )
         except Exception, err:
             print_debug("GetSoundChannels(--showcontrols) Exception error: %s"%err)
             return ""
@@ -479,7 +449,7 @@ class TcosXmlRpc:
             return None
 
         try:
-            result=self.tc.tcos.sound(mode, " \"%s\" " %(channel), user, passwd ).replace('\n', '')
+            result=self.tc.tcos.sound(mode, " \"%s\" " %(channel), user, passwd )
         except Exception, err:
             print_debug("GetSoundInfo() Exception error: %s"%err)
             return ""
@@ -508,7 +478,7 @@ class TcosXmlRpc:
             print_debug ( "SetSound() cookie=%s hostname=%s" %(user, passwd) )
 
         try:
-            result=self.tc.tcos.sound(mode, " \"%s\" \"%s\" " %(channel,value), user, passwd).replace('\n', '')
+            result=self.tc.tcos.sound(mode, " \"%s\" \"%s\" " %(channel,value), user, passwd)
         except Exception, err:
             print_debug("SetSound() Exception error: %s"%err)
             return ""
@@ -538,7 +508,7 @@ class TcosXmlRpc:
         try:
             result=self.tc.tcos.devices(mode, " \"%s\" " %(device), \
                                        xauth_cookie, \
-                                       remote_hostname ).replace('\n', '')
+                                       remote_hostname )
             self.lock=False
             if "error" in result:
                 print_debug ( "GetDevicesInfo(device=%s, mode=%s): ERROR, result contains error string!!!\n%s" %(device, mode, result))
@@ -699,6 +669,17 @@ class TcosXmlRpc:
         return self.tc.tcos.vlc("%s" %volume, "%s" %lock, \
                             self.main.config.GetVar("xmlrpc_username"), \
                             self.main.config.GetVar("xmlrpc_password") )
+    
+    
+    def dpms(self, action, ip=None):
+        print_debug("dpms() action=%s ip=%s"%(action, ip))
+        if ip: self.newhost(ip)
+        if action == "on" or action == "off" or action == "status":
+            return self.tc.tcos.dpms("%s" %action, \
+                        self.main.config.GetVar("xmlrpc_username"), \
+                        self.main.config.GetVar("xmlrpc_password") )
+        
+        return False
     
 if __name__ == '__main__':
     shared.debug = True

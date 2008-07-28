@@ -1,3 +1,15 @@
+tcosmonitor (0.2.15.2) unstable; urgency=low
+
+  * TcosActions.py tcos-devices-ng.py TcosXmlRpc.py
+    - Remove .replace('\n','') tcosxmlrpc don't return '\n' anymore
+  * TcosActions.py shared.py
+    - Create Menu groups
+  * tcosmonitor.glade TcosActions.py shared.py:
+    - Add DPMS menu action (switch on/off monitor energy saving)
+  * Update translations template and spanish es.po
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 28 Jul 2008 11:46:32 +0200
+
 tcosmonitor (0.2.15.1) unstable; urgency=low
 
   * LocalData.py TcosDBus.py

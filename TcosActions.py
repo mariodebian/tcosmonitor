@@ -623,10 +623,10 @@ class TcosActions:
             self.datatxt.insert_block( _("PCI buses: ") , image=shared.IMG_DIR + "info_pci.png" )
             
             pcilist=[]
-            allpci=self.main.xmlrpc.tc.tcos.pci("pci_all").replace('\n', '').split(' ')
+            allpci=self.main.xmlrpc.tc.tcos.pci("pci_all").split(' ')
             for pci_id in allpci:
                 if pci_id != "":
-                    pci_info=self.main.xmlrpc.tc.tcos.pci(pci_id).replace('\n', '')
+                    pci_info=self.main.xmlrpc.tc.tcos.pci(pci_id)
                     pcilist.append( [pci_id + " ", pci_info] )
             
             self.datatxt.insert_list( pcilist )
@@ -642,7 +642,7 @@ class TcosActions:
             self.datatxt.insert_block( _("Process running: "), image=shared.IMG_DIR + "info_proc.png"  )
             
             proclist=[]
-            allprocess=self.main.xmlrpc.ReadInfo("get_process").replace('\n', '').split('|')
+            allprocess=self.main.xmlrpc.ReadInfo("get_process").split('|')
             self.datatxt.insert_proc( allprocess )
             
         
@@ -713,7 +713,7 @@ class TcosActions:
             
             alldata=self.main.xmlrpc.tc.tcos.xorg("get", "", \
                  self.main.config.GetVar("xmlrpc_username"), \
-                 self.main.config.GetVar("xmlrpc_password")  ).replace('\n', '').split()
+                 self.main.config.GetVar("xmlrpc_password")  ).split()
             print_debug ( "populate_datatxt() %s" %( " ".join(alldata) ) )
             if alldata[0].find("error") == 0:
                 shared.error_msg( _("Error getting Xorg info:\n%s" ) %( " ".join(alldata)) )
@@ -868,8 +868,7 @@ class TcosActions:
                 """)
                 
                 self.datatxt.insert_block( _("PulseAudio stats") )
-                pulseaudioinfo=self.main.xmlrpc.GetSoundInfo(channel="", mode="--getserverinfo")
-                pulseaudioinfo=pulseaudioinfo.replace('\n','').split('|')
+                pulseaudioinfo=self.main.xmlrpc.GetSoundInfo(channel="", mode="--getserverinfo").split('|')
                 #print pulseaudioinfo
                 allpulseaudioinfo=[]
                 allpulseaudioinfo_trans=[]
@@ -1760,6 +1759,16 @@ class TcosActions:
             
             self.change_lockscreen(ip)
         
+        if action == 22:
+            # DPMS off
+            self.main.xmlrpc.dpms('off')
+            self.change_lockscreen(self.main.selected_ip)
+        
+        if action == 23:
+            # DPMS on
+            self.main.xmlrpc.dpms('on')
+            self.change_lockscreen(self.main.selected_ip)
+        
         crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
         return
 
@@ -2634,6 +2643,32 @@ class TcosActions:
                 self.main.xmlrpc.newhost(client)
                 self.change_lockscreen(client)
         
+        if action == 16:
+            # DPMS OFF
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No users logged.") )
+                return
+            
+            msg=_( _("Do you want to switch off the following monitors:%s?" )\
+                                                 %(allclients_logged_txt) )
+            if shared.ask_msg ( msg ):
+                self.main.worker=shared.Workers(self.main, None, None)
+                self.main.worker.set_for_all_action(self.action_for_clients,\
+                                                     allclients_logged, "dpmsoff" )
+            
+        if action == 17:
+            # DPMS ON
+            if len(allclients_logged) == 0:
+                shared.error_msg( _("No users logged.") )
+                return
+            
+            msg=_( _("Do you want to switch on the following monitors:%s?" )\
+                                                 %(allclients_logged_txt) )
+            if shared.ask_msg ( msg ):
+                self.main.worker=shared.Workers(self.main, None, None)
+                self.main.worker.set_for_all_action(self.action_for_clients,\
+                                                     allclients_logged, "dpmson" )
+                                                     
         crono(start1, "menu_event[%d]=\"%s\"" %(action, shared.allhost_menuitems[action] ) )
 
 
@@ -2713,6 +2748,18 @@ class TcosActions:
                     # #"\n<span style='background-color:#FFFFFF; color: #FFFFFF; margin-left: 20px; margin-right: 20px'>____</span>"+
                     # "")
                     #self.main.common.threads_leave("TcosActions:action_for_clients screenshot")
+                elif action == "dpmsoff":
+                    result=self.main.xmlrpc.dpms('off')
+                    print_debug("action_for_clients() DPMS off result=%s"%result)
+                    self.main.common.threads_enter("TcosActions::action_for_clients dpms off")
+                    self.change_lockscreen(ip)
+                    self.main.common.threads_leave("TcosActions::action_for_clients dpms off")
+                elif action == "dpmson":
+                    result=self.main.xmlrpc.dpms('on')
+                    self.main.common.threads_enter("TcosActions::action_for_clients dpms on")
+                    self.change_lockscreen(ip)
+                    self.main.common.threads_leave("TcosActions::action_for_clients dpms on")
+                    print_debug("action_for_clients() DPMS on result=%s"%result)
                 else:
                     self.main.xmlrpc.Exe(action)
             except Exception, err:
@@ -2747,17 +2794,22 @@ class TcosActions:
         #self.main.localdata.newhost(ip)
         status_net=self.main.localdata.IsBlockedNet(ip)
         status_screen=self.main.localdata.IsBlocked(ip)
-        print_debug ( "change_lockscreen(%s)=%s,%s" %(ip, status_screen, status_net) )
+        status_dpms=self.main.xmlrpc.dpms('status', ip)
+        print_debug ( "change_lockscreen(%s)=%s,%s,%s" %(ip, status_screen, status_net,status_dpms) )
         
         locked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
         locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
         locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
         unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
+        dpms_off_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_off.png')
+        dpms_on_image  = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_on.png')
         
         if status_screen and status_net:
             image=locked_net_screen_image
         elif status_screen == False and status_net:
             image=locked_net_image
+        elif status_screen == False and status_net == False and status_dpms == 'Off':
+            image=dpms_off_image
         elif status_screen and status_net == False:
             image=locked_image
         else:
@@ -3038,6 +3090,7 @@ class TcosActions:
         print_debug ( "RightClickMenuOne() creating menu" )
         self.main.menu=gtk.Menu()
         
+        totalhidemenus=0
         #menu header
         if path == None:        
             menu_items = gtk.MenuItem(_("Actions for selected host"))
@@ -3052,6 +3105,59 @@ class TcosActions:
             menu_items.show()
             
         #add all items in shared.onehost_menuitems
+        # shared.allhost_mainmenus contains menu groups
+        # [0] = menu group name
+        # [1] = menu group icon
+        # [2] = menu group submenus (index of shared.allhost_menuitems)
+        for mainmenu in shared.onehost_mainmenus:
+            print_debug("RightClickMenuOne() %s"%mainmenu)
+            # create menu gropu entry (with icon or not)
+            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
+                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
+                icon = gtk.Image()
+                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
+                menu_item.set_image(icon)
+            else:
+                menu_item=gtk.MenuItem(mainmenu[0])
+            
+            submenu = gtk.Menu()
+            count=0
+            # parse submenu items and create submenu
+            for i in mainmenu[2]:
+                _s=shared.onehost_menuitems[i]
+                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
+                    sub = gtk.ImageMenuItem(_s[0], True)
+                    icon = gtk.Image()
+                    icon.set_from_file(shared.IMG_DIR + _s[1])
+                    sub.set_image(icon)
+                else:
+                    sub=gtk.MenuItem(_s[0])
+                # show ???
+                if self.MustShowMenu(i, "menuone"):
+                    print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
+                    sub.connect("activate", self.on_rightclickmenuone_click, i)
+                    sub.show()
+                    count+=1
+                else:
+                    print_debug("RightClickMenuOne()    [HIDE] %s"%_s)
+                    sub.hide()
+                    totalhidemenus+=1
+                submenu.append(sub)
+            menu_item.set_submenu(submenu)
+            # if submenu is empty don't show
+            if count == 0:
+                menu_item.hide()
+            else:
+                menu_item.show()
+            # append to main menu
+            self.main.menu.append(menu_item)
+        if totalhidemenus > 0:
+            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
+            hide_items.set_sensitive(False)
+            hide_items.show()
+            self.main.menu.append(hide_items)
+        return
+        """
         
         for i in range( len(shared.onehost_menuitems) ):
             icon_file_found=False
@@ -3079,11 +3185,12 @@ class TcosActions:
                 menu_items.show()
             else:
                 menu_items.hide()
-            
+        """
     def RightClickMenuAll(self):
         """ menu for ALL clients"""
         self.main.allmenu=gtk.Menu()
         
+        totalhidemenus=0
         #menu headers
         if self.main.config.GetVar("selectedhosts") == 1:
             menu_items = gtk.MenuItem(_("Actions for selected hosts"))
@@ -3093,6 +3200,56 @@ class TcosActions:
         menu_items.set_sensitive(False)
         menu_items.show()
         
+        # shared.allhost_mainmenus contains menu groups
+        # [0] = menu group name
+        # [1] = menu group icon
+        # [2] = menu group submenus (index of shared.allhost_menuitems)
+        for mainmenu in shared.allhost_mainmenus:
+            # create menu gropu entry (with icon or not)
+            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
+                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
+                icon = gtk.Image()
+                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
+                menu_item.set_image(icon)
+            else:
+                menu_item=gtk.MenuItem(mainmenu[0])
+            
+            submenu = gtk.Menu()
+            count=0
+            # parse submenu items and create submenu
+            for i in mainmenu[2]:
+                _s=shared.allhost_menuitems[i]
+                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
+                    sub = gtk.ImageMenuItem(_s[0], True)
+                    icon = gtk.Image()
+                    icon.set_from_file(shared.IMG_DIR + _s[1])
+                    sub.set_image(icon)
+                else:
+                    sub=gtk.MenuItem(_s[0])
+                # show ???
+                if self.MustShowMenu(i, "menuall"):
+                    sub.connect("activate", self.on_rightclickmenuall_click, i)
+                    sub.show()
+                    count+=1
+                else:
+                    sub.hide()
+                    totalhidemenus+=1
+                submenu.append(sub)
+            menu_item.set_submenu(submenu)
+            # if submenu is empty don't show
+            if count == 0:
+                menu_item.hide()
+            else:
+                menu_item.show()
+            # append to main allmenu
+            self.main.allmenu.append(menu_item)
+        if totalhidemenus > 0:
+            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
+            hide_items.set_sensitive(False)
+            hide_items.show()
+            self.main.allmenu.append(hide_items)
+        return
+        """
         for i in range(len(shared.allhost_menuitems)):
             icon_file_found=False
             if shared.allhost_menuitems[i][1] != None:
@@ -3120,7 +3277,7 @@ class TcosActions:
             else:
                 menu_items.hide()
         
-        
+        """
         
     def on_hostlist_event(self, widget, event):
         if event.button == 3:

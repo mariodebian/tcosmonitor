@@ -214,6 +214,16 @@ appslist=[
 'tcos-devices-ng'
 ]
 
+# main one host menus
+###
+###   [ TEXT, ICON (in images dir), [submenus index] ]
+###
+onehost_mainmenus = [
+    [ _("Terminal actions") , None, [0,1,2,3,4,5,9,10,12,19,22,23] ],
+    [ _("User actions") , None, [6,7,11,20,21] ],
+    [ _("Audio, video and files"), None, [8,13,14,15,16,17,18]],
+]
+
 ###
 ###   [ TEXT, ICON (in images dir) ]
 ###
@@ -239,10 +249,25 @@ onehost_menuitems=[
  [ _("Demo mode (from this host)") , "menu_tiza.png" ],     #action=18
  [ _("Boot client (WakeOnLan)") , "menu_wol.png" ],                      #action=19
  [ _("Lock internet"), "menu_locknet.png" ] ,                 #action=20
- [ _("Unlock internet"), "menu_unlocknet.png" ]                 #action=21
+ [ _("Unlock internet"), "menu_unlocknet.png" ],              #action=21
+ [ _("DPMS Power off monitor"), "menu_dpms_off.png" ] ,     #action=22
+ [ _("DPMS Power on monitor"), "menu_dpms_on.png" ],     #action=23
  ]
 
 
+# main one host menus
+###
+###   [ TEXT, ICON (in images dir), [submenus index] ]
+###
+allhost_mainmenus = [
+    [ _("Terminal actions") , None, [0,1,2,3,4,5,13,16,17] ],
+    [ _("User actions") , None, [6,7,8,14,15] ],
+    [ _("Audio, video and files"), None, [9,10,11,12]],
+]
+
+###
+###   [ TEXT, ICON (in images dir) ]
+###
 allhost_menuitems=[
  [ _("Reboot all clients"), "menu_reboot.png"] ,                  #action=0
  [ _("Poweroff all clients"), "menu_poweroff.png"] ,              #action=1
@@ -259,7 +284,9 @@ allhost_menuitems=[
  [ _("Send files") , "menu_send.png" ],                          #action=12
  [ _("Boot All clients (WakeOnLan)") , "menu_wol.png" ],                          #action=13
  [ _("Lock internet in all connected users"), "menu_locknet.png" ] ,                 #action=14
- [ _("Unlock internet in all connected users"), "menu_unlocknet.png" ]                 #action=15
+ [ _("Unlock internet in all connected users"), "menu_unlocknet.png" ],              #action=15
+ [ _("DPMS Power off monitors"), "menu_dpms_off.png" ] ,     #action=16
+ [ _("DPMS Power on monitors"), "menu_dpms_on.png" ],     #action=17
  ]
 
 preferences_menus_always_show={"menuone":[0,1,11], "menuall":[4]}
@@ -284,6 +311,7 @@ preferences_menus={
 "ck_menu_wakeonlan":[   False, [19],   [13] ],
 "ck_menu_conference":[  True,  [],     [9] ],
 "ck_menu_net":[         True,  [20,21],[14,15] ],
+"ck_menu_dpms":[        True,  [22,23],[16,17] ],
 }
 
 

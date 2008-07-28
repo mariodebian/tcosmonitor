@@ -287,7 +287,7 @@ class TcosDevicesNG:
         print_debug ( "get_data() cdroms=%s" %(self.cdrom_devices) )
         for cdrom in self.cdrom_devices:
             # get device status
-            cdrom_status= self.xmlrpc.GetDevicesInfo(device="/dev/%s" %cdrom, mode="--getstatus").replace('\n','')
+            cdrom_status= self.xmlrpc.GetDevicesInfo(device="/dev/%s" %cdrom, mode="--getstatus")
             if cdrom_status == "0":
                 mount=True
                 umount=False
@@ -311,7 +311,7 @@ class TcosDevicesNG:
         print_debug ( "getremote_hdd() hdd=%s" %(self.hdd_devices) )
         for hdd in self.hdd_devices:
             # get device status
-            hdd_status= self.xmlrpc.GetDevicesInfo(device="/dev/%s" %hdd, mode="--getstatus").replace('\n','')
+            hdd_status= self.xmlrpc.GetDevicesInfo(device="/dev/%s" %hdd, mode="--getstatus")
             if hdd_status == "0":
                 mount=True
                 umount=False
@@ -332,11 +332,11 @@ class TcosDevicesNG:
 
 
     def getremote_floppy(self):
-        have_floppy=self.xmlrpc.GetDevicesInfo(device="/dev/fd0", mode="--exists").replace('\n','')
+        have_floppy=self.xmlrpc.GetDevicesInfo(device="/dev/fd0", mode="--exists")
         if have_floppy == "0":
             print_debug ( _("No floppy detected") )
             return
-        floppy_status=self.xmlrpc.GetDevicesInfo(device="/dev/fd0", mode="--getstatus").replace('\n','')
+        floppy_status=self.xmlrpc.GetDevicesInfo(device="/dev/fd0", mode="--getstatus")
         if floppy_status == "0":
             mount=True
             n=1
@@ -363,7 +363,7 @@ class TcosDevicesNG:
                 self.show_notification (  _("Floppy mounted. Ready for use.")  )
             elif args[0] == "umount":
                 self.show_notification (  _("Floppy umounted. You can extract it.")  )
-        floppy_status=self.xmlrpc.GetDevicesInfo(device="/dev/fd0", mode="--getstatus").replace('\n','')
+        floppy_status=self.xmlrpc.GetDevicesInfo(device="/dev/fd0", mode="--getstatus")
         if floppy_status == "0":
             ismounted=False
             n=1
@@ -385,7 +385,7 @@ class TcosDevicesNG:
                 return
             else:
                 dev=args[0]
-        hdd_status=self.xmlrpc.GetDevicesInfo(device="/dev/%s"%dev, mode="--getstatus").replace('\n','')
+        hdd_status=self.xmlrpc.GetDevicesInfo(device="/dev/%s"%dev, mode="--getstatus")
         if hdd_status == "0":
             ismounted=False
             n=1
@@ -411,7 +411,7 @@ class TcosDevicesNG:
                 self.show_notification (  _("Cdrom umounted. You can extract it.")  )
                 return
             
-        cdrom_status=self.xmlrpc.GetDevicesInfo(device="/dev/%s"%dev, mode="--getstatus").replace('\n','')
+        cdrom_status=self.xmlrpc.GetDevicesInfo(device="/dev/%s"%dev, mode="--getstatus")
         if cdrom_status == "0":
             ismounted=False
             n=1
@@ -519,7 +519,7 @@ class TcosDevicesNG:
         
         if fstype != "vfat":
             # if we know that device is vfat dont try to get type again
-            dtype=self.xmlrpc.GetDevicesInfo(device=device, mode="--gettype").replace('\n','')
+            dtype=self.xmlrpc.GetDevicesInfo(device=device, mode="--gettype")
             if dtype == "ntfs-3g" and mode == "--mount":
                 print_debug ( "mounter_remote() Ummm mounting a NTFS-3G, creating a thread" )
                 # create a thread
@@ -765,7 +765,7 @@ class TcosDevicesNG:
         devid=device.split('/')[2]
         remote_mnt="/mnt/%s" %(devid)
 
-        usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+        usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus")
         if usb_status == "0":
             mount=True
             n=1
@@ -894,7 +894,7 @@ class TcosDevicesNG:
             # umount remote device
             # check if remote is mounted (user can umount before from desktop icon)
             print_debug("cdrom_usb() GETSTATUS device=%s"%device)
-            status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+            status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus")
             try:
                 status=int(status)
                 if status == 0:
@@ -945,7 +945,7 @@ class TcosDevicesNG:
             
             if fstype == "swap" or fstype == "extended": return
             
-            usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+            usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus")
             if usb_status == "0":
                 mount=True
                 n=1
@@ -1026,7 +1026,7 @@ class TcosDevicesNG:
                 # umount remote device
                 # check if remote is mounted (user can umount before from desktop icon)
                 print_debug("usb() GETSTATUS device =%s"%device)
-                status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+                status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus")
                 try:
                     status=int(status)
                     if status == 0:
@@ -1082,7 +1082,7 @@ class TcosDevicesNG:
             
             if fstype == "swap" or fstype == "extended": return
             
-            usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+            usb_status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus")
             if usb_status == "0":
                 mount=True
                 n=1
@@ -1163,7 +1163,7 @@ class TcosDevicesNG:
                 # umount remote device
                 # check if remote is mounted (user can umount before from desktop icon)
                 print_debug("firewire() GETSTATUS device =%s"%device)
-                status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus").replace('\n','')
+                status=self.xmlrpc.GetDevicesInfo(device=device, mode="--getstatus")
                 try:
                     status=int(status)
                     if status == 0:
@@ -1191,7 +1191,7 @@ class TcosDevicesNG:
         
         print_debug("update_cdrom_usb() GETSTATUS device=%s action=%s"%(device,action) )
 
-        usb_status=self.xmlrpc.GetDevicesInfo(device, mode="--getstatus").replace('\n','')
+        usb_status=self.xmlrpc.GetDevicesInfo(device, mode="--getstatus")
         if usb_status == "0":
             ismounted=False
             n=1
@@ -1231,7 +1231,7 @@ class TcosDevicesNG:
             self.show_notification (  _("USB device %s mounted. Ready for use.") %(devid)  )
         
         print_debug("update_usb() GETSTATUS device=%s data=%s"%(device,data) )
-        usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus").replace('\n','')
+        usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus")
         if usb_status == "0":
             ismounted=False
             n=1
@@ -1270,7 +1270,7 @@ class TcosDevicesNG:
             self.show_notification (  _("Firewire device %s mounted. Ready for use.") %(devid)  )
         
         print_debug("update_firewire() GETSTATUS device=%s data=%s"%(device,data) )
-        usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus").replace('\n','')
+        usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus")
         if usb_status == "0":
             ismounted=False
             n=1
