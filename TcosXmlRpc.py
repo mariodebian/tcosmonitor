@@ -427,6 +427,52 @@ class TcosXmlRpc:
             number=len(result.split('|'))
             return result.split('|')[:number-1]
 
+    def GetSoundChannelsContents(self):
+        """
+        Exec soundctl.sh with some of these args
+            --showcontents          ( return all mixer channels )
+        """
+        
+        if self.main.name == "TcosVolumeManager":
+            user=self.main.xauth.get_cookie()
+            passwd=self.main.xauth.get_hostname()
+            if user == None:
+                print_debug ( "GetSoundChannelsContents() error loading cookie info" )
+                return []
+            print_debug ( "GetSoundChannelsContents() cookie=%s hostname=%s" %(user, passwd) )
+        else:
+            user=self.main.config.GetVar("xmlrpc_username")
+            passwd=self.main.config.GetVar("xmlrpc_password")
+
+        
+
+        if not self.connected:
+            print_debug ( "GetSoundChannelsContents() NO CONNECTION" )
+            return []
+            
+        try:
+            result=self.tc.tcos.sound("--showcontents", "", user, passwd )
+        except Exception, err:
+            print_debug("GetSoundChannelsContents(--showcontents) Exception error: %s"%err)
+            return []
+
+        if result.find('error') == 0:
+            print_debug ( "GetSoundChannelsContents(): ERROR, result contains error string!!!\n%s" %(result))
+            #self.main.write_into_statusbar( "ERROR: %s" %(result) )
+            return []
+        else:
+            channels=[]
+            tmp=result.split('#')
+            number=len(tmp)
+            for i in range(len(tmp)):
+                c=tmp[i].split(',')
+                if len(c) != 4:
+                    print_debug("***NOT CHANNEL*** c=%s"%c)
+                    continue
+                channels.append( {'name':c[0], 'type': c[1], 'level': c[2], 'mute': c[3]} )
+            return channels
+
+
     def GetSoundInfo(self, channel, mode="--getlevel"):
         """
         mode = "--getlevel"
@@ -462,10 +508,10 @@ class TcosXmlRpc:
 
     def SetSound(self, ip, channel, value, mode="--setlevel"):
         if channel == "":
-            return None
+            return {}
         if not self.connected:
             print_debug ( "SetSound() NO CONNECTION" )
-            return None
+            return {}
         user=self.main.config.GetVar("xmlrpc_username")
         passwd=self.main.config.GetVar("xmlrpc_password")
         
@@ -474,21 +520,26 @@ class TcosXmlRpc:
             passwd=self.main.xauth.get_hostname()
             if user == None:
                 print_debug ( "SetSound() error loading cookie info" )
-                return None
+                return {}
             print_debug ( "SetSound() cookie=%s hostname=%s" %(user, passwd) )
 
         try:
             result=self.tc.tcos.sound(mode, " \"%s\" \"%s\" " %(channel,value), user, passwd)
+            print_debug("SetSound() result=%s"%result)
         except Exception, err:
             print_debug("SetSound() Exception error: %s"%err)
-            return ""
+            return {}
 
         if result.find('error') == 0:
             print_debug ( "SetSound(): ERROR, result contains error string!!!\n%s" %(result))
             #self.main.write_into_statusbar( "ERROR: %s" %(result) )
-            return ""
+            return {}
         else:
-            return result
+            c=result.split(',')
+            if len(c) != 4:
+                print_debug("***NOT CHANNEL*** c=%s"%c)
+                return {}
+            return {'name':c[0], 'type': c[1], 'level': c[2], 'mute': c[3]}
 
     def GetDevicesInfo(self, device, mode="--getsize"):
         if not self.connected:

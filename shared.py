@@ -166,7 +166,38 @@ xmlremote_sslport=8999
 xmlremote_url="/RPC2"
 
 pulseaudio_soundserver_port=4713
-sound_only_channels=["Master", "Master Front", "PCM", "Line", "CD", "Mic", "Aux", "Headphone", "vol", "pcm", "line", "cd", "mic"]
+#
+#char *dev_name[SOUND_MIXER_NRDEVICES] = { \
+#        "Master", \
+#        "Bass", \
+#        "Treble", \
+#        "Synth", \
+#        "PCM", \
+#        "Speaker", \
+#        "Line", \
+#        "Mic", \
+#        "CD", \
+#        "Mix", \
+#        "PCM2", \
+#        "Record", \
+#        "Input", \
+#        "Output", \
+#        "Line 1", \
+#        "Line 2", \
+#        "Line 3", \
+#        "Digital1", \
+#        "Digital2", \
+#        "Digital3", \
+#        "Phone In", \
+#        "PhoneOut", \
+#        "Video", \
+#        "Radio", \
+#        "Monitor" };
+#
+sound_only_channels=["Master", "Master Front", "PCM", "Line", "CD", 
+                    "Mic", "Aux", "Headphone", "Speaker" , "PC Speaker", 
+                    "vol", "pcm", "line", "cd", "mic",
+                    "Mix", "PCM2"]
 
 hidden_network_ifaces=["lo", "sit0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
 

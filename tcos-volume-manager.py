@@ -147,8 +147,9 @@ class TcosVolumeManager:
             shared.error_msg( _("Error connecting with TcosXmlRpc in %s.") %(self.host) )
             sys.exit(1)
         
-        self.allchannels=self.xmlrpc.GetSoundChannels()
+        self.allchannels=self.xmlrpc.GetSoundChannelsContents()
         print_debug ("__init__() %s" %( self.allchannels ) )
+        
         
         #import shared
         gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
@@ -167,9 +168,16 @@ class TcosVolumeManager:
         self.scrolledwindow=self.ui.get_widget('scrolledwindow')
         self.scrolledwindow2=self.ui.get_widget('scrolledwindow2')
         
+        self.quitbutton=self.ui.get_widget('quitbutton')
+        self.quitbutton.connect('clicked', self.quitapp )
+        
         self.statusbar=self.ui.get_widget('statusbar')
         self.refreshbutton=self.ui.get_widget('refreshbutton')
         self.refreshbutton.connect('clicked', self.on_refresh_button )
+        
+        
+        # FIXME try to not focus on quitbutton
+        self.refreshbutton.grab_focus()
         
         self.get_channel_info()
         
@@ -187,10 +195,11 @@ class TcosVolumeManager:
         
         primary_channels=[]
         secondary_channels=[]
-        if self.allchannels != None:
+        if self.allchannels != None and len(self.allchannels) > 0:
             gobject.timeout_add( 50, self.write_into_statusbar, _("Loading channels info...") )
             for channel in self.allchannels:
-                if not channel in shared.sound_only_channels:
+                #if not channel in shared.sound_only_channels:
+                if not channel['name'] in shared.sound_only_channels:
                     secondary_channels.append(channel)
                     continue
                 primary_channels.append(channel)
@@ -205,6 +214,7 @@ class TcosVolumeManager:
         self.mainwindow.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
         self.mainwindow.set_title( _("Tcos Volume Manager")  )
         self.mainlabel.set_markup( _("<span size='large'><b>Sound mixer of %s host</b></span>") %(self.host) )
+        
         #self.mainwindow.show()
         
         #self.populate_mixer(primary_channels, self.scrolledwindow)
@@ -218,44 +228,51 @@ class TcosVolumeManager:
         scrollwindow.add_with_viewport(box1)
         
         for channel in all_channels:
-            frame = gtk.Frame(channel)
+            #frame = gtk.Frame(channel)
+            frame = gtk.Frame(channel['name'])
             #frame.show()
             box2 = gtk.VBox(True, 0)
             box2.set_border_width(0)
             
             ###########################################################
-            value=self.xmlrpc.GetSoundInfo(channel, mode="--getlevel")
-            value=value.replace('%','')
+            #value=self.xmlrpc.GetSoundInfo(channel, mode="--getlevel")
+            #value=value.replace('%','')
+            value=channel['level']
             try:
                 value=float(value)
             except:
                 value=0.0
-            
-            ismute=self.xmlrpc.GetSoundInfo(channel, mode="--getmute")
+            ctype=channel['type']
+            #ismute=self.xmlrpc.GetSoundInfo(channel, mode="--getmute")
+            ismute=channel['mute']
             if ismute == "off":
                 ismute = True
             else:
                 ismute = False
-            print_debug ( "populate_mixer() channel=%s ismute=%s volume level=%s" %(channel, ismute, value) )
+            #print_debug ( "populate_mixer() channel=%s ismute=%s volume level=%s" %(channel, ismute, value) )
+            print_debug ( "populate_mixer() channel=%s ismute=%s volume level=%s ctype=%s" %(channel['name'], ismute, value, ctype) )
             #############################################################
             adjustment = gtk.Adjustment(value=0,
                                          lower=0,
                                          upper=100,
                                          step_incr=1,
-                                         page_incr=1);            
-            
-            
-            volume_slider = None    
+                                         page_incr=1)
+            volume_slider = None
             volume_slider = gtk.VScale(adjustment)
-            
+            volume_slider.set_digits(0)
             volume_slider.set_inverted(True)
             
             volume_slider.set_size_request(30, 100)
             volume_slider.set_value_pos(gtk.POS_TOP)     
             volume_slider.set_value( value )
-            volume_slider.connect("button_release_event", self.slider_value_changed, adjustment, channel, self.host)
-            volume_slider.connect("scroll_event", self.slider_value_changed, adjustment, channel, self.host)
-            volume_slider.show()
+            #volume_slider.connect("button_release_event", self.slider_value_changed, adjustment, channel, self.host)
+            #volume_slider.connect("scroll_event", self.slider_value_changed, adjustment, channel, self.host)
+            volume_slider.connect("button_release_event", self.slider_value_changed, adjustment, channel['name'], self.host)
+            volume_slider.connect("scroll_event", self.slider_value_changed, adjustment, channel['name'], self.host)
+            if "volume" in ctype:
+                volume_slider.show()
+            else:
+                volume_slider.hide()
             
             box2.pack_start(volume_slider, False, True, 0)
             
@@ -263,8 +280,12 @@ class TcosVolumeManager:
             
             volume_checkbox=gtk.CheckButton(label=_("Mute"), use_underline=True)
             volume_checkbox.set_active(ismute)
-            volume_checkbox.connect("toggled", self.checkbox_value_changed, channel, self.host)
-            volume_checkbox.show()
+            #volume_checkbox.connect("toggled", self.checkbox_value_changed, channel, self.host)
+            volume_checkbox.connect("toggled", self.checkbox_value_changed, channel['name'], self.host)
+            if "switch" in ctype:
+                volume_checkbox.show()
+            else:
+                volume_checkbox.hide()
             
             
             box2.pack_start(volume_checkbox, False, True, 0)
@@ -292,7 +313,8 @@ class TcosVolumeManager:
         _("Changing value of %(channel)s channel, to %(value)s%%..." )\
          %{"channel":channel, "value":value} )
         
-        newvalue=self.xmlrpc.SetSound(ip, channel, str(value)+"%") 
+        tmp=self.xmlrpc.SetSound(ip, channel, str(value)+"%")
+        newvalue="%2d%%"%int(tmp['level'])
         
         self.write_into_statusbar( \
         _("Changed value of %(channel)s channel, to %(value)s" ) \
@@ -303,11 +325,13 @@ class TcosVolumeManager:
         if not value:
             value="off"
             self.write_into_statusbar( _("Unmuting %s channel..."  ) %(channel) )
-            newvalue=self.xmlrpc.SetSound(ip, channel, value="", mode="--setunmute")   
+            tmp=self.xmlrpc.SetSound(ip, channel, value="", mode="--setunmute")
+            newvalue=tmp['mute']
         else:
             value="on"
             self.write_into_statusbar( _("Muting %s channel..."  ) %(channel) )
-            newvalue=self.xmlrpc.SetSound(ip, channel, value="", mode="--setmute")
+            tmp=self.xmlrpc.SetSound(ip, channel, value="", mode="--setmute")
+            newvalue=tmp['mute']
         self.write_into_statusbar( _("Status of %(channel)s channel, is \"%(newvalue)s\""  )\
          %{"channel":channel, "newvalue":newvalue} ) 
 

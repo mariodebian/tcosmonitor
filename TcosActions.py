@@ -773,8 +773,9 @@ class TcosActions:
                 
                 channel_list=[]
                 tcos_sound_vars={}
-                tcos_sound_vars["allchannels"]=self.main.xmlrpc.GetSoundChannels()
-                print_debug ( "populate_datatxt() sound channels=%s" %(tcos_sound_vars["allchannels"]) )
+                #tcos_sound_vars["allchannels"]=self.main.xmlrpc.GetSoundChannels()
+                tcos_sound_vars["allchannels"]=self.main.xmlrpc.GetSoundChannelsContents()
+                #print_debug ( "populate_datatxt() sound channels=%s" %(tcos_sound_vars["allchannels"]) )
                 
                 counter=0
                 self.main.volume_sliders=[]
@@ -792,33 +793,40 @@ class TcosActions:
                 for channel in tcos_sound_vars["allchannels"]:
                     volumebutton=None
                     # only show channel in list
-                    if not channel in shared.sound_only_channels:
+                    if not channel['name'] in shared.sound_only_channels:
+                        print_debug("populate_datatxt() *** AUDIO CHANNEL HIDDEN*** channel=%s"%channel)
                         continue
                     txt="""
                     <div style='text-align:center; background-color:#f3d160 ; margin-left: 25%%; margin-right: 25%%'>
                     <span style='font-size: 120%%'>%s: </span>
-                    """ %(channel)
+                    """ %(channel['name'])
                     
                     
-                    value=self.main.xmlrpc.GetSoundInfo(channel, mode="--getlevel")
-                    value=value.replace('%','')
+                    #value=self.main.xmlrpc.GetSoundInfo(channel, mode="--getlevel")
+                    #value=value.replace('%','')
+                    value=channel['level']
                     try:
                         value=float(value)
                     except:
                         value=0.0
                     
-                    ismute=self.main.xmlrpc.GetSoundInfo(channel, mode="--getmute")
+                    #ismute=self.main.xmlrpc.GetSoundInfo(channel, mode="--getmute")
+                    ismute=channel['mute']
                     if ismute == "off":
                         ismute = True
                     else:
                         ismute = False
                     
-                    print_debug ( "populate_datatxt() channel=%s ismute=%s volume level=%s" %(channel, ismute, value) )
+                    ctype=channel['type']
+                    print_debug ( "populate_datatxt() channel=%s ismute=%s volume level=%s ctype=%s" %(channel['name'], ismute, value, ctype) )
                     ############ mute checkbox ##################
                     volume_checkbox=gtk.CheckButton(label=_("Mute"), use_underline=True)
                     volume_checkbox.set_active(ismute)
-                    volume_checkbox.connect("toggled", self.checkbox_value_changed, channel, ip)
-                    volume_checkbox.show()
+                    volume_checkbox.connect("toggled", self.checkbox_value_changed, channel['name'], ip)
+                    if "switch" in ctype:
+                        volume_checkbox.show()
+                    else:
+                        volume_checkbox.hide()
                     self.main.volume_checkboxes.append(volume_checkbox)
                     
                     txt+="<input type='checkbox' name='self.main.volume_checkboxes' index='%s' />" %(counter)
@@ -833,11 +841,14 @@ class TcosActions:
                     volume_slider = gtk.HScale(adjustment)
                     volume_slider.set_size_request(100, 30)
                     volume_slider.set_value_pos(gtk.POS_RIGHT)
-                        
+                    volume_slider.set_digits(0)
                     volume_slider.set_value( value )
-                    volume_slider.connect("button_release_event", self.slider_value_changed, adjustment, channel, ip)
-                    volume_slider.connect("scroll_event", self.slider_value_changed, adjustment, channel, ip)
-                    volume_slider.show()
+                    volume_slider.connect("button_release_event", self.slider_value_changed, adjustment, channel['name'], ip)
+                    volume_slider.connect("scroll_event", self.slider_value_changed, adjustment, channel['name'], ip)
+                    if "volume" in ctype:
+                        volume_slider.show()
+                    else:
+                        volume_slider.hide()
                     self.main.volume_sliders.append(volume_slider)
                     txt+="<input type='slider' name='self.main.volume_sliders' index='%s' />" %(counter)
                     
@@ -920,7 +931,8 @@ class TcosActions:
         _("Changing value of %(channel)s channel, to %(value)s%%..." )\
          %{"channel":channel, "value":value} )
         
-        newvalue=self.main.xmlrpc.SetSound(ip, channel, str(value)+"%") 
+        tmp=self.main.xmlrpc.SetSound(ip, channel, str(value)+"%")
+        newvalue="%2d%%"%int(tmp['level'])
         
         self.main.write_into_statusbar( \
         _("Changed value of %(channel)s channel, to %(value)s" ) \
@@ -931,11 +943,13 @@ class TcosActions:
         if not value:
             value="off"
             self.main.write_into_statusbar( _("Unmuting %s channel..."  ) %(channel) )
-            newvalue=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setunmute")   
+            tmp=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setunmute")
+            newvalue=tmp['mute']
         else:
             value="on"
             self.main.write_into_statusbar( _("Muting %s channel..."  ) %(channel) )
-            newvalue=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setmute")
+            tmp=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setmute")
+            newvalue=tmp['mute']
         self.main.write_into_statusbar( _("Status of %(channel)s channel, is \"%(newvalue)s\""  )\
          %{"channel":channel, "newvalue":newvalue} )
         
