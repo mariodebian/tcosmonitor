@@ -89,6 +89,10 @@ class TcosPreferences:
         # add signal changed to scan_method to enable/disable button on the fly
         #self.main.pref_combo_scan_method.connect('changed', self.on_scan_method_change)
         
+        # listmode method
+        self.main.pref_combo_listmode = self.main.ui.get_widget('combo_listmode')
+        self.populate_select(self.main.pref_combo_listmode, shared.list_modes )
+        
         
         # checkboxes
         self.main.pref_populatelistatstartup = self.main.ui.get_widget('ck_showliststartup')
@@ -163,6 +167,9 @@ class TcosPreferences:
              self.main.config.SetVar("scan_network_method", "ping")
         else:
             self.main.config.SetVar("scan_network_method", "static")
+        
+        active=self.main.pref_combo_listmode.get_active()
+        self.main.config.SetVar("listmode", shared.list_modes[active][0])
         
         self.main.config.SetVar("statichosts", self.main.static.get_static_conf() )
         
@@ -287,6 +294,8 @@ class TcosPreferences:
         self.set_active_in_select(self.main.pref_vlc_method_send,\
                          self.main.config.GetVar("vlc_method_send"))
         
+        self.set_active_in_select(self.main.pref_combo_listmode, \
+                        self.main.config.GetVar("listmode") )
         
         # populate checkboxes
         self.populate_checkboxes(self.main.pref_populatelistatstartup, "populate_list_at_startup")
@@ -347,6 +356,18 @@ class TcosPreferences:
         # make menus
         self.main.actions.RightClickMenuOne(None)
         self.main.actions.RightClickMenuAll()
+        
+        listmode=self.main.config.GetVar("listmode")
+        if listmode == 'list':
+            self.main.viewtabs.set_property('show-tabs', False)
+            self.main.viewtabs.set_current_page(0)
+        elif listmode == 'icons':
+            self.main.viewtabs.set_property('show-tabs', False)
+            self.main.viewtabs.set_current_page(1)
+        else:
+            self.main.viewtabs.set_property('show-tabs', True)
+            self.main.viewtabs.set_current_page(0)
+        
         print_debug("populate_pref() done")
     
     def populate_checkboxes(self, widget, varname):
@@ -361,11 +382,14 @@ class TcosPreferences:
         return
                   
     def populate_select(self, widget, values):
-        valuelist = gtk.ListStore(str)
+        valuelist = gtk.ListStore(str,str)
         for value in values:
-            valuelist.append([value.split()[0]])
+            if type(value) == type([]):
+                valuelist.append([value[0],value[1]])
+            else:
+                valuelist.append([value.split()[0],value.split()[0]])
         widget.set_model(valuelist)
-        widget.set_text_column(0)
+        widget.set_text_column(1)
         model=widget.get_model()
         return
     

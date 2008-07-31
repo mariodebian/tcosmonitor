@@ -1,3 +1,18 @@
+tcosmonitor (0.2.16~rc1) unstable; urgency=low
+
+  Icons rules pre-release:
+
+  * Add TcosIconView.py and modify GUI to show list and iconview
+  * shared.py TcosActions.py TcosPreferences.py
+    - Add new var listmode
+  * TcosActions.py TcosCommon.py:
+    - When drag launcher use glob.glob and use gconf to read GNOME Icon theme
+  * LocalData.py:
+    - New function (not used yet) get_arptable( IP, MAC and ifaces)
+  * Update templates and Spanish translation
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 01 Aug 2008 00:12:11 +0200
+
 tcosmonitor (0.2.15.3) unstable; urgency=low
 
   * TcosActions.py TcosXmlRpc.py shared.py tcos-volume-manager.glade

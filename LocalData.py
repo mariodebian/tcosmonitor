@@ -67,6 +67,7 @@ class LocalData:
         self.num_process=None
         self.time_login=None
         self.allhostdata=[]
+        self.arptable=[]
         if self.main:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
     
@@ -672,14 +673,30 @@ class LocalData:
         
         # no time
         return "---"
-        
+
+    def get_arptable(self):
+        """
+        Get a list of dictionaries with IP address MAC and iface
+        """
+        data=[]
+        names=['IP address', 'HW type', 'Flags', 'HW address', 'Mask', 'Device']
+        f=open("/proc/net/arp", 'r')
+        for l in f.readlines():
+            if l.startswith("IP address"): continue
+            tmp=l.strip().split()
+            data.append({'ip':tmp[0], 'mac':tmp[3], 'iface':tmp[5]})
+        f.close()
+        self.arptable=data
+        return data
+
 if __name__ == '__main__':
     shared.debug=True
     local=LocalData (None)
     import sys
-    print local.GetLast(sys.argv[1])
+    #print local.GetLast(sys.argv[1])
     #local.GetAllClients()
     #local.GetHostname("192.168.0.2")
     #local.GetHostname("192.168.0.10")
     #local.GetUsername("192.168.0.10")
     #local.GetTimeLogged("192.168.0.10")
+    print local.get_arptable()

@@ -69,6 +69,12 @@ class Initialize:
 
         self.main.statusbar=self.ui.get_widget('statusbar')
         
+        self.main.viewtabs=self.ui.get_widget('viewtabs')
+        self.main.viewtabs.set_property('show-tabs', False)
+        #for m in dir(self.main.viewtabs):
+        #    if "page" in m: print m
+        #print "get_n_pages", self.main.viewtabs.get_n_pages()
+        #print "set_current_page", self.main.viewtabs.set_current_page(2))
         
         self.ask_mode=None
         
@@ -159,33 +165,6 @@ class Initialize:
             self.main.abouttcos_donatecheck.set_active(True)
         
         
-
-
-    """
-    def initabout(self):
-        self.main.about = self.main.ui.get_widget('aboutdialog')
-        self.main.about.hide()
-        self.main.about.set_icon_from_file(shared.IMG_DIR +\
-                                     'tcos-icon-32x32.png')
-        self.main.about.set_version(shared.version)
-        self.main.about.set_website(shared.website)    
-        self.main.about.set_website_label(shared.website_label)
-        self.main.about.connect("response", self.on_about_response)
-        self.main.about.connect("close", self.on_about_close)
-        self.main.about.connect("delete_event", self.on_about_close)
-        #self.main.about.about_dialog_set_url_hook(on_url_click)
-        #gtk.about_dialog_set_url_hook(self.on_url_click)
-
-    def on_about_response(self, dialog, response, *args):
-        #http://www.async.com.br/faq/pygtk/index.py?req=show&file=faq10.013.htp
-        if response < 0:
-            dialog.hide()
-            dialog.emit_stop_by_name('response')
-    
-    def on_about_close(self, widget, event=None):
-        self.main.about.hide()
-        return True
-    """
     
     def initask(self):
         self.main.ask_ip=None

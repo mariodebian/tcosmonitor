@@ -94,7 +94,7 @@ import TcosActions
 import TcosXauth
 import TcosStaticHosts
 import TcosPreferences
-
+import TcosIconView
 
 class TcosMonitor:
     def __init__(self):
@@ -169,6 +169,7 @@ class TcosMonitor:
         self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
         self.xauth=TcosXauth.TcosXauth(self)
         self.preferences=TcosPreferences.TcosPreferences(self)
+        self.iconview=TcosIconView.TcosIconView(self)
         
         
         

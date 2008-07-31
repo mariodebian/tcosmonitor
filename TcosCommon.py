@@ -48,6 +48,7 @@ class TcosCommon:
         self.thread_lock=False
         self.vars={}
         print_debug("__init__()")
+        self.theme=None
         pass
 
     def get_username(self):
@@ -226,6 +227,18 @@ class TcosCommon:
             if not self.thread_lock: return
             sleep(0.1)
 
+    def get_icon_theme(self):
+        if self.theme: return self.theme
+        try:
+            import gconf
+        except:
+            print_debug("get_icon_theme() conf module not installed")
+            return None
+        c=gconf.client_get_default()
+        self.theme=c.get_string("/desktop/gnome/interface/icon_theme")
+        print_debug("get_icon_theme() readed gconf theme=%s"%self.theme)
+        return self.theme
+
 if __name__ == '__main__':
     shared.debug=True
     app=TcosCommon(None)
@@ -234,3 +247,4 @@ if __name__ == '__main__':
     #print app.get_all_my_ips()
     #print app.get_extensions()
     app.init_all_extensions(extfilter="menu_one")
+    print app.get_icon_theme()

@@ -32,6 +32,7 @@ import string
 from random import Random
 import subprocess,signal
 from shutil import copy
+import glob
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
@@ -174,6 +175,7 @@ class TcosActions:
                 # clean treeview
                 model=self.main.tabla.get_model()
                 model.clear()
+                self.main.iconview.clear()
                 return
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
             # populate_list in a thread
@@ -265,11 +267,13 @@ class TcosActions:
         self.main.ask.hide()
         return True
     
-    def on_drag_data_received( self, widget, context, x, y, selection, targetType, time):
+    def on_drag_data_received( self, widget, context, x, y, selection, targetType, dtime):
         files = selection.data.split('\n',1)
+        start1=time()
+        print_debug("on_drag_data_received() files=%s dtime=%s"%(files,dtime))
         for f in files:
             if f:
-                desktop = f.strip()
+                desktop = f.strip().replace('%20', ' ')
                 break
                    
         if desktop.startswith('file:///') and desktop.lower().endswith('.desktop') and os.path.isfile(desktop[7:]):
@@ -279,12 +283,32 @@ class TcosActions:
             data=fd.readlines()
             fd.close()
             
-            icons_path=["/usr/share/app-install/icons/", "/usr/share/icons/hicolor/48x48/apps/", 
-                        "/usr/share/icons/hicolor/32x32/apps/", "/usr/share/icons/hicolor/24x24/apps/", 
-                        "/usr/share/icons/gnome/48x48/apps/", "/usr/share/icons/gnome/32x32/apps/", 
-                        "/usr/share/pixmaps/", "/usr/share/icons/gnome/32x32/devices/"]
+            # try to load gnome theme with gconf
+            mytheme=[]
+            theme=self.main.common.get_icon_theme()
+            print_debug("on_drag_data_received() gconf theme=%s"%theme)
+            
+            """
+            icons_path=["/usr/share/app-install/icons/",
+                        "/usr/share/icons/hicolor/48x48/apps/", 
+                        "/usr/share/icons/hicolor/32x32/apps/",
+                        "/usr/share/icons/hicolor/24x24/apps/", 
+                        "/usr/share/icons/gnome/48x48/apps/",
+                        "/usr/share/icons/gnome/32x32/apps/", 
+                        "/usr/share/pixmaps/",
+                        "/usr/share/icons/gnome/32x32/devices/"]
             icons_extensions=[".png", "", ".xpm"]
+            """
             str_image=""
+            files=[]
+            
+            if theme and os.path.isdir("/usr/share/icons/%s"%theme):
+                    files+=glob.glob("/usr/share/icons/%s/48x48/*.png"%(theme))
+            
+            files+=glob.glob("/usr/share/icons/hicolor/48x48/*/*.png") + \
+                   glob.glob("/usr/share/icons/gnome/48x48/*/*.png") + \
+                   glob.glob("/usr/share/pixmaps/*png") +\
+                   glob.glob("/usr/share/pixmaps/*xpm")
             
             for line in data:
                 if line != '\n':
@@ -296,6 +320,14 @@ class TcosActions:
                         line=line.replace('\n', '')
                         action, image_name=line.split("=",1)                        
                         if not os.path.isfile(image_name):
+                            start2=time()
+                            for f in files:
+                                if image_name in f or image_name.replace('_', '-') in f:
+                                    str_image=f
+                                    crono(start2, "on_drag_data_received() ICON FOUND AT %s"%f )
+                                    break
+                            
+                            """
                             for ipath in icons_path:                    
                                 for ext in icons_extensions:
                                     print_debug("searching icon=%s in %s extension=%s" %(image_name, ipath, ext))
@@ -305,6 +337,7 @@ class TcosActions:
                                         break
                                 if str_image != "": break
                                 str_image=""
+                            """
                         else:
                             str_image=image_name
                                     
@@ -312,12 +345,14 @@ class TcosActions:
                 shared.error_msg( _("%s is not application") %(os.path.basename(desktop[7:])) )
             else:
                 if len(str_image) <1:
+                    print_debug("on_drag_data_received() image '%s' not found"%image_name)
                     self.main.image_entry.set_from_stock(gtk.STOCK_DIALOG_QUESTION, 4)
                 else:
                     self.main.image_entry.set_from_file(str_image)
                 self.main.ask_entry.set_text(str_exec)
         else:
             shared.error_msg( _("%s is not application") %(os.path.basename(desktop[7:])) )
+        crono(start1, "on_drag_data_received() end" )
         return True
     
     def on_ask_exec_click(self, widget):
@@ -973,6 +1008,8 @@ class TcosActions:
         self.main.progressbutton.show()
         self.set_progressbar( _("Searching info of hosts..."), 0)
         self.model.clear()
+        if self.main.iconview.isenabled():
+                self.main.iconview.clear()
         #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions:populate_hostlist show progressbar")
         
@@ -1011,7 +1048,8 @@ class TcosActions:
             self.main.xmlrpc.newhost (host)
             
             ip=host
-            
+            standalone=False
+            logged=False
             print_debug("populate_hostlist() => get username")
             username=self.main.localdata.GetUsername(ip)
             
@@ -1040,8 +1078,10 @@ class TcosActions:
             print_debug("populate_hostlist() => get time logged")
             if self.main.xmlrpc.IsStandalone(ip):
                 time_logged=self.main.xmlrpc.GetStandalone("get_time")
+                standalone=True
             else:
                 time_logged=self.main.localdata.GetTimeLogged(ip)
+                standalone=False
             
             if not time_logged or time_logged == "" or time_logged.startswith('error: tcos-last'):
                 time_logged="---"
@@ -1058,8 +1098,10 @@ class TcosActions:
             print_debug("populate_hostlist() => get is logged")
             if self.main.localdata.IsLogged(ip):
                 image_logged=logged_image
+                logged=True
             else:
                 image_logged=unlogged_image
+                logged=False
             
             print_debug("populate_hostlist() => get is blocked")
             if self.main.localdata.IsBlocked(host):
@@ -1081,6 +1123,15 @@ class TcosActions:
                 image_blocked=locked_image
             else:
                 image_blocked=unlocked_image
+            
+            if self.main.iconview.isenabled():
+                data={'ip':ip, 'hostname':hostname, 'host':host, 
+                      'standalone':standalone, 'username':username,
+                      'blocked_screen':blocked_screen, 'blocked_net': blocked_net,
+                      'logged':logged, 'time_logged':time_logged}
+                self.main.common.threads_enter("TcosActions:populate_hostlist generate_icon")
+                self.main.iconview.generate_icon(data)
+                self.main.common.threads_leave("TcosActions:populate_hostlist generate_icon")
             
             #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions:populate_hostlist print data")
@@ -1136,12 +1187,16 @@ class TcosActions:
     
     def menu_event_one(self, action):
         start1=time()
-        (model, iter) = self.main.tabla.get_selection().get_selected()
-        if iter == None:
-            print_debug( "menu_event_one() not selected thin client !!!" )
-            return
-        self.main.selected_host=model.get_value(iter,COL_HOST)
-        self.main.selected_ip=model.get_value(iter, COL_IP)
+        if self.main.iconview.isactive():
+            self.main.selected_ip=self.main.iconview.get_selected()
+            self.main.selected_host=self.main.iconview.get_host(self.main.selected_ip)
+        else:
+            (model, iter) = self.main.tabla.get_selection().get_selected()
+            if iter == None:
+                print_debug( "menu_event_one() not selected thin client !!!" )
+                return
+            self.main.selected_host=model.get_value(iter,COL_HOST)
+            self.main.selected_ip=model.get_value(iter, COL_IP)
         
         if not self.doaction_onthisclient(action, self.main.selected_ip):
             # show a msg
@@ -2028,9 +2083,11 @@ class TcosActions:
                     print_debug("menu_event_all() errors=%s"%errors)
                     self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%" ".join(errors))
             return
-                
+        
         # don't make actions in clients not selected
-        if self.main.config.GetVar("selectedhosts") == 1:
+        if self.main.iconview.ismultiple():
+            allclients=self.main.iconview.get_multiple()
+        elif not self.main.iconview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
             allclients=[]
             model=self.main.tabla.get_model()
             rows = []
@@ -3099,7 +3156,7 @@ class TcosActions:
         return False
 
 
-    def RightClickMenuOne(self, path):
+    def RightClickMenuOne(self, path, model=None):
         """ menu for one client"""
         print_debug ( "RightClickMenuOne() creating menu" )
         self.main.menu=gtk.Menu()
@@ -3112,7 +3169,8 @@ class TcosActions:
             menu_items.set_sensitive(False)
             menu_items.show()
         else:
-            model=self.main.tabla.get_model()
+            if not model:
+                model=self.main.tabla.get_model()
             menu_items = gtk.MenuItem( _("Actions for %s") %(model[path][1]) )
             self.main.menu.append(menu_items)
             menu_items.set_sensitive(False)
@@ -3124,7 +3182,7 @@ class TcosActions:
         # [1] = menu group icon
         # [2] = menu group submenus (index of shared.allhost_menuitems)
         for mainmenu in shared.onehost_mainmenus:
-            print_debug("RightClickMenuOne() %s"%mainmenu)
+            #print_debug("RightClickMenuOne() %s"%mainmenu)
             # create menu gropu entry (with icon or not)
             if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
                 menu_item = gtk.ImageMenuItem(mainmenu[0], True)
@@ -3148,12 +3206,12 @@ class TcosActions:
                     sub=gtk.MenuItem(_s[0])
                 # show ???
                 if self.MustShowMenu(i, "menuone"):
-                    print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
+                    #print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
                     sub.connect("activate", self.on_rightclickmenuone_click, i)
                     sub.show()
                     count+=1
                 else:
-                    print_debug("RightClickMenuOne()    [HIDE] %s"%_s)
+                    #print_debug("RightClickMenuOne()    [HIDE] %s"%_s)
                     sub.hide()
                     totalhidemenus+=1
                 submenu.append(sub)
@@ -3207,6 +3265,8 @@ class TcosActions:
         totalhidemenus=0
         #menu headers
         if self.main.config.GetVar("selectedhosts") == 1:
+            menu_items = gtk.MenuItem(_("Actions for selected hosts"))
+        elif self.main.iconview.ismultiple():
             menu_items = gtk.MenuItem(_("Actions for selected hosts"))
         else:
             menu_items = gtk.MenuItem(_("Actions for all hosts"))

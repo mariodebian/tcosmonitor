@@ -12,6 +12,7 @@
 ../extensions/template.py
 ../TcosXmlRpc.py
 ../TcosMonitorDaemon.py
+../TcosIconView.py
 ../TcosConf.py
 ../Initialize.py
 ../tcos-volume-manager.glade

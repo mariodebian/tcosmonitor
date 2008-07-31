@@ -101,6 +101,11 @@ vlc_methods_send=[
 "http-MPEG1"
 ]
 
+list_modes=[
+['list',_("Traditional list only")],
+['icons',_("Icons only")],
+['both',_("Lists and icons with tabs")],
+    ]
 
 DefaultConfig=[
 ["populate_list_at_startup", 0, "int"],
@@ -135,7 +140,8 @@ DefaultConfig=[
 ["show_donate", 1, "int"],
 ["visible_menus", "", "str"],
 ["enable_sslxmlrpc", 0, "int"],
-["ports_tnc", "", "str"]
+["ports_tnc", "", "str"],
+["listmode", "list", "str"]
 ]
 
 #
@@ -250,9 +256,9 @@ appslist=[
 ###   [ TEXT, ICON (in images dir), [submenus index] ]
 ###
 onehost_mainmenus = [
-    [ _("Terminal actions") , None, [0,1,2,3,4,5,9,10,12,19,22,23] ],
-    [ _("User actions") , None, [6,7,11,20,21] ],
-    [ _("Audio, video and files"), None, [8,13,14,15,16,17,18]],
+    [ _("Terminal actions") , None, [0,2,3,4,5,22,23,9,10,12,19,1] ],
+    [ _("User actions") , None, [11,13,14,15,20,21,6,7] ],
+    [ _("Audio, video and files"), None, [8,17,16,18]],
 ]
 
 ###
@@ -293,7 +299,7 @@ onehost_menuitems=[
 allhost_mainmenus = [
     [ _("Terminal actions") , None, [0,1,2,3,4,5,13,16,17] ],
     [ _("User actions") , None, [6,7,8,14,15] ],
-    [ _("Audio, video and files"), None, [9,10,11,12]],
+    [ _("Audio, video and files"), None, [10,12,11,9]],
 ]
 
 ###
