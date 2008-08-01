@@ -53,8 +53,6 @@ class TcosIconView(object):
                     [ _("Network locked"), 'blocked_net'],
                         ]
         self.default_tip = _("Place mouse on any computer to see brief info about it.")
-        #txt="IP: %s\nHostname: %s\nUsername: %s\nLogged: %s\nTime logged: %s\nNet bloqued: %s\nScreen locked: %s\n"\
-        #       %(ip,data['hostname'], data['username'], data['logged'], data['time_logged'], data['blocked_net'], data['blocked_screen'])
         
         self.icon_tooltips = None
         self.hosts={}
@@ -67,10 +65,6 @@ class TcosIconView(object):
         self.iconview.props.has_tooltip = True
         self.iconview.connect("motion-notify-event", self.on_iconview_event)
         self.iconview.connect("button_press_event", self.on_iconview_click)
-        #self.main.tabla.connect_object("button_press_event", self.main.actions.on_hostlist_event, self.main.menu)
-        for m in dir(self.iconview):
-            if "sel" in m:
-                print m
 
     def isenabled(self):
         """

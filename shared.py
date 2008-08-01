@@ -104,12 +104,13 @@ vlc_methods_send=[
 list_modes=[
 ['list',_("Traditional list only")],
 ['icons',_("Icons only")],
-['both',_("Lists and icons with tabs")],
+['class',_("Simulate classroom")],
+['both',_("Lists, icons and classroom with tabs")],
     ]
 
 DefaultConfig=[
 ["populate_list_at_startup", 0, "int"],
-["work_as_cyber_mode", 0, "int"],
+#["work_as_cyber_mode", 0, "int"],
 ["refresh_interval", 10, "int"],
 ["cache_timeout", 0, "int"],
 ["actions_timeout", 0, "int"],
@@ -141,7 +142,9 @@ DefaultConfig=[
 ["visible_menus", "", "str"],
 ["enable_sslxmlrpc", 0, "int"],
 ["ports_tnc", "", "str"],
-["listmode", "list", "str"]
+["listmode", "list", "str"],
+["menugroups", 1, "int"],
+["positions", "", "str"]
 ]
 
 #
@@ -256,9 +259,9 @@ appslist=[
 ###   [ TEXT, ICON (in images dir), [submenus index] ]
 ###
 onehost_mainmenus = [
-    [ _("Terminal actions") , None, [0,2,3,4,5,22,23,9,10,12,19,1] ],
-    [ _("User actions") , None, [11,13,14,15,20,21,6,7] ],
-    [ _("Audio, video and files"), None, [8,17,16,18]],
+    [ _("Terminal actions") , "active.png", [0,2,3,4,5,22,23,9,10,12,19,1] ],
+    [ _("User actions") , "logged.png", [11,13,14,15,20,21,6,7] ],
+    [ _("Audio, video and files"), "multimedia.png", [8,17,16,18]],
 ]
 
 ###
@@ -297,9 +300,9 @@ onehost_menuitems=[
 ###   [ TEXT, ICON (in images dir), [submenus index] ]
 ###
 allhost_mainmenus = [
-    [ _("Terminal actions") , None, [0,1,2,3,4,5,13,16,17] ],
-    [ _("User actions") , None, [6,7,8,14,15] ],
-    [ _("Audio, video and files"), None, [10,12,11,9]],
+    [ _("Terminal actions") , "active.png", [0,1,2,3,4,5,13,16,17] ],
+    [ _("User actions") , "logged.png", [6,7,8,14,15] ],
+    [ _("Audio, video and files"), "multimedia.png", [10,12,11,9]],
 ]
 
 ###

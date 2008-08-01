@@ -96,7 +96,7 @@ class TcosPreferences:
         
         # checkboxes
         self.main.pref_populatelistatstartup = self.main.ui.get_widget('ck_showliststartup')
-        self.main.pref_cybermode = self.main.ui.get_widget('ck_cybermode')
+        #self.main.pref_cybermode = self.main.ui.get_widget('ck_cybermode')
         self.main.pref_systemprocess = self.main.ui.get_widget('ck_systemprocess')
         self.main.pref_threadscontrol = self.main.ui.get_widget('ck_threadscontrol')
         self.main.pref_enable_sslxmlrpc = self.main.ui.get_widget('ck_enable_sslxmlrpc')
@@ -113,6 +113,8 @@ class TcosPreferences:
         self.main.pref_networkinfo = self.main.ui.get_widget('ck_networkinfo')
         self.main.pref_xorginfo = self.main.ui.get_widget('ck_xorginfo')
         self.main.pref_soundserverinfo = self.main.ui.get_widget('ck_soundserverinfo')
+        
+        self.main.pref_menugroups = self.main.ui.get_widget('ck_menugroups')
         
         # menus show hide
         for menu in shared.preferences_menus:
@@ -153,7 +155,7 @@ class TcosPreferences:
         self.main.config.SetVar("tcosmonitorversion", shared.version )
         
         self.read_checkbox(self.main.pref_populatelistatstartup, "populate_list_at_startup")
-        self.read_checkbox(self.main.pref_cybermode, "work_as_cyber_mode")
+        #self.read_checkbox(self.main.pref_cybermode, "work_as_cyber_mode")
         self.read_checkbox(self.main.pref_systemprocess, "systemprocess")
         self.read_checkbox(self.main.pref_threadscontrol, "threadscontrol")
         self.read_checkbox(self.main.pref_enable_sslxmlrpc, "enable_sslxmlrpc")
@@ -183,7 +185,9 @@ class TcosPreferences:
         self.read_checkbox(self.main.pref_cpuinfo, "cpuinfo")
         self.read_checkbox(self.main.pref_xorginfo, "xorginfo")
         self.read_checkbox(self.main.pref_soundserverinfo, "soundserverinfo")
-                    
+        
+        self.read_checkbox(self.main.pref_menugroups, "menugroups")
+        
         # read all combo values and save text
         self.main.config.SetVar("network_interface", \
                 self.read_select_value(self.main.combo_network_interfaces, "network_interface") )
@@ -299,7 +303,7 @@ class TcosPreferences:
         
         # populate checkboxes
         self.populate_checkboxes(self.main.pref_populatelistatstartup, "populate_list_at_startup")
-        self.populate_checkboxes(self.main.pref_cybermode, "work_as_cyber_mode")
+        #self.populate_checkboxes(self.main.pref_cybermode, "work_as_cyber_mode")
         self.populate_checkboxes(self.main.pref_systemprocess, "systemprocess")
         self.populate_checkboxes(self.main.pref_threadscontrol, "threadscontrol")
         self.populate_checkboxes(self.main.pref_enable_sslxmlrpc, "enable_sslxmlrpc")
@@ -316,6 +320,8 @@ class TcosPreferences:
         self.populate_checkboxes(self.main.pref_networkinfo, "networkinfo")
         self.populate_checkboxes(self.main.pref_xorginfo, "xorginfo")
         self.populate_checkboxes(self.main.pref_soundserverinfo, "soundserverinfo")
+        
+        self.populate_checkboxes(self.main.pref_menugroups, "menugroups")
         
         # menus show hide
         visible_menus=[]
@@ -364,6 +370,9 @@ class TcosPreferences:
         elif listmode == 'icons':
             self.main.viewtabs.set_property('show-tabs', False)
             self.main.viewtabs.set_current_page(1)
+        elif listmode == 'class':
+            self.main.viewtabs.set_property('show-tabs', False)
+            self.main.viewtabs.set_current_page(2)
         else:
             self.main.viewtabs.set_property('show-tabs', True)
             self.main.viewtabs.set_current_page(0)

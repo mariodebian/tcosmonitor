@@ -176,6 +176,7 @@ class TcosActions:
                 model=self.main.tabla.get_model()
                 model.clear()
                 self.main.iconview.clear()
+                self.main.classview.clear()
                 return
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
             # populate_list in a thread
@@ -1010,6 +1011,8 @@ class TcosActions:
         self.model.clear()
         if self.main.iconview.isenabled():
                 self.main.iconview.clear()
+        if self.main.classview.isenabled():
+                self.main.classview.clear()
         #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions:populate_hostlist show progressbar")
         
@@ -1124,14 +1127,20 @@ class TcosActions:
             else:
                 image_blocked=unlocked_image
             
-            if self.main.iconview.isenabled():
-                data={'ip':ip, 'hostname':hostname, 'host':host, 
+            data={'ip':ip, 'hostname':hostname, 'host':host, 
                       'standalone':standalone, 'username':username,
                       'blocked_screen':blocked_screen, 'blocked_net': blocked_net,
                       'logged':logged, 'time_logged':time_logged}
-                self.main.common.threads_enter("TcosActions:populate_hostlist generate_icon")
+            
+            if self.main.iconview.isactive():
+                self.main.common.threads_enter("TcosActions:populate_hostlist ICON generate_icon")
                 self.main.iconview.generate_icon(data)
-                self.main.common.threads_leave("TcosActions:populate_hostlist generate_icon")
+                self.main.common.threads_leave("TcosActions:populate_hostlist ICON generate_icon")
+                
+            if self.main.classview.isactive():
+                self.main.common.threads_enter("TcosActions:populate_hostlist CLASS generate_icon")
+                self.main.classview.generate_icon(data)
+                self.main.common.threads_leave("TcosActions:populate_hostlist CLASS generate_icon")
             
             #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions:populate_hostlist print data")
@@ -1190,6 +1199,9 @@ class TcosActions:
         if self.main.iconview.isactive():
             self.main.selected_ip=self.main.iconview.get_selected()
             self.main.selected_host=self.main.iconview.get_host(self.main.selected_ip)
+        elif self.main.classview.isactive():
+            self.main.selected_ip=self.main.classview.get_selected()
+            self.main.selected_host=self.main.classview.get_host(self.main.selected_ip)
         else:
             (model, iter) = self.main.tabla.get_selection().get_selected()
             if iter == None:
@@ -3156,14 +3168,19 @@ class TcosActions:
         return False
 
 
-    def RightClickMenuOne(self, path, model=None):
+    def RightClickMenuOne(self, path=None, model=None, ip=None):
         """ menu for one client"""
         print_debug ( "RightClickMenuOne() creating menu" )
         self.main.menu=gtk.Menu()
         
         totalhidemenus=0
         #menu header
-        if path == None:        
+        if ip:
+            menu_items = gtk.MenuItem( _("Actions for %s") %(ip) )
+            self.main.menu.append(menu_items)
+            menu_items.set_sensitive(False)
+            menu_items.show()
+        elif path == None:
             menu_items = gtk.MenuItem(_("Actions for selected host"))
             self.main.menu.append(menu_items)
             menu_items.set_sensitive(False)
@@ -3214,7 +3231,12 @@ class TcosActions:
                     #print_debug("RightClickMenuOne()    [HIDE] %s"%_s)
                     sub.hide()
                     totalhidemenus+=1
-                submenu.append(sub)
+                if self.main.config.GetVar("menugroups") == 1:
+                    #print_debug("RightClickMenuOne() MENU GROUPS")
+                    submenu.append(sub)
+                else:
+                    #print_debug("RightClickMenuOne() PLAIN MENU")
+                    self.main.menu.append(sub)
             menu_item.set_submenu(submenu)
             # if submenu is empty don't show
             if count == 0:
@@ -3222,42 +3244,15 @@ class TcosActions:
             else:
                 menu_item.show()
             # append to main menu
-            self.main.menu.append(menu_item)
+            if self.main.config.GetVar("menugroups") == 1:
+                self.main.menu.append(menu_item)
         if totalhidemenus > 0:
             hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
             hide_items.set_sensitive(False)
             hide_items.show()
             self.main.menu.append(hide_items)
         return
-        """
         
-        for i in range( len(shared.onehost_menuitems) ):
-            icon_file_found=False
-            if shared.onehost_menuitems[i][1] != None:
-                icon_file_found=True
-                icon_file=shared.IMG_DIR +\
-                          shared.onehost_menuitems[i][1]
-                          
-                if not os.path.isfile(icon_file):
-                    icon_file_found=False
-            
-            if icon_file_found:
-                # we have icon
-                menu_items=gtk.ImageMenuItem(shared.onehost_menuitems[i][0], True)
-                icon = gtk.Image()
-                icon.set_from_file(icon_file)
-                menu_items.set_image(icon)
-            else:
-                buf = shared.onehost_menuitems[i][0]
-                menu_items = gtk.MenuItem(buf)
-                
-            self.main.menu.append(menu_items)
-            if self.MustShowMenu(i, "menuone"):
-                menu_items.connect("activate", self.on_rightclickmenuone_click, i)
-                menu_items.show()
-            else:
-                menu_items.hide()
-        """
     def RightClickMenuAll(self):
         """ menu for ALL clients"""
         self.main.allmenu=gtk.Menu()
@@ -3308,7 +3303,12 @@ class TcosActions:
                 else:
                     sub.hide()
                     totalhidemenus+=1
-                submenu.append(sub)
+                if self.main.config.GetVar("menugroups") == 1:
+                    #print_debug("RightClickMenuAll() MENU GROUPS")
+                    submenu.append(sub)
+                else:
+                    #print_debug("RightClickMenuAll() PLAIN MENU")
+                    self.main.allmenu.append(sub)
             menu_item.set_submenu(submenu)
             # if submenu is empty don't show
             if count == 0:
@@ -3316,42 +3316,30 @@ class TcosActions:
             else:
                 menu_item.show()
             # append to main allmenu
-            self.main.allmenu.append(menu_item)
+            if self.main.config.GetVar("menugroups") == 1:
+                self.main.allmenu.append(menu_item)
         if totalhidemenus > 0:
             hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
             hide_items.set_sensitive(False)
             hide_items.show()
             self.main.allmenu.append(hide_items)
-        return
-        """
-        for i in range(len(shared.allhost_menuitems)):
-            icon_file_found=False
-            if shared.allhost_menuitems[i][1] != None:
-                icon_file_found=True
-                icon_file=shared.IMG_DIR +\
-                          shared.allhost_menuitems[i][1]
-                          
-                if not os.path.isfile(icon_file):
-                    icon_file_found=False
+        if self.main.classview.isactive():
+            save_pos = gtk.ImageMenuItem(_("Save hosts positions"), True)
+            icon = gtk.Image()
+            icon.set_from_stock (gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON)
+            save_pos.set_image(icon)
+            save_pos.connect("activate", self.main.classview.savepos, "save")
+            save_pos.show()
+            self.main.allmenu.append(save_pos)
             
-            if icon_file_found:
-                # we have icon
-                menu_items=gtk.ImageMenuItem(shared.allhost_menuitems[i][0], True)
-                icon = gtk.Image()
-                icon.set_from_file(icon_file)
-                menu_items.set_image(icon)
-            else:
-                buf = shared.allhost_menuitems[i][0]
-                menu_items = gtk.MenuItem(buf)
-                
-            self.main.allmenu.append(menu_items)
-            if self.MustShowMenu(i, "menuall"):
-                menu_items.connect("activate", self.on_rightclickmenuall_click, i)
-                menu_items.show()
-            else:
-                menu_items.hide()
-        
-        """
+            reset_pos = gtk.ImageMenuItem(_("Reset hosts positions"), True)
+            icon = gtk.Image()
+            icon.set_from_stock (gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON)
+            reset_pos.set_image(icon)
+            reset_pos.connect("activate", self.main.classview.savepos, "reset")
+            reset_pos.show()
+            self.main.allmenu.append(reset_pos)
+        return
         
     def on_hostlist_event(self, widget, event):
         if event.button == 3:
