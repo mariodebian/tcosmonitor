@@ -98,6 +98,8 @@ install:
 	install -m 644 TcosCommon.py       $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 WakeOnLan.py        $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosIconView.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosClassView.py    $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosListView.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 
 	install -m 755 tcosmonitor.py           $(DESTDIR)/$(PREFIX)/bin/tcosmonitor
 	install -m 755 tcospersonalize.py       $(DESTDIR)/$(PREFIX)/bin/tcospersonalize
@@ -179,6 +181,8 @@ patch_version:
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosTrayIcon.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosStaticHosts.py
 	sed -i 's/__VERSION__/$(VERSION)/g' TcosIconView.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosListView.py
+	sed -i 's/__VERSION__/$(VERSION)/g' TcosClassView.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices-ng.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcos-volume-manager.py
 	sed -i 's/__VERSION__/$(VERSION)/g' tcosmonitor.py

@@ -94,6 +94,8 @@ import TcosActions
 import TcosXauth
 import TcosStaticHosts
 import TcosPreferences
+import TcosMenus
+import TcosListView
 import TcosIconView
 import TcosClassView
 
@@ -109,7 +111,8 @@ class TcosMonitor:
         try:
             if int(self.groupconf['check_tcosmonitor_user_group']) == 1:
                 shared.check_tcosmonitor_user_group=True
-        except:
+        except Exception, err:
+            print_debug("__init__() Exception getting group, error=%s"%err)
             pass
         
         if self.groupconf['dont_show_users_in_group'] != '':
@@ -170,13 +173,20 @@ class TcosMonitor:
         self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
         self.xauth=TcosXauth.TcosXauth(self)
         self.preferences=TcosPreferences.TcosPreferences(self)
+        
+        self.menus=TcosMenus.TcosMenus(self)
+        
+        self.actions=TcosActions.TcosActions(self)
+        
+        # views
+        self.listview=TcosListView.TcosListView(self)
         self.iconview=TcosIconView.TcosIconView(self)
         self.classview=TcosClassView.TcosClassView(self)
         
         
         
         self.init=Initialize.Initialize(self)
-        self.actions=TcosActions.TcosActions(self)
+        
         
         self.static=TcosStaticHosts.TcosStaticHosts(self)
         
@@ -189,10 +199,11 @@ class TcosMonitor:
         #self.init.initpref()
         #self.init.populate_pref()
         #########################################
+        self.init.initbuttons()
         self.preferences.populate_pref()
         
         self.actions.update_hostlist()
-        self.init.initbuttons()
+        
         
         
         # make menus
@@ -200,7 +211,7 @@ class TcosMonitor:
         #self.actions.RightClickMenuAll()
         
         # init hostlist
-        self.init.init_hostlist()
+        #self.init.init_hostlist()
         
         if not shared.dbus_disabled:
             from TcosDBus import TcosDBusAction
@@ -228,7 +239,8 @@ class TcosMonitor:
                             #os.chmod("/tmp/tcos_share", 0644)
                             break
                     break
-        except:
+        except Exception, err:
+            print_debug("__init__() Exception creating rsync share, error=%s"%err)
             pass
 
     def loadconf(self, conffile):
@@ -286,17 +298,16 @@ class TcosMonitor:
     def quitapp(self,*args):
         print_debug ( _("Exiting") )
         #gtk.main_quit()
-        try:
+        if os.path.isdir("/tmp/tcos_share/"):
             for filename in os.listdir("/tmp/tcos_share/"):
                 if os.path.isfile("/tmp/tcos_share/%s" %filename):
                     os.remove("/tmp/tcos_share/%s" %filename)
-            os.rmdir("/tmp/tcos_share")
-        except:
-            pass
-        try:
+            if os.path.isdir("/tmp/tcos_share"):
+                os.rmdir("/tmp/tcos_share")
+                
+        if os.path.isfile(os.path.expanduser('~/.tcosvnc')):
             os.remove(os.path.expanduser('~/.tcosvnc'))
-        except:
-            pass
+        
         self.mainloop.quit()
 
 

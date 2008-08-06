@@ -12,7 +12,7 @@ clean:
 	done
 
 files:
-	find ../ -name "*.py" -o -name "*.glade" > FILES
+	find ../ -name "*.py" -o -name "*.glade" | grep -v WakeOnLan > FILES
 pot:
 #	xgettext --add-comments -o tcosmonitor.pot --files-from=FILES
 	xgettext  -o tcosmonitor.pot --files-from=FILES

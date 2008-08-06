@@ -52,7 +52,7 @@ class TcosActions:
     def __init__(self, main):
         print_debug ( "__init__()" )
         self.main=main
-        self.model=self.main.init.model
+        #self.model=self.main.init.model
         #self.main.progressstop_args={}
 
 
@@ -100,23 +100,13 @@ class TcosActions:
     def on_another_screenshot_button_click(self, widget, ip):
         print_debug ( "on_another_screenshot_button_click() __init__ ip=%s" %(ip) )
         self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=[ip])
-        self.main.worker.start()   
-    
-    def on_rightclickmenuone_click(self, menu, number):
-        print_debug ( "on_rightclickmenuone_click() => onehost_menuitems[%d]=%s" \
-                        % (number, shared.onehost_menuitems[number][0]) )
-        self.menu_event_one(number)
+        self.main.worker.start()
 
     def on_allhostbutton_click(self, widget):
         print_debug("on_allhostbutton_click() ....")
         event = gtk.gdk.Event(gtk.gdk.BUTTON_PRESS)
         self.main.allmenu.popup( None, None, None, event.button, event.time)
         return True
-
-    def on_rightclickmenuall_click(self, menu, number):
-        print_debug ( "on_rightclickmenuall_click() => allhost_menuitems[%d]=%s" \
-                        % (number, shared.allhost_menuitems[number][0]) )
-        self.menu_event_all(number)
 
     def on_preferencesbutton_click(self,widget):
         self.main.pref.show()
@@ -172,9 +162,8 @@ class TcosActions:
             allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             if len(allclients) == 0:
                 self.main.write_into_statusbar ( _("Not connected hosts found.") )
-                # clean treeview
-                model=self.main.tabla.get_model()
-                model.clear()
+                # clean icons and files
+                self.main.listview.clear()
                 self.main.iconview.clear()
                 self.main.classview.clear()
                 return
@@ -229,39 +218,6 @@ class TcosActions:
         print_debug ( "POPULATE_HOST_LIST() returning %s" %(self.main.updating) )
         return self.main.updating
 
-
-    def on_hostlist_click(self, hostlist):
-        if self.main.worker_running:
-            return
-        
-        self.main.progressbar.hide()
-        (model, iter) = hostlist.get_selected()
-        if not iter:
-            return
-        self.main.selected_host=model.get_value(iter,COL_HOST)
-        self.main.selected_ip=model.get_value(iter, COL_IP)
-        
-        print_debug ( "on_hostlist_clic() selectedhost=%s selectedip=%s" \
-            %(self.main.selected_host, self.main.selected_ip) )
-            
-        # call to read remote info
-        #self.main.localdata.newhost(self.main.selected_ip)
-        self.main.xmlrpc.newhost(self.main.selected_ip)
-        self.main.xmlrpc.ip=self.main.selected_ip
-        if not self.main.xmlrpc.isPortListening(self.main.selected_ip, self.main.xmlrpc.lastport):
-            print_debug ( "on_host_list_click() XMLRPC not running in %s" %(self.main.selected_ip) )
-            self.main.write_into_statusbar ( _("Error connecting to tcosxmlrpc in %s") %(self.main.selected_ip) )
-            return
-        
-        print_debug ( "on_host_list_click() AUTH OK" )
-        
-        self.main.write_into_statusbar ( "" )
-        print_debug ( "on_hostlist_click() callig worker to populate in Thread" )
-        
-        self.main.worker=shared.Workers( self.main,\
-                     target=self.populate_datatxt, args=([self.main.selected_ip]) ).start()
-        
-        return
         
     def askwindow_close(self, widget, event):
         print_debug ( "askwindow_close() closing ask window" )
@@ -513,17 +469,17 @@ class TcosActions:
         print_debug ( "Client type=%s" %(tcos_vars["get_client"]) )
         
         # print into statusbar
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:populate_datatxt show progressbar")
         
-        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(False)
+        if shared.disable_textview_on_update and self.main.iconview.isactive():
+            self.main.tabla.set_sensitive(True)
         
         #self.main.write_into_statusbar( _("Connecting with %s to retrieve some info..."  ) %(ip) )
         
         self.main.progressbar.show()
         #self.main.progressbutton.show()
         self.set_progressbar( _("Connecting with %s to retrieve some info..."  ) %(ip) , 0 ,show_percent=False)
-        #gtk.gdk.threads_leave()
+        
         self.main.common.threads_leave("TcosActions:populate_datatxt show progressbar")
         
         
@@ -757,7 +713,8 @@ class TcosActions:
                 for data in alldata:
                     try:
                         (key,value)=data.split('=')
-                    except:
+                    except Exception, err:
+                        print_debug("populate_datatxt() Exception spliting data=%s, err=%s"%(data,err))
                         key=data
                         value=""
                 
@@ -843,7 +800,8 @@ class TcosActions:
                     value=channel['level']
                     try:
                         value=float(value)
-                    except:
+                    except Exception, err:
+                        print_debug("populate_datatxt() Exception getting volume=%s, err=%s"%(value,err) )
                         value=0.0
                     
                     #ismute=self.main.xmlrpc.GetSoundInfo(channel, mode="--getmute")
@@ -944,15 +902,14 @@ class TcosActions:
             else:
                 self.datatxt.insert_block ( _("Sound server is not running"), image=shared.IMG_DIR + "info_sound_ko.png")
         
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:populate_datatxt end")
         self.datatxt.display()
         self.update_progressbar( 1 )
         self.main.progressbar.hide()
         
-        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(True)
+        if shared.disable_textview_on_update and self.main.iconview.isactive():
+            self.main.tabla.set_sensitive(True)
         
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions:populate_datatxt end")
         
         crono(start1, "populate_datatxt(%s)" %(ip) )
@@ -998,22 +955,22 @@ class TcosActions:
         # clean list
         print_debug ( "populate_hostlist() clear list and start progressbar!!!" )
         
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:populate_hostlist show progressbar")
         
-        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(False)
+        if shared.disable_textview_on_update and self.main.iconview.isactive():
+            self.main.tabla.set_sensitive(True)
 
         #disable refresh button
         self.main.refreshbutton.set_sensitive(False)
         self.main.progressbar.show()
         self.main.progressbutton.show()
         self.set_progressbar( _("Searching info of hosts..."), 0)
-        self.model.clear()
+        if self.main.listview.isenabled():
+            self.main.listview.clear()
         if self.main.iconview.isenabled():
-                self.main.iconview.clear()
+            self.main.iconview.clear()
         if self.main.classview.isenabled():
-                self.main.classview.clear()
-        #gtk.gdk.threads_leave()
+            self.main.classview.clear()
         self.main.common.threads_leave("TcosActions:populate_hostlist show progressbar")
         
         inactive_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'inactive.png')
@@ -1035,144 +992,135 @@ class TcosActions:
                 if self.main.worker.is_stoped():
                     print_debug ( "populate_hostlist() WORKER IS STOPPED" )
                     break
-            except:
+            except Exception, err:
+                print_debug("populate_hostlist() can't read worker status, error=%s"%err)
                 pass
             i += 1
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions:populate_hostlist show connecting")
             self.main.progressbar.show()
-            self.set_progressbar( _("Connecting to %s...") \
-                            %(host), float(i)/float(len(clients)) )
-            #gtk.gdk.threads_leave()
+            self.set_progressbar( _("Connecting to %s...") %(host), float(i)/float(len(clients)) )
             self.main.common.threads_leave("TcosActions:populate_hostlist show connecting")
             
             
             self.main.localdata.newhost(host)
             self.main.xmlrpc.newhost (host)
             
-            ip=host
-            standalone=False
-            logged=False
+            data={}
+            data['host']=host
+            data['ip']=host
+            data['standalone']=False
+            data['logged']=False
             print_debug("populate_hostlist() => get username")
-            username=self.main.localdata.GetUsername(ip)
+            data['username']=self.main.localdata.GetUsername(data['ip'])
             
             if shared.dont_show_users_in_group != None:
-                if self.main.xmlrpc.IsStandalone(ip):
+                if self.main.xmlrpc.IsStandalone(data['ip']):
                     groupexclude=self.main.xmlrpc.GetStandalone("get_exclude", shared.dont_show_users_in_group)
                 else:
-                    groupexclude=self.main.localdata.isExclude(ip, shared.dont_show_users_in_group)
+                    groupexclude=self.main.localdata.isExclude(data['ip'], shared.dont_show_users_in_group)
             
                 if groupexclude: 
-                    print_debug("Host %s excluded, blacklisted by group" %ip)
+                    print_debug("Host %s excluded, blacklisted by group" %data['ip'])
                     continue
             
             print_debug("populate_hostlist() => get hostname")
-            hostname=self.main.localdata.GetHostname(ip)
+            data['hostname']=self.main.localdata.GetHostname(data['ip'])
             
-            if username.startswith('error: tcos-last'):
-                username="---"
+            if data['username'].startswith('error: tcos-last'):
+                data['username']="---"
             
             try:
                 print_debug("populate_hostlist() => get num process")
-                num_process=self.main.localdata.GetNumProcess(ip)
-            except:
-                num_process="---"
+                data['num_process']=self.main.localdata.GetNumProcess(data['ip'])
+            except Exception, err:
+                print_debug("populate_hostlist() Exception getting num process, error=%s"%err)
+                data['num_process']="---"
             
             print_debug("populate_hostlist() => get time logged")
-            if self.main.xmlrpc.IsStandalone(ip):
-                time_logged=self.main.xmlrpc.GetStandalone("get_time")
-                standalone=True
+            if self.main.xmlrpc.IsStandalone(data['ip']):
+                data['time_logged']=self.main.xmlrpc.GetStandalone("get_time")
+                data['standalone']=True
             else:
-                time_logged=self.main.localdata.GetTimeLogged(ip)
-                standalone=False
+                data['time_logged']=self.main.localdata.GetTimeLogged(data['ip'])
+                data['standalone']=False
             
-            if not time_logged or time_logged == "" or time_logged.startswith('error: tcos-last'):
-                time_logged="---"
+            if not data['time_logged'] or data['time_logged'] == "" or data['time_logged'].startswith('error: tcos-last'):
+                data['time_logged']="---"
             
             print_debug("populate_hostlist() => get active connection")
-            if self.main.localdata.IsActive(ip):
+            if self.main.localdata.IsActive(data['ip']):
+                data['active']=True
                 if self.main.xmlrpc.sslconnection:
-                    image_active=active_ssl_image
+                    data['image_active']=active_ssl_image
                 else:
-                    image_active=active_image
+                    data['image_active']=active_image
             else:
-                image_active=inactive_image
+                data['image_active']=inactive_image
+                data['active']=False
             
             print_debug("populate_hostlist() => get is logged")
-            if self.main.localdata.IsLogged(ip):
-                image_logged=logged_image
-                logged=True
+            if self.main.localdata.IsLogged(data['ip']):
+                data['image_logged']=logged_image
+                data['logged']=True
             else:
-                image_logged=unlogged_image
-                logged=False
+                data['image_logged']=unlogged_image
+                data['logged']=False
             
             print_debug("populate_hostlist() => get is blocked")
-            if self.main.localdata.IsBlocked(host):
-                blocked_screen=True
+            if self.main.localdata.IsBlocked(data['ip']):
+                data['blocked_screen']=True
             else:
-                blocked_screen=False
+                data['blocked_screen']=False
             
             print_debug("populate_hostlist() => get is blocked net")
-            if self.main.localdata.IsBlockedNet(host,username):
-                blocked_net=True
+            if self.main.localdata.IsBlockedNet(host,data['username']):
+                data['blocked_net']=True
             else:
-                blocked_net=False
+                data['blocked_net']=False
                 
-            if blocked_screen and blocked_net:
-                image_blocked=locked_net_screen_image
-            elif blocked_screen == False and blocked_net:
-                image_blocked=locked_net_image
-            elif blocked_screen and blocked_net == False:
-                image_blocked=locked_image
+            if data['blocked_screen'] and data['blocked_net']:
+                data['image_blocked']=locked_net_screen_image
+            elif data['blocked_screen'] == False and data['blocked_net']:
+                data['image_blocked']=locked_net_image
+            elif data['blocked_screen'] and data['blocked_net'] == False:
+                data['image_blocked']=locked_image
             else:
-                image_blocked=unlocked_image
+                data['image_blocked']=unlocked_image
             
-            data={'ip':ip, 'hostname':hostname, 'host':host, 
-                      'standalone':standalone, 'username':username,
-                      'blocked_screen':blocked_screen, 'blocked_net': blocked_net,
-                      'logged':logged, 'time_logged':time_logged}
+            
+            if self.main.listview.isactive():
+                self.main.common.threads_enter("TcosActions:populate_hostlist LIST generate_icon")
+                self.main.listview.generate_file(data)
+                self.main.common.threads_leave("TcosActions:populate_hostlist LIST generate_icon")
             
             if self.main.iconview.isactive():
                 self.main.common.threads_enter("TcosActions:populate_hostlist ICON generate_icon")
                 self.main.iconview.generate_icon(data)
                 self.main.common.threads_leave("TcosActions:populate_hostlist ICON generate_icon")
-                
+            
             if self.main.classview.isactive():
                 self.main.common.threads_enter("TcosActions:populate_hostlist CLASS generate_icon")
                 self.main.classview.generate_icon(data)
                 self.main.common.threads_leave("TcosActions:populate_hostlist CLASS generate_icon")
             
-            #gtk.gdk.threads_enter()
-            self.main.common.threads_enter("TcosActions:populate_hostlist print data")
-            self.iter = self.model.append (None)
-            self.model.set_value (self.iter, COL_HOST, hostname )
-            self.model.set_value (self.iter, COL_IP, host )
-            self.model.set_value (self.iter, COL_USERNAME, username )
-            self.model.set_value (self.iter, COL_ACTIVE, image_active )
-            self.model.set_value (self.iter, COL_LOGGED, image_logged)
-            self.model.set_value (self.iter, COL_BLOCKED, image_blocked)
-            self.model.set_value (self.iter, COL_PROCESS, num_process )
-            self.model.set_value (self.iter, COL_TIME, time_logged)
-            #gtk.gdk.threads_leave()
-            self.main.common.threads_leave("TcosActions:populate_hostlist print data")
             
-            crono(start2, "populate_host_list(%s)" %(ip) )
+            crono(start2, "populate_host_list(%s)" %(data['ip']) )
         
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:populate_hostlist END")
         self.main.progressbar.hide()
         self.main.progressbutton.hide()
         self.main.refreshbutton.set_sensitive(True)
         self.main.progressbutton.set_sensitive(True)
         
-        if shared.disable_textview_on_update: self.main.tabla.set_sensitive(True)
+        if shared.disable_textview_on_update and self.main.iconview.isactive():
+            self.main.tabla.set_sensitive(True)
         
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions:populate_hostlist END")
         
         try:
             self.main.worker.set_finished()
-        except:
+        except Exception, err:
+            print_debug("populate_hostlist() Exception setting worker status, err=%s" %err)
             pass
         crono(start1, "populate_host_list(ALL)" )
         return
@@ -1203,12 +1151,19 @@ class TcosActions:
             self.main.selected_ip=self.main.classview.get_selected()
             self.main.selected_host=self.main.classview.get_host(self.main.selected_ip)
         else:
-            (model, iter) = self.main.tabla.get_selection().get_selected()
-            if iter == None:
-                print_debug( "menu_event_one() not selected thin client !!!" )
-                return
-            self.main.selected_host=model.get_value(iter,COL_HOST)
-            self.main.selected_ip=model.get_value(iter, COL_IP)
+            self.main.selected_ip=self.main.listview.get_selected()
+            self.main.selected_host=self.main.listview.get_host(self.main.selected_ip)
+            #(model, iter) = self.main.tabla.get_selection().get_selected()
+            #if iter == None:
+            #    print_debug( "menu_event_one() not selected thin client !!!" )
+            #    return
+            #self.main.selected_host=model.get_value(iter,COL_HOST)
+            #self.main.selected_ip=model.get_value(iter, COL_IP)
+        
+        if not self.main.selected_ip:
+            # show a msg
+            shared.error_msg ( _("Error: no IP!") )
+            return
         
         if not self.doaction_onthisclient(action, self.main.selected_ip):
             # show a msg
@@ -1676,14 +1631,15 @@ class TcosActions:
             if not shared.ask_msg ( msg ): return
                 
             if self.main.config.GetVar("selectedhosts") == 1:
-                allclients=[]
-                model=self.main.tabla.get_model()
-                rows = []
-                model.foreach(lambda model, path, iter: rows.append(path))
-                for host in rows:
-                    iter=model.get_iter(host)
-                    if model.get_value(iter, COL_SEL_ST):
-                        allclients.append(model.get_value(iter, COL_IP))
+                #allclients=[]
+                #model=self.main.tabla.get_model()
+                #rows = []
+                #model.foreach(lambda model, path, iter: rows.append(path))
+                #for host in rows:
+                #    iter=model.get_iter(host)
+                #    if model.get_value(iter, COL_SEL_ST):
+                #        allclients.append(model.get_value(iter, COL_IP))
+                allclients=self.main.listview.getmultiple()
                 if len(allclients) == 0:
                     msg=_( _("No clients selected, do you want to select all?" ) )
                     if shared.ask_msg ( msg ):
@@ -1950,10 +1906,8 @@ class TcosActions:
         from ping import PingPort
         max_wait=5
         wait=0
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:start_vnc print status msg")
         self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(host) )
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions:start_vnc print status msg")
             
         status="OPEN"
@@ -1981,16 +1935,12 @@ class TcosActions:
             #self.main.xmlrpc.vnc("stopserver", ip )
             result=self.main.xmlrpc.vnc("startserver", ip)
             if result.find("error") != -1:
-                #gtk.gdk.threads_enter()
                 self.main.common.threads_enter("TcosActions:start_vnc print error msg")
                 shared.error_msg ( _("Can't start VNC, error:\n%s") %(result) )
-                #gtk.gdk.threads_leave()
                 self.main.common.threads_leave("TcosActions:start_vnc print error msg")
                 return
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions:start_vnc print waiting msg")
             self.main.write_into_statusbar( _("Waiting for start of VNC server...") )
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions:start_vnc print waiting msg")
             
             # need to wait for start, PingPort loop
@@ -2014,18 +1964,15 @@ class TcosActions:
                     cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
                 print_debug ( "start_process() threading \"%s\"" %(cmd) )
                 self.main.common.exe_cmd (cmd, verbose=0, background=True)            
-        except:
-            #gtk.gdk.threads_enter()
+        except Exception, err:
+            print_debug("start_vnc() Exception, error=%s"%err)
             self.main.common.threads_enter("TcosActions:start_vnc print x11vnc support msg")
             shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions:start_vnc print x11vnc support msg")
             return
 
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:start_vnc clean status msg")
         self.main.write_into_statusbar( "" )
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions:start_vnc clean status msg")
         
 
@@ -2033,26 +1980,21 @@ class TcosActions:
         self.main.xmlrpc.newhost(ip)
         # check if remote proc is running
         if not self.main.xmlrpc.GetStatus("ivs"):
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions:start_ivs write connecting msg")
             self.main.write_into_statusbar( "Connecting with %s to start iTALC support" %(ip) )
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions:start_ivs write connecting msg")
             
             try:
                 self.main.xmlrpc.newhost(ip)
                 self.main.xmlrpc.Exe("startivs")
-                #gtk.gdk.threads_enter()
                 self.main.common.threads_enter("TcosActions:start_ivs write waiting msg")
                 self.main.write_into_statusbar( "Waiting for start of IVS server..." )
-                #gtk.gdk.threads_leave()
                 self.main.common.threads_leave("TcosActions:start_ivs write waiting msg")
                 sleep(5)
-            except:
-                #gtk.gdk.threads_enter()
+            except Exception, err:
+                print_debug("start_ivs() Exception, error=%s"%err)
                 self.main.common.threads_enter("TcosActions:start_ivs write error msg")
                 shared.error_msg ( _("Can't start IVS, please add iTALC support") )
-                #gtk.gdk.threads_leave()
                 self.main.common.threads_leave("TcosActions:start_ivs write error msg")
                 return
                 
@@ -2060,10 +2002,8 @@ class TcosActions:
         print_debug ( "start_process() threading \"%s\"" %(cmd) )
         self.main.common.exe_cmd (cmd, verbose=0, background=True)
         
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions:start_ivs END")
         self.main.write_into_statusbar( "" )
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions:start_ivs END")
 
         
@@ -2099,15 +2039,18 @@ class TcosActions:
         # don't make actions in clients not selected
         if self.main.iconview.ismultiple():
             allclients=self.main.iconview.get_multiple()
+        elif self.main.classview.ismultiple():
+            allclients=self.main.classview.get_multiple()
         elif not self.main.iconview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
-            allclients=[]
-            model=self.main.tabla.get_model()
-            rows = []
-            model.foreach(lambda model, path, iter: rows.append(path))
-            for host in rows:
-                iter=model.get_iter(host)
-                if model.get_value(iter, COL_SEL_ST):
-                    allclients.append(model.get_value(iter, COL_IP))
+            #allclients=[]
+            #model=self.main.tabla.get_model()
+            #rows = []
+            #model.foreach(lambda model, path, iter: rows.append(path))
+            #for host in rows:
+            #    iter=model.get_iter(host)
+            #    if model.get_value(iter, COL_SEL_ST):
+            #        allclients.append(model.get_value(iter, COL_IP))
+            allclients=self.main.listview.getmultiple()
             if len(allclients) == 0:
                 #msg=_( _("No clients selected, do you want to select all?" ) )
                 #if shared.ask_msg ( msg ):
@@ -2781,10 +2724,8 @@ class TcosActions:
             mydict={}
             mydict["action"]=action
             mydict["ip"]=ip
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions::action_for_clients doing action")
             self.set_progressbar( _("Doing action \"%(action)s\" in %(ip)s...") %mydict , percent )
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions::action_for_clients doing action")
             
             #self.main.localdata.newhost(ip)
@@ -2793,18 +2734,14 @@ class TcosActions:
                 if action == "unlockscreen":
                     self.main.xmlrpc.unlockscreen()
                     # update icon
-                    #gtk.gdk.threads_enter()
                     self.main.common.threads_enter("TcosActions::action_for_clients unlockscreen")
                     self.change_lockscreen(ip)
-                    #gtk.gdk.threads_leave()
                     self.main.common.threads_leave("TcosActions::action_for_clients unlockscreen")
                 elif action == "lockscreen":
                     self.main.xmlrpc.lockscreen()
                     # update icon
-                    #gtk.gdk.threads_enter()
                     self.main.common.threads_enter("TcosActions::action_for_clients lockscreen")
                     self.change_lockscreen(ip)
-                    #gtk.gdk.threads_leave()
                     self.main.common.threads_leave("TcosActions::action_for_clients lockscreen")
                 elif action == "screenshot":
                     # use Base64 screenshot
@@ -2849,21 +2786,17 @@ class TcosActions:
                 print_debug ( "action_for_clients() error while exec %s in %s error: %s" %(action, ip, err) )
                 pass
         
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions::action_for_clients END client")
             self.set_progressbar( _("Done action \"%(action)s\" in %(ip)s") %mydict , 1 )
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions::action_for_clients END")
             # wait (shared.wait_between_many_host) seconds per host to show progressbar???
             sleep(shared.wait_between_many_host)
         
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions::action_for_clients END all")
         if action == "screenshot": 
             self.set_progressbar( _("Waiting for screenshots...") , 1 )
             self.main.datatxt.display()
         self.main.progressbar.hide()
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions::action_for_clients END all")
         return
         
@@ -2898,16 +2831,13 @@ class TcosActions:
         else:
             image=unlocked_image
         
-        model=self.main.tabla.get_model()
-        notvalid=[]
-        model.foreach(self.lockscreen_changer, [ip, image])
+        if self.main.classview.isactive():
+            self.main.classview.change_lockscreen(ip,image)
+        if self.main.iconview.isactive():
+            self.main.iconview.change_lockscreen(ip,image)
+        if self.main.listview.isactive():
+            self.main.listview.change_lockscreen(ip,image)
         
-        
-    def lockscreen_changer(self, model, path, iter, args):
-        ip, image = args
-        # change image if ip is the same.
-        if model.get_value(iter, COL_IP) == ip:
-            model.set_value(iter, COL_BLOCKED, image)
     
     def get_screenshot(self, ip):
         # PingPort class put timeout very low to have more speed
@@ -2918,24 +2848,18 @@ class TcosActions:
         print_debug ( "get_screenshot() scrot_size=%s" %(self.main.config.GetVar("scrot_size")) )
         
         # write into statusbar   
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions::get_screenshot writing wait msg")
         self.main.write_into_statusbar ( _("Trying to order terminal to do a screenshot...") )
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions::get_screenshot writing wait msg")
         
         # use Base64 screenshot
         scrot=self.main.xmlrpc.getscreenshot( self.main.config.GetVar("scrot_size") )
         if scrot[0] != "ok":
         #if not self.main.xmlrpc.screenshot( self.main.config.GetVar("scrot_size") ):
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("TcosActions::get_screenshot writing error msg")
             self.main.write_into_statusbar( _("Can't make screenshot, error: %s") %scrot[1] )
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("TcosActions::get_screenshot writing error msg")
             return False
-        
-        print_debug ( "get_screenshot() creating button..." )
         
         slabel=_("Get another screenshot")
         self.main.common.threads_enter("TcosActions::get_screenshot creating button")
@@ -2969,11 +2893,9 @@ class TcosActions:
         
         self.main.common.threads_leave("TcosActions::get_screenshot show capture")
         
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("TcosActions::get_screenshot END")
         self.main.datatxt.display()
         self.main.write_into_statusbar ( _("Screenshot of %s, done.") %(ip)  )
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("TcosActions::get_screenshot END")
         
         return False
@@ -3060,19 +2982,8 @@ class TcosActions:
     
     def refresh_client_info(self, ip):
         print_debug ( "refresh_client_info() updating host data..." )
-        model=self.main.tabla.get_model()
-        model.foreach(self.refresh_client_info2, [ip] )
-    
-    def refresh_client_info2(self, model, path, iter, args):
-        ip = args[0]
-        print_debug ( "refresh_client_info2()  ip=%s model_ip=%s" %(ip, model.get_value(iter, COL_IP)) )
-        # update data if ip is the same.
-        if model.get_value(iter, COL_IP) == ip:
-            self.set_client_data(ip, model, iter)
-            
-            
-    def set_client_data(self, ip, model, iter):
-        print_debug ( "set_client_data() updating host data..." )
+        #model=self.main.tabla.get_model()
+        #model.foreach(self.refresh_client_info2, [ip] )
         
         inactive_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'inactive.png')
         active_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active.png')
@@ -3089,279 +3000,76 @@ class TcosActions:
         # disable cache
         self.main.localdata.cache_timeout=0
         
-        print_debug("set_client_data() => get username")
-        username=self.main.localdata.GetUsername(ip)
+        data={}
+        data['ip']=ip
+        print_debug("refresh_client_info() => get username")
+        data['username']=self.main.localdata.GetUsername(ip)
         
-        print_debug("set_client_data() => get hostname")
-        hostname=self.main.localdata.GetHostname(ip)
+        print_debug("refresh_client_info() => get hostname")
+        data['hostname']=self.main.localdata.GetHostname(ip)
         
-        if username.startswith('error: tcos-last'):
-            username="---"
+        if data['username'].startswith('error: tcos-last'):
+            data['username']="---"
             
         try:
-            print_debug("set_client_data() => get num process")
-            num_process=self.main.localdata.GetNumProcess(ip)
-        except:
-            num_process="---"
+            print_debug("refresh_client_info() => get num process")
+            data['num_process']=self.main.localdata.GetNumProcess(ip)
+        except Exception, err:
+            print_debug("refresh_client_info() Exception error=%s"%err)
+            data['num_process']="---"
         
-        print_debug("set_client_data() => get time logged")
-        time_logged=self.main.localdata.GetTimeLogged(ip)
+        print_debug("refresh_client_info() => get time logged")
+        data['time_logged']=self.main.localdata.GetTimeLogged(ip)
             
-        if not time_logged or time_logged == "" or time_logged.startswith('error: tcos-last'):
-            time_logged="---"
+        if not data['time_logged'] or data['time_logged'] == "" or data['time_logged'].startswith('error: tcos-last'):
+            data['time_logged']="---"
         
-        print_debug("set_client_data() => get active connection")
+        print_debug("refresh_client_info() => get active connection")
         if self.main.localdata.IsActive(ip):
             if self.main.xmlrpc.sslconnection:
-                image_active=active_ssl_image
+                data['image_active']=active_ssl_image
             else:
-                image_active=active_image
+                data['image_active']=active_image
         else:
-            image_active=inactive_image
+            data['image_active']=inactive_image
         
-        print_debug("set_client_data() => get is logged")
+        print_debug("refresh_client_info() => get is logged")
         if self.main.localdata.IsLogged(ip):
-            image_logged=logged_image
+            data['image_logged']=logged_image
         else:
-            image_logged=unlogged_image
+            data['image_logged']=unlogged_image
         
-        print_debug("set_client_data() => get is blocked")
+        print_debug("refresh_client_info() => get is blocked")
         if self.main.localdata.IsBlocked(ip):
-            blocked_screen=True
+            data['blocked_screen']=True
         else:
-            blocked_screen=False
+            data['blocked_screen']=False
         
-        print_debug("set_client_data() => get is blocked net")
-        if self.main.localdata.IsBlockedNet(ip,username):
-            blocked_net=True
+        print_debug("refresh_client_info() => get is blocked net")
+        if self.main.localdata.IsBlockedNet(ip,data['username']):
+            data['blocked_net']=True
         else:
-            blocked_net=False
+            data['blocked_net']=False
                 
-        if blocked_screen and blocked_net:
-            image_blocked=locked_net_screen_image
-        elif blocked_screen == False and blocked_net:
-            image_blocked=locked_net_image
-        elif blocked_screen and blocked_net == False:
-            image_blocked=locked_image
+        if data['blocked_screen'] and data['blocked_net']:
+            data['image_blocked']=locked_net_screen_image
+        elif data['blocked_screen'] == False and data['blocked_net']:
+            data['image_blocked']=locked_net_image
+        elif data['blocked_screen'] and data['blocked_net'] == False:
+            data['image_blocked']=locked_image
         else:
-            image_blocked=unlocked_image
+            data['image_blocked']=unlocked_image
                 
         #enable cache again
         self.main.localdata.cache_timeout=shared.cache_timeout
         
-        model.set_value (iter, COL_HOST, hostname )
-        model.set_value (iter, COL_IP, ip )
-        model.set_value (iter, COL_USERNAME, username )
-        model.set_value (iter, COL_ACTIVE, image_active )
-        model.set_value (iter, COL_LOGGED, image_logged)
-        model.set_value (iter, COL_BLOCKED, image_blocked)
-        model.set_value (iter, COL_PROCESS, num_process )
-        model.set_value (iter, COL_TIME, time_logged)
-
-
-    def MustShowMenu(self, number, menutype):
-        if number in shared.preferences_menus_always_show[menutype]:
-            return True
-        if number in self.main.preferences.visible_menu_items[menutype]:
-            #print_debug("MustShow() number %s found at %s menutype %s"%(number, self.main.preferences.visible_menu_items[menutype], menutype))
-            return True
-        return False
-
-
-    def RightClickMenuOne(self, path=None, model=None, ip=None):
-        """ menu for one client"""
-        print_debug ( "RightClickMenuOne() creating menu" )
-        self.main.menu=gtk.Menu()
-        
-        totalhidemenus=0
-        #menu header
-        if ip:
-            menu_items = gtk.MenuItem( _("Actions for %s") %(ip) )
-            self.main.menu.append(menu_items)
-            menu_items.set_sensitive(False)
-            menu_items.show()
-        elif path == None:
-            menu_items = gtk.MenuItem(_("Actions for selected host"))
-            self.main.menu.append(menu_items)
-            menu_items.set_sensitive(False)
-            menu_items.show()
-        else:
-            if not model:
-                model=self.main.tabla.get_model()
-            menu_items = gtk.MenuItem( _("Actions for %s") %(model[path][1]) )
-            self.main.menu.append(menu_items)
-            menu_items.set_sensitive(False)
-            menu_items.show()
-            
-        #add all items in shared.onehost_menuitems
-        # shared.allhost_mainmenus contains menu groups
-        # [0] = menu group name
-        # [1] = menu group icon
-        # [2] = menu group submenus (index of shared.allhost_menuitems)
-        for mainmenu in shared.onehost_mainmenus:
-            #print_debug("RightClickMenuOne() %s"%mainmenu)
-            # create menu gropu entry (with icon or not)
-            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
-                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
-                icon = gtk.Image()
-                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
-                menu_item.set_image(icon)
-            else:
-                menu_item=gtk.MenuItem(mainmenu[0])
-            
-            submenu = gtk.Menu()
-            count=0
-            # parse submenu items and create submenu
-            for i in mainmenu[2]:
-                _s=shared.onehost_menuitems[i]
-                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
-                    sub = gtk.ImageMenuItem(_s[0], True)
-                    icon = gtk.Image()
-                    icon.set_from_file(shared.IMG_DIR + _s[1])
-                    sub.set_image(icon)
-                else:
-                    sub=gtk.MenuItem(_s[0])
-                # show ???
-                if self.MustShowMenu(i, "menuone"):
-                    #print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
-                    sub.connect("activate", self.on_rightclickmenuone_click, i)
-                    sub.show()
-                    count+=1
-                else:
-                    #print_debug("RightClickMenuOne()    [HIDE] %s"%_s)
-                    sub.hide()
-                    totalhidemenus+=1
-                if self.main.config.GetVar("menugroups") == 1:
-                    #print_debug("RightClickMenuOne() MENU GROUPS")
-                    submenu.append(sub)
-                else:
-                    #print_debug("RightClickMenuOne() PLAIN MENU")
-                    self.main.menu.append(sub)
-            menu_item.set_submenu(submenu)
-            # if submenu is empty don't show
-            if count == 0:
-                menu_item.hide()
-            else:
-                menu_item.show()
-            # append to main menu
-            if self.main.config.GetVar("menugroups") == 1:
-                self.main.menu.append(menu_item)
-        if totalhidemenus > 0:
-            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
-            hide_items.set_sensitive(False)
-            hide_items.show()
-            self.main.menu.append(hide_items)
-        return
-        
-    def RightClickMenuAll(self):
-        """ menu for ALL clients"""
-        self.main.allmenu=gtk.Menu()
-        
-        totalhidemenus=0
-        #menu headers
-        if self.main.config.GetVar("selectedhosts") == 1:
-            menu_items = gtk.MenuItem(_("Actions for selected hosts"))
-        elif self.main.iconview.ismultiple():
-            menu_items = gtk.MenuItem(_("Actions for selected hosts"))
-        else:
-            menu_items = gtk.MenuItem(_("Actions for all hosts"))
-        self.main.allmenu.append(menu_items)
-        menu_items.set_sensitive(False)
-        menu_items.show()
-        
-        # shared.allhost_mainmenus contains menu groups
-        # [0] = menu group name
-        # [1] = menu group icon
-        # [2] = menu group submenus (index of shared.allhost_menuitems)
-        for mainmenu in shared.allhost_mainmenus:
-            # create menu gropu entry (with icon or not)
-            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
-                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
-                icon = gtk.Image()
-                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
-                menu_item.set_image(icon)
-            else:
-                menu_item=gtk.MenuItem(mainmenu[0])
-            
-            submenu = gtk.Menu()
-            count=0
-            # parse submenu items and create submenu
-            for i in mainmenu[2]:
-                _s=shared.allhost_menuitems[i]
-                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
-                    sub = gtk.ImageMenuItem(_s[0], True)
-                    icon = gtk.Image()
-                    icon.set_from_file(shared.IMG_DIR + _s[1])
-                    sub.set_image(icon)
-                else:
-                    sub=gtk.MenuItem(_s[0])
-                # show ???
-                if self.MustShowMenu(i, "menuall"):
-                    sub.connect("activate", self.on_rightclickmenuall_click, i)
-                    sub.show()
-                    count+=1
-                else:
-                    sub.hide()
-                    totalhidemenus+=1
-                if self.main.config.GetVar("menugroups") == 1:
-                    #print_debug("RightClickMenuAll() MENU GROUPS")
-                    submenu.append(sub)
-                else:
-                    #print_debug("RightClickMenuAll() PLAIN MENU")
-                    self.main.allmenu.append(sub)
-            menu_item.set_submenu(submenu)
-            # if submenu is empty don't show
-            if count == 0:
-                menu_item.hide()
-            else:
-                menu_item.show()
-            # append to main allmenu
-            if self.main.config.GetVar("menugroups") == 1:
-                self.main.allmenu.append(menu_item)
-        if totalhidemenus > 0:
-            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
-            hide_items.set_sensitive(False)
-            hide_items.show()
-            self.main.allmenu.append(hide_items)
         if self.main.classview.isactive():
-            save_pos = gtk.ImageMenuItem(_("Save hosts positions"), True)
-            icon = gtk.Image()
-            icon.set_from_stock (gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON)
-            save_pos.set_image(icon)
-            save_pos.connect("activate", self.main.classview.savepos, "save")
-            save_pos.show()
-            self.main.allmenu.append(save_pos)
-            
-            reset_pos = gtk.ImageMenuItem(_("Reset hosts positions"), True)
-            icon = gtk.Image()
-            icon.set_from_stock (gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON)
-            reset_pos.set_image(icon)
-            reset_pos.connect("activate", self.main.classview.savepos, "reset")
-            reset_pos.show()
-            self.main.allmenu.append(reset_pos)
-        return
-        
-    def on_hostlist_event(self, widget, event):
-        if event.button == 3:
-            x = int(event.x)
-            y = int(event.y)
-            time = event.time
-            pthinfo = self.main.tabla.get_path_at_pos(x, y)
-            if pthinfo is not None:
-                
-                path, col, cellx, celly = pthinfo
-                #generate menu
-                self.RightClickMenuOne( path )
-                
-                self.main.tabla.grab_focus()
-                self.main.tabla.set_cursor( path, col, 0)
-                self.main.menu.popup( None, None, None, event.button, time)
-                return 1
-            else:
-                self.main.allmenu.popup( None, None, None, event.button, time)
-                print_debug ( "on_hostlist_event() NO row selected" )
-                return
-            
+            self.main.classview.change_lockscreen(ip,data['image_blocked'])
+        if self.main.iconview.isactive():
+            self.main.iconview.change_lockscreen(ip,data['image_blocked'])
+        if self.main.listview.isactive():
+            self.main.iconview.refresh_client_info(ip,data)
+
 
 if __name__ == "__main__":
     app=TcosActions(None)

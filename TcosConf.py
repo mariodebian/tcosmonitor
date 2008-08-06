@@ -77,8 +77,8 @@ class TcosConf:
                             %(shared.config_file) )
         try:
             fd=file(shared.config_file, 'r')
-        except:
-            print("Error Opening %s file"%shared.config_file)
+        except Exception, err:
+            print("Error Opening %s file, error=%s"%(shared.config_file,err) )
             return
         self.data=fd.readlines()
         fd.close()
@@ -99,7 +99,8 @@ class TcosConf:
             if self.main.ingroup_tcos == False and os.getuid() != 0: return
             try:
                 fd=file(shared.config_file_secrets, 'r')
-            except:
+            except Exception, err:
+                print("Error saving %s file, error=%s"%(shared.config_file_secrets,err) )
                 return
             self.data=fd.readline()
             fd.close()

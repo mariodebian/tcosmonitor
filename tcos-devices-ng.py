@@ -174,7 +174,8 @@ class TcosDevicesNG:
     def menu_remote_reboot_poweroff(self, *args):
         try:
             action=args[0][0]
-        except:
+        except Exception, err:
+            print_debug("menu_remote_reboot_poweroff() Exception, error=%s"%err)
             return
         remote_hostname=self.xauth.get_hostname()
         xauth_cookie=self.xauth.get_cookie()
@@ -223,7 +224,8 @@ class TcosDevicesNG:
                 if "=" in line:
                     try:
                         self.mntconf["%s"%line.split('=')[0]] = line.split('=')[1]
-                    except:
+                    except Exception, err:
+                        print_debug("loadconf() Exception, error=%s"%err)
                         pass
         print_debug( "loadconf mntconf=%s" %self.mntconf )
         return
@@ -527,7 +529,8 @@ class TcosDevicesNG:
                     ntfs_3g=threading.Thread(target=self.xmlrpc.GetDevicesInfo, args=(device,mode) )
                     ntfs_3g.start()
                     return True
-                except:
+                except Exception, err:
+                    print_debug("ntfs-3g thread Exception, error=%s"%err)
                     return True
         
         # set socket timeout bigger (floppy can take some time)

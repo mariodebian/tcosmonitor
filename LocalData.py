@@ -318,13 +318,15 @@ class LocalData:
                     print_debug ( "ipValid() block < 0 or >= 255 %s" %(block) )
                     return False
             return True
-        except:
+        except Exception, err:
+            print_debug("ipValid() Exception, error=%s"%err)
             return False
 
     def GetIpAddress(self, hostname):
         try:
             return socket.getaddrinfo(hostname, None)[0][4][0]  
-        except:
+        except Exception, err:
+            print_debug("GetIpAddress() Exception, error=%s"%err)
             return None
         
     def GetHostname(self, ip):
@@ -352,7 +354,8 @@ class LocalData:
             self.hostname = socket.gethostbyaddr(ip)[0]
             self.add_to_cache( ip, 1 , self.hostname )
             return self.hostname
-        except:
+        except Exception, err:
+            print_debug("GetHostname() Exception, error=%s"%err)
             pass
         
         #read hostname from /etc/hosts
@@ -435,6 +438,7 @@ class LocalData:
             return "%s" %(username)
 
     def GetLast(self, ip, ingroup=None):
+        start=time()
         last=None
         data={}
         if ip != "" and not self.ipValid(ip):
@@ -497,6 +501,7 @@ class LocalData:
             
             data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged, "exclude":exclude}
             print_debug("IsLast() data=%s"%data)
+        crono(start, "GetLast()")
         return data
     
     def GetUsername(self, ip):

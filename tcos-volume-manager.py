@@ -240,7 +240,8 @@ class TcosVolumeManager:
             value=channel['level']
             try:
                 value=float(value)
-            except:
+            except Exception, err:
+                print_debug("Exception, can't get float value, error=%s"%err)
                 value=0.0
             ctype=channel['type']
             #ismute=self.xmlrpc.GetSoundInfo(channel, mode="--getmute")

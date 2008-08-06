@@ -77,23 +77,19 @@ class Ping:
                 # this is a stop thread var
                 break
             ##########
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("Ping:ping_iprange show progress")
             self.main.progressbar.show()
             self.main.progressbutton.show()
             self.main.actions.set_progressbar( _("Ping to %s...")%(ip), float(i)/float(254) )
             #print_debug("ping_iprange() ip=%s"%(ip))
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("Ping:ping_iprange show progress")
             ############
             current = pingip(ip)
             pinglist.append(current)
             current.start()
         
-        #gtk.gdk.threads_enter()
         self.main.common.threads_enter("Ping:ping_iprange print waiting")
         self.main.actions.set_progressbar( _("Waiting for pings...") , float(1) )
-        #gtk.gdk.threads_leave()
         self.main.common.threads_leave("Ping:ping_iprange print waiting")
      
         for pingle in pinglist:
@@ -120,19 +116,15 @@ class Ping:
         self.main.worker.set_finished()
         
         if len(reachip) == 0:
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("Ping:ping_iprange print no hosts")
             self.main.write_into_statusbar ( _("No host found") )
             self.main.progressbar.hide()
             self.main.progressbutton.hide()
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("Ping:ping_iprange print no hosts")
         
         if len(reachip) > 0:
-            #gtk.gdk.threads_enter()
             self.main.common.threads_enter("Ping:ping_iprange print num hosts")
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(reachip) )
-            #gtk.gdk.threads_leave()
             self.main.common.threads_leave("Ping:ping_iprange print num hosts")
             
             self.main.localdata.allclients=reachip
@@ -151,9 +143,9 @@ class Ping:
                 0x8915,  # SIOCGIFADDR
                 struct.pack('256s', ifname[:15])
             )[20:24])
-        except:
+        except Exception, err:
             ip=None
-            print_debug("get_ip_address() ifname %s don't have ip address"%ifname)
+            print_debug("get_ip_address() ifname %s don't have ip address, error=%s"%(ifname,err))
         return ip
 
 

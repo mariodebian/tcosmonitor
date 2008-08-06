@@ -53,9 +53,8 @@ def crono(start, txt):
 
 
 
-class Initialize:
-    #drop_targets = [ ( "text/plain", 0, TARGET_TYPE_TEXT ) ]
-    
+class Initialize(object):
+
     def __init__(self, main):
         print_debug ( "__init__() starting" )
         self.main=main
@@ -71,17 +70,23 @@ class Initialize:
         
         self.main.viewtabs=self.ui.get_widget('viewtabs')
         self.main.viewtabs.set_property('show-tabs', False)
-        #for m in dir(self.main.viewtabs):
-        #    if "page" in m: print m
-        #print "get_n_pages", self.main.viewtabs.get_n_pages()
-        #print "set_current_page", self.main.viewtabs.set_current_page(2))
+        self.main.viewtabs.connect("switch_page", self.on_viewtabs_change)
         
         self.ask_mode=None
         
+    def on_viewtabs_change(self, widget, pointer, tabnum):
+        if tabnum != 0:
+            self.main.searchbutton.set_sensitive(False)
+            self.main.searchtxt.set_sensitive(False)
+        else:
+            self.main.searchbutton.set_sensitive(True)
+            self.main.searchtxt.set_sensitive(True)
+    """
     def get_widget(self, wname):
         widgets = gtk.glade.XML( shared.GLADE_DIR + 'tcosmonitor.glade', wname )
         return widgets.get_widget( wname )
-        
+    """
+    
     def init_progressbar(self):
         self.main.progressbar=self.ui.get_widget('progressbar')
         self.main.progressbutton=self.ui.get_widget('progressbutton')
@@ -227,7 +232,7 @@ class Initialize:
         self.main.actions.exe_app_in_client_display(text)
         return
     
-    
+    """
     def init_hostlist(self):
         print_debug ( "init_hostlist()" )
         
@@ -302,6 +307,7 @@ class Initialize:
         self.model.set_value(iter, col, not model[path][col])
         print_debug("on_sel_click() ip=%s status=%s" %(model[path][COL_IP], model[path][col]))
         return True
+    """
 
 if __name__ == '__main__':
     init=Initialize (None)

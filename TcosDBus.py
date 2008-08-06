@@ -123,9 +123,9 @@ class TcosDBusServer:
             import xmlrpclib
             self.tc = xmlrpclib.Server(self.url)
             print_debug ( "connect_tcosxmlrpc() tcosxmlrpc running on %s" %(host) )
-        except:
+        except Exception, err:
             self.error_msg=_("tcosxmlrpc ERROR conection unavalaible." )
-            print_debug("connect_tcosxmlrpc() ERROR conection unavalaible !!!")
+            print_debug("connect_tcosxmlrpc() ERROR conection unavalaible !!!, error=%s"%err)
             return False
         
         cmd= "uname"
@@ -192,8 +192,8 @@ class TcosDBusServer:
         pid=int(pid)
         try:
             os.kill(pid, signal.SIGKILL)
-        except:
-            print_debug ( "user_kill() error, pid not found %d" %(pid) )
+        except Exception, err:
+            print_debug ( "user_kill() error, pid not found %d, error=%s" %(pid,err) )
         return
     
     def user_killall(self, app):
@@ -204,7 +204,8 @@ class TcosDBusServer:
             #th.setDaemon(1)
             th.start()
             print_debug("Threads count: %s" %threading.activeCount())
-        except:
+        except Exception, err:
+            print_debug ( "user_killall() error, error=%s" %(err) )
             pass
         return
         
@@ -216,7 +217,8 @@ class TcosDBusServer:
             #th.setDaemon(1)
             th.start()
             print_debug("Threads count: %s" %threading.activeCount())
-        except:
+        except Exception, err:
+            print_debug ( "user_exec() error, error=%s" %(err) )
             pass
         return
         
@@ -229,7 +231,8 @@ class TcosDBusServer:
             #th.setDaemon(1)
             th.start()
             print_debug("Threads count: %s" %threading.activeCount())
-        except:
+        except Exception, err:
+            print_debug ( "user_msg() error, error=%s" %(err) )
             pass
         return
     
@@ -263,14 +266,16 @@ class TcosDBusAction:
         self.main=main
         try:
             system_bus = dbus.SystemBus()
-        except:
+        except Exception, err:
             self.error = "Error getting system bus. Is DBus running?"
+            print_debug ( "TcosDbusAction::__init__() error, error=%s" %(err) )
             return
             
         try:
             name = dbus.service.BusName("com.consoltux.TcosMonitor", bus=system_bus)
-        except:
+        except Exception, err:
             self.error = "Error getting name of TcosMonitor dbus, are you autorized?"
+            print_debug ( "TcosDbusAction::__init__() error, error=%s" %(err) )
             return
             
         self.dbus_iface = TcosDBusClient(name)
@@ -289,9 +294,9 @@ class TcosDBusAction:
             self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["exec"] , [app] ])
             self.done = True
             
-        except:
+        except Exception, err:
             self.error = _("User not allowed to run this dbus call.")
-            print_debug ( "User not allowed to use dbus" )
+            print_debug ( "User not allowed to use dbus, error=%s"%err )
             
         return self.done
         
@@ -305,9 +310,9 @@ class TcosDBusAction:
             self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["mess"] , [text] ])
             self.done = True
             
-        except:
+        except Exception, err:
             self.error = _("User not allowed to run this dbus call.")
-            print_debug ( "User not allowed to use dbus" )
+            print_debug ( "User not allowed to use dbus, error=%s"%err )
             
         return self.done
     
@@ -323,9 +328,9 @@ class TcosDBusAction:
             self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["kill"] , [pid] ])
             self.done = True
             
-        except:
+        except Exception, err:
             self.error = _("User not allowed to run this dbus call.")
-            print_debug ( "User not allowed to use dbus" )
+            print_debug ( "User not allowed to use dbus, error=%s"%err )
             
         return self.done
 
@@ -341,9 +346,9 @@ class TcosDBusAction:
             self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["killall"] , [proc] ])
             self.done = True
             
-        except:
+        except Exception, err:
             self.error = _("User not allowed to run this dbus call.")
-            print_debug ( "User not allowed to use dbus" )
+            print_debug ( "User not allowed to use dbus, error=%s"%err )
             
         return self.done            
 

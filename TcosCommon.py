@@ -79,8 +79,8 @@ class TcosCommon:
                 th=threading.Thread(target=self.cleanproc, args=(self.p,) )
                 th.setDaemon(1)
                 th.start()
-            except:
-                msg= _("ThreadController: Found error executing %s\n\nIf problem persist, disable Thread Controller\nin Preferences and report bug." %cmd)
+            except Exception, err:
+                msg= _("ThreadController: Found error executing %(cmd)s\n\nIf problem persist, disable Thread Controller\nin Preferences and report bug.\nError=%(error)s" %{'cmd':cmd, 'error':err})
                 print_debug(msg)
                 self.threads_enter("TcosCommon:exe_cmd ThreadController error")
                 shared.error_msg(msg)
@@ -134,11 +134,12 @@ class TcosCommon:
             print_debug("get_my_local_ip()")
             self.vars["local_ip"]=[]
             for dev in self.GetAllNetworkInterfaces():
-                   try:
-                       ip=self.get_ip_address(dev)
-                       self.vars["local_ip"].append(ip)
-                   except:
-                       pass
+                try:
+                    ip=self.get_ip_address(dev)
+                    self.vars["local_ip"].append(ip)
+                except Exception, err:
+                    print_debug("get_my_local_ip() Exception, dev=%s error=%s"%(dev,err) )
+                    pass
         if last:
             return self.vars["local_ip"][0]
         else:
@@ -166,7 +167,8 @@ class TcosCommon:
                 print_debug("get_display() running in local DISPLAY")
                 self.vars["display_ip"]=self.get_my_local_ip()
                 self.vars["display_hostname"]=socket.gethostbyaddr(self.vars["display_ip"])[0]
-        except:
+        except Exception, err:
+            print_debug("get_display() Exception, error=%s"%err)
             pass
 
         if ip_mode:
@@ -231,8 +233,8 @@ class TcosCommon:
         if self.theme: return self.theme
         try:
             import gconf
-        except:
-            print_debug("get_icon_theme() conf module not installed")
+        except Exception, err:
+            print_debug("get_icon_theme() conf module not installed, error=%s"%err)
             return None
         c=gconf.client_get_default()
         self.theme=c.get_string("/desktop/gnome/interface/icon_theme")

@@ -92,7 +92,7 @@ class TcosIconView(object):
     def get_multiple(self):
         allhosts=[]
         selected=self.iconview.get_selected_items()
-        if len(selected) > 1:
+        if len(selected) > 0:
             for sel in selected:
                 allhosts.append( self.model[sel][1] )
         print_debug("get_multiple() allhosts=%s"%allhosts)
@@ -101,7 +101,8 @@ class TcosIconView(object):
     def ismultiple(self):
         if not self.isactive():
             return False
-        if len(self.iconview.get_selected_items()) > 1:
+        print_debug("ismultiple() num selected=%s"%len(self.iconview.get_selected_items()))
+        if len(self.iconview.get_selected_items()) > 0:
             return True
         else:
             return False
@@ -126,10 +127,18 @@ class TcosIconView(object):
         print_debug("generate_icon() data=%s"%data)
         
         if data['standalone']:
-            pixbuff = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
         else:
-            pixbuff = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
-        self.model.append([data['hostname'], data['ip'], pixbuff])
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+        
+        if not data['active']:
+            pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
+        
+        if data['blocked_screen']:
+            pixbuf2 = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+            pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
+        
+        self.model.append([data['hostname'], data['ip'], pixbuf])
         self.hosts[data['ip']]=data
 
     def generate_tooltip(self, ip):
@@ -170,7 +179,7 @@ class TcosIconView(object):
             pos = self.iconview.get_path_at_pos(int(event.x), int(event.y))
             if len(self.iconview.get_selected_items()) < 2 and pos:
                 #generate menu
-                self.main.actions.RightClickMenuOne( pos , self.model)
+                self.main.menus.RightClickMenuOne( pos , self.model)
                 
                 self.iconview.grab_focus()
                 #self.iconview.set_cursor( path, col, 0)
@@ -182,14 +191,25 @@ class TcosIconView(object):
                 return True
             else:
                 # need to remake allmenu (for title selected|all )
-                self.main.actions.RightClickMenuAll()
+                self.main.menus.RightClickMenuAll()
                 self.main.allmenu.popup( None, None, None, event.button, event.time)
                 print_debug ( "on_iconview_click() NO icon selected" )
                 self.set_selected(None)
                 return
 
 
-
+    def change_lockscreen(self, ip, pixbuf2):
+        data=self.hosts[ip]
+        if data['standalone']:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+        else:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+        pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
+        for m in self.model:
+            if m[1] == ip:
+                m[2]=pixbuf
+                return
+        
 
 
 

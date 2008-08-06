@@ -29,6 +29,7 @@ from gettext import gettext as _
 import os,subprocess
 import string
 
+
 import shared
 
 def print_debug(txt):
@@ -42,6 +43,7 @@ class TcosClassView(object):
         self.ui=self.main.ui
         self.hosts={}
         self.__selected_icon=None
+        self.selected=[]
         self.avalaible_info=[
                     [_("IP"), 'ip' ],
                     [ _("Hostname"), 'hostname' ],
@@ -51,7 +53,9 @@ class TcosClassView(object):
                     [ _("Screen locked"), 'blocked_screen'],
                     [ _("Network locked"), 'blocked_net'],
                         ]
-        self.default_tip = _("Place mouse on any computer to see brief info about it.")
+        self.default_tip = _("Place mouse on any computer to see brief info about it.\n\
+You can select and unselect multiple host clicking on every one.\n\
+Drag and drop hosts to positions and save clicking on right mouse button.")
         
         
         self.icon_tooltips = None
@@ -67,6 +71,7 @@ class TcosClassView(object):
         self.classview.connect('drag_drop', self.on_drag_data_received)
         self.classeventbox.connect("button_press_event", self.on_classview_click)
         #self.classeventbox.connect("size-allocate", self.get_max_pos)
+        self.classeventbox.connect("motion-notify-event", self.on_classview_event)
         
         self.oldpos={}
         #self.classview.set_size_request(200, 200)
@@ -107,7 +112,7 @@ class TcosClassView(object):
             return False
         if self.main.viewtabs.get_current_page() != 2:
             return False
-        print_debug("isactive() ClassView Mode active")
+        #print_debug("isactive() ClassView Mode active")
         return True
 
     def set_selected(self, ip):
@@ -121,9 +126,38 @@ class TcosClassView(object):
             return self.hosts[ip]['hostname']
 
     def __increment_position(self):
-        self.position[0]=self.position[0]+self.iconsize[0]
-        #self.position[1]+=50
+        maxpos=self.get_max_pos()
+        #print_debug("__increment_position() self.position[0](%s) >= maxpos[0](%s) -self.iconsize[0](%s)"%(self.position[0], maxpos[0], self.iconsize[0]))
+        if self.position[0] + self.iconsize[0] >= maxpos[0] - self.iconsize[0]:
+            #print_debug("__increment_position() NEW FILE")
+            self.position[1]=self.position[1]+self.iconsize[1]
+            self.position[0]=self.initialX
+        else:
+            self.position[0]=self.position[0]+self.iconsize[0]
         print_debug("__increment_position()  position=%s"%(self.position))
+
+    def __getoverride(self, ax, ay, aip):
+        # read oldpos to know override saved settings
+        for h in self.oldpos:
+            x,y = self.oldpos[h]
+            diffx=abs(ax-x) - (self.iconsize[0]-20)
+            diffy=abs(ay-y) - (self.iconsize[1]-20)
+            if diffx < 0 and diffy < 0:
+                return True
+        # read pos of printed icons
+        for w in self.classview.get_children():
+            x, y, width, height = w.get_allocation()
+            ip=[]
+            for c in w.get_children():
+                c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
+            if aip == ip[0]:
+                continue
+            diffx=abs(ax-x) - (self.iconsize[0]-20)
+            diffy=abs(ay-y) - (self.iconsize[1]-20)
+            #print_debug("__getoverride() ### POSITION ### Elem[%s,%s] new[%s,%s] => abs(ax-x)=%s abs(ay-y)=%s restax=%s restay=%s"%(x,y,ax,ay,abs(ax-x), abs(ay-y), diffx, diffy ))
+            if diffx < 0 and diffy < 0:
+                return True
+        return False
 
     def savepos(self, widget, action):
         if action == "reset":
@@ -131,13 +165,14 @@ class TcosClassView(object):
             self.main.config.SetVar("positions", "")
             self.main.config.SaveToFile()
             print_debug("savepos() reset to %s"%self.oldpos)
+            self.main.write_into_statusbar( _("Positions reset to defaults.") )
             return
         for w in self.classview.get_children():
             x, y, width, height = w.get_allocation()
             ip=[]
             for c in w.get_children():
                 c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
-            print_debug("clean() ### POSITION ### x=%s y=%s width=%s height=%s ip=%s"%(x, y, width, height, ip))
+            print_debug("savepos() ### POSITION ### x=%s y=%s width=%s height=%s ip=%s"%(x, y, width, height, ip))
             self.oldpos[ip[0]]=[x,y]
         print_debug("savepos() self.oldpos=%s"%self.oldpos)
         txt=""
@@ -148,6 +183,7 @@ class TcosClassView(object):
         print_debug("savepos() txt=%s"%txt)
         self.main.config.SetVar("positions", txt)
         self.main.config.SaveToFile()
+        self.main.write_into_statusbar( _("Positions saved.") )
 
     def loadpos(self):
         print_debug("loadpos()")
@@ -169,27 +205,40 @@ class TcosClassView(object):
 
 
     def generate_icon(self, data):
-        print_debug("generate_icon() data=%s"%data)
+        print_debug("generate_icon() ip=%s hostname=%s"%(data['ip'], data['hostname']) )
         
         iconview=gtk.IconView()
         model = gtk.ListStore(str, str ,gtk.gdk.Pixbuf)
         if data['standalone']:
-            pixbuff = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
         else:
-            pixbuff = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+        
+        if not data['active']:
+            pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
+        
+        if data['blocked_screen']:
+            pixbuf2 = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+            pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
+        
         iconview.set_model(model)
         iconview.set_text_column(0)
         iconview.set_pixbuf_column(2)
         iconview.props.has_tooltip = True
-        model.append([data['hostname'], data['ip'], pixbuff])
+        
+            
+        model.append([data['hostname'], data['ip'], pixbuf])
         
         iconview.show()
         
         button = gtk.Button()
         button.set_relief(gtk.RELIEF_NONE)
         button.add(iconview)
+        
         button.drag_source_set(gtk.gdk.BUTTON1_MASK, [], gtk.gdk.ACTION_COPY)
-        button.connect("button_press_event", self.on_iconview_click, data['ip'])
+        if data['active']:
+            button.connect("button_press_event", self.on_iconview_click, data['ip'])
+        button.connect("enter", self.on_button_enter, data)
         button.show_all()
         
         if self.oldpos.has_key(data['ip']):
@@ -197,17 +246,19 @@ class TcosClassView(object):
             print_debug("generate_icon() found old position => %s"%self.oldpos[data['ip']])
             self.classview.put(button, self.oldpos[data['ip']][0], self.oldpos[data['ip']][1] )
         else:
+            while self.__getoverride(self.position[0], self.position[1], data['ip'] ):
+                print_debug("generate_icon() OVERRIDE ICON !!!")
+                self.__increment_position()
             self.classview.put(button, self.position[0], self.position[1])
+            print_debug("generate_icon() put not positioned icon at [%s,%s] !!!"%(self.position[0], self.position[1]))
             self.__increment_position()
+            
         self.hosts[data['ip']]=data
         
     def on_drag_data_received(self, widget, context, x, y, time):
         button=context.get_source_widget()
         bx, by, width, height = button.get_allocation()
-        #print_debug("%s" %context.drag_get_data())
-        #print_debug("on_drag_data_received() ### TARGET POS   ### x=%s y=%s"%(x, y))
-        #print_debug("on_drag_data_received() ### OLD POSITION ### x=%s y=%s width=%s height=%s"%(bx, by, width, height))
-        #print_debug("on_drag_data_received() ### NEW POSITION ### x=%s y=%s "%(x-(width/2), y-(height/2)))
+        # calculate newx and newy with valid positions
         newx=x-(width/2)
         newy=y-(height/2)
         maxpos=self.get_max_pos()
@@ -220,28 +271,121 @@ class TcosClassView(object):
         if newy > maxpos[1]:
             print_debug("on_drag_data_received() newy=%s > maxpos[1]=%s or negative"%(newy, maxpos[1]))
             return
-        # FIXME search for other host to not put over
+        # get button ip address and pass to __getoverride to not put 2 hosts (with different IP) in same position
+        ip=[]
+        for c in button.get_children():
+            c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
+        # set unselect
+        self.change_select(c, ip[0])
+        if self.__getoverride(newx,newy, ip[0]):
+            print_debug("on_drag_data_received() another host is near x=%s y=%s, don't move!!"%(x,y) )
+            self.main.write_into_statusbar( _("Can't move icon, another host is near.") )
+            return
         self.classview.move(button, newx, newy)
 
     def motion_cb(self, widget, context, x, y, time):
         context.drag_status(gtk.gdk.ACTION_MOVE, time)
         return True
 
-    def on_iconview_click(self, iv, event, ip):
+    def change_select(self, widget, ip):
+        #print_debug("change_colour() ip=%s widget=%s"%(ip,widget))
+        colour_selected=gtk.gdk.color_parse("#98ec98") # green
+        colour_white=gtk.gdk.color_parse("white")
+        style = widget.get_style().copy()
+        
+        if self.isselected(ip):
+            style.base[gtk.STATE_NORMAL] = colour_white
+            style.base[gtk.STATE_PRELIGHT] = colour_white
+            self.set_unselect(ip)
+        else:
+            style.base[gtk.STATE_NORMAL] = colour_selected
+            style.base[gtk.STATE_PRELIGHT] = colour_selected
+            self.set_select(ip)
+        widget.set_style(style)
+
+    def on_iconview_click(self, widget, event, ip):
         if event.button == 3:
+            # right click show menu
             print_debug("on_iconview_click() ip=%s" %(ip))
-            self.main.actions.RightClickMenuOne( None , None, ip)
+            self.main.menus.RightClickMenuOne( None , None, ip)
             self.main.menu.popup( None, None, None, event.button, event.time)
+            self.set_select(ip)
             self.set_selected(ip)
             return True
+        if event.button == 1:
+            # select host (change color) and call set_selected or set_unselected
+            for c in widget.get_children():
+                self.change_select(c, ip)
 
     def on_classview_click(self, iv, event):
         if event.button == 3:
             # need to remake allmenu (for title selected|all )
-            self.main.actions.RightClickMenuAll()
+            #print_debug( "on_classview_click() all=%s"%self.selected )
+            self.main.menus.RightClickMenuAll()
             self.main.allmenu.popup( None, None, None, event.button, event.time)
-            self.set_selected(None)
             return
+
+    def on_button_enter(self, button, data):
+        txt=""
+        for info in self.avalaible_info:
+            if data[info[1]] == True:
+                value=_("yes")
+            elif data[info[1]] == False:
+                value=_("no")
+            else:
+                value=data[info[1]]
+            txt+=" %s: %s \n" %(info[0], value)
+        self.icon_tooltips = gtk.Tooltips()
+        self.icon_tooltips.set_tip(button, txt)
+
+    def get_multiple(self):
+        return self.selected
+
+    def set_select(self, ip):
+        self.selected.append(ip)
+        print_debug("set_select() ip=%s all=%s"%(ip, self.selected))
+
+    def set_unselect(self, ip):
+        if self.isselected(ip):
+            self.selected.remove(ip)
+        print_debug("set_unselect() ip=%s all=%s"%(ip, self.selected))
+
+    def isselected(self, ip):
+        if ip in self.selected:
+            #print_debug("isselected() TRUE ip=%s"%ip)
+            return True
+        #print_debug("isselected() FALSE ip=%s"%ip)
+        return False
+
+    def ismultiple(self):
+        if not self.isactive():
+            return False
+        print_debug("ismultiple() self.selected=%s"%self.selected)
+        if len(self.selected) > 0:
+            return True
+        else:
+            return False
+
+    def on_classview_event(self, widget, event):
+        if not event.state:
+            #print_debug("on_classview_event() tip")
+            self.icon_tooltips = gtk.Tooltips()
+            self.icon_tooltips.set_tip(widget, self.default_tip)
+
+
+    def change_lockscreen(self, ip, pixbuf2):
+        data=self.hosts[ip]
+        if data['standalone']:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+        else:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+        pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
+        for w in self.classview.get_children():
+            for c in w.get_children():
+                model=c.get_model()
+                if model[0][1] == ip:
+                    model[0][2]=pixbuf
+                    return
 
 
 

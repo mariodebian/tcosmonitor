@@ -418,8 +418,8 @@ class TcosPersonalize:
         selected=-1
         try:
             selected=widget.get_active()
-        except:
-            print_debug ( "read_select() ERROR reading %s" %(varname) )
+        except Exception, err:
+            print_debug ( "read_select() ERROR reading %s, error=%s" %(varname,err) )
         model=widget.get_model()
         value=model[selected][0]
         print_debug ( "read_select() reading %s=%s" %(varname, value) )
@@ -488,8 +488,8 @@ class TcosPersonalize:
         
         try:
             f=open(self.bootfilename, 'w')
-        except:
-            print_debug("Error opening %s"%filename)
+        except Exception, err:
+            print_debug("Error opening %s, error=%s"%(filename,err) )
             return
         
         for line in PXELINUX_CFG:
@@ -537,8 +537,8 @@ class TcosPersonalize:
         for _file in glob.glob('/var/lib/tcos/tftp/vmlinuz*'):
             try:
                 os.stat(_file)
-            except:
-                print_debug("getkernels() link %s broken" %_file)
+            except Exception, err:
+                print_debug("getkernels() link %s broken, error=%s" %(_file,err) )
                 continue
             kernel=os.path.basename(_file).replace('vmlinuz-','')
             print_debug("getkernels() found %s"%kernel)

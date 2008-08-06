@@ -5,6 +5,7 @@
 ../server-utils/tcos-server-utils.py
 ../TcosStaticHosts.py
 ../shared.py
+../TcosClassView.py
 ../TcosTrayIcon.py
 ../TcosPAM.py
 ../tcospersonalize.glade
@@ -13,12 +14,14 @@
 ../TcosXmlRpc.py
 ../TcosMonitorDaemon.py
 ../TcosIconView.py
+../TcosListView.py
 ../TcosConf.py
 ../Initialize.py
 ../tcos-volume-manager.glade
 ../LocalData.py
 ../TcosPreferences.py
 ../htmltextview.py
+../TcosMenus.py
 ../tcospersonalize.py
 ../ping.py
 ../tcos-volume-manager.py

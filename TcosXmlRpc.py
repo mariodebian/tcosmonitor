@@ -71,10 +71,8 @@ class TcosXmlRpc:
             if self.username == "" or self.password == "":
                 # warn empty username and password 
                 if self.main.name == "TcosMonitor":
-                    #gtk.gdk.threads_enter()
                     self.main.common.threads_enter("TcosXmlRpc:__init__ no user or password")
                     shared.error_msg( _("Username or password are empty,\nplease edit in preferences dialog!") )
-                    #gtk.gdk.threads_leave()
                     self.main.common.threads_leave("TcosXmlRpc:__init__ no user or password")
         else:
             print_debug ( "running outside tcosmonitor" )
@@ -128,6 +126,14 @@ class TcosXmlRpc:
                 
     def newhost(self, ip):
         #print_debug ( "newhost(%s)" %(ip) )
+        if not ip:
+            print_debug("\n\n##########################################\n\n")
+            print_debug("newhost() ip is None")
+            print_debug("\n\n##########################################\n\n")
+            if shared.debug:
+                sys.exit(1)
+            else:
+                return
         self.ip=ip
         self.version=None
         self.logged=None
@@ -136,7 +142,7 @@ class TcosXmlRpc:
         
         # this avoid to scan same ip a lot of times, but can give errors FIXME
         if self.lasthost == ip and self.connected:
-            print_debug("newhost() not scanning again, using lastip=%s lastport=%s SSL=%s" %(ip,self.lastport, self.sslconnection))
+            #print_debug("newhost() not scanning again, using lastip=%s lastport=%s SSL=%s" %(ip,self.lastport, self.sslconnection))
             return True
         
         # change ip, force new

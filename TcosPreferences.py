@@ -215,8 +215,8 @@ class TcosPreferences:
         selected=-1
         try:
             selected=widget.get_active()
-        except:
-            print_debug ( "read_select() ERROR reading %s" %(varname) )
+        except Exception, err:
+            print_debug ( "read_select() ERROR reading %s, error=%s" %(varname, err) )
         #FIXME ALERT
         model=widget.get_model()
         value=model[selected][0]
@@ -360,22 +360,33 @@ class TcosPreferences:
             
         print_debug("visible_menu_items() %s"%self.visible_menu_items)
         # make menus
-        self.main.actions.RightClickMenuOne(None)
-        self.main.actions.RightClickMenuAll()
+        self.main.menus.RightClickMenuOne(None)
+        self.main.menus.RightClickMenuAll()
         
         listmode=self.main.config.GetVar("listmode")
+        oldtab=self.main.viewtabs.get_current_page()
+        
         if listmode == 'list':
             self.main.viewtabs.set_property('show-tabs', False)
             self.main.viewtabs.set_current_page(0)
+            self.main.searchbutton.set_sensitive(True)
+            self.main.searchtxt.set_sensitive(True)
         elif listmode == 'icons':
             self.main.viewtabs.set_property('show-tabs', False)
             self.main.viewtabs.set_current_page(1)
+            self.main.searchbutton.set_sensitive(False)
+            self.main.searchtxt.set_sensitive(False)
         elif listmode == 'class':
             self.main.viewtabs.set_property('show-tabs', False)
             self.main.viewtabs.set_current_page(2)
+            self.main.searchbutton.set_sensitive(False)
+            self.main.searchtxt.set_sensitive(False)
         else:
             self.main.viewtabs.set_property('show-tabs', True)
-            self.main.viewtabs.set_current_page(0)
+            self.main.viewtabs.set_current_page(oldtab)
+            self.main.searchbutton.set_sensitive(True)
+            self.main.searchtxt.set_sensitive(True)
+        
         
         print_debug("populate_pref() done")
     

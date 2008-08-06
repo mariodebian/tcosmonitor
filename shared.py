@@ -75,6 +75,11 @@ else:
     GLOBAL_CONF='/etc/tcos/tcosmonitor.conf'
 
 
+# gettext support
+setlocale( LC_ALL )
+bindtextdomain( PACKAGE, LOCALE_DIR )
+textdomain( PACKAGE )
+
 # config file
 config_file=os.path.expanduser('~/.tcosmonitor.conf')
 config_file_secrets=('/etc/tcos/secrets/tcosmonitor-secret')
@@ -102,10 +107,10 @@ vlc_methods_send=[
 ]
 
 list_modes=[
-['list',_("Traditional list only")],
-['icons',_("Icons only")],
-['class',_("Simulate classroom")],
-['both',_("Lists, icons and classroom with tabs")],
+['list', _("Traditional list only") ],
+['icons', _("Icons only") ],
+['class', _("Simulate classroom") ],
+['both', _("Lists, icons and classroom with tabs") ],
     ]
 
 DefaultConfig=[
@@ -160,10 +165,6 @@ DefaultConfig=[
 # method ping is list 0 of combo_scan_method
 
 
-# gettext support
-setlocale( LC_ALL )
-bindtextdomain( PACKAGE, LOCALE_DIR )
-textdomain( PACKAGE )
 
 # text file enabling or disabling tcos-devices-ng or tcos-volume-manager
 module_conf_file="/etc/tcos/tcosmonitor.conf"
