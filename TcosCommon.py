@@ -33,6 +33,7 @@ import threading
 from subprocess import Popen, PIPE, STDOUT
 from gettext import gettext as _
 
+import netifaces
 
 from time import sleep
 
@@ -111,6 +112,15 @@ class TcosCommon:
 
     def get_ip_address(self, ifname):
         print_debug("get_ip_address() ifname=%s" %(ifname) )
+        if not ifname in netifaces.interfaces():
+            return None
+        ip=netifaces.ifaddresses(ifname)
+        if ip.has_key(netifaces.AF_INET):
+            return ip[netifaces.AF_INET][0]['addr']
+        return None
+        """
+        old code
+        print_debug("get_ip_address() ifname=%s" %(ifname) )
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         #print_debug("get_ip_address() iface=%s" %ifname)
         return socket.inet_ntoa(fcntl.ioctl(
@@ -118,8 +128,17 @@ class TcosCommon:
             0x8915,  # SIOCGIFADDR
             struct.pack('256s', ifname[:15])
         )[20:24])
+        """
 
     def GetAllNetworkInterfaces(self):
+        self.vars["allnetworkinterfaces"]=[]
+        for dev in netifaces.interfaces():
+            if not dev in shared.hidden_network_ifaces:
+                self.vars["allnetworkinterfaces"].append(dev)
+                ip=netifaces.ifaddresses(dev)
+        print_debug ( "GetAllNetworkInterfaces() %s" %( self.vars["allnetworkinterfaces"] ) )
+        return self.vars["allnetworkinterfaces"]
+        """
         self.vars["allnetworkinterfaces"]=[]
         d="/sys/class/net/"
         for sub in os.listdir(d):
@@ -128,18 +147,24 @@ class TcosCommon:
                     self.vars["allnetworkinterfaces"].append(sub)
         print_debug ( "GetAllNetworkInterfaces() %s" %( self.vars["allnetworkinterfaces"] ) )
         return self.vars["allnetworkinterfaces"]
+        """
 
     def get_my_local_ip(self, last=True, force=False):
         if force == True or not "local_ip" in self.vars :
             print_debug("get_my_local_ip()")
             self.vars["local_ip"]=[]
             for dev in self.GetAllNetworkInterfaces():
+                ip=self.get_ip_address(dev)
+                if ip:
+                    self.vars["local_ip"].append(ip)
+                """
                 try:
                     ip=self.get_ip_address(dev)
                     self.vars["local_ip"].append(ip)
                 except Exception, err:
                     print_debug("get_my_local_ip() Exception, dev=%s error=%s"%(dev,err) )
                     pass
+                """
         if last:
             return self.vars["local_ip"][0]
         else:
@@ -149,7 +174,7 @@ class TcosCommon:
         print_debug("get_all_my_ips()")
         if "local_ip" in self.vars:
             return self.vars["local_ip"]
-        return get_my_local_ip(last=False)
+        return self.get_my_local_ip(last=False)
 
     def get_display(self, ip_mode=True):
         #print_debug("get_display()")
@@ -248,5 +273,11 @@ if __name__ == '__main__':
     #print app.get_display()
     #print app.get_all_my_ips()
     #print app.get_extensions()
-    app.init_all_extensions(extfilter="menu_one")
-    print app.get_icon_theme()
+    #app.init_all_extensions(extfilter="menu_one")
+    #print app.get_icon_theme()
+    #print app.get_all_my_ips()
+    #print app.GetAllNetworkInterfaces()
+    print app.get_ip_address('eth0')
+    print app.get_ip_address('eth1')
+    print app.get_ip_address('br0')
+    print app.get_ip_address('br0:0')

@@ -12,7 +12,7 @@ XS-Vcs-Svn: https://www.tcosproject.org/svn/tcos/trunk/tcosmonitor
 Package: tcosmonitor
 Architecture: all
 Depends:  gksu | kdebase-bin, zenity, dbus,
-          python-dbus | python2.4-dbus, python-gtk2, python-glade2, 
+          python-dbus | python2.4-dbus, python-gtk2, python-glade2, python-netifaces, 
           x11vnc, lsb-base (>= 3.0-6), python-notify, python-gnome2-extras, 
           notification-daemon, libnotify-bin, tcos-core ( >= 0.89~rc0), python-utmp, 
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}

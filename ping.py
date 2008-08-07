@@ -20,6 +20,8 @@ from gettext import gettext as _
 from time import sleep
 from subprocess import Popen, PIPE, STDOUT
 
+import netifaces
+
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
         import gtk
@@ -136,6 +138,15 @@ class Ping:
         return reachip
  
     def get_ip_address(self, ifname):
+        print_debug("get_ip_address() ifname=%s" %(ifname) )
+        if not ifname in netifaces.interfaces():
+            return None
+        ip=netifaces.ifaddresses(ifname)
+        if ip.has_key(netifaces.AF_INET):
+            return ip[netifaces.AF_INET][0]['addr']
+        return None
+        """
+        old code
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             ip=socket.inet_ntoa(fcntl.ioctl(
@@ -147,9 +158,21 @@ class Ping:
             ip=None
             print_debug("get_ip_address() ifname %s don't have ip address, error=%s"%(ifname,err))
         return ip
+        """
 
 
     def get_server_ips(self):
+        IPS=[]
+        for dev in netifaces.interfaces():
+            if not dev in shared.hidden_network_ifaces:
+                print_debug("get_server_ips() add interface %s"%dev)
+                ip=netifaces.ifaddresses(dev)
+                if ip.has_key(netifaces.AF_INET):
+                    print_debug("get_server_ips() iface=%s data=%s"%(dev,ip[netifaces.AF_INET] ))
+                    IPS.append(ip[netifaces.AF_INET][0]['addr'])
+        return IPS
+        """
+        old code
         IPS=[]
         for dev in os.listdir("/sys/class/net"):
             if not dev in shared.hidden_network_ifaces:
@@ -161,6 +184,7 @@ class Ping:
                
         print_debug("get_server_ips() IPS=%s"%IPS)
         return IPS
+        """
 
 
 ##########################################################################
@@ -230,6 +254,9 @@ if __name__ == '__main__':
     #    PingPort("192.168.0.3", i+100).get_status()
     #PingPort("192.168.0.5", 6000, 0.5).get_status()
     #PingPort("192.168.0.1", 6000, 0.5).get_status()
-    PingPort(sys.argv[1], sys.argv[2], 0.5).get_status()
-    #app=Ping(None)
-    #print app.get_server_ips()
+    #PingPort(sys.argv[1], sys.argv[2], 0.5).get_status()
+    app=Ping(None)
+    print app.get_server_ips()
+    print app.get_ip_address('eth0')
+    print app.get_ip_address('br0')
+    
