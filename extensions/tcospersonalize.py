@@ -23,39 +23,41 @@
 ###########################################################################
 """ template extension """
 
-extension_name="Info Extension"
-__main__=None
-__name__=extension_name
-
+from gettext import gettext as _
+import os
 import shared
+from TcosExtensions import TcosExtension, Error
+
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::info", txt)
+        print "%s::%s" %("extensions::tcospersonalize", txt)
     return
 
-def __register__(main=None):
-    print_debug( "__register__()" )
-    if main:
-        global __main__
-        __main__=main
-        #__main__.common.get_icon_theme()
 
-def __init__():
-    print_debug( "__init__()" )
-    print main()
+class TcosPersonalize(TcosExtension):
+    def register(self):
+        self.main.menus.register_simple( _("Configure this host"), "menu_configure.png", 0, self.launch_tcospersonalize)
+        
 
-def __run__():
-    print_debug( "__run__()" )
+    def launch_tcospersonalize(self, w, ip):
+        if not self.get_client():
+            return
+        if self.client_type == "tcos":
+            if self.main.ingroup_tcos == False and os.getuid() != 0:
+                cmd="gksu \"tcospersonalize --host=%s\"" %(ip)
+            else:
+                cmd="tcospersonalize --host=%s" %(ip)
+            print_debug ( "launch_tcospersonalize() cmd=%s" %(cmd) )
+            th=self.main.common.exe_cmd( cmd, verbose=0, background=True )
+        else:
+            shared.info_msg( _("%s is not supported to personalize!") %(self.client_type) )
 
-def main():
-    global __main__
-    return __main__
 
-# functions or class that init/run extension
-extension_register=__register__
-extension_init=__init__
-extension_run=__run__
+
+__extclass__=TcosPersonalize
+
+
 
 
 

@@ -171,66 +171,65 @@ class Initialize(object):
         
         
     
-    def initask(self):
-        self.main.ask_ip=None
-        
-        self.main.ask = self.main.ui.get_widget('askwindow')
-        self.main.ask.connect('delete-event', self.main.actions.askwindow_close )
-        self.main.ask.set_icon_from_file(shared.IMG_DIR +\
-                                         'tcos-icon-32x32.png')
-        
-        
-        self.main.ask_label = self.main.ui.get_widget('txt_asklabel')
-        ## arrastrar y soltar
-        self.main.ask_fixed = self.main.ui.get_widget('ask_fixed')
-        self.main.ask_dragdrop = self.main.ui.get_widget('label99')
-        self.main.image_entry = self.main.ui.get_widget('image_askentry')
-        self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ),], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
-        self.main.image_entry.connect( 'drag_data_received', self.main.actions.on_drag_data_received)
-        self.main.ask_fixed.hide()
-        self.main.image_entry.hide()
-        self.main.ask_dragdrop.hide()
-        ## fin arrastrar y soltar
-        self.liststore = gtk.ListStore(str)
-        for s in shared.appslist:
-            self.liststore.append([s])
-            
-        self.main.ask_entry = self.main.ui.get_widget('txt_askentry')
-        self.main.ask_completion = gtk.EntryCompletion()
-        self.main.ask_completion.set_model(self.liststore)
-        self.main.ask_entry.set_completion(self.main.ask_completion)
-        self.main.ask_completion.set_text_column(0)
-        
-        self.main.ask_completion.connect('match-selected', self.match_cb)
-        self.main.ask_entry.connect('activate', self.activate_cb)
-        
-        self.main.ask_cancel = self.main.ui.get_widget('ask_cancelbutton')
-        self.main.ask_exec = self.main.ui.get_widget('ask_exebutton')
-        
-        # buttons signals
-        self.main.ask_exec.connect('clicked', self.main.actions.on_ask_exec_click)
-        self.main.ask_cancel.connect('clicked', self.main.actions.on_ask_cancel_click)
+#    def initask(self):
+#        self.main.ask_ip=None
+#        
+#        self.main.ask = self.main.ui.get_widget('askwindow')
+#        self.main.ask.connect('delete-event', self.main.actions.askwindow_close )
+#        self.main.ask.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
+#        
+#        
+#        self.main.ask_label = self.main.ui.get_widget('txt_asklabel')
+#        ## arrastrar y soltar
+#        self.main.ask_fixed = self.main.ui.get_widget('ask_fixed')
+#        self.main.ask_dragdrop = self.main.ui.get_widget('label99')
+#        self.main.image_entry = self.main.ui.get_widget('image_askentry')
+#        self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ),], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
+#        self.main.image_entry.connect( 'drag_data_received', self.main.actions.on_drag_data_received)
+#        self.main.ask_fixed.hide()
+#        self.main.image_entry.hide()
+#        self.main.ask_dragdrop.hide()
+#        ## fin arrastrar y soltar
+#        self.liststore = gtk.ListStore(str)
+#        for s in shared.appslist:
+#            self.liststore.append([s])
+#            
+#        self.main.ask_entry = self.main.ui.get_widget('txt_askentry')
+#        self.main.ask_completion = gtk.EntryCompletion()
+#        self.main.ask_completion.set_model(self.liststore)
+#        self.main.ask_entry.set_completion(self.main.ask_completion)
+#        self.main.ask_completion.set_text_column(0)
+#        
+#        self.main.ask_completion.connect('match-selected', self.match_cb)
+#        self.main.ask_entry.connect('activate', self.activate_cb)
+#        
+#        self.main.ask_cancel = self.main.ui.get_widget('ask_cancelbutton')
+#        self.main.ask_exec = self.main.ui.get_widget('ask_exebutton')
+#        
+#        # buttons signals
+#        self.main.ask_exec.connect('clicked', self.main.actions.on_ask_exec_click)
+#        self.main.ask_cancel.connect('clicked', self.main.actions.on_ask_cancel_click)
         
     
-    def match_cb(self, completion, model, iter):
-        print_debug ( "match_cb() " )
-        print_debug( "%s was selected" %(model[iter][0]) )
-        self.main.actions.exe_app_in_client_display(model[iter][0])
-        return
-    
-    def activate_cb(self, entry):
-        text = self.main.ask_entry.get_text()
-        print_debug ( "activate_cb() text=%s" %(text) )
-        
-        # append to liststore
-        if text:
-            if text not in [row[0] for row in self.liststore]:
-                self.liststore.append([text])
-                #self.main.ask_entry.set_text('')
-        
-        # exe app        
-        self.main.actions.exe_app_in_client_display(text)
-        return
+#    def match_cb(self, completion, model, iter):
+#        print_debug ( "match_cb() " )
+#        print_debug( "%s was selected" %(model[iter][0]) )
+#        self.main.actions.exe_app_in_client_display(model[iter][0])
+#        return
+#    
+#    def activate_cb(self, entry):
+#        text = self.main.ask_entry.get_text()
+#        print_debug ( "activate_cb() text=%s" %(text) )
+#        
+#        # append to liststore
+#        if text:
+#            if text not in [row[0] for row in self.liststore]:
+#                self.liststore.append([text])
+#                #self.main.ask_entry.set_text('')
+#        
+#        # exe app        
+#        self.main.actions.exe_app_in_client_display(text)
+#        return
     
     """
     def init_hostlist(self):

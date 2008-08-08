@@ -374,6 +374,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
 
 
     def change_lockscreen(self, ip, pixbuf2):
+        print_debug("change_lockscreen() ip=%s pixbuf=%s"%(ip, pixbuf2))
         data=self.hosts[ip]
         if data['standalone']:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')

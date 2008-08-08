@@ -6,7 +6,6 @@ all:
 include ../common.mk
 
 install:
-	install -d  $(DESTDIR)$(DBUS_CONF)/
 	install -d  $(DESTDIR)$(X11_CONF)/
 	install -d  $(DESTDIR)/$(PREFIX)/bin/
 

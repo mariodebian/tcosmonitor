@@ -48,6 +48,7 @@ class TcosCommon:
         self.main=main
         self.thread_lock=False
         self.vars={}
+        self.extensions={}
         print_debug("__init__()")
         self.theme=None
         pass
@@ -207,25 +208,35 @@ class TcosCommon:
     def get_extensions(self):
         if "extensions" in self.vars:
             return self.vars["extensions"]
-        print_debug("get_extensions()")
         self.vars["extensions"]=[]
         for ext in os.listdir(shared.EXTENSIONS):
-            if ext.endswith('.py') and ext != "__init__.py":
+            if ext.endswith('.py') and ext != "__init__.py" and ext != "template.py":
                 #print_debug("get_extensions() extension=%s" %ext)
                 self.vars["extensions"].append( ext.split(".py")[0] )
+        print_debug("get_extensions() all=%s"%self.vars['extensions'])
         return self.vars["extensions"]
-        
-    def init_extension(self, extension):
-        extension.extension_init()
 
-    def init_all_extensions(self, extfilter=None):
+    def register_extension(self, ext):
+        print_debug("register_extension() ext=%s"%ext)
+        tmp=__import__(ext, fromlist=['extensions'])
+        # init extension
+        self.extensions[ext]=tmp.__extclass__(self.main)
+        # call register method
+        self.extensions[ext].register()
+        
+
+    def init_all_extensions(self):
         """Init all extensions that contains a extension_filter string"""
         self.extensions={}
         for ext in self.get_extensions():
-            self.extensions[ext]=__import__("extensions." + ext)
-            if extfilter and eval("self.extensions[ext]."+ext+".extension_type") == extfilter:
-                print_debug("init_extensions() init %s filter=%s" %(ext,extfilter))
-                self.init_extension( eval("self.extensions[ext]."+ext) )
+            try:
+                self.extensions[ext]=__import__("extensions." + ext)
+            except Exception, err:
+                print_debug("init_all_extensions() EXCEPTION importing '%s', error=%s"%(ext,err) )
+                continue
+            print_debug("init_extensions() init '%s'" %(ext))
+            self.register_extension( eval("self.extensions[ext]."+ext) )
+            self.init_extension( eval("self.extensions[ext]."+ext) )
 
 
     def threads_enter(self, fromtxt=None):
@@ -268,16 +279,17 @@ class TcosCommon:
 
 if __name__ == '__main__':
     shared.debug=True
-    app=TcosCommon(None)
+    import sys
+    app=TcosCommon(TcosCommon)
     #print app.get_my_local_ip(last=True)
     #print app.get_display()
     #print app.get_all_my_ips()
-    #print app.get_extensions()
-    #app.init_all_extensions(extfilter="menu_one")
+    app.get_extensions()
+    app.init_all_extensions()
     #print app.get_icon_theme()
     #print app.get_all_my_ips()
     #print app.GetAllNetworkInterfaces()
-    print app.get_ip_address('eth0')
-    print app.get_ip_address('eth1')
-    print app.get_ip_address('br0')
-    print app.get_ip_address('br0:0')
+    #print app.get_ip_address('eth0')
+    #print app.get_ip_address('eth1')
+    #print app.get_ip_address('br0')
+    #print app.get_ip_address('br0:0')

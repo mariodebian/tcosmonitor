@@ -1,3 +1,19 @@
+tcosmonitor (0.2.16~rc6) unstable; urgency=low
+
+  The extensions pre release
+
+  * Move a lot of code from TcosActions.py to extensions/*.py
+  * New class TcosExtensions.py (every extension heredate from it)
+  * This release is not finished !!!!
+  * TODO:
+    - Make extensions preferences (register/load/save)
+    - Rewrite some code to make TcosExtensions.py smaller
+    - Fix Menus Show function
+    - Move doaction_onthisclient() TcosActions.py => TcosExtensions.py
+    - New view mode VNC icons (using python-vnc) ????
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 08 Aug 2008 18:16:56 +0200
+
 tcosmonitor (0.2.16~rc5) unstable; urgency=low
 
   * ping.py TcosCommon.py debian/control:

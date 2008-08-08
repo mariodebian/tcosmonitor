@@ -52,7 +52,8 @@ class TcosListView(object):
         self.main.updating=True
         self.searching=False  # boolean True thread running False not running
         
-        
+        # define as None and register with info extension
+        self.populate_datatxt=None
         
         self.model=gtk.ListStore(str, str, str, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, str, str, bool,bool)
         
@@ -124,6 +125,10 @@ class TcosListView(object):
         if self.main.worker_running:
             return
         
+        if not self.populate_datatxt:
+            print_debug ("on_hostlist_click() self.populate_datatxt() NOT DEFINED")
+            return
+        
         self.main.progressbar.hide()
         (model, iter) = hostlist.get_selected()
         if not iter:
@@ -148,8 +153,9 @@ class TcosListView(object):
         self.main.write_into_statusbar ( "" )
         print_debug ( "on_hostlist_click() callig worker to populate in Thread" )
         
+        
         self.main.worker=shared.Workers( self.main,\
-                     target=self.main.actions.populate_datatxt, args=([self.main.selected_ip]) ).start()
+                     target=self.populate_datatxt, args=([self.main.selected_ip]) ).start()
         
         return
 
@@ -171,6 +177,7 @@ class TcosListView(object):
                 self.main.menu.popup( None, None, None, event.button, time)
                 return 1
             else:
+                self.main.menus.RightClickMenuAll()
                 self.main.allmenu.popup( None, None, None, event.button, time)
                 print_debug ( "on_hostlist_event() NO row selected" )
                 return
@@ -257,11 +264,12 @@ class TcosListView(object):
     def refresh_client_info(self, ip, data):
         self.model.foreach(self.__refresh_client_info, [ip,data] )
 
-    def __refresh_client_info(self, model, path, iter, ip, data):
+    def __refresh_client_info(self, model, path, iter, args):
+        ip, data = args
         print_debug ( "__refresh_client_info()  ip=%s model_ip=%s" %(ip, model.get_value(iter, COL_IP)) )
         # update data if ip is the same.
         if model.get_value(iter, COL_IP) == ip:
-            self.set_client_data(ip, model, iter)
+            #self.set_client_data(ip, model, iter)
             model.set_value (iter, COL_HOST, data['hostname'] )
             model.set_value (iter, COL_IP, data['ip'] )
             model.set_value (iter, COL_USERNAME, data['username'] )

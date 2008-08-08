@@ -266,10 +266,10 @@ onehost_mainmenus = [
 ]
 
 ###
-###   [ TEXT, ICON (in images dir) ]
+###   [ TEXT, ICON (in images dir),     EXTENSION (or None) ]
 ###
 onehost_menuitems=[
- [ _("Refresh terminal info"), "menu_refresh.png"] ,          #action=0
+ [ _("Refresh terminal info"), "menu_refresh.png",  "extensions.info" , 0] ,          #action=0
  [ _("Clean info about terminal"), "menu_clear.png"] ,        #action=1
  [ _("Reboot"), "menu_reboot.png"] ,                          #action=2
  [ _("Poweroff"), "menu_poweroff.png"] ,                      #action=3
@@ -631,7 +631,6 @@ class Workers:
         return self.__finished
 
     def set_for_all_action(self, function, allhost, action):
-        action_args=[allhost, action]
-        Thread( target=function, args=(action_args) ).start()
+        Thread( target=function, args=([allhost, action]) ).start()
 
 

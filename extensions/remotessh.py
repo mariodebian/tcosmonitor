@@ -23,39 +23,37 @@
 ###########################################################################
 """ template extension """
 
-extension_name="Info Extension"
-__main__=None
-__name__=extension_name
+from gettext import gettext as _
 
 import shared
+from TcosExtensions import TcosExtension, Error
+
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::info", txt)
+        print "%s::%s" %("extensions::remotessh", txt)
     return
 
-def __register__(main=None):
-    print_debug( "__register__()" )
-    if main:
-        global __main__
-        __main__=main
-        #__main__.common.get_icon_theme()
 
-def __init__():
-    print_debug( "__init__()" )
-    print main()
+class RemoteSSH(TcosExtension):
+    def register(self):
+        self.main.menus.register_simple( _("Give a remote xterm"), "menu_xterm.png", 0, self.remotessh)
+        
 
-def __run__():
-    print_debug( "__run__()" )
+    def remotessh(self, w, ip):
+        if not self.get_client():
+            return
+        # give a remote xterm throught SSH
+        pass_msg=_("Enter password of remote thin client (if asked for it)")
+        cmd="xterm -e \"echo '%s'; ssh %s@%s || sleep 5\"" %(pass_msg, self.main.config.GetVar("ssh_remote_username"),ip)
+        print_debug ( "remotessh() cmd=%s" %(cmd) )
+        th=self.main.common.exe_cmd( cmd, verbose=0, background=True )
 
-def main():
-    global __main__
-    return __main__
 
-# functions or class that init/run extension
-extension_register=__register__
-extension_init=__init__
-extension_run=__run__
+
+__extclass__=RemoteSSH
+
+
 
 
 

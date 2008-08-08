@@ -63,7 +63,6 @@ install:
 	install -d $(DESTDIR)/$(PREFIX)/share/pixmaps/
 	install -d $(DESTDIR)/$(PREFIX)/bin
 	install -d $(DESTDIR)/$(PREFIX)/sbin
-	install -d $(DESTDIR)/$(TCOS_BINS)
 	install -d $(DESTDIR)/etc/tcos/
 	
 
@@ -101,6 +100,7 @@ install:
 	install -m 644 TcosClassView.py    $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosListView.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosMenus.py        $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosExtensions.py   $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 
 	install -m 755 tcosmonitor.py           $(DESTDIR)/$(PREFIX)/bin/tcosmonitor
 	install -m 755 tcospersonalize.py       $(DESTDIR)/$(PREFIX)/bin/tcospersonalize

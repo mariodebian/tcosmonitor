@@ -85,6 +85,7 @@ for o, a in opts:
         usage()
         sys.exit()
 
+from TcosExtensions import TcosExtLoader, Error
 import TcosCommon
 import Initialize
 import TcosXmlRpc
@@ -194,7 +195,7 @@ class TcosMonitor:
         #########  init some elements ###########
         self.init.init_progressbar()
         #self.init.initabout()
-        self.init.initask()
+        #self.init.initask()
         self.init.initabouttcos()
         #self.init.initpref()
         #self.init.populate_pref()
@@ -204,14 +205,8 @@ class TcosMonitor:
         
         self.actions.update_hostlist()
         
+        self.extloader=TcosExtLoader(self)
         
-        
-        # make menus
-        #self.actions.RightClickMenuOne(None)
-        #self.actions.RightClickMenuAll()
-        
-        # init hostlist
-        #self.init.init_hostlist()
         
         if not shared.dbus_disabled:
             from TcosDBus import TcosDBusAction

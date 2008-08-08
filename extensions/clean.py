@@ -23,39 +23,38 @@
 ###########################################################################
 """ template extension """
 
-extension_name="Info Extension"
-__main__=None
-__name__=extension_name
+from gettext import gettext as _
 
 import shared
+from TcosExtensions import TcosExtension
+
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::info", txt)
+        print "%s::%s" %("extensions::clean", txt)
     return
 
-def __register__(main=None):
-    print_debug( "__register__()" )
-    if main:
-        global __main__
-        __main__=main
-        #__main__.common.get_icon_theme()
 
-def __init__():
-    print_debug( "__init__()" )
-    print main()
+class Clean(TcosExtension):
+    def register(self):
+        self.main.menus.register_simple(_("Clean info about terminal"), "menu_clear.png", 0, self.clean)
+        self.main.menus.register_all( _("Clean info about terminal"), "menu_clear.png", 0, self.clean)
 
-def __run__():
-    print_debug( "__run__()" )
+    def clean(self, *args):
+        print_debug("clean()")
+        self.main.datatxt.clean()
+        self.main.write_into_statusbar('')
+    
 
-def main():
-    global __main__
-    return __main__
 
-# functions or class that init/run extension
-extension_register=__register__
-extension_init=__init__
-extension_run=__run__
+
+
+
+__extclass__=Clean
+
+
+
+
 
 
 
