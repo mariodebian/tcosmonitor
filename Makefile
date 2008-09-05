@@ -164,32 +164,10 @@ tcos:
 
 
 patch_version:
-	# PATCHING VERSION
-	sed -i 's/__VERSION__/$(VERSION)/g' shared.py
-	sed -i 's/__VERSION__/$(VERSION)/g' Initialize.py
-	sed -i 's/__VERSION__/$(VERSION)/g' LocalData.py
-	sed -i 's/__VERSION__/$(VERSION)/g' ping.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosActions.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosCommon.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosConf.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosDBus.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosXauth.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosStaticHosts.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosXmlRpc.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosPAM.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosMonitorDaemon.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosPreferences.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosTrayIcon.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosStaticHosts.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosIconView.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosListView.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosClassView.py
-	sed -i 's/__VERSION__/$(VERSION)/g' TcosMenus.py
-	sed -i 's/__VERSION__/$(VERSION)/g' tcos-devices-ng.py
-	sed -i 's/__VERSION__/$(VERSION)/g' tcos-volume-manager.py
-	sed -i 's/__VERSION__/$(VERSION)/g' tcosmonitor.py
-	sed -i 's/__VERSION__/$(VERSION)/g' tcospersonalize.py
-	sed -i 's/__VERSION__/$(VERSION)/g' server-utils/tcos-server-utils.py
+	@for f in $(shell find -type f -name "*.py"); do \
+		echo "  * Patching VERSION $(VERSION) in $$f"; \
+		sed -i 's/__VERSION__/$(VERSION)/g' $$f; \
+	done
 
 patch_dapper: patch_version
 	# PATCHING TcosMonitor in Ubuntu DAPPER

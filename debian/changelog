@@ -16,8 +16,10 @@ tcosmonitor (0.2.16~rc6) unstable; urgency=low
     - Delete some old code from TcosActions.py
   * Update translations template and spanish po file
   * Add Ubuntu intrepid target in Makefile
+  * Makefile
+    - Replace seds with a shell for loop to replace version in py files
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 05 Sep 2008 15:13:40 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 05 Sep 2008 15:55:31 +0200
 
 tcosmonitor (0.2.16~rc5) unstable; urgency=low
 
