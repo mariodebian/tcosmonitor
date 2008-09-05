@@ -14,8 +14,9 @@ tcosmonitor (0.2.16~rc6) unstable; urgency=low
   * Create more extensions:
     - viewproc.py videolan.py sendfiles.py wakeonlan.py
     - Delete some old code from TcosActions.py
+  * Update translations template and spanish po file
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 05 Sep 2008 10:54:23 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 05 Sep 2008 10:58:05 +0200
 
 tcosmonitor (0.2.16~rc5) unstable; urgency=low
 
