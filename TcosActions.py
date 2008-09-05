@@ -38,7 +38,7 @@ from TcosExtensions import Error
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
-import WakeOnLan
+#import WakeOnLan
 
 def print_debug(txt):
     if shared.debug:
@@ -83,26 +83,26 @@ class TcosActions:
 #        else:
 #            shared.error_msg ( _("PulseAudio apps need /dev/shm.") )
 
-    def on_kill_button_click(self, widget, pid, username):
-        print_debug ( "on_kill_button_click() pid=%s username=%s" %(pid, username) )
-        if shared.ask_msg ( _("Are you sure you want to stop this process?") ):
-            print_debug ( "KILL KILL KILL" )
-            if username.find(":") != -1 :
-                usern, ip = username.split(":")
-                self.main.xmlrpc.newhost(ip)
-                self.main.xmlrpc.DBus("kill", str(pid) )
-            else:
-                result = self.main.dbus_action.do_kill( [username] , str(pid) )
-                if not result:
-                    shared.error_msg ( _("Error while killing app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
-                else:
-                    print_debug ( "on_kill_button_click() KILLED ;)" )
-            self.get_user_processes(self.main.selected_ip)  
+#    def on_kill_button_click(self, widget, pid, username):
+#        print_debug ( "on_kill_button_click() pid=%s username=%s" %(pid, username) )
+#        if shared.ask_msg ( _("Are you sure you want to stop this process?") ):
+#            print_debug ( "KILL KILL KILL" )
+#            if username.find(":") != -1 :
+#                usern, ip = username.split(":")
+#                self.main.xmlrpc.newhost(ip)
+#                self.main.xmlrpc.DBus("kill", str(pid) )
+#            else:
+#                result = self.main.dbus_action.do_kill( [username] , str(pid) )
+#                if not result:
+#                    shared.error_msg ( _("Error while killing app:\nReason: %s") %( self.main.dbus_action.get_error_msg() ) )
+#                else:
+#                    print_debug ( "on_kill_button_click() KILLED ;)" )
+#            self.get_user_processes(self.main.selected_ip)  
 
-    def on_another_screenshot_button_click(self, widget, ip):
-        print_debug ( "on_another_screenshot_button_click() __init__ ip=%s" %(ip) )
-        self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=[ip])
-        self.main.worker.start()
+#    def on_another_screenshot_button_click(self, widget, ip):
+#        print_debug ( "on_another_screenshot_button_click() __init__ ip=%s" %(ip) )
+#        self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=[ip])
+#        self.main.worker.start()
 
     def on_allhostbutton_click(self, widget):
         print_debug("on_allhostbutton_click() ....")
@@ -128,15 +128,15 @@ class TcosActions:
             self.main.is_fullscreen=True
             self.main.fullscreenbutton.set_stock_id("gtk-leave-fullscreen")
 
-    """
+    
 #    def on_downloadallmodules_click(self, widget):
-        print_debug ( "on_downloadallmodules_click() ################" )
-        if self.main.selected_ip != None:
-            print_debug( "on_downloadallmodules_click() downloading modules for %s" %(self.main.selected_ip) )
-            # download allmodules.squashfs and mount it
-            self.main.xmlrpc.Exe("useallmodules.sh")
-        pass
-    """
+#        print_debug ( "on_downloadallmodules_click() ################" )
+#        if self.main.selected_ip != None:
+#            print_debug( "on_downloadallmodules_click() downloading modules for %s" %(self.main.selected_ip) )
+#            # download allmodules.squashfs and mount it
+#            self.main.xmlrpc.Exe("useallmodules.sh")
+#        pass
+    
     
     def on_progressbutton_click(self, widget):
         print_debug( "on_progressbutton_click()" )
@@ -920,37 +920,37 @@ class TcosActions:
 #        crono(start1, "populate_datatxt(%s)" %(ip) )
 #        return False
 
-    """
+#    
 #    def slider_value_changed(self, widget, adjustment, event, channel, ip):
-        value=widget.get_value()
-        print_debug ( "slider_value_changed() ip=%s channel=%s value=%s" %(ip, channel, value) )
-        
-        self.main.write_into_statusbar( \
-        _("Changing value of %(channel)s channel, to %(value)s%%..." )\
-         %{"channel":channel, "value":value} )
-        
-        tmp=self.main.xmlrpc.SetSound(ip, channel, str(value)+"%")
-        newvalue="%2d%%"%int(tmp['level'])
-        
-        self.main.write_into_statusbar( \
-        _("Changed value of %(channel)s channel, to %(value)s" ) \
-        %{"channel":channel, "value":newvalue} )
-    
+#        value=widget.get_value()
+#        print_debug ( "slider_value_changed() ip=%s channel=%s value=%s" %(ip, channel, value) )
+#        
+#        self.main.write_into_statusbar( \
+#        _("Changing value of %(channel)s channel, to %(value)s%%..." )\
+#         %{"channel":channel, "value":value} )
+#        
+#        tmp=self.main.xmlrpc.SetSound(ip, channel, str(value)+"%")
+#        newvalue="%2d%%"%int(tmp['level'])
+#        
+#        self.main.write_into_statusbar( \
+#        _("Changed value of %(channel)s channel, to %(value)s" ) \
+#        %{"channel":channel, "value":newvalue} )
+#    
 #    def checkbox_value_changed(self, widget, channel, ip):
-        value=widget.get_active()
-        if not value:
-            value="off"
-            self.main.write_into_statusbar( _("Unmuting %s channel..."  ) %(channel) )
-            tmp=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setunmute")
-            newvalue=tmp['mute']
-        else:
-            value="on"
-            self.main.write_into_statusbar( _("Muting %s channel..."  ) %(channel) )
-            tmp=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setmute")
-            newvalue=tmp['mute']
-        self.main.write_into_statusbar( _("Status of %(channel)s channel, is \"%(newvalue)s\""  )\
-         %{"channel":channel, "newvalue":newvalue} )
-    """
+#        value=widget.get_active()
+#        if not value:
+#            value="off"
+#            self.main.write_into_statusbar( _("Unmuting %s channel..."  ) %(channel) )
+#            tmp=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setunmute")
+#            newvalue=tmp['mute']
+#        else:
+#            value="on"
+#            self.main.write_into_statusbar( _("Muting %s channel..."  ) %(channel) )
+#            tmp=self.main.xmlrpc.SetSound(ip, channel, value="", mode="--setmute")
+#            newvalue=tmp['mute']
+#        self.main.write_into_statusbar( _("Status of %(channel)s channel, is \"%(newvalue)s\""  )\
+#         %{"channel":channel, "newvalue":newvalue} )
+#    
     
     def populate_hostlist(self, clients):
         print_debug ( "populate_hostlist() init" )
@@ -1191,16 +1191,16 @@ class TcosActions:
         elif not self.main.xmlrpc.IsStandalone(self.main.selected_ip):
             allclients_logged.append(self.main.selected_ip)
         
-        if action == 0:
-            # refresh terminal
-            # call to read remote info
-            #self.main.xmlrpc.newhost(self.main.selected_ip)
-            self.main.xmlrpc.ip=self.main.selected_ip
-            
-            self.main.worker=shared.Workers( self.main,\
-                     target=self.populate_datatxt, args=([self.main.selected_ip]) ).start()
-            
-            
+#        if action == 0:
+#            # refresh terminal
+#            # call to read remote info
+#            #self.main.xmlrpc.newhost(self.main.selected_ip)
+#            self.main.xmlrpc.ip=self.main.selected_ip
+#            
+#            self.main.worker=shared.Workers( self.main,\
+#                     target=self.populate_datatxt, args=([self.main.selected_ip]) ).start()
+#            
+#            
 #        if action == 1:
 #            # clean datatxtbuffer
 #            self.main.datatxt.clean()
@@ -1335,295 +1335,295 @@ class TcosActions:
 #            else:
 #                shared.info_msg( _("%s is not supported to restart Xorg!") %(client_type) )
         
-        if action == 13:
-            # exec app
-            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
-                shared.error_msg ( _("Can't exec application, user is not logged") )
-                return
-            self.askfor(mode="exec", users=connected_users)
+#        if action == 13:
+#            # exec app
+#            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+#                shared.error_msg ( _("Can't exec application, user is not logged") )
+#                return
+#            self.askfor(mode="exec", users=connected_users)
+#            
+#        if action == 14:
+#            # send message
+#            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+#                shared.error_msg ( _("Can't send message, user is not logged") )
+#                return
+#            self.askfor(mode="mess", users=connected_users)
             
-        if action == 14:
-            # send message
-            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
-                shared.error_msg ( _("Can't send message, user is not logged") )
-                return
-            self.askfor(mode="mess", users=connected_users)
-            
-        if action == 15:
-            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
-                shared.error_msg ( _("Can't show runnings apps, user is not logged") )
-                return
-            print_debug ("menu_event_one() show running apps" )
-            self.get_user_processes(self.main.selected_ip)
-            
-            
-        if action == 16:
-            # action sent by vidal_joshur at gva dot es
-            # start video broadcast mode
-            # Stream to single client unicast
-            eth=self.main.config.GetVar("network_interface")
-            
-            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
-                shared.error_msg ( _("Can't send video broadcast, user is not logged") )
-                return
-                        
-            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
-            lock="disable"
-            volume="85"
-            
-            if self.main.pref_vlc_method_send.get_active() == 0:
-                vcodec=shared.vcodecs[0]
-                venc=shared.vencs[0]
-                acodec=shared.acodecs[0]
-                aenc=shared.aencs[0]
-                access=shared.accesss[0]
-                mux=shared.muxs[0]
-            elif self.main.pref_vlc_method_send.get_active() == 1:
-                vcodec=shared.vcodecs[1]
-                venc=shared.vencs[0]
-                acodec=shared.acodecs[0]
-                aenc=shared.aencs[0]
-                access=shared.accesss[0]
-                mux=shared.muxs[0]
-            elif self.main.pref_vlc_method_send.get_active() == 2:
-                vcodec=shared.vcodecs[2]
-                venc=shared.vencs[1]
-                acodec=shared.acodecs[0]
-                aenc=shared.aencs[0]
-                access=shared.accesss[0]
-                mux=shared.muxs[0]
-            elif self.main.pref_vlc_method_send.get_active() == 3:
-                vcodec=shared.vcodecs[3]
-                venc=shared.vencs[2]
-                acodec=shared.acodecs[1]
-                aenc=shared.aencs[1]
-                access=shared.accesss[1]
-                mux=shared.muxs[1]
-            elif self.main.pref_vlc_method_send.get_active() == 4:
-                vcodec=shared.vcodecs[1]
-                venc=shared.vencs[0]
-                acodec=shared.acodecs[1]
-                aenc=shared.aencs[1]
-                access=shared.accesss[1]
-                mux=shared.muxs[1]
+#        if action == 15:
+#            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+#                shared.error_msg ( _("Can't show runnings apps, user is not logged") )
+#                return
+#            print_debug ("menu_event_one() show running apps" )
+#            self.get_user_processes(self.main.selected_ip)
             
             
-            if access == "udp": 
-                if client_type == "tcos":
-                    max_uip=255
-                    uip=0
-                    while uip <= max_uip:
-                        uip_cmd="239.255.%s.0" %(uip)
-                        cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
-                        print_debug("Check broadcast ip %s." %(uip_cmd) )
-                        output=self.main.common.exe_cmd(cmd)
-                        uip+=1
-                        if output == "0":
-                            print_debug("Broadcast ip found: %s" %(uip_cmd))
-                            ip_unicast="%s:1234" %uip_cmd
-                            break
-                        elif uip == max_uip:
-                            print_debug("Not found an available broadcast ip")
-                            return
-                    remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
-                else:
-                    ip_unicast="%s:1234" %self.main.selected_ip
-                    remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3"
-            else:
-                max_uip=50255
-                uip=50000
-                while uip <= max_uip:
-                    uip_cmd=":%s" %(uip)
-                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
-                    print_debug("Check broadcast ip %s." %(uip_cmd) )
-                    output=self.main.common.exe_cmd(cmd)
-                    uip+=1
-                    if output == "0":
-                        print_debug("Broadcast ip found: %s" %(uip_cmd))
-                        ip_unicast=uip_cmd
-                        break
-                    elif uip == max_uip:
-                        print_debug("Not found an available broadcast ip")
-                        return
-                if client_type == "tcos":
-                    remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
-            
-            dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
-                               None,
-                               gtk.FILE_CHOOSER_ACTION_OPEN,
-                               (_("Play DVD"), 1,
-                                _("Play SVCD/VCD"), 2,
-                                _("Play AudioCD"), 3,
-                                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-            dialog.set_default_response(gtk.RESPONSE_OK)
-            self.folder = self._folder = os.environ['HOME']
-            dialog.set_current_folder(self.folder)
-            filter = gtk.FileFilter()
-            filter.set_name("Media Files ( *.avi, *.mpg, *.mpeg, *.mp3, *.wav, etc.. )")
-            file_types=["*.avi", "*.mpg", "*.mpeg", "*.ogg", "*.ogm", "*.asf", "*.divx", 
-                        "*.wmv", "*.vob", "*.m2v", "*.m4v", "*.mp2", "*.mp4", "*.ac3", 
-                        "*.ogg", "*.mp1", "*.mp2", "*.mp3", "*.wav", "*.wma"]
-            for elem in file_types:
-                filter.add_pattern( elem )
-            
-            dialog.add_filter(filter)
-            
-            filter = gtk.FileFilter()
-            filter.set_name("All Files")
-            filter.add_pattern("*.*")
-            dialog.add_filter(filter)
-            response = dialog.run()
-            if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
-                
-                filename=dialog.get_filename()
-                dialog.destroy()
-                
-                if filename.find(" ") != -1:
-                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                    shared.info_msg( msg )
-                    return
-                
-                for scape in str_scapes:
-                    filename=filename.replace("%s" %scape, "\%s" %scape)
-                
-                if response == gtk.RESPONSE_OK:
-                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                elif response == 1:
-                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                elif response == 2:
-                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                elif response == 3:
-                    p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                # exec this app on client
-                
-                self.main.write_into_statusbar( _("Waiting for start video transmission...") )
-                
-                msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
-                shared.info_msg( msg )
-                
-                # check if vlc is running or fail like check ping in demo mode
-                running = p.poll() is None
-                if not running:
-                    self.main.write_into_statusbar( _("Error while exec app"))
-                    return
-                
-                msg=_( "Lock keyboard and mouse on client?" )
-                if shared.ask_msg ( msg ):
-                    lock="enable"
-                
-                newusernames=[]
+#        if action == 16:
+#            # action sent by vidal_joshur at gva dot es
+#            # start video broadcast mode
+#            # Stream to single client unicast
+#            eth=self.main.config.GetVar("network_interface")
+#            
+#            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+#                shared.error_msg ( _("Can't send video broadcast, user is not logged") )
+#                return
+#                        
+#            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+#            lock="disable"
+#            volume="85"
+#            
+#            if self.main.pref_vlc_method_send.get_active() == 0:
+#                vcodec=shared.vcodecs[0]
+#                venc=shared.vencs[0]
+#                acodec=shared.acodecs[0]
+#                aenc=shared.aencs[0]
+#                access=shared.accesss[0]
+#                mux=shared.muxs[0]
+#            elif self.main.pref_vlc_method_send.get_active() == 1:
+#                vcodec=shared.vcodecs[1]
+#                venc=shared.vencs[0]
+#                acodec=shared.acodecs[0]
+#                aenc=shared.aencs[0]
+#                access=shared.accesss[0]
+#                mux=shared.muxs[0]
+#            elif self.main.pref_vlc_method_send.get_active() == 2:
+#                vcodec=shared.vcodecs[2]
+#                venc=shared.vencs[1]
+#                acodec=shared.acodecs[0]
+#                aenc=shared.aencs[0]
+#                access=shared.accesss[0]
+#                mux=shared.muxs[0]
+#            elif self.main.pref_vlc_method_send.get_active() == 3:
+#                vcodec=shared.vcodecs[3]
+#                venc=shared.vencs[2]
+#                acodec=shared.acodecs[1]
+#                aenc=shared.aencs[1]
+#                access=shared.accesss[1]
+#                mux=shared.muxs[1]
+#            elif self.main.pref_vlc_method_send.get_active() == 4:
+#                vcodec=shared.vcodecs[1]
+#                venc=shared.vencs[0]
+#                acodec=shared.acodecs[1]
+#                aenc=shared.aencs[1]
+#                access=shared.accesss[1]
+#                mux=shared.muxs[1]
+#            
+#            
+#            if access == "udp": 
+#                if client_type == "tcos":
+#                    max_uip=255
+#                    uip=0
+#                    while uip <= max_uip:
+#                        uip_cmd="239.255.%s.0" %(uip)
+#                        cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+#                        print_debug("Check broadcast ip %s." %(uip_cmd) )
+#                        output=self.main.common.exe_cmd(cmd)
+#                        uip+=1
+#                        if output == "0":
+#                            print_debug("Broadcast ip found: %s" %(uip_cmd))
+#                            ip_unicast="%s:1234" %uip_cmd
+#                            break
+#                        elif uip == max_uip:
+#                            print_debug("Not found an available broadcast ip")
+#                            return
+#                    remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
+#                else:
+#                    ip_unicast="%s:1234" %self.main.selected_ip
+#                    remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3"
+#            else:
+#                max_uip=50255
+#                uip=50000
+#                while uip <= max_uip:
+#                    uip_cmd=":%s" %(uip)
+#                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+#                    print_debug("Check broadcast ip %s." %(uip_cmd) )
+#                    output=self.main.common.exe_cmd(cmd)
+#                    uip+=1
+#                    if output == "0":
+#                        print_debug("Broadcast ip found: %s" %(uip_cmd))
+#                        ip_unicast=uip_cmd
+#                        break
+#                    elif uip == max_uip:
+#                        print_debug("Not found an available broadcast ip")
+#                        return
+#                if client_type == "tcos":
+#                    remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
+#            
+#            dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
+#                               None,
+#                               gtk.FILE_CHOOSER_ACTION_OPEN,
+#                               (_("Play DVD"), 1,
+#                                _("Play SVCD/VCD"), 2,
+#                                _("Play AudioCD"), 3,
+#                                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+#                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+#            dialog.set_default_response(gtk.RESPONSE_OK)
+#            self.folder = self._folder = os.environ['HOME']
+#            dialog.set_current_folder(self.folder)
+#            filter = gtk.FileFilter()
+#            filter.set_name("Media Files ( *.avi, *.mpg, *.mpeg, *.mp3, *.wav, etc.. )")
+#            file_types=["*.avi", "*.mpg", "*.mpeg", "*.ogg", "*.ogm", "*.asf", "*.divx", 
+#                        "*.wmv", "*.vob", "*.m2v", "*.m4v", "*.mp2", "*.mp4", "*.ac3", 
+#                        "*.ogg", "*.mp1", "*.mp2", "*.mp3", "*.wav", "*.wma"]
+#            for elem in file_types:
+#                filter.add_pattern( elem )
+#            
+#            dialog.add_filter(filter)
+#            
+#            filter = gtk.FileFilter()
+#            filter.set_name("All Files")
+#            filter.add_pattern("*.*")
+#            dialog.add_filter(filter)
+#            response = dialog.run()
+#            if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
+#                
+#                filename=dialog.get_filename()
+#                dialog.destroy()
+#                
+#                if filename.find(" ") != -1:
+#                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
+#                    shared.info_msg( msg )
+#                    return
+#                
+#                for scape in str_scapes:
+#                    filename=filename.replace("%s" %scape, "\%s" %scape)
+#                
+#                if response == gtk.RESPONSE_OK:
+#                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                elif response == 1:
+#                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                elif response == 2:
+#                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                elif response == 3:
+#                    p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                # exec this app on client
+#                
+#                self.main.write_into_statusbar( _("Waiting for start video transmission...") )
+#                
+#                msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
+#                shared.info_msg( msg )
+#                
+#                # check if vlc is running or fail like check ping in demo mode
+#                running = p.poll() is None
+#                if not running:
+#                    self.main.write_into_statusbar( _("Error while exec app"))
+#                    return
+#                
+#                msg=_( "Lock keyboard and mouse on client?" )
+#                if shared.ask_msg ( msg ):
+#                    lock="enable"
+#                
+#                newusernames=[]
 
-                for user in connected_users:
-                    if user.find(":") != -1:
-                        # we have a standalone user...
-                        if access == "http":
-                            server=self.main.xmlrpc.GetStandalone("get_server")
-                            remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_unicast)
-                        self.main.xmlrpc.DBus("exec", remote_cmd )
-                    else:
-                        newusernames.append(user)
-                        
-                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
-                
-                if not result:
-                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
-                
-                self.main.xmlrpc.vlc( self.main.selected_ip, volume, lock )
-                
-                self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-                # new mode to Stop Button
-                self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":newallclients}, _("Running in broadcast video transmission to host %s") %(host))
-            else:
-                dialog.destroy()
+#                for user in connected_users:
+#                    if user.find(":") != -1:
+#                        # we have a standalone user...
+#                        if access == "http":
+#                            server=self.main.xmlrpc.GetStandalone("get_server")
+#                            remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_unicast)
+#                        self.main.xmlrpc.DBus("exec", remote_cmd )
+#                    else:
+#                        newusernames.append(user)
+#                        
+#                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
+#                
+#                if not result:
+#                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+#                
+#                self.main.xmlrpc.vlc( self.main.selected_ip, volume, lock )
+#                
+#                self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
+#                # new mode to Stop Button
+#                self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":newallclients}, _("Running in broadcast video transmission to host %s") %(host))
+#            else:
+#                dialog.destroy()
                                                     
-        if action == 17:
-            # action sent by vidal_joshur at gva dot es
-            # envio ficheros
-            # search for connected users
-            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
-                shared.error_msg ( _("Can't send files, user is not logged") )
-                return
-            
-            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+#        if action == 17:
+#            # action sent by vidal_joshur at gva dot es
+#            # envio ficheros
+#            # search for connected users
+#            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+#                shared.error_msg ( _("Can't send files, user is not logged") )
+#                return
+#            
+#            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
 
-            dialog = gtk.FileChooserDialog( _("Select file or files..."),
-                               None,
-                               gtk.FILE_CHOOSER_ACTION_OPEN,
-                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-            dialog.set_default_response(gtk.RESPONSE_OK)
-            #dialog.set_select_multiple(select_multiple)
-            dialog.set_select_multiple(True)
-            self.folder = self._folder = os.environ['HOME']
-            dialog.set_current_folder(self.folder)
-            filter = gtk.FileFilter()
-            filter.set_name("All files")
-            filter.add_pattern("*")
-            dialog.add_filter(filter)
-            
-            
-            if not os.path.isdir("/tmp/tcos_share"):
-                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
-                return
-            
-            for filename in os.listdir("/tmp/tcos_share/"):
-                if os.path.isfile("/tmp/tcos_share/%s" %filename):
-                    os.remove("/tmp/tcos_share/%s" %filename)
-                        
-            response = dialog.run()
-            
-            if response == gtk.RESPONSE_OK:
-                                
-                filenames = dialog.get_filenames()
-                
-                rsync_filenames_client = ""
-                rsync_filenames_server = ""
-                basenames = ""
-                for filename in filenames:
-                    if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
-                        dialog.destroy()
-                        msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                        shared.info_msg( msg )
-                        return
-                    basename_scape=os.path.basename(filename)
-                    abspath_scape=filename
-                    for scape in str_scapes:
-                        basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
-                        abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
-                    rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
-                    rsync_filenames_server += "%s " %( abspath_scape )
-                    basenames += "%s\n" %( os.path.basename(filename) )
-                    copy(filename, "/tmp/tcos_share/")
-                    os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
-                    
-                self.main.write_into_statusbar( _("Waiting for send files...") )
-                
-                newusernames=[]
-                
-                for user in connected_users:
-                    if user.find(":") != -1:
-                        #usern, ip=user.split(":")
-                        #self.main.xmlrpc.newhost(ip)
-                        server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), server, rsync_filenames_client.strip() )
-                        self.main.xmlrpc.DBus("exec", standalone_cmd )
-                        self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
-                    else:
-                        newusernames.append(user)
-                
-                thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), "localhost", rsync_filenames_client.strip() )
-                
-                result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
-                
-                if not result:
-                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
-                    self.main.write_into_statusbar( _("Error creating destination folder.") )
-                else:
-                    result = self.main.dbus_action.do_message(newusernames ,
-                                _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
-                self.main.write_into_statusbar( _("Files sent.") )
-            dialog.destroy()
+#            dialog = gtk.FileChooserDialog( _("Select file or files..."),
+#                               None,
+#                               gtk.FILE_CHOOSER_ACTION_OPEN,
+#                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+#                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+#            dialog.set_default_response(gtk.RESPONSE_OK)
+#            #dialog.set_select_multiple(select_multiple)
+#            dialog.set_select_multiple(True)
+#            self.folder = self._folder = os.environ['HOME']
+#            dialog.set_current_folder(self.folder)
+#            filter = gtk.FileFilter()
+#            filter.set_name("All files")
+#            filter.add_pattern("*")
+#            dialog.add_filter(filter)
+#            
+#            
+#            if not os.path.isdir("/tmp/tcos_share"):
+#                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
+#                return
+#            
+#            for filename in os.listdir("/tmp/tcos_share/"):
+#                if os.path.isfile("/tmp/tcos_share/%s" %filename):
+#                    os.remove("/tmp/tcos_share/%s" %filename)
+#                        
+#            response = dialog.run()
+#            
+#            if response == gtk.RESPONSE_OK:
+#                                
+#                filenames = dialog.get_filenames()
+#                
+#                rsync_filenames_client = ""
+#                rsync_filenames_server = ""
+#                basenames = ""
+#                for filename in filenames:
+#                    if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
+#                        dialog.destroy()
+#                        msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
+#                        shared.info_msg( msg )
+#                        return
+#                    basename_scape=os.path.basename(filename)
+#                    abspath_scape=filename
+#                    for scape in str_scapes:
+#                        basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
+#                        abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
+#                    rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
+#                    rsync_filenames_server += "%s " %( abspath_scape )
+#                    basenames += "%s\n" %( os.path.basename(filename) )
+#                    copy(filename, "/tmp/tcos_share/")
+#                    os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
+#                    
+#                self.main.write_into_statusbar( _("Waiting for send files...") )
+#                
+#                newusernames=[]
+#                
+#                for user in connected_users:
+#                    if user.find(":") != -1:
+#                        #usern, ip=user.split(":")
+#                        #self.main.xmlrpc.newhost(ip)
+#                        server=self.main.xmlrpc.GetStandalone("get_server")
+#                        standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), server, rsync_filenames_client.strip() )
+#                        self.main.xmlrpc.DBus("exec", standalone_cmd )
+#                        self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+#                    else:
+#                        newusernames.append(user)
+#                
+#                thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), "localhost", rsync_filenames_client.strip() )
+#                
+#                result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
+#                
+#                if not result:
+#                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+#                    self.main.write_into_statusbar( _("Error creating destination folder.") )
+#                else:
+#                    result = self.main.dbus_action.do_message(newusernames ,
+#                                _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
+#                self.main.write_into_statusbar( _("Files sent.") )
+#            dialog.destroy()
         
 #        if action == 18:
 #            print_debug ("menu_event_one() demo mode from not teacher host" )
@@ -1729,27 +1729,27 @@ class TcosActions:
 #                # new mode for stop button
 #                self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %(hostname) )
         
-        if action == 19:
-            if self.main.config.GetVar("scan_network_method") != "static":
-                msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
-                shared.info_msg ( msg )
-                return
-                        
-            msg=_( _("Do you want boot %s client?" %self.main.selected_ip))
-            if shared.ask_msg ( msg ):
-                data=[]
-                hostslist=self.main.config.GetVar("statichosts")
-                #eth=self.main.config.GetVar("network_interface")
-                if hostslist == "": return
-                data=hostslist.split("#")
-                data=data[:-1]
-                for host in data:
-                    ip, mac=host.split("|")
-                    if ip == self.main.selected_ip:
-                        print_debug("Send magic packet to mac=%s" %mac)
-                        if not WakeOnLan.WakeOnLan("%s"%mac):
-                            self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%mac)
-                        #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+#        if action == 19:
+#            if self.main.config.GetVar("scan_network_method") != "static":
+#                msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
+#                shared.info_msg ( msg )
+#                return
+#                        
+#            msg=_( _("Do you want boot %s client?" %self.main.selected_ip))
+#            if shared.ask_msg ( msg ):
+#                data=[]
+#                hostslist=self.main.config.GetVar("statichosts")
+#                #eth=self.main.config.GetVar("network_interface")
+#                if hostslist == "": return
+#                data=hostslist.split("#")
+#                data=data[:-1]
+#                for host in data:
+#                    ip, mac=host.split("|")
+#                    if ip == self.main.selected_ip:
+#                        print_debug("Send magic packet to mac=%s" %mac)
+#                        if not WakeOnLan.WakeOnLan("%s"%mac):
+#                            self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%mac)
+#                        #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
                         
 #        if action == 20:
 #            ip=self.main.selected_ip
@@ -2016,31 +2016,31 @@ class TcosActions:
     def menu_event_all(self, action):
         start1=time()
         # boot by wake on lan
-        if action == 13:
-            if self.main.config.GetVar("scan_network_method") != "static":
-                msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
-                shared.info_msg ( msg )
-                return
-                        
-            msg=_( _("Do you want boot all clients?" ))
-            if shared.ask_msg ( msg ):
-                data=[]
-                hostslist=self.main.config.GetVar("statichosts")
-                #eth=self.main.config.GetVar("network_interface")
-                if hostslist == "": return
-                data=hostslist.split("#")
-                data=data[:-1]
-                errors=[]
-                for host in data:
-                    mac=host.split("|")[1]
-                    print_debug("Send magic packet to mac=%s" %mac)
-                    if not WakeOnLan.WakeOnLan("%s"%mac):
-                        errors.append(mac)
-                    #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
-                if len(errors) >1:
-                    print_debug("menu_event_all() errors=%s"%errors)
-                    self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%" ".join(errors))
-            return
+#        if action == 13:
+#            if self.main.config.GetVar("scan_network_method") != "static":
+#                msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
+#                shared.info_msg ( msg )
+#                return
+#                        
+#            msg=_( _("Do you want boot all clients?" ))
+#            if shared.ask_msg ( msg ):
+#                data=[]
+#                hostslist=self.main.config.GetVar("statichosts")
+#                #eth=self.main.config.GetVar("network_interface")
+#                if hostslist == "": return
+#                data=hostslist.split("#")
+#                data=data[:-1]
+#                errors=[]
+#                for host in data:
+#                    mac=host.split("|")[1]
+#                    print_debug("Send magic packet to mac=%s" %mac)
+#                    if not WakeOnLan.WakeOnLan("%s"%mac):
+#                        errors.append(mac)
+#                    #self.main.common.exe_cmd("etherwake -i %s %s" %(eth, mac), background=True )
+#                if len(errors) >1:
+#                    print_debug("menu_event_all() errors=%s"%errors)
+#                    self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%" ".join(errors))
+#            return
         
         # don't make actions in clients not selected
         if self.main.iconview.ismultiple():
@@ -2318,278 +2318,278 @@ class TcosActions:
 #            self.main.worker.set_for_all_action(self.action_for_clients,\
 #                                                    allclients_logged, "screenshot" )
 
-        if action == 11:
-            # action sent by vidal_joshur at gva dot es
-            # start video broadcast mode
-            # search for connected users
-            # Stream to multiple clients
-            eth=self.main.config.GetVar("network_interface")
-            
-            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
-                shared.error_msg( _("No users logged.") )
-                return
-                        
-            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
-            
-            if self.main.pref_vlc_method_send.get_active() == 0:
-                vcodec=shared.vcodecs[0]
-                venc=shared.vencs[0]
-                acodec=shared.acodecs[0]
-                aenc=shared.aencs[0]
-                access=shared.accesss[0]
-                mux=shared.muxs[0]
-            elif self.main.pref_vlc_method_send.get_active() == 1:
-                vcodec=shared.vcodecs[1]
-                venc=shared.vencs[0]
-                acodec=shared.acodecs[0]
-                aenc=shared.aencs[0]
-                access=shared.accesss[0]
-                mux=shared.muxs[0]
-            elif self.main.pref_vlc_method_send.get_active() == 2:
-                vcodec=shared.vcodecs[2]
-                venc=shared.vencs[1]
-                acodec=shared.acodecs[0]
-                aenc=shared.aencs[0]
-                access=shared.accesss[0]
-                mux=shared.muxs[0]
-            elif self.main.pref_vlc_method_send.get_active() == 3:
-                vcodec=shared.vcodecs[3]
-                venc=shared.vencs[2]
-                acodec=shared.acodecs[1]
-                aenc=shared.aencs[1]
-                access=shared.accesss[1]
-                mux=shared.muxs[1]
-            elif self.main.pref_vlc_method_send.get_active() == 4:
-                vcodec=shared.vcodecs[1]
-                venc=shared.vencs[0]
-                acodec=shared.acodecs[1]
-                aenc=shared.aencs[1]
-                access=shared.accesss[1]
-                mux=shared.muxs[1]
-            
-            if access == "udp":
-                max_uip=255
-                uip=0
-                while uip <= max_uip:
-                    uip_cmd="239.255.%s.0" %(uip)
-                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
-                    print_debug("Check broadcast ip %s." %(uip_cmd) )
-                    output=self.main.common.exe_cmd(cmd)
-                    uip+=1
-                    if output == "0":
-                        print_debug("Broadcast ip found: %s" %(uip_cmd))
-                        ip_broadcast="%s:1234" %uip_cmd
-                        break
-                    elif uip == max_uip:
-                        print_debug("Not found an available broadcast ip")
-                        return
-            else:
-                max_uip=50255
-                uip=50000
-                while uip <= max_uip:
-                    uip_cmd=":%s" %(uip)
-                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
-                    print_debug("Check broadcast ip %s." %(uip_cmd) )
-                    output=self.main.common.exe_cmd(cmd)
-                    uip+=1
-                    if output == "0":
-                        print_debug("Broadcast ip found: %s" %(uip_cmd))
-                        ip_broadcast=uip_cmd
-                        break
-                    elif uip == max_uip:
-                        print_debug("Not found an available broadcast ip")
-                        return
-            
-            lock="disable"
-            volume="85"
-            dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
-                               None,
-                               gtk.FILE_CHOOSER_ACTION_OPEN,
-                               (_("Play DVD"), 1,
-                                _("Play SVCD/VCD"), 2,
-                                _("Play AudioCD"), 3,
-                                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-            dialog.set_default_response(gtk.RESPONSE_OK)
-            self.folder = self._folder = os.environ['HOME']
-            dialog.set_current_folder(self.folder)
-            filter = gtk.FileFilter()
-            filter.set_name("Media Files ( *.avi, *.mpg, *.mpeg, *.mp3, *.wav, etc.. )")
-            file_types=["*.avi", "*.mpg", "*.mpeg", "*.ogg", "*.ogm", "*.asf", "*.divx", 
-                        "*.wmv", "*.vob", "*.m2v", "*.m4v", "*.mp2", "*.mp4", "*.ac3", 
-                        "*.ogg", "*.mp1", "*.mp2", "*.mp3", "*.wav", "*.wma"]
-            for elem in file_types:
-                filter.add_pattern( elem )
-            
-            dialog.add_filter(filter)
-            
-            filter = gtk.FileFilter()
-            filter.set_name("All Files")
-            filter.add_pattern("*.*")
-            dialog.add_filter(filter)
+#        if action == 11:
+#            # action sent by vidal_joshur at gva dot es
+#            # start video broadcast mode
+#            # search for connected users
+#            # Stream to multiple clients
+#            eth=self.main.config.GetVar("network_interface")
+#            
+#            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+#                shared.error_msg( _("No users logged.") )
+#                return
+#                        
+#            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+#            
+#            if self.main.pref_vlc_method_send.get_active() == 0:
+#                vcodec=shared.vcodecs[0]
+#                venc=shared.vencs[0]
+#                acodec=shared.acodecs[0]
+#                aenc=shared.aencs[0]
+#                access=shared.accesss[0]
+#                mux=shared.muxs[0]
+#            elif self.main.pref_vlc_method_send.get_active() == 1:
+#                vcodec=shared.vcodecs[1]
+#                venc=shared.vencs[0]
+#                acodec=shared.acodecs[0]
+#                aenc=shared.aencs[0]
+#                access=shared.accesss[0]
+#                mux=shared.muxs[0]
+#            elif self.main.pref_vlc_method_send.get_active() == 2:
+#                vcodec=shared.vcodecs[2]
+#                venc=shared.vencs[1]
+#                acodec=shared.acodecs[0]
+#                aenc=shared.aencs[0]
+#                access=shared.accesss[0]
+#                mux=shared.muxs[0]
+#            elif self.main.pref_vlc_method_send.get_active() == 3:
+#                vcodec=shared.vcodecs[3]
+#                venc=shared.vencs[2]
+#                acodec=shared.acodecs[1]
+#                aenc=shared.aencs[1]
+#                access=shared.accesss[1]
+#                mux=shared.muxs[1]
+#            elif self.main.pref_vlc_method_send.get_active() == 4:
+#                vcodec=shared.vcodecs[1]
+#                venc=shared.vencs[0]
+#                acodec=shared.acodecs[1]
+#                aenc=shared.aencs[1]
+#                access=shared.accesss[1]
+#                mux=shared.muxs[1]
+#            
+#            if access == "udp":
+#                max_uip=255
+#                uip=0
+#                while uip <= max_uip:
+#                    uip_cmd="239.255.%s.0" %(uip)
+#                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+#                    print_debug("Check broadcast ip %s." %(uip_cmd) )
+#                    output=self.main.common.exe_cmd(cmd)
+#                    uip+=1
+#                    if output == "0":
+#                        print_debug("Broadcast ip found: %s" %(uip_cmd))
+#                        ip_broadcast="%s:1234" %uip_cmd
+#                        break
+#                    elif uip == max_uip:
+#                        print_debug("Not found an available broadcast ip")
+#                        return
+#            else:
+#                max_uip=50255
+#                uip=50000
+#                while uip <= max_uip:
+#                    uip_cmd=":%s" %(uip)
+#                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+#                    print_debug("Check broadcast ip %s." %(uip_cmd) )
+#                    output=self.main.common.exe_cmd(cmd)
+#                    uip+=1
+#                    if output == "0":
+#                        print_debug("Broadcast ip found: %s" %(uip_cmd))
+#                        ip_broadcast=uip_cmd
+#                        break
+#                    elif uip == max_uip:
+#                        print_debug("Not found an available broadcast ip")
+#                        return
+#            
+#            lock="disable"
+#            volume="85"
+#            dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
+#                               None,
+#                               gtk.FILE_CHOOSER_ACTION_OPEN,
+#                               (_("Play DVD"), 1,
+#                                _("Play SVCD/VCD"), 2,
+#                                _("Play AudioCD"), 3,
+#                                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+#                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+#            dialog.set_default_response(gtk.RESPONSE_OK)
+#            self.folder = self._folder = os.environ['HOME']
+#            dialog.set_current_folder(self.folder)
+#            filter = gtk.FileFilter()
+#            filter.set_name("Media Files ( *.avi, *.mpg, *.mpeg, *.mp3, *.wav, etc.. )")
+#            file_types=["*.avi", "*.mpg", "*.mpeg", "*.ogg", "*.ogm", "*.asf", "*.divx", 
+#                        "*.wmv", "*.vob", "*.m2v", "*.m4v", "*.mp2", "*.mp4", "*.ac3", 
+#                        "*.ogg", "*.mp1", "*.mp2", "*.mp3", "*.wav", "*.wma"]
+#            for elem in file_types:
+#                filter.add_pattern( elem )
+#            
+#            dialog.add_filter(filter)
+#            
+#            filter = gtk.FileFilter()
+#            filter.set_name("All Files")
+#            filter.add_pattern("*.*")
+#            dialog.add_filter(filter)
 
-            response = dialog.run()
-            if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
-                
-                filename=dialog.get_filename()
-                dialog.destroy()
+#            response = dialog.run()
+#            if response == gtk.RESPONSE_OK or response == 1 or response == 2 or response == 3:
+#                
+#                filename=dialog.get_filename()
+#                dialog.destroy()
 
-                if filename.find(" ") != -1:
-                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                    shared.info_msg( msg )
-                    return
-                    
-                for scape in str_scapes:
-                    filename=filename.replace("%s" %scape, "\%s" %scape)
-                
-                if response == gtk.RESPONSE_OK:
-                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                elif response == 1:
-                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                elif response == 2:
-                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                elif response == 3:
-                    p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
-                # exec this app on client
-                
-                if access == "udp":
-                    remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(ip_broadcast)
-                    remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
+#                if filename.find(" ") != -1:
+#                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
+#                    shared.info_msg( msg )
+#                    return
+#                    
+#                for scape in str_scapes:
+#                    filename=filename.replace("%s" %scape, "\%s" %scape)
+#                
+#                if response == gtk.RESPONSE_OK:
+#                    p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                elif response == 1:
+#                    p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                elif response == 2:
+#                    p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                elif response == 3:
+#                    p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+#                # exec this app on client
+#                
+#                if access == "udp":
+#                    remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(ip_broadcast)
+#                    remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
 
-                self.main.write_into_statusbar( _("Waiting for start video transmission...") )
-            
-                msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
-                shared.info_msg( msg )
-                
-                # check if vlc is running or fail like check ping in demo mode
-                running = p.poll() is None
-                if not running:
-                    self.main.write_into_statusbar( _("Error while exec app"))
-                    return
-                
-                msg=_( "Lock keyboard and mouse on clients?" )
-                if shared.ask_msg ( msg ):
-                    lock="enable"
-                    
-                newusernames=[]
-                
-                for user in connected_users:
-                    if user.find(":") != -1:
-                        # we have a standalone user...
-                        usern, ip = user.split(":")
-                        self.main.xmlrpc.newhost(ip)
-                        if access == "http":
-                            server=self.main.xmlrpc.GetStandalone("get_server")
-                            remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_broadcast)
-                        self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
-                    else:
-                        newusernames.append(user)
-                            
-                if access == "http":
-                    remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
-                        
-                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd_thin )
-                
-                if not result:
-                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
-                
-                for client in newallclients:
-                    self.main.xmlrpc.vlc( client, volume, lock )
-                    
-                self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
-                # new mode Stop Button
-                self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": newallclients}, _("Running in broadcast video transmission"))
-            else:
-                dialog.destroy()
+#                self.main.write_into_statusbar( _("Waiting for start video transmission...") )
+#            
+#                msg=_("First select the DVD chapter or play movie\nthen press enter to send clients..." )
+#                shared.info_msg( msg )
+#                
+#                # check if vlc is running or fail like check ping in demo mode
+#                running = p.poll() is None
+#                if not running:
+#                    self.main.write_into_statusbar( _("Error while exec app"))
+#                    return
+#                
+#                msg=_( "Lock keyboard and mouse on clients?" )
+#                if shared.ask_msg ( msg ):
+#                    lock="enable"
+#                    
+#                newusernames=[]
+#                
+#                for user in connected_users:
+#                    if user.find(":") != -1:
+#                        # we have a standalone user...
+#                        usern, ip = user.split(":")
+#                        self.main.xmlrpc.newhost(ip)
+#                        if access == "http":
+#                            server=self.main.xmlrpc.GetStandalone("get_server")
+#                            remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_broadcast)
+#                        self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
+#                    else:
+#                        newusernames.append(user)
+#                            
+#                if access == "http":
+#                    remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
+#                        
+#                result = self.main.dbus_action.do_exec( newusernames ,remote_cmd_thin )
+#                
+#                if not result:
+#                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+#                
+#                for client in newallclients:
+#                    self.main.xmlrpc.vlc( client, volume, lock )
+#                    
+#                self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
+#                # new mode Stop Button
+#                self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": newallclients}, _("Running in broadcast video transmission"))
+#            else:
+#                dialog.destroy()
                                                     
-        if action == 12:
-            # action sent by vidal_joshur at gva dot es
-            # envio ficheros
-            # search for connected users
-            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
-                shared.error_msg( _("No users logged.") )
-                return
-            
-            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
-            
-            dialog = gtk.FileChooserDialog( _("Select file or files..."),
-                               None,
-                               gtk.FILE_CHOOSER_ACTION_OPEN,
-                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-            dialog.set_default_response(gtk.RESPONSE_OK)
-            #dialog.set_select_multiple(select_multiple)
-            dialog.set_select_multiple(True)
-            self.folder = self._folder = os.environ['HOME']
-            dialog.set_current_folder(self.folder)
-            filter = gtk.FileFilter()
-            filter.set_name("All files")
-            filter.add_pattern("*")
-            dialog.add_filter(filter)
-            
-            
-            if not os.path.isdir("/tmp/tcos_share"):
-                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
-                return
-            
-            for filename in os.listdir("/tmp/tcos_share/"):
-                if os.path.isfile("/tmp/tcos_share/%s" %filename):
-                    os.remove("/tmp/tcos_share/%s" %filename)
-                        
-            response = dialog.run()
-            
-            if response == gtk.RESPONSE_OK:
-                
-                filenames = dialog.get_filenames()
-                
-                rsync_filenames_client = ""
-                rsync_filenames_server = ""
-                basenames = ""
-                for filename in filenames:
-                    if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
-                        dialog.destroy()
-                        msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                        shared.info_msg( msg )
-                        return
-                    basename_scape=os.path.basename(filename)
-                    abspath_scape=filename
-                    for scape in str_scapes:
-                        basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
-                        abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
-                    rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
-                    rsync_filenames_server += "%s " %( abspath_scape )
-                    basenames += "%s\n" %( os.path.basename(filename) )
-                    copy(filename, "/tmp/tcos_share/")
-                    os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
-                
-                self.main.write_into_statusbar( _("Waiting for send files...") )
-                
-                newusernames=[]
-                
-                for user in connected_users:
-                    if user.find(":") != -1:
-                        usern, ip=user.split(":")
-                        self.main.xmlrpc.newhost(ip)
-                        server=self.main.xmlrpc.GetStandalone("get_server")
-                        standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), server, rsync_filenames_client.strip() )
-                        self.main.xmlrpc.DBus("exec", standalone_cmd )
-                        self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
-                    else:
-                        newusernames.append(user)
-                
-                thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), "localhost", rsync_filenames_client.strip() )
-                
-                result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
-                
-                if not result:
-                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
-                    self.main.write_into_statusbar( _("Error creating destination folder.") )
-                else:
-                    result = self.main.dbus_action.do_message(newusernames ,
-                                _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
-                
-                self.main.write_into_statusbar( _("Files sent.") )
-            dialog.destroy()
+#        if action == 12:
+#            # action sent by vidal_joshur at gva dot es
+#            # envio ficheros
+#            # search for connected users
+#            if len(connected_users) == 0 or connected_users[0] == shared.NO_LOGIN_MSG:
+#                shared.error_msg( _("No users logged.") )
+#                return
+#            
+#            str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+#            
+#            dialog = gtk.FileChooserDialog( _("Select file or files..."),
+#                               None,
+#                               gtk.FILE_CHOOSER_ACTION_OPEN,
+#                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+#                                gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+#            dialog.set_default_response(gtk.RESPONSE_OK)
+#            #dialog.set_select_multiple(select_multiple)
+#            dialog.set_select_multiple(True)
+#            self.folder = self._folder = os.environ['HOME']
+#            dialog.set_current_folder(self.folder)
+#            filter = gtk.FileFilter()
+#            filter.set_name("All files")
+#            filter.add_pattern("*")
+#            dialog.add_filter(filter)
+#            
+#            
+#            if not os.path.isdir("/tmp/tcos_share"):
+#                shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
+#                return
+#            
+#            for filename in os.listdir("/tmp/tcos_share/"):
+#                if os.path.isfile("/tmp/tcos_share/%s" %filename):
+#                    os.remove("/tmp/tcos_share/%s" %filename)
+#                        
+#            response = dialog.run()
+#            
+#            if response == gtk.RESPONSE_OK:
+#                
+#                filenames = dialog.get_filenames()
+#                
+#                rsync_filenames_client = ""
+#                rsync_filenames_server = ""
+#                basenames = ""
+#                for filename in filenames:
+#                    if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
+#                        dialog.destroy()
+#                        msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
+#                        shared.info_msg( msg )
+#                        return
+#                    basename_scape=os.path.basename(filename)
+#                    abspath_scape=filename
+#                    for scape in str_scapes:
+#                        basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
+#                        abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
+#                    rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
+#                    rsync_filenames_server += "%s " %( abspath_scape )
+#                    basenames += "%s\n" %( os.path.basename(filename) )
+#                    copy(filename, "/tmp/tcos_share/")
+#                    os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
+#                
+#                self.main.write_into_statusbar( _("Waiting for send files...") )
+#                
+#                newusernames=[]
+#                
+#                for user in connected_users:
+#                    if user.find(":") != -1:
+#                        usern, ip=user.split(":")
+#                        self.main.xmlrpc.newhost(ip)
+#                        server=self.main.xmlrpc.GetStandalone("get_server")
+#                        standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), server, rsync_filenames_client.strip() )
+#                        self.main.xmlrpc.DBus("exec", standalone_cmd )
+#                        self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+#                    else:
+#                        newusernames.append(user)
+#                
+#                thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), "localhost", rsync_filenames_client.strip() )
+#                
+#                result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
+#                
+#                if not result:
+#                    shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+#                    self.main.write_into_statusbar( _("Error creating destination folder.") )
+#                else:
+#                    result = self.main.dbus_action.do_message(newusernames ,
+#                                _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s") %{"teacher":_("Teacher"), "basenames":basenames} )
+#                
+#                self.main.write_into_statusbar( _("Files sent.") )
+#            dialog.destroy()
         
 #        if action == 14:
 #            if not self.main.localdata.user_in_group(None, 'tcos'):
@@ -2845,66 +2845,66 @@ class TcosActions:
 #            self.main.listview.change_lockscreen(ip,image)
         
     
-    def get_screenshot(self, ip):
-        # PingPort class put timeout very low to have more speed
-        # get_screenshot need more time
-        
-        print_debug ("get_screenshot() INIT")
-        # make screenshot
-        print_debug ( "get_screenshot() scrot_size=%s" %(self.main.config.GetVar("scrot_size")) )
-        
-        # write into statusbar   
-        self.main.common.threads_enter("TcosActions::get_screenshot writing wait msg")
-        self.main.write_into_statusbar ( _("Trying to order terminal to do a screenshot...") )
-        self.main.common.threads_leave("TcosActions::get_screenshot writing wait msg")
-        
-        # use Base64 screenshot
-        scrot=self.main.xmlrpc.getscreenshot( self.main.config.GetVar("scrot_size") )
-        if scrot[0] != "ok":
-        #if not self.main.xmlrpc.screenshot( self.main.config.GetVar("scrot_size") ):
-            self.main.common.threads_enter("TcosActions::get_screenshot writing error msg")
-            self.main.write_into_statusbar( _("Can't make screenshot, error: %s") %scrot[1] )
-            self.main.common.threads_leave("TcosActions::get_screenshot writing error msg")
-            return False
-        
-        slabel=_("Get another screenshot")
-        self.main.common.threads_enter("TcosActions::get_screenshot creating button")
-        self.main.another_screenshot_button=None
-        self.main.another_screenshot_button=gtk.Button(label=slabel )
-        self.main.another_screenshot_button.connect("clicked", self.on_another_screenshot_button_click, ip)
-        self.main.another_screenshot_button.show()
-        self.main.common.threads_leave("TcosActions::get_screenshot creating button")
-            
-        
-        print_debug ( "get_screenshot() creating button..." )
-        year, month, day, hour, minute, seconds ,wdy, yday, isdst= localtime()
-        datetxt="%02d/%02d/%4d %02d:%02d:%02d" %(day, month, year, hour, minute, seconds)
-        print_debug ( "get_screenshot() date=%s" %(datetxt) )
-        
-        
-        block_txt=_("Screenshot of <span style='font-style: italic'>%s</span>")%(self.main.localdata.GetHostname(ip))
-        block_txt+="<span style='font-size: medium'> %s </span>" %(datetxt)
-        block_txt+="<span> </span><input type='button' name='self.main.another_screenshot_button' label='%s' />" %( slabel )
-         
-        self.main.common.threads_enter("TcosActions::get_screenshot show capture")
-        #url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
-        self.main.datatxt.clean()
-        self.main.datatxt.insert_block( block_txt )
-                                 
-        #self.main.datatxt.insert_html( "<img src='%s' alt='%s'/>\n"\
-        #                         %(url, _("Screenshot of %s" %(ip) )) )
-        
-        # Use Base64 data
-        self.main.datatxt.insert_html("""\n<img base64="%s" />\n"""%(scrot[1]))
-        
-        self.main.common.threads_leave("TcosActions::get_screenshot show capture")
-        
-        self.main.common.threads_enter("TcosActions::get_screenshot END")
-        self.main.datatxt.display()
-        self.main.write_into_statusbar ( _("Screenshot of %s, done.") %(ip)  )
-        self.main.common.threads_leave("TcosActions::get_screenshot END")
-        
-        return False
+#    def get_screenshot(self, ip):
+#        # PingPort class put timeout very low to have more speed
+#        # get_screenshot need more time
+#        
+#        print_debug ("get_screenshot() INIT")
+#        # make screenshot
+#        print_debug ( "get_screenshot() scrot_size=%s" %(self.main.config.GetVar("scrot_size")) )
+#        
+#        # write into statusbar   
+#        self.main.common.threads_enter("TcosActions::get_screenshot writing wait msg")
+#        self.main.write_into_statusbar ( _("Trying to order terminal to do a screenshot...") )
+#        self.main.common.threads_leave("TcosActions::get_screenshot writing wait msg")
+#        
+#        # use Base64 screenshot
+#        scrot=self.main.xmlrpc.getscreenshot( self.main.config.GetVar("scrot_size") )
+#        if scrot[0] != "ok":
+#        #if not self.main.xmlrpc.screenshot( self.main.config.GetVar("scrot_size") ):
+#            self.main.common.threads_enter("TcosActions::get_screenshot writing error msg")
+#            self.main.write_into_statusbar( _("Can't make screenshot, error: %s") %scrot[1] )
+#            self.main.common.threads_leave("TcosActions::get_screenshot writing error msg")
+#            return False
+#        
+#        slabel=_("Get another screenshot")
+#        self.main.common.threads_enter("TcosActions::get_screenshot creating button")
+#        self.main.another_screenshot_button=None
+#        self.main.another_screenshot_button=gtk.Button(label=slabel )
+#        self.main.another_screenshot_button.connect("clicked", self.on_another_screenshot_button_click, ip)
+#        self.main.another_screenshot_button.show()
+#        self.main.common.threads_leave("TcosActions::get_screenshot creating button")
+#            
+#        
+#        print_debug ( "get_screenshot() creating button..." )
+#        year, month, day, hour, minute, seconds ,wdy, yday, isdst= localtime()
+#        datetxt="%02d/%02d/%4d %02d:%02d:%02d" %(day, month, year, hour, minute, seconds)
+#        print_debug ( "get_screenshot() date=%s" %(datetxt) )
+#        
+#        
+#        block_txt=_("Screenshot of <span style='font-style: italic'>%s</span>")%(self.main.localdata.GetHostname(ip))
+#        block_txt+="<span style='font-size: medium'> %s </span>" %(datetxt)
+#        block_txt+="<span> </span><input type='button' name='self.main.another_screenshot_button' label='%s' />" %( slabel )
+#         
+#        self.main.common.threads_enter("TcosActions::get_screenshot show capture")
+#        #url="http://%s:%s/capture-thumb.jpg" %(ip, shared.httpd_port)
+#        self.main.datatxt.clean()
+#        self.main.datatxt.insert_block( block_txt )
+#                                 
+#        #self.main.datatxt.insert_html( "<img src='%s' alt='%s'/>\n"\
+#        #                         %(url, _("Screenshot of %s" %(ip) )) )
+#        
+#        # Use Base64 data
+#        self.main.datatxt.insert_html("""\n<img base64="%s" />\n"""%(scrot[1]))
+#        
+#        self.main.common.threads_leave("TcosActions::get_screenshot show capture")
+#        
+#        self.main.common.threads_enter("TcosActions::get_screenshot END")
+#        self.main.datatxt.display()
+#        self.main.write_into_statusbar ( _("Screenshot of %s, done.") %(ip)  )
+#        self.main.common.threads_leave("TcosActions::get_screenshot END")
+#        
+#        return False
 
     def update_hostlist(self):
         if self.main.config.GetVar("populate_list_at_startup") == "1":
@@ -2914,77 +2914,77 @@ class TcosActions:
                 gobject.timeout_add(int(update_every * 1000), self.main.populate_host_list )
                 return
         
-    def get_user_processes(self, ip):
-        """get user processes in session"""
-        print_debug( "get_user_processes(%s) __init__" %ip )
-        #check user is connected
-        if not self.main.localdata.IsLogged(ip):
-            shared.info_msg( _("User not connected, no processes.") )
-            return
-        
-        
-        if self.main.xmlrpc.IsStandalone(ip):
-            username=self.main.localdata.GetUsernameAndHost(ip)
-            tmp=self.main.xmlrpc.ReadInfo("get_process")
-            if tmp != "":
-                process=tmp.split('|')[0:-1]
-            else:
-                process=["PID COMMAND", "66000 can't read process list"]
-        else:    
-            username=self.main.localdata.GetUsername(ip)
-            cmd="LANG=C ps U \"%s\" -o pid,command | /usr/lib/tcos/clean_string.sh " %(self.main.localdata.GetUserID(username))
-            print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
-            process=self.main.common.exe_cmd(cmd, verbose=0)
-        
-        self.main.datatxt.clean()
-        self.main.datatxt.insert_block(   _("Running processes for user \"%s\": " ) %(username), image=shared.IMG_DIR + "info_proc.png"  )
-        
-        if self.main.config.GetVar("systemprocess") == "0":
-            self.main.datatxt.insert_block ( \
-            _("ALERT: There are some system process hidden. Enable it in Preferences dialog.") \
-            , image=shared.IMG_DIR + "icon_alert.png" ,\
-            color="#f08196", size="medium" )
-        
-        self.main.datatxt.insert_html ( """
-        <br/><div style='margin-left: 135px; margin-right: 200px;background-color:#ead196;color:blue'>""" + _("Pid") + "\t" 
-        + "\t" + _("Process command") +"</div>" )
-        
-        counter=0
-        self.main.kill_proc_buttons=None
-        self.main.kill_proc_buttons=[]
-        blabel=_("Kill this process")
-        
-        for proc in process:
-            is_hidden=False
-            if proc.split()[0]== "PID":
-                continue
-            pid=proc.split()[0] # not convert to int DBUS need string
-            name=" ".join(proc.split()[1:])
-            name=name.replace('<','&lt;').replace('>','&gt;')
-            
-            if int(self.main.config.GetVar("systemprocess")) == 0:
-                for hidden in shared.system_process:
-                    if hidden in name:
-                        is_hidden=True
-            
-            if is_hidden:
-                continue
-            
-            kill_button=gtk.Button(label=blabel)
-            kill_button.connect("clicked", self.on_kill_button_click, pid, username)
-            kill_button.show()
-            self.main.kill_proc_buttons.append(kill_button)
-                    
-            self.main.datatxt.insert_html("""
-            <span style='background-color: red; margin-left: 5px; margin-right: 0px'>
-            <input type='button' name='self.main.kill_proc_buttons' index='%d' label='%s' /></span>
-            <span style='color: red; margin-left: 140px; margin-right: 0px'> %6s</span>
-            <span style='color: blue; margin-left: 350px; margin-right: 0px'> %s</span><br />
-            """ %(counter, blabel, pid, name) ) 
-            counter+=1
-        
-        self.main.datatxt.display()
-        return
+#    def get_user_processes(self, ip):
+#        """get user processes in session"""
+#        print_debug( "get_user_processes(%s) __init__" %ip )
+#        #check user is connected
+#        if not self.main.localdata.IsLogged(ip):
+#            shared.info_msg( _("User not connected, no processes.") )
+#            return
+#        
+#        
+#        if self.main.xmlrpc.IsStandalone(ip):
+#            username=self.main.localdata.GetUsernameAndHost(ip)
+#            tmp=self.main.xmlrpc.ReadInfo("get_process")
+#            if tmp != "":
+#                process=tmp.split('|')[0:-1]
+#            else:
+#                process=["PID COMMAND", "66000 can't read process list"]
+#        else:    
+#            username=self.main.localdata.GetUsername(ip)
+#            cmd="LANG=C ps U \"%s\" -o pid,command | /usr/lib/tcos/clean_string.sh " %(self.main.localdata.GetUserID(username))
+#            print_debug ( "get_user_processes(%s) cmd=%s " %(ip, cmd) )
+#            process=self.main.common.exe_cmd(cmd, verbose=0)
+#        
+#        self.main.datatxt.clean()
+#        self.main.datatxt.insert_block(   _("Running processes for user \"%s\": " ) %(username), image=shared.IMG_DIR + "info_proc.png"  )
+#        
+#        if self.main.config.GetVar("systemprocess") == "0":
+#            self.main.datatxt.insert_block ( \
+#            _("ALERT: There are some system process hidden. Enable it in Preferences dialog.") \
+#            , image=shared.IMG_DIR + "icon_alert.png" ,\
+#            color="#f08196", size="medium" )
+#        
+#        self.main.datatxt.insert_html ( """
+#        <br/><div style='margin-left: 135px; margin-right: 200px;background-color:#ead196;color:blue'>""" + _("Pid") + "\t" 
+#        + "\t" + _("Process command") +"</div>" )
+#        
+#        counter=0
+#        self.main.kill_proc_buttons=None
+#        self.main.kill_proc_buttons=[]
+#        blabel=_("Kill this process")
+#        
+#        for proc in process:
+#            is_hidden=False
+#            if proc.split()[0]== "PID":
+#                continue
+#            pid=proc.split()[0] # not convert to int DBUS need string
+#            name=" ".join(proc.split()[1:])
+#            name=name.replace('<','&lt;').replace('>','&gt;')
+#            
+#            if int(self.main.config.GetVar("systemprocess")) == 0:
+#                for hidden in shared.system_process:
+#                    if hidden in name:
+#                        is_hidden=True
+#            
+#            if is_hidden:
+#                continue
+#            
+#            kill_button=gtk.Button(label=blabel)
+#            kill_button.connect("clicked", self.on_kill_button_click, pid, username)
+#            kill_button.show()
+#            self.main.kill_proc_buttons.append(kill_button)
+#                    
+#            self.main.datatxt.insert_html("""
+#            <span style='background-color: red; margin-left: 5px; margin-right: 0px'>
+#            <input type='button' name='self.main.kill_proc_buttons' index='%d' label='%s' /></span>
+#            <span style='color: red; margin-left: 140px; margin-right: 0px'> %6s</span>
+#            <span style='color: blue; margin-left: 350px; margin-right: 0px'> %s</span><br />
+#            """ %(counter, blabel, pid, name) ) 
+#            counter+=1
+#        
+#        self.main.datatxt.display()
+#        return
     
 #    def refresh_client_info(self, ip):
 #        print_debug ( "refresh_client_info() updating host data..." )

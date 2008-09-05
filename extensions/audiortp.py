@@ -42,7 +42,7 @@ def print_debug(txt):
 
 class AudioRTP(TcosExtension):
     def register(self):
-        self.main.menus.register_all( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.rtp_all)
+        self.main.menus.register_all( _("Send my MIC audio") , "menu_broadcast.png", 2, self.rtp_all)
         
 
     def rtp_all(self, *args):

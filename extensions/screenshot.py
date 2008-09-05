@@ -138,13 +138,13 @@ class Screenshot(TcosExtension):
         scrot=self.main.xmlrpc.getscreenshot(self.main.config.GetVar("miniscrot_size"))
         if scrot and scrot[0] == "ok":
             hostname=self.main.localdata.GetHostname(ip)
-            self.main.common.threads_enter("TcosActions:action_for_clients screenshot")
+            self.main.common.threads_enter("extensions/screenshot::real_action screenshot")
             self.main.datatxt.insert_html( 
                  "<span style='background-color:#f3d160'>" +
                  "\n\t<img base64='%s' title='%s' title_rotate='90' /> " %(scrot[1],_( "Screenshot of %s" ) %(hostname) ) +
                  "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>"+
                  "")
-            self.main.common.threads_leave("TcosActions:action_for_clients screenshot")
+            self.main.common.threads_leave("extensions/screenshot::real_action screenshot")
 
     def finish_action(self):
         self.main.datatxt.display()

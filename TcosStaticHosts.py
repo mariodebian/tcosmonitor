@@ -115,7 +115,7 @@ class TcosStaticHosts:
         for host in data:
             self.new_line=True
             model=self.main.staticlist.get_model()
-            model.foreach(self.line_exists, host[0])
+            model.foreach(self.line_exists, host)
         
             if self.new_line:
                 print_debug("populate_data() adding ip=%s" %host[0])
@@ -124,9 +124,10 @@ class TcosStaticHosts:
                 self.model.set_value (self.iter, COL_MAC, host[1] )
 
     def line_exists(self, model, path, iter, args):
-        ip = args
+        ip,mac = args
         # change mac if ip is the same.
         if model.get_value(iter, 0) == ip:
+            model.set_value(iter, 1, mac)
             self.new_line=False
         
 
@@ -269,12 +270,16 @@ class TcosStaticHosts:
             shared.error_msg ( _("No hosts found, please click on Refresh button using another method.") )
             return
         
+        print_debug ("static_get() allclients=%s"%self.main.localdata.allclients)
+        self.data=[]
         # scan hosts and get MAC address
         for host in self.main.localdata.allclients:
             self.main.xmlrpc.newhost(host)
             mac=self.main.xmlrpc.ReadInfo("network_mac")
             if not mac: mac = ""
             self.data.append([host, mac])
+            
+        print_debug("static_get() data=%s"%self.data)
         self.populate_data(self.data)
 
         

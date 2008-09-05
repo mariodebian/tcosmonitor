@@ -62,15 +62,15 @@ class Dpms(TcosExtension):
         if action == 'dpmsoff':
             result=self.main.xmlrpc.dpms('off')
             print_debug("real_action() DPMS OFF result=%s"%result)
-            self.main.common.threads_enter("TcosActions::action_for_clients dpms off")
+            self.main.common.threads_enter("extensions/dpms::real_action dpms off")
             self.change_lockscreen(ip)
-            self.main.common.threads_leave("TcosActions::action_for_clients dpms off")
+            self.main.common.threads_leave("extensions/dpms::real_action dpms off")
         elif action == 'dpmson':
             result=self.main.xmlrpc.dpms('on')
             print_debug("real_action() DPMS ON result=%s"%result)
-            self.main.common.threads_enter("TcosActions::action_for_clients dpms on")
+            self.main.common.threads_enter("extensions/dpms::real_action dpms on")
             self.change_lockscreen(ip)
-            self.main.common.threads_leave("TcosActions::action_for_clients dpms on")
+            self.main.common.threads_leave("extensions/dpms::real_action dpms on")
 
 
     def dpms_off_all(self, *args):

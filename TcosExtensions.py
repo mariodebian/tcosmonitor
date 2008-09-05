@@ -27,7 +27,7 @@ import os
 import exceptions
 from gettext import gettext as _
 import gtk
-
+import socket
 
 def print_debug(txt):
     if shared.debug:
@@ -143,10 +143,35 @@ class TcosExtension(object):
 
 ########################################################################################
 
+
+    def doaction_onthisclient(self, action, ip):
+        # return True if an exec action
+        # return False if can not
+        # get $DISPLAY
+        host, dnum =  os.environ["DISPLAY"].split(':')
+        if host == "": return True
+        print_debug("doaction_onthisclient() host=%s ip=%s action=%s filteraction=%s" %(host, ip, action, action.split(' ')[0]) )
+        # convert to IP
+        host=socket.gethostbyname(host)
+        print_debug("doaction_onthisclient() comparing %s <=> %s"%(host,socket.gethostbyname(host) ) )
+        if int(self.main.config.GetVar("blockactioninthishost")) == 1 and host == socket.gethostbyname(ip):
+            print_debug("doaction_onthisclient() ALERT !!! searching for dangerous actions")
+            # dangerous actions
+            if action.split(' ')[0] in ["poweroff", "reboot", "lockscreen", "restartx", "down-controller"]:
+                print_debug("doaction_onthisclient() returning FALSE")
+                return False
+            print_debug("doaction_onthisclient() no dangerous action")
+        print_debug("doaction_onthisclient() no host match")
+        return True
+
+
+
     def action_for_clients(self, allclients, action):
         if not allclients or len(allclients) < 1:
             return
-            
+        
+        print_debug("action_for_clients() allclients='%s' action='%s'"%(allclients, action))
+        
         self.main.common.threads_enter("TcosActions::action_for_clients cleaning")
         self.start_action()
         self.main.progressbar.show()
@@ -154,10 +179,14 @@ class TcosExtension(object):
         
         
         for ip in allclients:
-            #if not self.doaction_onthisclient(action, ip):
-            #    # show a msg
-            #    print_debug( _("Can't exec this action because you are connected at this host!") )
-            #    continue
+            if not self.doaction_onthisclient(action, ip):
+                # show a msg
+                print_debug( _("Can't exec this action at '%s' because you are connected at this host!") %ip )
+                self.main.common.threads_enter("TcosActions::action_for_clients doing action")
+                self.main.write_into_statusbar( _("Can't exec this action at '%s' because you are connected at this host!") %ip )
+                self.main.common.threads_leave("TcosActions::action_for_clients doing action")
+                continue
+            
             
             percent=float( allclients.index(ip)/len(allclients) )
             
@@ -265,7 +294,7 @@ class TcosExtLoader(object):
         for f in os.listdir(shared.EXTENSIONS):
             if f.endswith('.py') and f != "__init__.py" and f != "template.py":
                 ext=f.split('.py')[0]
-                print_debug("get_extensions() extension=%s" %ext)
+                #print_debug("get_extensions() extension=%s" %ext)
                 self.extensions[ext]=self.register_extension(ext)
                 
         print_debug("get_extensions() all=%s"%self.extensions)
@@ -273,7 +302,7 @@ class TcosExtLoader(object):
 
 
     def register_extension(self, ext):
-        print_debug("register_extension() ext=%s"%ext)
+        #print_debug("register_extension() ext=%s"%ext)
         try:
             tmp=__import__('extensions.' + ext, fromlist=['extensions'])
         except Exception, err:

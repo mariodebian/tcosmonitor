@@ -139,10 +139,14 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
     def __getoverride(self, ax, ay, aip):
         # read oldpos to know override saved settings
         for h in self.oldpos:
+            if h == aip:
+                # self movement
+                continue
             x,y = self.oldpos[h]
-            diffx=abs(ax-x) - (self.iconsize[0]-20)
+            diffx=abs(ax-x) - (self.iconsize[0]-5)
             diffy=abs(ay-y) - (self.iconsize[1]-20)
             if diffx < 0 and diffy < 0:
+                #print_debug("__getoverride() h=%s self.oldpos[h]=%s => [%s,%s] diffx=%s diffy=%s"%(h, self.oldpos[h], ax, ay, diffx, diffy))
                 return True
         # read pos of printed icons
         for w in self.classview.get_children():
@@ -151,11 +155,13 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             for c in w.get_children():
                 c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
             if aip == ip[0]:
+                # self movement
                 continue
-            diffx=abs(ax-x) - (self.iconsize[0]-20)
+            diffx=abs(ax-x) - (self.iconsize[0]-5)
             diffy=abs(ay-y) - (self.iconsize[1]-20)
             #print_debug("__getoverride() ### POSITION ### Elem[%s,%s] new[%s,%s] => abs(ax-x)=%s abs(ay-y)=%s restax=%s restay=%s"%(x,y,ax,ay,abs(ax-x), abs(ay-y), diffx, diffy ))
             if diffx < 0 and diffy < 0:
+                print_debug("__getoverride() ### POSITION ### Elem[%s,%s] new[%s,%s] => abs(ax-x)=%s abs(ay-y)=%s restax=%s restay=%s"%(x,y,ax,ay,abs(ax-x), abs(ay-y), diffx, diffy ))
                 return True
         return False
 
@@ -275,10 +281,11 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         ip=[]
         for c in button.get_children():
             c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
-        # set unselect
-        self.change_select(c, ip[0])
+        if self.hosts[ip[0]]['active']:
+            # set unselect if host is active
+            self.change_select(c, ip[0])
         if self.__getoverride(newx,newy, ip[0]):
-            print_debug("on_drag_data_received() another host is near x=%s y=%s, don't move!!"%(x,y) )
+            print_debug("on_drag_data_received() ip=%s another host is near x=%s y=%s, don't move!!"%(ip[0], x,y) )
             self.main.write_into_statusbar( _("Can't move icon, another host is near.") )
             return
         self.classview.move(button, newx, newy)

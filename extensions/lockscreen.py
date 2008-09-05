@@ -64,15 +64,15 @@ class LockUnlockScreen(TcosExtension):
         if action == 'lockscreen':
             self.main.xmlrpc.lockscreen()
             # update icon
-            self.main.common.threads_enter("TcosActions::action_for_clients lockscreen")
+            self.main.common.threads_enter("extensions/lockscreen::real_action lockscreen")
             self.change_lockscreen(ip)
-            self.main.common.threads_leave("TcosActions::action_for_clients lockscreen")
+            self.main.common.threads_leave("extensions/lockscreen::real_action lockscreen")
         elif action == 'unlockscreen':
             self.main.xmlrpc.unlockscreen()
             # update icon
-            self.main.common.threads_enter("TcosActions::action_for_clients unlockscreen")
+            self.main.common.threads_enter("extensions/lockscreen::real_action unlockscreen")
             self.change_lockscreen(ip)
-            self.main.common.threads_leave("TcosActions::action_for_clients unlockscreen")
+            self.main.common.threads_leave("extensions/lockscreen::real_action unlockscreen")
 
 
     def lock_all(self, *args):

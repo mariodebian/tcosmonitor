@@ -99,6 +99,7 @@ class RebootPoweroff(TcosExtension):
                     self.main.xmlrpc.newhost(ip)
                     self.main.xmlrpc.DBus("exec", remote_cmd )
                 else:
+                    # we have a thin client
                     newusernames.append(user)
                                 
             result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
