@@ -232,5 +232,6 @@ patch_hardy: patch_version
 patch_max: patch_version
 	sed -i '/show_donate/s/1/0/g' shared.py
 	
+patch_intrepid: patch_version
 
 .PHONY: fix-glade tcosxmlrpc dbus udev
