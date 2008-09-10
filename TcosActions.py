@@ -197,10 +197,10 @@ class TcosActions:
     
     def on_donateurl_click(self, *args):
         url=self.main.donateurllabel.get_text()
-        self.main.common.exe_cmd("x-www-browser %s"%url)
+        self.main.common.exe_cmd("x-www-browser %s"%url, verbose=0, background=True)
     
     def on_weburl_click(self, *args):
-        self.main.common.exe_cmd("x-www-browser %s"%shared.website)
+        self.main.common.exe_cmd("x-www-browser %s"%shared.website, verbose=0, background=True)
 
     def on_abouttcos_close(self, *args):
         self.main.abouttcos.hide()

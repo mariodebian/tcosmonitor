@@ -625,6 +625,13 @@ class LocalData:
         output=self.main.common.exe_cmd(cmd)
         print_debug("output=%s"%output)
         return output
+
+    def Route(self, action, ip, netmask, iface):
+        print_debug("Route() action=%s multicast=%s netmask=%s iface=%s"%(action, ip, netmask, iface))
+        cmd="/usr/lib/tcos/tnc %s %s %s %s"%(action, ip, netmask, iface)
+        output=self.main.common.exe_cmd(cmd)
+        print_debug("output=%s"%output)
+        return output
         
     def isExclude(self, host, ingroup=None):
         if self.username == None or self.username == shared.NO_LOGIN_MSG:
