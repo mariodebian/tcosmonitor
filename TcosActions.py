@@ -158,7 +158,10 @@ class TcosActions:
         self.datatxt.clean()
         
         if self.main.config.GetVar("scan_network_method") == "ping":
-            self.model.clear()
+            # clean icons and files
+            self.main.listview.clear()
+            self.main.iconview.clear()
+            self.main.classview.clear()
             allclients=self.main.localdata.GetAllClients("ping")
             # ping will call populate_hostlist when finish
             return

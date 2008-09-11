@@ -1,11 +1,16 @@
 tcosmonitor (0.2.16~rc7) unstable; urgency=low
 
+  [ Ignacio Vidal ]
   * TcosPreferences.py:
     - Fix show visible menus in first run
   * TcosActions.py extensions/videolan.py LocalData.py:
     - Add support for ip-multicast route
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Thu, 11 Sep 2008 11:49:47 +0200
+  [ Mario Izquierdo (mariodebian) ]
+  * TcosActions.py
+    - If scan method == ping call all view classes to clean (not use self.model)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 11 Sep 2008 15:21:33 +0200
 
 tcosmonitor (0.2.16~rc6) unstable; urgency=low
 
