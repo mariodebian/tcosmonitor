@@ -343,9 +343,11 @@ class TcosPreferences:
             widget=getattr(self.main, "pref_" + menu)
             if first_run:
                 # first run, set defaults
-                widget.set_active(shared.preferences_menus[menu][0])
-                visible_menu_items.append(menu)
-                continue
+                if shared.preferences_menus[menu][0] != False:
+                    #widget.set_active(shared.preferences_menus[menu][0])
+                    #visible_menu_items.append(menu)
+                    #continue
+                    visible_menus.append(pref_name)
                 
             if pref_name in visible_menus:
                 widget.set_active(1)

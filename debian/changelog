@@ -1,6 +1,14 @@
+tcosmonitor (0.2.16~rc7) unstable; urgency=low
+
+  * TcosPreferences.py:
+    - Fix show visible menus in first run
+  * TcosActions.py extensions/videolan.py LocalData.py:
+    - Add support for ip-multicast route
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Thu, 11 Sep 2008 11:49:47 +0200
+
 tcosmonitor (0.2.16~rc6) unstable; urgency=low
 
-  [ Mario Izquierdo (mariodebian) ]
   The extensions pre release
 
   * Move a lot of code from TcosActions.py to extensions/*.py
@@ -20,11 +28,7 @@ tcosmonitor (0.2.16~rc6) unstable; urgency=low
   * Makefile
     - Replace seds with a shell for loop to replace version in py files
 
-  [ Ignacio Vidal ]
-  * TcosActions.py extensions/videolan.py LocalData.py:
-    - Add support for ip-multicast route
-
- -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 10 Sep 2008 17:53:58 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 05 Sep 2008 16:02:16 +0200
 
 tcosmonitor (0.2.16~rc5) unstable; urgency=low
 
