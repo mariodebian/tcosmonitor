@@ -31,7 +31,7 @@ import socket
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 class Error(exceptions.Exception):
     def __init__(self, msg):
@@ -41,7 +41,7 @@ class Error(exceptions.Exception):
         return "<Error : %s>" % self.msg
     __repr__ = __str__
     def __call__(self):
-        return (msg,)
+        return (self.msg,)
 
 
 class TcosExtension(object):
@@ -88,7 +88,7 @@ class TcosExtension(object):
         elif not self.main.xmlrpc.IsStandalone(self.main.selected_ip):
             self.allclients_logged.append(self.main.selected_ip)
         
-        print_debug("get_clients() self.main.selected_ip=%s self.main.selected_host=%s"%(self.main.selected_ip,self.main.selected_host) )
+        print_debug("get_clients() self.main.selected_ip=%s self.main.selected_host=%s"%(self.main.selected_ip, self.main.selected_host) )
         return True
         #if not self.doaction_onthisclient(action, self.main.selected_ip):
         #    # show a msg
@@ -153,7 +153,7 @@ class TcosExtension(object):
         print_debug("doaction_onthisclient() host=%s ip=%s action=%s filteraction=%s" %(host, ip, action, action.split(' ')[0]) )
         # convert to IP
         host=socket.gethostbyname(host)
-        print_debug("doaction_onthisclient() comparing %s <=> %s"%(host,socket.gethostbyname(host) ) )
+        print_debug("doaction_onthisclient() comparing %s <=> %s"%(host, socket.gethostbyname(host) ) )
         if int(self.main.config.GetVar("blockactioninthishost")) == 1 and host == socket.gethostbyname(ip):
             print_debug("doaction_onthisclient() ALERT !!! searching for dangerous actions")
             # dangerous actions
@@ -199,6 +199,10 @@ class TcosExtension(object):
             self.main.common.threads_enter("TcosActions::action_for_clients doing action")
             self.main.actions.set_progressbar( _("Doing action \"%(action)s\" in %(ip)s...") %mydict , percent )
             self.main.common.threads_leave("TcosActions::action_for_clients doing action")
+
+            if not self.main.xmlrpc.connected:
+                print_debug("action_for_clients() xmlrpc not connected")
+                continue
             
             try:
                 # overwrite real_action in your extension
@@ -229,7 +233,7 @@ class TcosExtension(object):
         status_net=self.main.localdata.IsBlockedNet(ip)
         status_screen=self.main.localdata.IsBlocked(ip)
         status_dpms=self.main.xmlrpc.dpms('status', ip)
-        print_debug ( "change_lockscreen(%s)=(LOCK)%s,(NET)%s,(DPMS)%s" %(ip, status_screen, status_net,status_dpms) )
+        print_debug ( "change_lockscreen(%s)=(LOCK)%s,(NET)%s,(DPMS)%s" %(ip, status_screen, status_net, status_dpms) )
         
         locked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
         locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
@@ -250,11 +254,11 @@ class TcosExtension(object):
             image=unlocked_image
         
         if self.main.classview.isactive():
-            self.main.classview.change_lockscreen(ip,image)
+            self.main.classview.change_lockscreen(ip, image)
         if self.main.iconview.isactive():
-            self.main.iconview.change_lockscreen(ip,image)
+            self.main.iconview.change_lockscreen(ip, image)
         if self.main.listview.isactive():
-            self.main.listview.change_lockscreen(ip,image)
+            self.main.listview.change_lockscreen(ip, image)
 
     def add_progressbox(self, args, text):
         print_debug("add_progressbox() args=%s, text=%s" %(args, text))
@@ -273,8 +277,12 @@ class TcosExtension(object):
         self.main.progressbox.add(table)
         self.main.progressbox.show()
 
+    def on_progressbox_click(self, widget, args, box):
+        #def on_progressbox_click(self, *args):
+        raise Error, "TcosExtension on_progressbox_click() not defined"
 
-    def real_action(self, *args):
+    def real_action(self, ip, action):
+        #def real_action(self, *args):
         raise Error, "TcosExtension real_action() not defined"
 
     def start_action(self, *args):
@@ -307,12 +315,12 @@ class TcosExtLoader(object):
             tmp=__import__('extensions.' + ext, fromlist=['extensions'])
         except Exception, err:
             if shared.debug:
-                raise Error, "register_extension() EXCEPTION registering '%s', error=%s"%(ext,err)
-            print_debug("register_extension() EXCEPTION registering '%s', error=%s"%(ext,err) )
+                raise Error, "register_extension() EXCEPTION registering '%s', error=%s" % (ext, err)
+            print_debug("register_extension() EXCEPTION registering '%s', error=%s" % (ext, err) )
             return
         
         if not hasattr(tmp, "__extclass__"):
-            raise Error, "Extension '%s' don't have defined __extclass__ attribute"%ext
+            raise Error, "Extension '%s' don't have defined __extclass__ attribute" % ext
         
         # init extension
         self.extensions[ext]=tmp.__extclass__(self.main)

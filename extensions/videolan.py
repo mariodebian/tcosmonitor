@@ -26,7 +26,8 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 import os
 import gtk
 import subprocess
@@ -34,7 +35,7 @@ import signal
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::videolan", txt)
+        print "%s::%s" % ("extensions::videolan", txt)
     return
 
 
@@ -219,7 +220,7 @@ class VideoOne(TcosExtension):
                 else:
                     newusernames.append(user)
                     
-            result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
+            result = self.main.dbus_action.do_exec( newusernames, remote_cmd )
             
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -445,9 +446,9 @@ class VideoOne(TcosExtension):
                     newusernames.append(user)
                         
             if access == "http":
-                remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
+                remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" % (ip_broadcast)
                     
-            result = self.main.dbus_action.do_exec( newusernames ,remote_cmd_thin )
+            result = self.main.dbus_action.do_exec( newusernames, remote_cmd_thin )
             
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )

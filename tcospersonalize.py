@@ -28,29 +28,32 @@ import os
 import glob
 
 if not os.path.isfile("Initialize.py"):
-        #print "DEBUG: append tcosmonitor dir"
-        sys.path.append("/usr/share/tcosmonitor")
+    #print "DEBUG: append tcosmonitor dir"
+    sys.path.append("/usr/share/tcosmonitor")
 
 
 import pygtk
 pygtk.require('2.0')
-from gtk import *
+#from gtk import *
+import gtk
 import gtk.glade
 
-from time import time, sleep
+#from time import time, sleep
+from time import time
 import getopt
 from gettext import gettext as _
-from subprocess import Popen, PIPE, STDOUT
+#from subprocess import Popen, PIPE, STDOUT
 
 import gobject
 
 if not os.path.isfile("shared.py"):
-        sys.path.append('/usr/share/tcosmonitor')
+    sys.path.append('/usr/share/tcosmonitor')
 else:
-        sys.path.append('./')
-        
+    sys.path.append('./')
+
 import shared
-import pwd,grp
+#import pwd, grp
+import grp
 
 
 debug_name="tcospersonalize"
@@ -80,7 +83,7 @@ PXELINUX_CMDLINE="quiet splash"
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(debug_name, txt)
+        print "%s::%s" % (debug_name, txt)
     return
 
 def crono(start, txt):
@@ -108,7 +111,7 @@ for o, a in opts:
         print "DEBUG ACTIVE"
         shared.debug = True
     if o == "--host":
-        print "HOST %s" %(a)
+        print "HOST %s" % a
         shared.remotehost = a
     if o in ("-h", "--help"):
         usage()
@@ -284,7 +287,7 @@ class TcosPersonalize:
             value=item[1]
             print_debug ("key=%s value=%s" %(key, value))
             fd.write("%s=\"%s\"\n" %(key, value) )
-        fd.close
+        fd.close()
         self.FirstRunning=True
             
     def OpenFile(self):
@@ -307,8 +310,8 @@ class TcosPersonalize:
         for i in range( len(conf) ):
             if conf[i].find("#") != 0:
                 #print_debug ( "OpenFile() conf=" + conf[i] )
-                (var,value)=conf[i].split("=", 1)
-                self.vars.append([var,value])
+                (var, value)=conf[i].split("=", 1)
+                self.vars.append([var, value])
 
     def GetVar(self, varname):
         for i in range( len(self.vars) ):
@@ -341,7 +344,7 @@ class TcosPersonalize:
             return
         for i in range(len(self.vars)):
             fd.write("%s=%s\n" %(self.vars[i][0], self.vars[i][1]))
-        fd.close
+        fd.close()
         print_debug ( "SaveToFile() new settings SAVED!!!")   
         return
     
@@ -388,7 +391,7 @@ class TcosPersonalize:
         model=widget.get_model()
         for i in range(len(model)):
             #print model[i][0] + default
-            if "\"%s\"" %(model[i][0]) == default or model[i][0] == default:
+            if "\"%s\"" % (model[i][0]) == default or model[i][0] == default:
                 print_debug ("set_active_in_select(%s) default is %s, index %d"\
                                      %(widget.name, model[i][0] , i ) )
                 widget.set_active(i)
@@ -419,7 +422,7 @@ class TcosPersonalize:
         try:
             selected=widget.get_active()
         except Exception, err:
-            print_debug ( "read_select() ERROR reading %s, error=%s" %(varname,err) )
+            print_debug ( "read_select() ERROR reading %s, error=%s" %(varname, err) )
         model=widget.get_model()
         value=model[selected][0]
         print_debug ( "read_select() reading %s=%s" %(varname, value) )
@@ -489,7 +492,7 @@ class TcosPersonalize:
         try:
             f=open(self.bootfilename, 'w')
         except Exception, err:
-            print_debug("Error opening %s, error=%s"%(filename,err) )
+            print_debug("Error opening %s, error=%s"%(self.bootfilename, err) )
             return
         
         for line in PXELINUX_CFG:
@@ -538,19 +541,19 @@ class TcosPersonalize:
             try:
                 os.stat(_file)
             except Exception, err:
-                print_debug("getkernels() link %s broken, error=%s" %(_file,err) )
+                print_debug("getkernels() link %s broken, error=%s" %(_file, err) )
                 continue
             kernel=os.path.basename(_file).replace('vmlinuz-','')
             print_debug("getkernels() found %s"%kernel)
             # split only 3 times
             try:
-                (kmay, kmed, kmin) = kernel.split('.',2)
+                (kmay, kmed, kmin) = kernel.split('.', 2)
             except Exception, err:
-                print_debug("getkernels() exception spliting kernel '%s' version, %s"%(kernel,err))
+                print_debug("getkernels() exception spliting kernel '%s' version, %s"%(kernel, err))
                 continue
             import re
             pattern = re.compile ('[-_.+]')
-            (kmin, kextra) = pattern.split(kmin,1)
+            (kmin, kextra) = pattern.split(kmin, 1)
             # need kernel >= 2.6.12
             if int(kmay)==2 and int(kmed)==6 and int(kmin)>=12:
                 #print_debug( "getkernels() VALID kernel %s" %(kernel) )
@@ -559,7 +562,7 @@ class TcosPersonalize:
                 print_debug( "getkernels() INVALID OLD kernel %s" %(kernel) )
         return kernels
 
-    def quitapp(self,*args):
+    def quitapp(self, *args):
         print_debug ( _("Exiting") )
         gtk.main_quit()
 

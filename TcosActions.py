@@ -22,27 +22,29 @@
 # 02111-1307, USA.
 ###########################################################################
 
-from time import time, sleep, localtime
+#from time import time, sleep, localtime
+from time import time
 import gobject
 import gtk
 from gettext import gettext as _
 import os
 import socket
-import string
-from random import Random
-import subprocess,signal
-from shutil import copy
-import glob
+#import string
+#from random import Random
+#import subprocess,signal
+#import signal
+#from shutil import copy
+#import glob
 
-from TcosExtensions import Error
+#from TcosExtensions import Error
 
-COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
+#COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
 #import WakeOnLan
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -111,10 +113,10 @@ class TcosActions:
         self.main.allmenu.popup( None, None, None, event.button, event.time)
         return True
 
-    def on_preferencesbutton_click(self,widget):
+    def on_preferencesbutton_click(self, widget):
         self.main.pref.show()
     
-    def on_aboutbutton_click(self,widget):
+    def on_aboutbutton_click(self, widget):
         #self.main.about.show()
         self.main.abouttcos.show()
     
@@ -146,7 +148,7 @@ class TcosActions:
             self.main.progressbutton.hide()
 
     
-    def on_refreshbutton_click(self,widget):
+    def on_refreshbutton_click(self, widget):
         if self.main.config.GetVar("xmlrpc_username") == "" or self.main.config.GetVar("xmlrpc_password") == "":
             return
         self.main.write_into_statusbar ( _("Searching for connected hosts...") )
@@ -1003,7 +1005,6 @@ class TcosActions:
                     break
             except Exception, err:
                 print_debug("populate_hostlist() can't read worker status, error=%s"%err)
-                pass
             i += 1
             self.main.common.threads_enter("TcosActions:populate_hostlist show connecting")
             self.main.progressbar.show()
@@ -1082,7 +1083,7 @@ class TcosActions:
                 data['blocked_screen']=False
             
             print_debug("populate_hostlist() => get is blocked net")
-            if self.main.localdata.IsBlockedNet(host,data['username']):
+            if self.main.localdata.IsBlockedNet(host, data['username']):
                 data['blocked_net']=True
             else:
                 data['blocked_net']=False
@@ -1135,65 +1136,65 @@ class TcosActions:
         return
 
 
-    def doaction_onthisclient(self, action, ip):
-        # return True if an exec action
-        # return False if can not
-        # get $DISPLAY
-        host, dnum =  os.environ["DISPLAY"].split(':')
-        if host == "": return True
-        print_debug("doaction_onthisclient() host=%s ip=%s action=%s" %(host, ip, action) )
-        # convert to IP
-        host=socket.gethostbyname(host)
-        if self.main.config.GetVar("blockactioninthishost") == "1" and host == socket.gethostbyname(ip):
-            # dangerous actions
-            if action in [2, 3, 4, 6, 7, 11, 12, "poweroff", "reboot", "lockscreen", "restartx"]:
-                return False
-        return True
+#    def doaction_onthisclient(self, action, ip):
+#        # return True if an exec action
+#        # return False if can not
+#        # get $DISPLAY
+#        host, dnum =  os.environ["DISPLAY"].split(':')
+#        if host == "": return True
+#        print_debug("doaction_onthisclient() host=%s ip=%s action=%s" %(host, ip, action) )
+#        # convert to IP
+#        host=socket.gethostbyname(host)
+#        if self.main.config.GetVar("blockactioninthishost") == "1" and host == socket.gethostbyname(ip):
+#            # dangerous actions
+#            if action in [2, 3, 4, 6, 7, 11, 12, "poweroff", "reboot", "lockscreen", "restartx"]:
+#                return False
+#        return True
 
-    
-    def menu_event_one(self, action):
-        start1=time()
-        if self.main.iconview.isactive():
-            self.main.selected_ip=self.main.iconview.get_selected()
-            self.main.selected_host=self.main.iconview.get_host(self.main.selected_ip)
-        elif self.main.classview.isactive():
-            self.main.selected_ip=self.main.classview.get_selected()
-            self.main.selected_host=self.main.classview.get_host(self.main.selected_ip)
-        else:
-            self.main.selected_ip=self.main.listview.get_selected()
-            self.main.selected_host=self.main.listview.get_host(self.main.selected_ip)
-            #(model, iter) = self.main.tabla.get_selection().get_selected()
-            #if iter == None:
-            #    print_debug( "menu_event_one() not selected thin client !!!" )
-            #    return
-            #self.main.selected_host=model.get_value(iter,COL_HOST)
-            #self.main.selected_ip=model.get_value(iter, COL_IP)
-        
-        if not self.main.selected_ip:
-            # show a msg
-            shared.error_msg ( _("Error: no IP!") )
-            return
-        
-        if not self.doaction_onthisclient(action, self.main.selected_ip):
-            # show a msg
-            shared.info_msg ( _("Can't exec this action because you are connected at this host!") )
-            return
-        
-        connected_users=[]
-        newallclients=[]
-        allclients_logged=[]
-        self.main.localdata.newhost(self.main.selected_ip)
-        self.main.xmlrpc.newhost(self.main.selected_ip)
-        client_type = self.main.xmlrpc.ReadInfo("get_client")
-        host=self.main.localdata.GetHostname(self.main.selected_ip)
+#    
+#    def menu_event_one(self, action):
+#        start1=time()
+#        if self.main.iconview.isactive():
+#            self.main.selected_ip=self.main.iconview.get_selected()
+#            self.main.selected_host=self.main.iconview.get_host(self.main.selected_ip)
+#        elif self.main.classview.isactive():
+#            self.main.selected_ip=self.main.classview.get_selected()
+#            self.main.selected_host=self.main.classview.get_host(self.main.selected_ip)
+#        else:
+#            self.main.selected_ip=self.main.listview.get_selected()
+#            self.main.selected_host=self.main.listview.get_host(self.main.selected_ip)
+#            #(model, iter) = self.main.tabla.get_selection().get_selected()
+#            #if iter == None:
+#            #    print_debug( "menu_event_one() not selected thin client !!!" )
+#            #    return
+#            #self.main.selected_host=model.get_value(iter,COL_HOST)
+#            #self.main.selected_ip=model.get_value(iter, COL_IP)
+#        
+#        if not self.main.selected_ip:
+#            # show a msg
+#            shared.error_msg ( _("Error: no IP!") )
+#            return
+#        
+#        if not self.doaction_onthisclient(action, self.main.selected_ip):
+#            # show a msg
+#            shared.info_msg ( _("Can't exec this action because you are connected at this host!") )
+#            return
+#        
+#        connected_users=[]
+#        newallclients=[]
+#        allclients_logged=[]
+#        self.main.localdata.newhost(self.main.selected_ip)
+#        self.main.xmlrpc.newhost(self.main.selected_ip)
+#        client_type = self.main.xmlrpc.ReadInfo("get_client")
+#        host=self.main.localdata.GetHostname(self.main.selected_ip)
 
-        if self.main.localdata.IsLogged(self.main.selected_ip):
-            connected_users.append(self.main.localdata.GetUsernameAndHost(self.main.selected_ip))
-            newallclients.append(self.main.selected_ip)
-            allclients_logged.append(self.main.selected_ip)
-        elif not self.main.xmlrpc.IsStandalone(self.main.selected_ip):
-            allclients_logged.append(self.main.selected_ip)
-        
+#        if self.main.localdata.IsLogged(self.main.selected_ip):
+#            connected_users.append(self.main.localdata.GetUsernameAndHost(self.main.selected_ip))
+#            newallclients.append(self.main.selected_ip)
+#            allclients_logged.append(self.main.selected_ip)
+#        elif not self.main.xmlrpc.IsStandalone(self.main.selected_ip):
+#            allclients_logged.append(self.main.selected_ip)
+#        
 #        if action == 0:
 #            # refresh terminal
 #            # call to read remote info
@@ -1814,9 +1815,9 @@ class TcosActions:
 #            # DPMS on
 #            self.main.xmlrpc.dpms('on')
 #            self.change_lockscreen(self.main.selected_ip)
-        
-        crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
-        return
+#        
+#        crono(start1, "menu_event_one(%d)=\"%s\"" %(action, shared.onehost_menuitems[action] ) )
+#        return
 
     
 #    def add_progressbox(self, args, text):
@@ -2015,10 +2016,10 @@ class TcosActions:
 #        self.main.write_into_statusbar( "" )
 #        self.main.common.threads_leave("TcosActions:start_ivs END")
 
-        
-    def menu_event_all(self, action):
-        start1=time()
-        # boot by wake on lan
+#        
+#    def menu_event_all(self, action):
+#        start1=time()
+#        # boot by wake on lan
 #        if action == 13:
 #            if self.main.config.GetVar("scan_network_method") != "static":
 #                msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
@@ -2044,55 +2045,55 @@ class TcosActions:
 #                    print_debug("menu_event_all() errors=%s"%errors)
 #                    self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%" ".join(errors))
 #            return
-        
-        # don't make actions in clients not selected
-        if self.main.iconview.ismultiple():
-            allclients=self.main.iconview.get_multiple()
-        elif self.main.classview.ismultiple():
-            allclients=self.main.classview.get_multiple()
-        elif not self.main.iconview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
-            #allclients=[]
-            #model=self.main.tabla.get_model()
-            #rows = []
-            #model.foreach(lambda model, path, iter: rows.append(path))
-            #for host in rows:
-            #    iter=model.get_iter(host)
-            #    if model.get_value(iter, COL_SEL_ST):
-            #        allclients.append(model.get_value(iter, COL_IP))
-            allclients=self.main.listview.getmultiple()
-            if len(allclients) == 0:
-                #msg=_( _("No clients selected, do you want to select all?" ) )
-                #if shared.ask_msg ( msg ):
-                allclients=self.main.localdata.allclients
-                #if len(allclients) == 0: return
-        else:
-            # get all clients connected
-            allclients=self.main.localdata.allclients
+#        
+#        # don't make actions in clients not selected
+#        if self.main.iconview.ismultiple():
+#            allclients=self.main.iconview.get_multiple()
+#        elif self.main.classview.ismultiple():
+#            allclients=self.main.classview.get_multiple()
+#        elif not self.main.iconview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
+#            #allclients=[]
+#            #model=self.main.tabla.get_model()
+#            #rows = []
+#            #model.foreach(lambda model, path, iter: rows.append(path))
+#            #for host in rows:
+#            #    iter=model.get_iter(host)
+#            #    if model.get_value(iter, COL_SEL_ST):
+#            #        allclients.append(model.get_value(iter, COL_IP))
+#            allclients=self.main.listview.getmultiple()
+#            if len(allclients) == 0:
+#                #msg=_( _("No clients selected, do you want to select all?" ) )
+#                #if shared.ask_msg ( msg ):
+#                allclients=self.main.localdata.allclients
+#                #if len(allclients) == 0: return
+#        else:
+#            # get all clients connected
+#            allclients=self.main.localdata.allclients
 
-        if len(allclients) == 0:
-            shared.info_msg ( _("No clients connected, press refresh button.") )
-            return
-             
-        connected_users=[]
-        allclients_txt=""
-        newallclients=[]
-        newallclients_txt=""
-        allclients_logged=[]
-        allclients_logged_txt=""
-            
-        for client in allclients:
-            allclients_txt+="\n %s" %(client)
-            self.main.localdata.newhost(client)
-            if self.main.localdata.IsLogged(client):
-                connected_users.append(self.main.localdata.GetUsernameAndHost(client))
-                newallclients.append(client)
-                newallclients_txt+="\n %s" %(client)
-                allclients_logged.append(client)
-                allclients_logged_txt+="\n %s" %(client)
-            elif not self.main.xmlrpc.IsStandalone(client):
-                allclients_logged.append(client)
-                allclients_logged_txt+="\n %s" %(client)
-            
+#        if len(allclients) == 0:
+#            shared.info_msg ( _("No clients connected, press refresh button.") )
+#            return
+#             
+#        connected_users=[]
+#        allclients_txt=""
+#        newallclients=[]
+#        newallclients_txt=""
+#        allclients_logged=[]
+#        allclients_logged_txt=""
+#            
+#        for client in allclients:
+#            allclients_txt+="\n %s" %(client)
+#            self.main.localdata.newhost(client)
+#            if self.main.localdata.IsLogged(client):
+#                connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+#                newallclients.append(client)
+#                newallclients_txt+="\n %s" %(client)
+#                allclients_logged.append(client)
+#                allclients_logged_txt+="\n %s" %(client)
+#            elif not self.main.xmlrpc.IsStandalone(client):
+#                allclients_logged.append(client)
+#                allclients_logged_txt+="\n %s" %(client)
+#            
 #        if action == 0:
 #            # Ask for reboot
 #            msg=_( _("Do you want to reboot the following hosts:%s?" ) \
@@ -2703,8 +2704,8 @@ class TcosActions:
 #                self.main.worker=shared.Workers(self.main, None, None)
 #                self.main.worker.set_for_all_action(self.action_for_clients,\
 #                                                     allclients_logged, "dpmson" )
-                                                     
-        crono(start1, "menu_event[%d]=\"%s\"" %(action, shared.allhost_menuitems[action] ) )
+#                                                     
+#        crono(start1, "menu_event[%d]=\"%s\"" %(action, shared.allhost_menuitems[action] ) )
 
 
 #    def action_for_clients(self, allhost, action):

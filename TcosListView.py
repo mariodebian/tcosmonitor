@@ -22,12 +22,11 @@
 # 02111-1307, USA.
 ###########################################################################
 
-
-import gobject
+#import gobject
 import gtk
 from gettext import gettext as _
-import os,subprocess
-import string
+#import os,subprocess
+#import string
 
 import shared
 
@@ -40,11 +39,11 @@ PANGO_SCALE=1024
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 class TcosListView(object):
 
-    def __init__(self,main):
+    def __init__(self, main):
         print_debug("__init__()")
         self.main=main
         self.ui=self.main.ui
@@ -232,9 +231,9 @@ class TcosListView(object):
         rows = []
         self.model.foreach(lambda model, path, iter: rows.append(path))
         for host in rows:
-            iter=model.get_iter(host)
-            if model.get_value(iter, COL_SEL_ST):
-                allclients.append(model.get_value(iter, COL_IP))
+            iter=self.model.get_iter(host)
+            if self.model.get_value(iter, COL_SEL_ST):
+                allclients.append(self.model.get_value(iter, COL_IP))
         return allclients
 
     def get_selected(self):
@@ -249,7 +248,7 @@ class TcosListView(object):
         if iter == None:
             print_debug( "get_selected() not selected thin client !!!" )
             return
-        return model.get_value(iter,COL_HOST)
+        return model.get_value(iter, COL_HOST)
 
     def change_lockscreen(self, ip, image):
         self.model.foreach(self.__lockscreen_changer, [ip, image])
@@ -262,7 +261,7 @@ class TcosListView(object):
             model.set_value(iter, COL_BLOCKED, image)
 
     def refresh_client_info(self, ip, data):
-        self.model.foreach(self.__refresh_client_info, [ip,data] )
+        self.model.foreach(self.__refresh_client_info, [ip, data] )
 
     def __refresh_client_info(self, model, path, iter, args):
         ip, data = args

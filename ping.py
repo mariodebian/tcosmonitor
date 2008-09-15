@@ -9,52 +9,46 @@
 # 
 
 
-import os
-import sys
+#import os
+#import sys
 import re
 from threading import Thread
 import socket
-import fcntl
-import struct
+#import fcntl
+#import struct
 from gettext import gettext as _
-from time import sleep
+#from time import sleep
 from subprocess import Popen, PIPE, STDOUT
 
 import netifaces
-
-if "DISPLAY" in os.environ:
-    if os.environ["DISPLAY"] != "":
-        import gtk
-
-
 import shared
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 class pingip(Thread):
-   def __init__ (self,ip):
-      Thread.__init__(self)
-      self.ip = ip
-      self.status = -1
-      self.lifeline = re.compile(r"(\d) received")
-   def run(self):
-      #print_debug ( "pingip() %s" %(self.ip) )
-      #pingaling = self.main.common.exe_cmd("ping -q -W1 -c2 %s" %self.ip, verbose=0, background=False, lines=1)
-      pingalingout = Popen(["ping", "-q", "-W1", "-c2", "%s" %self.ip], shell=False, stdout=PIPE, stderr=STDOUT, close_fds=True)
-      try:
-          pingalingout.wait()
-      except Exception, err:
-          print_debug("pingip() Exception in wait() error: %s"%err)
-      pingaling = pingalingout.stdout
-      while 1:
-        line = pingaling.readline()
-        if not line: break
-        igot = re.findall(self.lifeline,line)
-        if igot:
-            self.status = int(igot[0])
-                
+    def __init__ (self, ip):
+        Thread.__init__(self)
+        self.ip = ip
+        self.status = -1
+        self.lifeline = re.compile(r"(\d) received")
+    def run(self):
+        #print_debug("ping to '%s'" %self.ip)
+        pingalingout = Popen(["ping", "-q", "-W1", "-c2", "%s" %self.ip], \
+                shell=False, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        try:
+            pingalingout.wait()
+        except Exception, err:
+            print_debug("pingip() Exception in wait() error: %s"%err)
+        pingaling = pingalingout.stdout
+        while 1:
+            line = pingaling.readline()
+            if not line: break
+            igot = re.findall(self.lifeline, line)
+            if igot:
+                self.status = int(igot[0])
+
 class Ping:
     def __init__(self, main):
         print_debug ( "__init__()" )
@@ -63,15 +57,16 @@ class Ping:
 
     def ping_iprange(self, selfip):
         print_debug("ping_iprange() ip=%s"%selfip)
-        pinglist = []
-        reachip =[]
+        pinglist=[]
+        reachip=[]
         server_ips=self.get_server_ips()
             
-        for i in range(1,255):
+        for i in range(1, 255):
             iprange=selfip.split(".")[:-1]
             ip=".".join(iprange)+"."+str(i)
             # don't show server in list
             if ip in server_ips:
+                print_debug("Ping:: ip (%s) is in server_ips(%s)" % (ip, server_ips) )
                 continue
             #print "ping to %s" %(ip)
             if self.main.worker.is_stoped():
@@ -145,20 +140,6 @@ class Ping:
         if ip.has_key(netifaces.AF_INET):
             return ip[netifaces.AF_INET][0]['addr']
         return None
-        """
-        old code
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-            ip=socket.inet_ntoa(fcntl.ioctl(
-                s.fileno(),
-                0x8915,  # SIOCGIFADDR
-                struct.pack('256s', ifname[:15])
-            )[20:24])
-        except Exception, err:
-            ip=None
-            print_debug("get_ip_address() ifname %s don't have ip address, error=%s"%(ifname,err))
-        return ip
-        """
 
 
     def get_server_ips(self):
@@ -168,24 +149,31 @@ class Ping:
                 print_debug("get_server_ips() add interface %s"%dev)
                 ip=netifaces.ifaddresses(dev)
                 if ip.has_key(netifaces.AF_INET):
-                    print_debug("get_server_ips() iface=%s data=%s"%(dev,ip[netifaces.AF_INET] ))
+                    ip[netifaces.AF_INET][0]['gateway']=self.get_gateway(dev)
+                    print_debug("get_server_ips() iface=%s data=%s"%(dev, ip[netifaces.AF_INET] ))
                     IPS.append(ip[netifaces.AF_INET][0]['addr'])
         return IPS
-        """
-        old code
-        IPS=[]
-        for dev in os.listdir("/sys/class/net"):
-            if not dev in shared.hidden_network_ifaces:
-                print_debug ( "get_server_ips() add interface %s" %dev )
-                ip=self.get_ip_address(dev)
-                if ip:
-                    print_debug("appending ip %s"%ip)
-                    IPS.append(ip)
-               
-        print_debug("get_server_ips() IPS=%s"%IPS)
-        return IPS
-        """
 
+    def get_gateway(self, iface):
+        data=[]
+        f=open("/proc/net/route", 'r')
+        for l in f.readlines():
+            if l.startswith(iface):
+                tmp=l.strip().split()
+                if tmp[1] == "00000000":
+                    data.append(self.__hex2dec__(tmp[2]))
+        f.close()
+        if len(data) < 1:
+            print "WARNING: no gateway"
+        return data[0]
+
+    def __hex2dec__(self, s):
+        out=[]
+        for i in range(len(s)/2):
+            out.append( str(int(s[i*2:(i*2)+2],16)) )
+        # data in /proc/net/route is reversed
+        out.reverse()
+        return ".".join(out)
 
 ##########################################################################
 # TcosMonitor writen by MarioDebian <mariodebian@gmail.com>
@@ -215,7 +203,7 @@ class PingPort:
     def __init__(self, host, port, timeout=1):
         self.host=host
         self.port=int(port)
-        print_debug("PingPort() host=%s port=%d" %(host,self.port) )
+        print_debug("PingPort() host=%s port=%d" %(host, self.port) )
         if self.host == "":
             print_debug ( "PingPort()  need host to connect" )
             self.status = "CLOSED"
@@ -224,10 +212,10 @@ class PingPort:
         self.status=None
         socket.setdefaulttimeout(timeout)
         self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print_debug( "PingPort()::__init__(host=%s, port=%d timeout=%f)" %(self.host, self.port, timeout) )        
+        print_debug( "PingPort()::__init__(host=%s, port=%d timeout=%f)" %(self.host, self.port, timeout) )
         try:
             # connect to the given host:port
-	        self.sd.connect((self.host, self.port))
+            self.sd.connect((self.host, self.port))
         except socket.error:
             # set the CLOSED flag
             self.status = "CLOSED"
@@ -235,7 +223,7 @@ class PingPort:
             self.status = "OPEN"
             self.sd.close()
 
-        import shared
+        #import shared
         socket.setdefaulttimeout(timeout)
 
     def get_status(self):

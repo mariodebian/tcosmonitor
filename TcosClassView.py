@@ -23,21 +23,21 @@
 ###########################################################################
 
 
-import gobject
 import gtk
 from gettext import gettext as _
-import os,subprocess
-import string
+#import gobject
+#import os,subprocess
+#import string
 
 
 import shared
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 class TcosClassView(object):
-    def __init__(self,main):
+    def __init__(self, main):
         print_debug("__init__()")
         self.main=main
         self.ui=self.main.ui
@@ -142,7 +142,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             if h == aip:
                 # self movement
                 continue
-            x,y = self.oldpos[h]
+            x, y = self.oldpos[h]
             diffx=abs(ax-x) - (self.iconsize[0]-5)
             diffy=abs(ay-y) - (self.iconsize[1]-20)
             if diffx < 0 and diffy < 0:
@@ -153,7 +153,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             x, y, width, height = w.get_allocation()
             ip=[]
             for c in w.get_children():
-                c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
+                c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter, 1)) )
             if aip == ip[0]:
                 # self movement
                 continue
@@ -161,7 +161,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             diffy=abs(ay-y) - (self.iconsize[1]-20)
             #print_debug("__getoverride() ### POSITION ### Elem[%s,%s] new[%s,%s] => abs(ax-x)=%s abs(ay-y)=%s restax=%s restay=%s"%(x,y,ax,ay,abs(ax-x), abs(ay-y), diffx, diffy ))
             if diffx < 0 and diffy < 0:
-                print_debug("__getoverride() ### POSITION ### Elem[%s,%s] new[%s,%s] => abs(ax-x)=%s abs(ay-y)=%s restax=%s restay=%s"%(x,y,ax,ay,abs(ax-x), abs(ay-y), diffx, diffy ))
+                print_debug("__getoverride() ### POSITION ### Elem[%s,%s] new[%s,%s] => abs(ax-x)=%s abs(ay-y)=%s restax=%s restay=%s"%(x, y, ax, ay, abs(ax-x), abs(ay-y), diffx, diffy ))
                 return True
         return False
 
@@ -177,7 +177,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             x, y, width, height = w.get_allocation()
             ip=[]
             for c in w.get_children():
-                c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
+                c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter, 1)) )
             print_debug("savepos() ### POSITION ### x=%s y=%s width=%s height=%s ip=%s"%(x, y, width, height, ip))
             self.oldpos[ip[0]]=[x,y]
         print_debug("savepos() self.oldpos=%s"%self.oldpos)
@@ -208,13 +208,14 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             w.destroy()
         self.position=[self.initialX,self.initialY]
         print_debug("clear() restore position to %s"%(self.position))
+        self.selected=[]
 
 
     def generate_icon(self, data):
         print_debug("generate_icon() ip=%s hostname=%s"%(data['ip'], data['hostname']) )
         
         iconview=gtk.IconView()
-        model = gtk.ListStore(str, str ,gtk.gdk.Pixbuf)
+        model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
         if data['standalone']:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
         else:
@@ -280,12 +281,12 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         # get button ip address and pass to __getoverride to not put 2 hosts (with different IP) in same position
         ip=[]
         for c in button.get_children():
-            c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter,1)) )
+            c.get_model().foreach(lambda model, path, iter: ip.append(model.get_value(iter, 1)) )
         if self.hosts[ip[0]]['active']:
             # set unselect if host is active
             self.change_select(c, ip[0])
-        if self.__getoverride(newx,newy, ip[0]):
-            print_debug("on_drag_data_received() ip=%s another host is near x=%s y=%s, don't move!!"%(ip[0], x,y) )
+        if self.__getoverride(newx, newy, ip[0]):
+            print_debug("on_drag_data_received() ip=%s another host is near x=%s y=%s, don't move!!"%(ip[0], x, y) )
             self.main.write_into_statusbar( _("Can't move icon, another host is near.") )
             return
         self.classview.move(button, newx, newy)
@@ -349,8 +350,10 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         return self.selected
 
     def set_select(self, ip):
-        self.selected.append(ip)
         print_debug("set_select() ip=%s all=%s"%(ip, self.selected))
+        if ip in self.selected:
+            return
+        self.selected.append(ip)
 
     def set_unselect(self, ip):
         if self.isselected(ip):

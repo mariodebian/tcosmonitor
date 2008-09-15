@@ -26,16 +26,18 @@ import gtk
 from gettext import gettext as _
 import shared
 from time import time
-import urllib2
-from os import remove, path
-from threading import Thread
-from subprocess import Popen, PIPE, STDOUT
+import os
+#import urllib2
+#from os import remove, path
+#from threading import Thread
+#from subprocess import Popen, PIPE, STDOUT
 
-from time import sleep, localtime
-import gobject
-import string
+#from time import sleep, localtime
+#import gobject
+#import string
 
-COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
+#COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED,\
+# COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 
 
 # constant to font sizes
@@ -45,7 +47,7 @@ PANGO_SCALE=1024
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -145,10 +147,10 @@ class Initialize(object):
         # LOAD LICENSE_FILE in TextView
         self.main.abouttcos_license = self.ui.get_widget('abouttcos_license')
         textbuffer = self.main.abouttcos_license.get_buffer()
-        if path.isfile(shared.LICENSE_FILE):
-            f=open(shared.LICENSE_FILE, "r")
-            data=f.read()
-            f.close()
+        if os.path.isfile(shared.LICENSE_FILE):
+            fd1=open(shared.LICENSE_FILE, "r")
+            data=fd1.read()
+            fd1.close()
             textbuffer.set_text(data)
         else:
             textbuffer.set_text( _("GPL-2 license file not found") )
@@ -184,7 +186,8 @@ class Initialize(object):
 #        self.main.ask_fixed = self.main.ui.get_widget('ask_fixed')
 #        self.main.ask_dragdrop = self.main.ui.get_widget('label99')
 #        self.main.image_entry = self.main.ui.get_widget('image_askentry')
-#        self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ),], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
+#        self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, \
+#                                  [( 'text/uri-list', 0, 2 ),], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
 #        self.main.image_entry.connect( 'drag_data_received', self.main.actions.on_drag_data_received)
 #        self.main.ask_fixed.hide()
 #        self.main.image_entry.hide()

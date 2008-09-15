@@ -438,7 +438,7 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                             self.textbuf.apply_tag(tag, start, self.iter)
                         self.textbuf.delete_mark(tmpmark)
                 else:
-                    print "WARNING: HtmlTextView() img_parser, file %s don't exists" %(imgfile)
+                    print "WARNING: HtmlTextView() img_parser, file %s don't exists" % (imgfile)
                     pixbuf=None
                     
             else:
@@ -453,7 +453,7 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                         gc.collect()
                         #print pixbuf
                     except Exception, err:
-                        print "WARNING Exception loading base64 error: %s"%err
+                        print "WARNING Exception loading base64 error: %s" % err
                 else:
                     try:
                         ## Max image size = 10 MB (to try to prevent DoS)
@@ -661,7 +661,7 @@ class HtmlTextView(gtk.TextView):
             except:
                 pass
             
-    def insert_html(self,html):
+    def insert_html(self, html):
         # FIXME need a BLOCK to avoid inserting from 2 threads....
         #print "::::::::::::::::HtmlTextView insert_html():::::::::::::::"
         self.myhtml+=html
@@ -694,9 +694,9 @@ class HtmlTextView(gtk.TextView):
             """ %(image) ) 
         self.insert_html("""
             <span style='font-size:%s'>   %s</span>
-        </div>\n\n""" %(size,txt) )
+        </div>\n\n""" %(size, txt) )
     
-    def insert_alert(self,txt, image=None, color="#f08196", size="medium"):
+    def insert_alert(self, txt, image=None, color="#f08196", size="medium"):
         self.insert_html("""
         <br />
         <div style='background-color:#f08196'>""")

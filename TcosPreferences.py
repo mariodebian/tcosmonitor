@@ -22,22 +22,23 @@
 # 02111-1307, USA.
 ###########################################################################
 
-from time import time, sleep, localtime
-import gobject
+#from time import time, sleep, localtime
+from time import time
+#import gobject
 import gtk
 from gettext import gettext as _
-import os,subprocess
-import string
+#import os,subprocess
+#import string
 
 import shared
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 class TcosPreferences:
 
-    def __init__(self,main):
+    def __init__(self, main):
         self.main=main
         self.ui=self.main.ui
         
@@ -166,7 +167,7 @@ class TcosPreferences:
         if self.main.pref_combo_scan_method.get_active() == 0:
             self.main.config.SetVar("scan_network_method", "netstat")
         elif self.main.pref_combo_scan_method.get_active() == 1:
-             self.main.config.SetVar("scan_network_method", "ping")
+            self.main.config.SetVar("scan_network_method", "ping")
         else:
             self.main.config.SetVar("scan_network_method", "static")
         
@@ -257,9 +258,9 @@ class TcosPreferences:
 
     def populate_pref(self):
         # set default for combos
-        self.set_active_in_select(self.main.pref_combo_scan_method,\
+        self.set_active_in_select(self.main.pref_combo_scan_method, \
                          self.main.config.GetVar("scan_network_method"))
-        self.set_active_in_select(self.main.combo_network_interfaces,\
+        self.set_active_in_select(self.main.combo_network_interfaces, \
                          self.main.config.GetVar("network_interface"))
                          
         #if self.main.config.GetVar("scan_network_method") != "static":
@@ -295,7 +296,7 @@ class TcosPreferences:
         self.main.pref_ports_tnc.set_text(\
                      self.main.config.GetVar("ports_tnc").replace('"', '') )
                      
-        self.set_active_in_select(self.main.pref_vlc_method_send,\
+        self.set_active_in_select(self.main.pref_vlc_method_send, \
                          self.main.config.GetVar("vlc_method_send"))
         
         self.set_active_in_select(self.main.pref_combo_listmode, \
@@ -404,12 +405,12 @@ class TcosPreferences:
         return
                   
     def populate_select(self, widget, values):
-        valuelist = gtk.ListStore(str,str)
+        valuelist = gtk.ListStore(str, str)
         for value in values:
             if type(value) == type([]):
-                valuelist.append([value[0],value[1]])
+                valuelist.append([value[0], value[1]])
             else:
-                valuelist.append([value.split()[0],value.split()[0]])
+                valuelist.append([value.split()[0], value.split()[0]])
         widget.set_model(valuelist)
         widget.set_text_column(1)
         model=widget.get_model()
@@ -432,7 +433,8 @@ class TcosPreferences:
         image = gtk.Image()
         image.set_from_stock (gtk.STOCK_STOP, gtk.ICON_SIZE_BUTTON)
         button.set_image(image)
-        button.connect('clicked', self.on_progressbox_click, args, table)
+        # FIXME need to add actipon for button click event
+        #button.connect('clicked', self.on_progressbox_click, args, table)
         button.show()
         label=gtk.Label( text )
         label.show()

@@ -22,22 +22,21 @@
 # 02111-1307, USA.
 ###########################################################################
 
-
-import gobject
+#import gobject
 import gtk
 from gettext import gettext as _
-import os,subprocess
-import string
+#import os, subprocess
+#import string
 
 import shared
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 class TcosIconView(object):
 
-    def __init__(self,main):
+    def __init__(self, main):
         print_debug("__init__()")
         self.main=main
         self.ui=self.main.ui
@@ -57,7 +56,7 @@ class TcosIconView(object):
         self.icon_tooltips = None
         self.hosts={}
         self.iconview=self.ui.get_widget('iconview')
-        self.model = gtk.ListStore(str, str ,gtk.gdk.Pixbuf)
+        self.model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
         self.iconview.set_model(self.model)
         self.iconview.set_text_column(0)
         self.iconview.set_pixbuf_column(2)
@@ -110,7 +109,7 @@ class TcosIconView(object):
     def clear(self):
         print_debug("clear() clean iconview")
         self.model.clear()
-        self.host={}
+        self.hosts={}
         self.set_selected(None)
 
     def set_selected(self, ip):

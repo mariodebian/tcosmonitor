@@ -27,16 +27,16 @@ import PAM
 
 def auth(user, password):
     class AuthConv:
-        def __init__(_, password):
-            _.password = password
+        def __init__(self, password):
+            self.password = password
 
-        def __call__(_, auth, query_list, userData):
+        def __call__(self, auth, query_list, userData):
             resp = []
             for query, qt in query_list:
                 if qt == PAM.PAM_PROMPT_ECHO_ON:
-                    resp.append((_.password, 0))
+                    resp.append((self.password, 0))
                 elif qt == PAM.PAM_PROMPT_ECHO_OFF:
-                    resp.append((_.password, 0))
+                    resp.append((self.password, 0))
                 elif qt == PAM.PAM_PROMPT_ERROR_MSG or type == PAM.PAM_PROMPT_TEXT_INFO:
                     print query
                     resp.append(('', 0))
@@ -57,7 +57,7 @@ def auth(user, password):
         if resp[1] == 9:
             print "error: TcosPAM error in pam connection. Are you root?"
         else:
-            print "error: TcosPAM user:%s error:%s" %(user, resp)
+            print "error: TcosPAM user:%s error:%s" % (user, resp)
         return False
 
 

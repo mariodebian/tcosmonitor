@@ -10,7 +10,7 @@ import shared
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 def WakeOnLan(ethernet_address):
     errortxt=None

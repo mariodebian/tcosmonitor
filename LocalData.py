@@ -26,13 +26,17 @@ import shared
 
 import os
 from gettext import gettext as _
-from time import time, ctime, localtime
-from ping import *
+#from time import time, ctime, localtime
+from time import time
+#from ping import *
+from ping import Ping
 
 import utmp
-from UTMPCONST import *
+#from UTMPCONST import *
+from UTMPCONST import WTMP_FILE, USER_PROCESS
 
-import pwd,grp
+import pwd, grp
+import socket
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 
@@ -43,7 +47,7 @@ unknow=_("unknow")
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
         
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -161,7 +165,7 @@ class LocalData:
         decorated.sort()
         return [ item for index, item in decorated ]
     
-    def _generate_index(self, str):
+    def _generate_index(self, txt):
         """
         Splits a string into alpha and numeric elements, which
         is used as an index for sorting"
@@ -176,10 +180,10 @@ class LocalData:
             alist.append(fragment)
 
         # initialize loop
-        prev_isdigit = str[0].isdigit()
+        prev_isdigit = txt[0].isdigit()
         current_fragment = ''
         # group a string into digit and non-digit parts
-        for char in str:
+        for char in txt:
             curr_isdigit = char.isdigit()
             if curr_isdigit == prev_isdigit:
                 current_fragment += char
@@ -205,9 +209,10 @@ class LocalData:
             ping=Ping(self.main)
             ss=ping.get_ip_address(interface)
             if ss == None:
-                self.main.write_into_statusbar( _("Selected network inteface (%s) don't have IP address" ) %(interface) )
+                self.main.write_into_statusbar( \
+            _("Selected network inteface (%s) don't have IP address" ) %(interface) )
                 return []
-            print_debug ( "GetAllClients() method=ping starting worker without dog iface=%s ip=%s" %(interface,ss) )
+            print_debug ( "GetAllClients() method=ping starting worker without dog iface=%s ip=%s" %(interface, ss) )
             self.main.worker=shared.Workers(self.main, ping.ping_iprange, [ss], dog=False )
             self.main.worker.start()
             
@@ -274,7 +279,7 @@ class LocalData:
                     minip=int(base[3].split("-")[0])
                     maxip=int(base[3].split("-")[1])
                     if minip < maxip:
-                        for i in range(minip,maxip):
+                        for i in range(minip, maxip):
                             newip=".".join(base[0:3]) + ".%s" %(i)
                             self.allclients.append(newip)
                     else:
@@ -349,13 +354,16 @@ class LocalData:
         
         
         ######## new method #########
-        import socket
+        old_timeout=socket.getdefaulttimeout()
         try:
+            socket.setdefaulttimeout(2)
             self.hostname = socket.gethostbyaddr(ip)[0]
             self.add_to_cache( ip, 1 , self.hostname )
+            socket.setdefaulttimeout(old_timeout)
             return self.hostname
         except Exception, err:
             print_debug("GetHostname() Exception, error=%s"%err)
+            socket.setdefaulttimeout(old_timeout)
             pass
         
         #read hostname from /etc/hosts
@@ -414,7 +422,7 @@ class LocalData:
             else:
                 for lease in output:
                     self.hostname=lease.replace('\n', '')
-                    print_debug ( "GetHostname() found DHCP hostname=%s for ip=%s" %(self.hostname,ip) )
+                    print_debug ( "GetHostname() found DHCP hostname=%s for ip=%s" %(self.hostname, ip) )
                     crono(start, "GetHostname()")
                     # save into cache
                     self.add_to_cache( ip, 1 , self.hostname )
@@ -425,7 +433,7 @@ class LocalData:
         self.add_to_cache( ip, 1 , self.hostname )
         return self.hostname
 
-    def GetUsernameAndHost(self,ip):
+    def GetUsernameAndHost(self, ip):
         print_debug("GetUsernameAndHost() => get username and host")
         if self.username != None and self.username != shared.NO_LOGIN_MSG:
             username=self.username
@@ -433,9 +441,9 @@ class LocalData:
             username=self.GetUsername(ip)
             
         if self.main.xmlrpc.IsStandalone(ip=ip):
-            return "%s:%s" %(username, ip)
+            return "%s:%s" % (username, ip)
         else:
-            return "%s" %(username)
+            return username
 
     def GetLast(self, ip, ingroup=None):
         start=time()
@@ -459,7 +467,7 @@ class LocalData:
                         break
                     if b[0] == USER_PROCESS:
                         #print_debug("  => Searching for host \"%s:0\" found host=%s ut_line=%s"%(ip, b.ut_host,b.ut_line))
-                        if b.ut_host == "%s:0"%(ip) or b.ut_line == "%s:0"%(ip) or b.ut_host == "%s"%hostname :
+                        if b.ut_host == "%s:0" % (ip) or b.ut_line == "%s:0" % (ip) or b.ut_host == "%s" % hostname :
                             last=b
                 a.endutent()
                 if last and os.path.isdir("/proc/%s"%last.ut_pid): break
@@ -704,7 +712,7 @@ class LocalData:
 if __name__ == '__main__':
     shared.debug=True
     local=LocalData (None)
-    import sys
+    #import sys
     #print local.GetLast(sys.argv[1])
     #local.GetAllClients()
     #local.GetHostname("192.168.0.2")

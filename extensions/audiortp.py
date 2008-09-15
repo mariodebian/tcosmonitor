@@ -26,17 +26,18 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
-import os
-from random import Random
-from time import sleep
-import string
-import subprocess
-import signal
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
+#import os
+#from random import Random
+#from time import sleep
+#import string
+#import subprocess
+#import signal
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::audiortp", txt)
+        print "%s::%s" % ("extensions::audiortp", txt)
     return
 
 
@@ -97,7 +98,8 @@ class AudioRTP(TcosExtension):
         box.destroy()
         print_debug("on_progressbox_click() widget=%s, args=%s, box=%s" %(widget, args, box) )
         
-        if not args['target']: return
+        if not args['target']:
+            return
         
         if args['target'] == "rtp":
             for client in args['allclients']:

@@ -23,15 +23,17 @@
 ###########################################################################
 
 import shared
-import os, sys
-from os.path import isdir, join
+#import os, sys
+import os
+#from os.path import isdir, join
 #import ConfigParser
-from time import time, sleep
+#from time import time, sleep
+from time import time
 
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - float(start))) )
@@ -78,7 +80,7 @@ class TcosConf:
         try:
             fd=file(shared.config_file, 'r')
         except Exception, err:
-            print("Error Opening %s file, error=%s"%(shared.config_file,err) )
+            print("Error Opening %s file, error=%s"%(shared.config_file, err) )
             return
         self.data=fd.readlines()
         fd.close()
@@ -92,21 +94,21 @@ class TcosConf:
             return
         for i in range( len(conf) ):
             if conf[i].find("#") != 0:
-                (var,value)=conf[i].split("=", 1)
-                self.vars.append([var,value])
+                (var, value)=conf[i].split("=", 1)
+                self.vars.append([var, value])
                 
         if os.path.isfile(shared.config_file_secrets):
             if self.main.ingroup_tcos == False and os.getuid() != 0: return
             try:
                 fd=file(shared.config_file_secrets, 'r')
             except Exception, err:
-                print("Error saving %s file, error=%s"%(shared.config_file_secrets,err) )
+                print("Error saving %s file, error=%s"%(shared.config_file_secrets, err) )
                 return
             self.data=fd.readline()
             fd.close()
             if self.data != "\n":
-                (var1,var2)=self.data.replace("\n", "").split(":")
-                self.vars_secrets.append([var1,var2])
+                (var1, var2)=self.data.replace("\n", "").split(":")
+                self.vars_secrets.append([var1, var2])
                 self.use_secrets=True
         return
     
@@ -172,7 +174,7 @@ class TcosConf:
             if _var[0] == varname:
                 print_debug ( "GetVar() NEW VAR FOUND, %s, adding to list \"\""\
                                                  %(varname) )
-                self.vars.append( [_var[0],_var[1], "new"] )
+                self.vars.append( [_var[0], _var[1], "new"] )
                 return _var[1]
         print_debug ( "GetVar() not found, %s, returning \"\"" %(varname) )
         return ""

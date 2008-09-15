@@ -25,12 +25,13 @@
 
 from gettext import gettext as _
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 import gtk
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::restartxorg", txt)
+        print "%s::%s" % ("extensions::restartxorg", txt)
     return
 
 
@@ -82,7 +83,7 @@ class RestartXorg(TcosExtension):
 
 
     def real_action(self, ip, action):
-        print_debug("real_action() ip=%s action='%s'"%(ip,action) )
+        print_debug("real_action() ip=%s action='%s'"%(ip, action) )
         self.main.xmlrpc.Exe(action)
 
 
@@ -150,7 +151,7 @@ class RestartXorg(TcosExtension):
             data['blocked_screen']=False
         
         print_debug("refresh_client_info() => get is blocked net")
-        if self.main.localdata.IsBlockedNet(ip,data['username']):
+        if self.main.localdata.IsBlockedNet(ip, data['username']):
             data['blocked_net']=True
         else:
             data['blocked_net']=False
@@ -168,11 +169,11 @@ class RestartXorg(TcosExtension):
         self.main.localdata.cache_timeout=shared.cache_timeout
         
         if self.main.classview.isactive():
-            self.main.classview.change_lockscreen(ip,data['image_blocked'])
+            self.main.classview.change_lockscreen(ip, data['image_blocked'])
         if self.main.iconview.isactive():
-            self.main.iconview.change_lockscreen(ip,data['image_blocked'])
+            self.main.iconview.change_lockscreen(ip, data['image_blocked'])
         if self.main.listview.isactive():
-            self.main.listview.refresh_client_info(ip,data)
+            self.main.listview.refresh_client_info(ip, data)
 
 
 

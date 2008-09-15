@@ -31,26 +31,27 @@ import getopt
 from gettext import gettext as _
 
 if not os.path.isfile("shared.py"):
-        sys.path.append('/usr/share/tcosmonitor')
+    sys.path.append('/usr/share/tcosmonitor')
 else:
-        sys.path.append('./')
+    sys.path.append('./')
 
 import shared
 # load conf file and exit if not active
 if not shared.test_start("tcos-volume-manager") :
-    print "tcos-volume-manager disabled at %s" %(shared.module_conf_file)
+    print "tcos-volume-manager disabled at %s" % (shared.module_conf_file)
     sys.exit(1)
 
 
 import pygtk
 pygtk.require('2.0')
-from gtk import *
+#from gtk import *
+import gtk
 import gtk.glade
 import pwd
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("tcos-volume-manager", txt)
+        print "%s::%s" % ("tcos-volume-manager", txt)
 
 def get_username():
     return pwd.getpwuid(os.getuid())[0]
@@ -87,9 +88,9 @@ for o, a in opts:
         sys.exit()
 
 if shared.remotehost == "":
-        print "tcos-volume-manager: Not allowed to run in local DISPLAY"
-        #shared.error_msg ( _("tcos-volume-manager isn't allowed to run in local DISPLAY\nForce with --host=xx.xx.xx.xx") )
-        sys.exit(0)
+    print "tcos-volume-manager: Not allowed to run in local DISPLAY"
+    #shared.error_msg ( _("tcos-volume-manager isn't allowed to run in local DISPLAY\nForce with --host=xx.xx.xx.xx") )
+    sys.exit(0)
 
 
 
@@ -356,7 +357,7 @@ class TcosVolumeManager:
         self.mainwindow.hide()
         return True
 
-    def quitapp(self,*args):
+    def quitapp(self, *args):
         print_debug ( _("Exiting") )
         self.mainloop.quit()
         

@@ -26,7 +26,8 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 import os
 from random import Random
 from time import sleep
@@ -36,7 +37,7 @@ import signal
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::vnc", txt)
+        print "%s::%s" % ("extensions::vnc", txt)
     return
 
 

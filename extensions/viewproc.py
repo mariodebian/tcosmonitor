@@ -26,13 +26,14 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
-import os
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
+#import os
 import gtk
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::viewproc", txt)
+        print "%s::%s" % ("extensions::viewproc", txt)
     return
 
 

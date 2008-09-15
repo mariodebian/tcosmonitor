@@ -24,15 +24,15 @@
 
 
 from subprocess import Popen, PIPE, STDOUT
-import os
-import sys
-import socket
+#import os
+#import sys
+#import socket
 
 
 import shared
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("TcosXauth", txt)
+        print "%s::%s" % ("TcosXauth", txt)
     return
 
 

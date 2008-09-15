@@ -26,14 +26,14 @@ import gtk
 from gettext import gettext as _
 import shared
 from time import time
-import urllib2
-from os import remove, path
-from threading import Thread
-from subprocess import Popen, PIPE, STDOUT
+#import urllib2
+#from os import remove, path
+#from threading import Thread
+#from subprocess import Popen, PIPE, STDOUT
 
-from time import sleep, localtime
-import gobject
-import string
+#from time import sleep, localtime
+#import gobject
+#import string
 
 COL_IP, COL_MAC= range(2)
 
@@ -42,7 +42,7 @@ PANGO_SCALE=1024
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -50,7 +50,7 @@ def crono(start, txt):
 
 class TcosStaticHosts:
 
-    def __init__(self,main):
+    def __init__(self, main):
         print_debug ("__init__ starting")
         self.selected_ip=None
         self.selected_mac=None
@@ -124,7 +124,7 @@ class TcosStaticHosts:
                 self.model.set_value (self.iter, COL_MAC, host[1] )
 
     def line_exists(self, model, path, iter, args):
-        ip,mac = args
+        ip, mac = args
         # change mac if ip is the same.
         if model.get_value(iter, 0) == ip:
             model.set_value(iter, 1, mac)
@@ -194,12 +194,12 @@ class TcosStaticHosts:
         self.main.staticwindownew.show()
 
     def on_static_new(self, widget):
-        print_debug("on_static_new() FIXME")
+        print_debug("on_static_new()")
         # read ip and mac address
         ip=self.main.static_new_ip.get_text()
         mac=self.main.static_new_mac.get_text()
         
-        if self.mode =="add":
+        if self.mode == "add":
             # put into treeview
             self.iter = self.model.append (None)
             self.model.set_value (self.iter, COL_IP, ip )
@@ -238,7 +238,7 @@ class TcosStaticHosts:
     def line_saver(self, model, path, iter, args):
         ip=model.get_value(iter, 0)
         mac=model.get_value(iter,1)
-        self.data.append([ip,mac])
+        self.data.append([ip, mac])
     
     def staticwindow_save(self, widget):
         print_debug("staticwindow_save()")

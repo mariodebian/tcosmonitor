@@ -24,11 +24,11 @@
 
 import os
 import socket
-import fcntl
-import struct
+#import fcntl
+#import struct
 import pwd
 import shared
-import signal
+#import signal
 import threading
 from subprocess import Popen, PIPE, STDOUT
 from gettext import gettext as _
@@ -39,12 +39,12 @@ from time import sleep
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("TcosCommon", txt)
+        print "%s::%s" % ("TcosCommon", txt)
     return
 
 class TcosCommon:
 
-    def __init__(self,main):
+    def __init__(self, main):
         self.main=main
         self.thread_lock=False
         self.vars={}
@@ -119,17 +119,6 @@ class TcosCommon:
         if ip.has_key(netifaces.AF_INET):
             return ip[netifaces.AF_INET][0]['addr']
         return None
-        """
-        old code
-        print_debug("get_ip_address() ifname=%s" %(ifname) )
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #print_debug("get_ip_address() iface=%s" %ifname)
-        return socket.inet_ntoa(fcntl.ioctl(
-            s.fileno(),
-            0x8915,  # SIOCGIFADDR
-            struct.pack('256s', ifname[:15])
-        )[20:24])
-        """
 
     def GetAllNetworkInterfaces(self):
         self.vars["allnetworkinterfaces"]=[]
@@ -139,16 +128,6 @@ class TcosCommon:
                 ip=netifaces.ifaddresses(dev)
         print_debug ( "GetAllNetworkInterfaces() %s" %( self.vars["allnetworkinterfaces"] ) )
         return self.vars["allnetworkinterfaces"]
-        """
-        self.vars["allnetworkinterfaces"]=[]
-        d="/sys/class/net/"
-        for sub in os.listdir(d):
-            if os.path.isdir(os.path.join(d, sub)):
-                if not sub in shared.hidden_network_ifaces:
-                    self.vars["allnetworkinterfaces"].append(sub)
-        print_debug ( "GetAllNetworkInterfaces() %s" %( self.vars["allnetworkinterfaces"] ) )
-        return self.vars["allnetworkinterfaces"]
-        """
 
     def get_my_local_ip(self, last=True, force=False):
         if force == True or not "local_ip" in self.vars :
@@ -158,14 +137,6 @@ class TcosCommon:
                 ip=self.get_ip_address(dev)
                 if ip:
                     self.vars["local_ip"].append(ip)
-                """
-                try:
-                    ip=self.get_ip_address(dev)
-                    self.vars["local_ip"].append(ip)
-                except Exception, err:
-                    print_debug("get_my_local_ip() Exception, dev=%s error=%s"%(dev,err) )
-                    pass
-                """
         if last:
             return self.vars["local_ip"][0]
         else:
@@ -184,6 +155,8 @@ class TcosCommon:
         self.vars["display_ip"]=self.vars["display_host"]
 
         # read hostname and ipaddress based on cookie hostname/ip
+        old_timeout=socket.getdefaulttimeout()
+        socket.setdefaulttimeout(2)
         try:
             if self.vars["display_host"] != "":
                 self.vars["display_hostname"]=socket.gethostbyaddr(self.vars["display_host"])[0]
@@ -201,7 +174,8 @@ class TcosCommon:
             display=self.vars["display_ip"]
         else:
             display=self.vars["display_hostname"]
-
+        
+        socket.setdefaulttimeout(old_timeout)
         print_debug ( "get_display() display_host=%s display_hostname=%s display_ip=%s" %(self.vars["display_host"], self.vars["display_hostname"], self.vars["display_ip"]) )
         return display
 
@@ -232,11 +206,11 @@ class TcosCommon:
             try:
                 self.extensions[ext]=__import__("extensions." + ext)
             except Exception, err:
-                print_debug("init_all_extensions() EXCEPTION importing '%s', error=%s"%(ext,err) )
+                print_debug("init_all_extensions() EXCEPTION importing '%s', error=%s"%(ext, err) )
                 continue
             print_debug("init_extensions() init '%s'" %(ext))
             self.register_extension( eval("self.extensions[ext]."+ext) )
-            self.init_extension( eval("self.extensions[ext]."+ext) )
+            #self.init_extension( eval("self.extensions[ext]."+ext) )
 
 
     def threads_enter(self, fromtxt=None):
@@ -279,7 +253,7 @@ class TcosCommon:
 
 if __name__ == '__main__':
     shared.debug=True
-    import sys
+    #import sys
     app=TcosCommon(TcosCommon)
     #print app.get_my_local_ip(last=True)
     #print app.get_display()

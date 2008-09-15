@@ -493,7 +493,7 @@ PersonalizeConfig=[
 
 def print_debug(txt):
     if debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
     return
 
 
@@ -511,7 +511,6 @@ if have_display:
         else:
             response=False
         d.destroy()
-        mydict={}
         print_debug( _("QUESTION: %(txt)s, RESPONSE %(response)s")  %{"txt":txt, "response":response} )
         return response
 

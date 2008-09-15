@@ -30,7 +30,7 @@ import dbus.glib
 import gobject
 import os
 import signal
-import subprocess,threading
+import subprocess, threading
 import pwd
 import sys
 from gettext import gettext as _
@@ -39,7 +39,7 @@ from gettext import gettext as _
 import shared
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 
 class TcosDBusServer:
@@ -87,7 +87,7 @@ class TcosDBusServer:
                 print "tcos-dbus-client **WARNING** Can't get IP adrress, trying with hostname"
             else:
                 if len(ips) > 1:
-                    print "tcos-dbus-client **WARNING** This host have more than one IP: %s using first: %s" %(ips, ips[0])
+                    print "tcos-dbus-client **WARNING** This host have more than one IP: %s using first: %s" % (ips, ips[0])
                 self.host=ips[0]
                      
         # is self.host is empty try with hostname
@@ -117,7 +117,7 @@ class TcosDBusServer:
         return True
 
     def connect_tcosxmlrpc(self, host):
-        self.url = 'http://%s:%d/RPC2' %(host, shared.xmlremote_port)
+        self.url = 'http://%s:%d/RPC2' % (host, shared.xmlremote_port)
         print_debug ( "connect_tcosxmlrpc() url=%s" %(self.url) )
         try:
             import xmlrpclib
@@ -193,7 +193,7 @@ class TcosDBusServer:
         try:
             os.kill(pid, signal.SIGKILL)
         except Exception, err:
-            print_debug ( "user_kill() error, pid not found %d, error=%s" %(pid,err) )
+            print_debug ( "user_kill() error, pid not found %d, error=%s" %(pid, err) )
         return
     
     def user_killall(self, app):
@@ -285,7 +285,7 @@ class TcosDBusAction:
         return self.error
         
     def do_exec(self, users, app):
-        print_debug ( "do_exec() users=%s app=%s" %(users,app) )
+        print_debug ( "do_exec() users=%s app=%s" %(users, app) )
         
         if not self.connection:
             print_debug ( self.error )

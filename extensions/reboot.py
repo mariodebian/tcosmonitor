@@ -31,7 +31,7 @@ from TcosExtensions import TcosExtension
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::reboot", txt)
+        print "%s::%s" % ("extensions::reboot", txt)
     return
 
 
@@ -81,7 +81,7 @@ class RebootPoweroff(TcosExtension):
             self.exe_app_in_client("poweroff", timeout, msg, users=self.allclients, connected_users=self.connected_users)
 
     def real_action(self, ip, action):
-        print_debug("real_action() ip=%s action='%s'"%(ip,action) )
+        print_debug("real_action() ip=%s action='%s'"%(ip, action) )
         self.main.xmlrpc.Exe(action)
 
 
@@ -102,7 +102,7 @@ class RebootPoweroff(TcosExtension):
                     # we have a thin client
                     newusernames.append(user)
                                 
-            result = self.main.dbus_action.do_exec( newusernames ,remote_cmd )
+            result = self.main.dbus_action.do_exec( newusernames, remote_cmd )
                 
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )

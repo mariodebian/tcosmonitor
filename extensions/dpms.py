@@ -26,12 +26,13 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::dpms", txt)
+        print "%s::%s" % ("extensions::dpms", txt)
     return
 
 
@@ -57,7 +58,7 @@ class Dpms(TcosExtension):
         self.change_lockscreen(self.main.selected_ip)
 
     def real_action(self, ip, action):
-        print_debug("real_action() ip=%s action='%s'"%(ip,action) )
+        print_debug("real_action() ip=%s action='%s'"%(ip, action) )
         
         if action == 'dpmsoff':
             result=self.main.xmlrpc.dpms('off')
@@ -79,7 +80,7 @@ class Dpms(TcosExtension):
         msg=_( _("Do you want to switch off the following monitors:%s?" ) %(self.allclients_logged_txt) )
         if shared.ask_msg ( msg ):
             self.main.worker=shared.Workers(self.main, None, None)
-            self.main.worker.set_for_all_action(self.action_for_clients,\
+            self.main.worker.set_for_all_action(self.action_for_clients, \
                                                  self.allclients_logged, "dpmsoff" )
 
     def dpms_on_all(self, *args):
@@ -88,7 +89,7 @@ class Dpms(TcosExtension):
         msg=_( _("Do you want to switch on the following monitors:%s?" ) %(self.allclients_logged_txt) )
         if shared.ask_msg ( msg ):
             self.main.worker=shared.Workers(self.main, None, None)
-            self.main.worker.set_for_all_action(self.action_for_clients,\
+            self.main.worker.set_for_all_action(self.action_for_clients, \
                                                  self.allclients_logged, "dpmson" )
 
 

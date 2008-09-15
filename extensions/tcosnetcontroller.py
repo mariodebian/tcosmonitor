@@ -22,21 +22,21 @@
 # 02111-1307, USA.
 ###########################################################################
 """ template extension """
-
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
-import os
-from random import Random
-from time import sleep
-import string
-import subprocess
-import signal
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
+#import os
+#from random import Random
+#from time import sleep
+#import string
+#import subprocess
+#import signal
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::tcosnetcontroller", txt)
+        print "%s::%s" % ("extensions::tcosnetcontroller", txt)
     return
 
 

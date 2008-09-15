@@ -51,16 +51,17 @@ else:
 import shared
 # load conf file and exit if not active
 if not shared.test_start("tcos-devices-ng") :
-    print "tcos-devices-ng disabled at %s" %(shared.module_conf_file)
+    print "tcos-devices-ng disabled at %s" % (shared.module_conf_file)
     sys.exit(1)
 
     
-from TcosTrayIcon import *
+from TcosTrayIcon import TcosTrayIcon
 import threading
 
 import pygtk
 pygtk.require('2.0')
-from gtk import *
+#from gtk import *
+import gtk
 import gtk.glade
 import pynotify
 import pwd
@@ -103,7 +104,7 @@ def log( message ):
     
 def print_debug(txt):
     if shared.debug:
-        print "%d %s::%s" %(os.getpid(), "tcos-devices-ng", txt)
+        print "%d %s::%s" % (os.getpid(), "tcos-devices-ng", txt)
 
 
 
@@ -516,7 +517,6 @@ class TcosDevicesNG:
             print_debug ( "mount_remote() umounting device=%s fstype=%s mnt_point=%s" %(device, fstype, mnt_point) )
         
         # set socket timeout bigger (floppy can take some time)
-        import socket
         socket.setdefaulttimeout(15)
         
         if fstype != "vfat":
@@ -534,7 +534,6 @@ class TcosDevicesNG:
                     return True
         
         # set socket timeout bigger (floppy can take some time)
-        import socket
         socket.setdefaulttimeout(15)
 
         mount=self.xmlrpc.GetDevicesInfo(device=device, mode=mode)
@@ -552,7 +551,7 @@ class TcosDevicesNG:
         print_debug("mounter_remote(device=%s fstype=%s) mount OK"%(device, fstype))
         return True
 
-    def mounter_local(self, local_mount_point, remote_mnt, device="", label="",mode="mount"):
+    def mounter_local(self, local_mount_point, remote_mnt, device="", label="", mode="mount"):
         if mode == "mount":
             if not os.path.isdir(local_mount_point):
                 os.mkdir (local_mount_point)
@@ -579,7 +578,7 @@ class TcosDevicesNG:
                 try:
                     os.rmdir(local_mount_point)
                 except Exception, err:
-                    print_debug("mounter_local(umount %s) Exception, error %s"%(local_mount_point,err))
+                    print_debug("mounter_local(umount %s) Exception, error %s"%(local_mount_point, err))
             
             mydevice=""
             for dev in self.mounted:
@@ -1192,7 +1191,7 @@ class TcosDevicesNG:
         if action ==  "mount" or action ==  "add":
             self.show_notification (  _("CDROM USB device %s mounted. Ready for use.") %(devid)  )
         
-        print_debug("update_cdrom_usb() GETSTATUS device=%s action=%s"%(device,action) )
+        print_debug("update_cdrom_usb() GETSTATUS device=%s action=%s"%(device, action) )
 
         usb_status=self.xmlrpc.GetDevicesInfo(device, mode="--getstatus")
         if usb_status == "0":
@@ -1233,7 +1232,7 @@ class TcosDevicesNG:
         if action ==  "mount":
             self.show_notification (  _("USB device %s mounted. Ready for use.") %(devid)  )
         
-        print_debug("update_usb() GETSTATUS device=%s data=%s"%(device,data) )
+        print_debug("update_usb() GETSTATUS device=%s data=%s"%(device, data) )
         usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus")
         if usb_status == "0":
             ismounted=False
@@ -1272,7 +1271,7 @@ class TcosDevicesNG:
         if action ==  "mount":
             self.show_notification (  _("Firewire device %s mounted. Ready for use.") %(devid)  )
         
-        print_debug("update_firewire() GETSTATUS device=%s data=%s"%(device,data) )
+        print_debug("update_firewire() GETSTATUS device=%s data=%s"%(device, data) )
         usb_status=self.xmlrpc.GetDevicesInfo(data['DEVNAME'], mode="--getstatus")
         if usb_status == "0":
             ismounted=False

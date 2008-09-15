@@ -25,13 +25,13 @@
 import gtk
 import os
 from gettext import gettext as _
-
+from time import time
 
 import shared
 
 def print_debug(txt):
     if shared.debug:
-        print "%d %s::%s" %(os.getpid(), __name__, txt)
+        print "%d %s::%s" % (os.getpid(), __name__, txt)
 
 
 def crono(start, txt):
@@ -68,9 +68,9 @@ class TcosTrayIcon:
         menu_item.show()
         
 
-        sorted=self.items.keys()
-        sorted.sort()
-        for m in sorted:
+        _sorted=self.items.keys()
+        _sorted.sort()
+        for m in _sorted:
             if m != "quit":
                 self.menu.append(self.create_menu(self.items[m], m) )
                 
@@ -109,7 +109,7 @@ class TcosTrayIcon:
         if self.items.has_key(device):
             self.items.pop("%s"%device)
         else:
-            print "WARNING: device %s not found" %device
+            print "WARNING: device %s not found" % device
 
     def create_menu(self, item, name):
         #print_debug ("   => creating menu %s for %s" %(item,name) )
@@ -141,10 +141,10 @@ class TcosTrayIcon:
         if item[3]:
             submenu = gtk.Menu()
             
-            sorted=item[3].keys()
-            sorted.sort()
+            _sorted=item[3].keys()
+            _sorted.sort()
             
-            for subitem in sorted:
+            for subitem in _sorted:
                 #print_debug("create_menu() name=%s item=%s" %(subitem, item[3][subitem]))
                 #print_debug( "         => creando submenu %s item=%s" %(subitem, item[3][subitem]) )
                 submenu.append( self.create_menu(item[3][subitem], subitem) )
@@ -156,13 +156,13 @@ class TcosTrayIcon:
             
         return menu_items
 
-    def do_action(self,widget, name):
+    def do_action(self, widget, name):
         print_debug ("do_action() widget=%s name=%s" %(widget, name) )
         if self.actions.has_key(name):
             #print_debug("do_action() function=%s args=%s" %(self.actions[name], self.args[name]) )
             self.actions[name](self.args[name])
         else:
-            print "TcosTrayIcon WARNING: no menu action set for \"%s\" event" %(name)
+            print "TcosTrayIcon WARNING: no menu action set for \"%s\" event" % (name)
         return
 
     def InitStatusIcon(self):
@@ -189,11 +189,11 @@ class TcosTrayIcon:
             eventbox.connect("button_press_event", self.popup_menu2)
         return
      
-    def popup_menu(self, widget, button, time):
+    def popup_menu(self, widget, button, mtime):
         self.InitMenu()
         if self.menu:
             self.menu.show_all()
-            self.menu.popup(None, None, None, 3, time)
+            self.menu.popup(None, None, None, 3, mtime)
         return
 
     def popup_menu2(self, widget, event):
@@ -207,7 +207,7 @@ class TcosTrayIcon:
 if __name__ == "__main__":
 
     def myprint(*args):
-        print "MYPRINT %s" %args
+        print "MYPRINT %s" % args
     
     shared.debug=True
     

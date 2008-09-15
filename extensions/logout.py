@@ -25,12 +25,13 @@
 
 from gettext import gettext as _
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::logout", txt)
+        print "%s::%s" % ("extensions::logout", txt)
     return
 
 
@@ -54,9 +55,9 @@ class LogOut(TcosExtension):
                 # we have a standalone user...
                 self.main.xmlrpc.DBus("exec", remote_cmd )
             else:
-                newusernames.append(connected_users[0])
+                newusernames.append(self.connected_users[0])
                     
-            self.main.dbus_action.do_exec(newusernames ,remote_cmd )
+            self.main.dbus_action.do_exec(newusernames, remote_cmd )
 
     def logout_all(self, widget):
         if not self.get_all_clients():
@@ -77,7 +78,7 @@ class LogOut(TcosExtension):
                 else:
                     newusernames.append(user)
                         
-            self.main.dbus_action.do_exec( newusernames ,remote_cmd )
+            self.main.dbus_action.do_exec( newusernames, remote_cmd )
 
 __extclass__=LogOut
 

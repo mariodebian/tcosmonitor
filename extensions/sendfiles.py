@@ -26,15 +26,17 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
+from shutil import copy
 import os
 import gtk
-import subprocess
-import signal
+#import subprocess
+#import signal
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::sendfiles", txt)
+        print "%s::%s" % ("extensions::sendfiles", txt)
     return
 
 
@@ -100,9 +102,9 @@ class SendFiles(TcosExtension):
                 for scape in str_scapes:
                     basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
                     abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
-                rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
-                rsync_filenames_server += "%s " %( abspath_scape )
-                basenames += "%s\n" %( os.path.basename(filename) )
+                rsync_filenames_client += "\"tcos_share/%s\" " % ( basename_scape )
+                rsync_filenames_server += "%s " % ( abspath_scape )
+                basenames += "%s\n" % ( os.path.basename(filename) )
                 copy(filename, "/tmp/tcos_share/")
                 os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
                 
@@ -115,13 +117,13 @@ class SendFiles(TcosExtension):
                     #usern, ip=user.split(":")
                     #self.main.xmlrpc.newhost(ip)
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), server, rsync_filenames_client.strip() )
+                    standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), server, rsync_filenames_client.strip() )
                     self.main.xmlrpc.DBus("exec", standalone_cmd )
                     self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
                 else:
                     newusernames.append(user)
             
-            thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), "localhost", rsync_filenames_client.strip() )
+            thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), "localhost", rsync_filenames_client.strip() )
             
             result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
             
@@ -190,9 +192,9 @@ class SendFiles(TcosExtension):
                 for scape in str_scapes:
                     basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
                     abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
-                rsync_filenames_client += "\"tcos_share/%s\" " %( basename_scape )
-                rsync_filenames_server += "%s " %( abspath_scape )
-                basenames += "%s\n" %( os.path.basename(filename) )
+                rsync_filenames_client += "\"tcos_share/%s\" " % ( basename_scape )
+                rsync_filenames_server += "%s " % ( abspath_scape )
+                basenames += "%s\n" % ( os.path.basename(filename) )
                 copy(filename, "/tmp/tcos_share/")
                 os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
             
@@ -205,13 +207,13 @@ class SendFiles(TcosExtension):
                     usern, ip=user.split(":")
                     self.main.xmlrpc.newhost(ip)
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), server, rsync_filenames_client.strip() )
+                    standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), server, rsync_filenames_client.strip() )
                     self.main.xmlrpc.DBus("exec", standalone_cmd )
                     self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
                 else:
                     newusernames.append(user)
             
-            thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" %( _("Teacher"), "localhost", rsync_filenames_client.strip() )
+            thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), "localhost", rsync_filenames_client.strip() )
             
             result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
             

@@ -25,16 +25,17 @@
 
 from gettext import gettext as _
 from time import sleep
-import string
-import subprocess
+#import string
+#import subprocess
 
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::italc", txt)
+        print "%s::%s" % ("extensions::italc", txt)
     return
 
 

@@ -31,7 +31,7 @@ from TcosExtensions import TcosExtension
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::clean", txt)
+        print "%s::%s" % ("extensions::clean", txt)
     return
 
 

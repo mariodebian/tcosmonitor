@@ -26,15 +26,17 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 import gtk
-from time import sleep, time
+#from time import sleep, time
+from time import time
 import os
 import glob
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::appsmsg", txt)
+        print "%s::%s" % ("extensions::appsmsg", txt)
     return
 
 def crono(start, txt):
@@ -51,7 +53,9 @@ class AppsAndMsgs(TcosExtension):
         self.main.menus.register_all( _("Send a text message to all connected users") , "menu_msg.png", 1, self.send_msg_all)
 
 ##############################################################################
-    def askfor(self, mode="mess", msg="", users=[]):
+    def askfor(self, mode="mess", msg="", users=None):
+        if users == None:
+            users=[]
         self.ask_usernames=[]
         if len(users) == 0 or users[0] == shared.NO_LOGIN_MSG:
             shared.error_msg( _("Clients not connected") )
@@ -147,7 +151,7 @@ class AppsAndMsgs(TcosExtension):
         self.main.ask_fixed = self.main.ui.get_widget('ask_fixed')
         self.main.ask_dragdrop = self.main.ui.get_widget('label99')
         self.main.image_entry = self.main.ui.get_widget('image_askentry')
-        self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ),], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
+        self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ), ], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
         self.main.image_entry.connect( 'drag_data_received', self.on_drag_data_received)
         self.main.ask_fixed.hide()
         self.main.image_entry.hide()
@@ -180,9 +184,9 @@ class AppsAndMsgs(TcosExtension):
         return True
 
     def on_drag_data_received( self, widget, context, x, y, selection, targetType, dtime):
-        files = selection.data.split('\n',1)
+        files = selection.data.split('\n', 1)
         start1=time()
-        print_debug("on_drag_data_received() files=%s dtime=%s"%(files,dtime))
+        print_debug("on_drag_data_received() files=%s dtime=%s"%(files, dtime))
         for f in files:
             if f:
                 desktop = f.strip().replace('%20', ' ')
@@ -204,12 +208,12 @@ class AppsAndMsgs(TcosExtension):
             files=[]
             
             if theme and os.path.isdir("/usr/share/icons/%s"%theme):
-                    files+=glob.glob("/usr/share/icons/%s/48x48/*.png"%(theme))
+                files+=glob.glob("/usr/share/icons/%s/48x48/*.png"%(theme))
             
             files+=glob.glob("/usr/share/icons/hicolor/48x48/*/*.png") + \
-                   glob.glob("/usr/share/icons/gnome/48x48/*/*.png") + \
-                   glob.glob("/usr/share/pixmaps/*png") +\
-                   glob.glob("/usr/share/pixmaps/*xpm")
+                glob.glob("/usr/share/icons/gnome/48x48/*/*.png") + \
+                glob.glob("/usr/share/pixmaps/*png") +\
+                glob.glob("/usr/share/pixmaps/*xpm")
             
             for line in data:
                 if line != '\n':

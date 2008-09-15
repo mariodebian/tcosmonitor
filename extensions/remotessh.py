@@ -26,12 +26,13 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
 
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::remotessh", txt)
+        print "%s::%s" % ("extensions::remotessh", txt)
     return
 
 

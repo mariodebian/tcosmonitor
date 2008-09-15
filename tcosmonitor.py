@@ -27,15 +27,16 @@ import sys
 import os
 
 if not os.path.isfile("Initialize.py"):
-	#print "DEBUG: append tcosmonitor dir"
-	sys.path.append("/usr/share/tcosmonitor")
+    #print "DEBUG: append tcosmonitor dir"
+    sys.path.append("/usr/share/tcosmonitor")
 
 import pygtk
 pygtk.require('2.0')
-from gtk import *
+import gtk
+#from gtk import *
 import gtk.glade
 
-from time import time, sleep
+from time import time
 import getopt
 from gettext import gettext as _
 from threading import Thread
@@ -48,14 +49,14 @@ gtk.gdk.threads_init()
 import gobject
 
 import shared
-import grp,pwd
+import grp, pwd
 
 
 
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("tcosmonitor", txt)
+        print "%s::%s" % ("tcosmonitor", txt)
     return
 
 def crono(start, txt):
@@ -70,14 +71,14 @@ def usage():
 
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug"])
+    OPTS, ARGS = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug"])
 except getopt.error, msg:
     print msg
     print "for command line options use tcosconfig --help"
     sys.exit(2)
 
 # process options
-for o, a in opts:
+for o, a in OPTS:
     if o in ("-d", "--debug"):
         print "DEBUG ACTIVE"
         shared.debug = True
@@ -85,7 +86,7 @@ for o, a in opts:
         usage()
         sys.exit()
 
-from TcosExtensions import TcosExtLoader, Error
+from TcosExtensions import TcosExtLoader
 import TcosCommon
 import Initialize
 import TcosXmlRpc
@@ -100,11 +101,12 @@ import TcosListView
 import TcosIconView
 import TcosClassView
 
-class TcosMonitor:
+class TcosMonitor(object):
     def __init__(self):
         # if true auto-update is active, false only one update        
         self.updating=False
         self.name="TcosMonitor"
+        self.mainloop = gobject.MainLoop()
         
         # FIXME change PATH
         self.groupconf=self.loadconf( os.path.abspath(shared.GLOBAL_CONF) )
@@ -132,7 +134,9 @@ class TcosMonitor:
                     self.ingroup_tcos=True
 
             if self.ingroup_tcos == False and os.getuid() != 0:
-                shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\" to exec tcosmonitor.\n\nIf you are system administrator, add your user to tcos group." %pwd.getpwuid(os.getuid())[0]))
+                shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\"\
+ to exec tcosmonitor.\n\nIf you are system administrator, add your\
+ user to tcos group." %pwd.getpwuid(os.getuid())[0]))
                 sys.exit(1)
 
         #import shared
@@ -220,12 +224,12 @@ class TcosMonitor:
         
         # create tmp dir
         try:
-            f1=open("/etc/default/rsync", 'r')
-            f2=open("/etc/rsyncd.conf", 'r')
-            output1 = f1.readlines()
-            output2 = f2.readlines()
-            f1.close()
-            f2.close()
+            fd1=open("/etc/default/rsync", 'r')
+            fd2=open("/etc/rsyncd.conf", 'r')
+            output1 = fd1.readlines()
+            output2 = fd2.readlines()
+            fd1.close()
+            fd2.close()
             for line1 in output1:
                 if line1.upper().find("RSYNC_ENABLE=TRUE") != -1:
                     for line2 in output2:
@@ -236,6 +240,7 @@ class TcosMonitor:
                     break
         except Exception, err:
             print_debug("__init__() Exception creating rsync share, error=%s"%err)
+            self.write_into_statusbar( _("Send files disabled. rsync not configured.") )
             pass
 
     def loadconf(self, conffile):
@@ -247,8 +252,10 @@ class TcosMonitor:
             data=f.readlines()
             f.close()
             for line in data:
-                if line == '\n': continue
-                if line.find('#') == 0: continue
+                if line == '\n':
+                    continue
+                if line.find('#') == 0:
+                    continue
                 line=line.replace('\n', '')
                 if "=" in line:
                     try:
@@ -290,7 +297,7 @@ class TcosMonitor:
         self.statusbar.push(context_id, msg)
         return    
 
-    def quitapp(self,*args):
+    def quitapp(self, *args):
         print_debug ( _("Exiting") )
         #gtk.main_quit()
         if os.path.isdir("/tmp/tcos_share/"):
@@ -307,7 +314,6 @@ class TcosMonitor:
 
 
     def run (self):
-        self.mainloop = gobject.MainLoop()
         try:
             self.mainloop.run()
         except KeyboardInterrupt: # Press Ctrl+C

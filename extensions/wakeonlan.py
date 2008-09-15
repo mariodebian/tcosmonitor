@@ -26,13 +26,14 @@
 from gettext import gettext as _
 
 import shared
-from TcosExtensions import TcosExtension, Error
-import os
+#from TcosExtensions import TcosExtension, Error
+from TcosExtensions import TcosExtension
+#import os
 import WakeOnLan
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::sendfiles", txt)
+        print "%s::%s" % ("extensions::sendfiles", txt)
     return
 
 
@@ -86,7 +87,7 @@ class WOL(TcosExtension):
             for host in data:
                 mac=host.split("|")[1]
                 if mac == "":
-                    self.main.write_into_statusbar(_("No register MAC address for ip: \"%s\"")%ip)
+                    self.main.write_into_statusbar(_("No register MAC address for ip: \"%s\"")%host)
                     continue
                 print_debug("Send magic packet to mac=%s" %mac)
                 if not WakeOnLan.WakeOnLan("%s"%mac):

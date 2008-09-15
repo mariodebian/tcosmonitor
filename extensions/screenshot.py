@@ -34,7 +34,7 @@ from TcosExtensions import TcosExtension
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::screenshot", txt)
+        print "%s::%s" % ("extensions::screenshot", txt)
     return
 
 
@@ -48,7 +48,7 @@ class Screenshot(TcosExtension):
     def take_screenshot(self, widget, ip):
         if not self.get_client():
             return
-        print_debug("take_screenshot() widget=%s ip=%s"%(widget,ip))
+        print_debug("take_screenshot() widget=%s ip=%s"%(widget, ip))
         
         self.main.worker=shared.Workers(self.main, target=self.get_screenshot, args=(ip,) )
         self.main.worker.start()
@@ -127,7 +127,7 @@ class Screenshot(TcosExtension):
         self.main.worker.set_for_all_action(self.action_for_clients, self.allclients, 'screenshot' )
 
 
-    def start_action(self):
+    def start_action(self, *args):
         self.main.datatxt.clean()
         self.main.datatxt.insert_block( _("Screenshots of all hosts") )
         self.main.datatxt.insert_html("<br/>")
@@ -146,7 +146,7 @@ class Screenshot(TcosExtension):
                  "")
             self.main.common.threads_leave("extensions/screenshot::real_action screenshot")
 
-    def finish_action(self):
+    def finish_action(self, *args):
         self.main.datatxt.display()
 
 __extclass__=Screenshot

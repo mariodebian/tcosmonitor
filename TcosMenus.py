@@ -22,11 +22,12 @@
 # 02111-1307, USA.
 ###########################################################################
 
-import gobject
+#import gobject
 import gtk
 from gettext import gettext as _
-import os,subprocess
-import string
+#import os,subprocess
+import os
+#import string
 
 import shared
 
@@ -38,10 +39,10 @@ menus_group = [
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %(__name__, txt)
+        print "%s::%s" % (__name__, txt)
 
 class TcosMenus(object):
-    def __init__(self,main):
+    def __init__(self, main):
         print_debug("__init__()")
         self.main=main
         self.ui=self.main.ui
@@ -148,68 +149,68 @@ class TcosMenus(object):
             hide_items.show()
             self.main.menu.append(hide_items)
         return
-        """
-        
-        #add all items in shared.onehost_menuitems
-        # shared.allhost_mainmenus contains menu groups
-        # [0] = menu group name
-        # [1] = menu group icon
-        # [2] = menu group submenus (index of shared.allhost_menuitems)
-        for mainmenu in shared.onehost_mainmenus:
-            #print_debug("RightClickMenuOne() %s"%mainmenu)
-            # create menu gropu entry (with icon or not)
-            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
-                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
-                icon = gtk.Image()
-                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
-                menu_item.set_image(icon)
-            else:
-                menu_item=gtk.MenuItem(mainmenu[0])
-            
-            submenu = gtk.Menu()
-            count=0
-            # parse submenu items and create submenu
-            for i in mainmenu[2]:
-                _s=shared.onehost_menuitems[i]
-                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
-                    sub = gtk.ImageMenuItem(_s[0], True)
-                    icon = gtk.Image()
-                    icon.set_from_file(shared.IMG_DIR + _s[1])
-                    sub.set_image(icon)
-                else:
-                    sub=gtk.MenuItem(_s[0])
-                # show ???
-                if self.MustShowMenu(i, "menuone"):
-                    #print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
-                    sub.connect("activate", self.on_rightclickmenuone_click, i)
-                    sub.show()
-                    count+=1
-                else:
-                    #print_debug("RightClickMenuOne()    [HIDE] %s"%_s)
-                    sub.hide()
-                    totalhidemenus+=1
-                if self.main.config.GetVar("menugroups") == 1:
-                    #print_debug("RightClickMenuOne() MENU GROUPS")
-                    submenu.append(sub)
-                else:
-                    #print_debug("RightClickMenuOne() PLAIN MENU")
-                    self.main.menu.append(sub)
-            menu_item.set_submenu(submenu)
-            # if submenu is empty don't show
-            if count == 0:
-                menu_item.hide()
-            else:
-                menu_item.show()
-            # append to main menu
-            if self.main.config.GetVar("menugroups") == 1:
-                self.main.menu.append(menu_item)
-        if totalhidemenus > 0:
-            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
-            hide_items.set_sensitive(False)
-            hide_items.show()
-            self.main.menu.append(hide_items)
-        return
-        """
+#        """
+#        
+#        #add all items in shared.onehost_menuitems
+#        # shared.allhost_mainmenus contains menu groups
+#        # [0] = menu group name
+#        # [1] = menu group icon
+#        # [2] = menu group submenus (index of shared.allhost_menuitems)
+#        for mainmenu in shared.onehost_mainmenus:
+#            #print_debug("RightClickMenuOne() %s"%mainmenu)
+#            # create menu gropu entry (with icon or not)
+#            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
+#                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
+#                icon = gtk.Image()
+#                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
+#                menu_item.set_image(icon)
+#            else:
+#                menu_item=gtk.MenuItem(mainmenu[0])
+#            
+#            submenu = gtk.Menu()
+#            count=0
+#            # parse submenu items and create submenu
+#            for i in mainmenu[2]:
+#                _s=shared.onehost_menuitems[i]
+#                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
+#                    sub = gtk.ImageMenuItem(_s[0], True)
+#                    icon = gtk.Image()
+#                    icon.set_from_file(shared.IMG_DIR + _s[1])
+#                    sub.set_image(icon)
+#                else:
+#                    sub=gtk.MenuItem(_s[0])
+#                # show ???
+#                if self.MustShowMenu(i, "menuone"):
+#                    #print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
+#                    sub.connect("activate", self.on_rightclickmenuone_click, i)
+#                    sub.show()
+#                    count+=1
+#                else:
+#                    #print_debug("RightClickMenuOne()    [HIDE] %s"%_s)
+#                    sub.hide()
+#                    totalhidemenus+=1
+#                if self.main.config.GetVar("menugroups") == 1:
+#                    #print_debug("RightClickMenuOne() MENU GROUPS")
+#                    submenu.append(sub)
+#                else:
+#                    #print_debug("RightClickMenuOne() PLAIN MENU")
+#                    self.main.menu.append(sub)
+#            menu_item.set_submenu(submenu)
+#            # if submenu is empty don't show
+#            if count == 0:
+#                menu_item.hide()
+#            else:
+#                menu_item.show()
+#            # append to main menu
+#            if self.main.config.GetVar("menugroups") == 1:
+#                self.main.menu.append(menu_item)
+#        if totalhidemenus > 0:
+#            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
+#            hide_items.set_sensitive(False)
+#            hide_items.show()
+#            self.main.menu.append(hide_items)
+#        return
+#        """
         
     def RightClickMenuAll(self):
         """ menu for ALL clients"""
@@ -295,79 +296,79 @@ class TcosMenus(object):
             reset_pos.show()
             self.main.allmenu.append(reset_pos)
         return
-        """
-        # shared.allhost_mainmenus contains menu groups
-        # [0] = menu group name
-        # [1] = menu group icon
-        # [2] = menu group submenus (index of shared.allhost_menuitems)
-        for mainmenu in shared.allhost_mainmenus:
-            # create menu gropu entry (with icon or not)
-            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
-                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
-                icon = gtk.Image()
-                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
-                menu_item.set_image(icon)
-            else:
-                menu_item=gtk.MenuItem(mainmenu[0])
-            
-            submenu = gtk.Menu()
-            count=0
-            # parse submenu items and create submenu
-            for i in mainmenu[2]:
-                _s=shared.allhost_menuitems[i]
-                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
-                    sub = gtk.ImageMenuItem(_s[0], True)
-                    icon = gtk.Image()
-                    icon.set_from_file(shared.IMG_DIR + _s[1])
-                    sub.set_image(icon)
-                else:
-                    sub=gtk.MenuItem(_s[0])
-                # show ???
-                if self.MustShowMenu(i, "menuall"):
-                    sub.connect("activate", self.on_rightclickmenuall_click, i)
-                    sub.show()
-                    count+=1
-                else:
-                    sub.hide()
-                    totalhidemenus+=1
-                if self.main.config.GetVar("menugroups") == 1:
-                    #print_debug("RightClickMenuAll() MENU GROUPS")
-                    submenu.append(sub)
-                else:
-                    #print_debug("RightClickMenuAll() PLAIN MENU")
-                    self.main.allmenu.append(sub)
-            menu_item.set_submenu(submenu)
-            # if submenu is empty don't show
-            if count == 0:
-                menu_item.hide()
-            else:
-                menu_item.show()
-            # append to main allmenu
-            if self.main.config.GetVar("menugroups") == 1:
-                self.main.allmenu.append(menu_item)
-        if totalhidemenus > 0:
-            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
-            hide_items.set_sensitive(False)
-            hide_items.show()
-            self.main.allmenu.append(hide_items)
-        if self.main.classview.isactive():
-            save_pos = gtk.ImageMenuItem(_("Save hosts positions"), True)
-            icon = gtk.Image()
-            icon.set_from_stock (gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON)
-            save_pos.set_image(icon)
-            save_pos.connect("activate", self.main.classview.savepos, "save")
-            save_pos.show()
-            self.main.allmenu.append(save_pos)
-            
-            reset_pos = gtk.ImageMenuItem(_("Reset hosts positions"), True)
-            icon = gtk.Image()
-            icon.set_from_stock (gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON)
-            reset_pos.set_image(icon)
-            reset_pos.connect("activate", self.main.classview.savepos, "reset")
-            reset_pos.show()
-            self.main.allmenu.append(reset_pos)
-        return
-        """
+#        """
+#        # shared.allhost_mainmenus contains menu groups
+#        # [0] = menu group name
+#        # [1] = menu group icon
+#        # [2] = menu group submenus (index of shared.allhost_menuitems)
+#        for mainmenu in shared.allhost_mainmenus:
+#            # create menu gropu entry (with icon or not)
+#            if mainmenu[1] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
+#                menu_item = gtk.ImageMenuItem(mainmenu[0], True)
+#                icon = gtk.Image()
+#                icon.set_from_file(shared.IMG_DIR + mainmenu[1])
+#                menu_item.set_image(icon)
+#            else:
+#                menu_item=gtk.MenuItem(mainmenu[0])
+#            
+#            submenu = gtk.Menu()
+#            count=0
+#            # parse submenu items and create submenu
+#            for i in mainmenu[2]:
+#                _s=shared.allhost_menuitems[i]
+#                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
+#                    sub = gtk.ImageMenuItem(_s[0], True)
+#                    icon = gtk.Image()
+#                    icon.set_from_file(shared.IMG_DIR + _s[1])
+#                    sub.set_image(icon)
+#                else:
+#                    sub=gtk.MenuItem(_s[0])
+#                # show ???
+#                if self.MustShowMenu(i, "menuall"):
+#                    sub.connect("activate", self.on_rightclickmenuall_click, i)
+#                    sub.show()
+#                    count+=1
+#                else:
+#                    sub.hide()
+#                    totalhidemenus+=1
+#                if self.main.config.GetVar("menugroups") == 1:
+#                    #print_debug("RightClickMenuAll() MENU GROUPS")
+#                    submenu.append(sub)
+#                else:
+#                    #print_debug("RightClickMenuAll() PLAIN MENU")
+#                    self.main.allmenu.append(sub)
+#            menu_item.set_submenu(submenu)
+#            # if submenu is empty don't show
+#            if count == 0:
+#                menu_item.hide()
+#            else:
+#                menu_item.show()
+#            # append to main allmenu
+#            if self.main.config.GetVar("menugroups") == 1:
+#                self.main.allmenu.append(menu_item)
+#        if totalhidemenus > 0:
+#            hide_items = gtk.MenuItem(_("%d hidden actions") %totalhidemenus)
+#            hide_items.set_sensitive(False)
+#            hide_items.show()
+#            self.main.allmenu.append(hide_items)
+#        if self.main.classview.isactive():
+#            save_pos = gtk.ImageMenuItem(_("Save hosts positions"), True)
+#            icon = gtk.Image()
+#            icon.set_from_stock (gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON)
+#            save_pos.set_image(icon)
+#            save_pos.connect("activate", self.main.classview.savepos, "save")
+#            save_pos.show()
+#            self.main.allmenu.append(save_pos)
+#            
+#            reset_pos = gtk.ImageMenuItem(_("Reset hosts positions"), True)
+#            icon = gtk.Image()
+#            icon.set_from_stock (gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON)
+#            reset_pos.set_image(icon)
+#            reset_pos.connect("activate", self.main.classview.savepos, "reset")
+#            reset_pos.show()
+#            self.main.allmenu.append(reset_pos)
+#        return
+#        """
 
     def on_rightclickmenuone_click(self, menu, number):
         print_debug ( "on_rightclickmenuone_click() => onehost_menuitems[%d]=%s" \

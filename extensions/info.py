@@ -37,7 +37,7 @@ def crono(start, txt):
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" %("extensions::info", txt)
+        print "%s::%s" % ("extensions::info", txt)
     return
 
 
@@ -87,7 +87,7 @@ class Info(TcosExtension):
         
         self.main.progressbar.show()
         #self.main.progressbutton.show()
-        self.main.actions.set_progressbar( _("Connecting with %s to retrieve some info..."  ) %(ip) , 0 ,show_percent=False)
+        self.main.actions.set_progressbar( _("Connecting with %s to retrieve some info..."  ) %(ip) , 0, show_percent=False)
         
         self.main.common.threads_leave("TcosActions:populate_datatxt show progressbar")
         
@@ -99,7 +99,7 @@ class Info(TcosExtension):
             key=elem[0]
             value=elem[1]
             if self.main.config.GetVar(key) == 1:
-                info_items +=1
+                info_items += 1
         if info_items != 0:
             percent_step=float((100/info_items))
             percent_step=percent_step/100
@@ -176,7 +176,7 @@ class Info(TcosExtension):
                 tcos_vars["modules_notfound"] = """
                 <span style='color:red'>%s </span>
                 <input type='button' name='%s' label='%s' />
-                """ %(tcos_vars["modules_notfound"], "self.main.action_button" , blabel)
+                """ % (tcos_vars["modules_notfound"], "self.main.action_button" , blabel)
                 
             else:
                 tcos_vars["modules_notfound"] = _("None")
@@ -265,7 +265,7 @@ class Info(TcosExtension):
             [_("Active RAM: "), tcos_vars["ram_active"] ] 
              ] )
             
-            self.datatxt.insert_block( _("Swap info: ") ,image=shared.IMG_DIR + "info_swap.png" )
+            self.datatxt.insert_block( _("Swap info: "), image=shared.IMG_DIR + "info_swap.png" )
             tcos_vars["swap_avalaible"]=self.main.xmlrpc.ReadInfo("swap_avalaible")
             tcos_vars["swap_total"]=self.main.xmlrpc.ReadInfo("swap_total")
             tcos_vars["swap_used"]=self.main.xmlrpc.ReadInfo("swap_used")
@@ -321,9 +321,9 @@ class Info(TcosExtension):
             else:
                 for data in alldata:
                     try:
-                        (key,value)=data.split('=')
+                        (key, value)=data.split('=')
                     except Exception, err:
-                        print_debug("populate_datatxt() Exception spliting data=%s, err=%s"%(data,err))
+                        print_debug("populate_datatxt() Exception spliting data=%s, err=%s"%(data, err))
                         key=data
                         value=""
                 
@@ -410,7 +410,7 @@ class Info(TcosExtension):
                     try:
                         value=float(value)
                     except Exception, err:
-                        print_debug("populate_datatxt() Exception getting volume=%s, err=%s"%(value,err) )
+                        print_debug("populate_datatxt() Exception getting volume=%s, err=%s"%(value, err) )
                         value=0.0
                     
                     #ismute=self.main.xmlrpc.GetSoundInfo(channel, mode="--getmute")
@@ -440,7 +440,7 @@ class Info(TcosExtension):
                                          lower=0,
                                          upper=100,
                                          step_incr=1,
-                                         page_incr=1);
+                                         page_incr=1)
                     volume_slider = gtk.HScale(adjustment)
                     volume_slider.set_size_request(100, 30)
                     volume_slider.set_value_pos(gtk.POS_RIGHT)
