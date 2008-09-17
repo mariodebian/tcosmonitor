@@ -1,8 +1,13 @@
 tcosmonitor (0.2.16~rc8) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * Use PyLint to strace/fix all warnings and errors
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 15 Sep 2008 16:46:23 +0200
+  [ Ignacio Vidal ]
+  * TcosXmlRpc.py shared.py tcosmonitor.py LocalData.py tcosmonitor.conf:
+    - Allow net-lock block only ports
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 17 Sep 2008 10:53:09 +0200
 
 tcosmonitor (0.2.16~rc7) unstable; urgency=low
 

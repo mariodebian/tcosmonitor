@@ -204,7 +204,7 @@ pulseaudio_soundserver_port=4713
 #        "Radio", \
 #        "Monitor" };
 #
-sound_only_channels=["Master", "Master Front", "PCM", "Line", "CD", 
+sound_only_channels=["Front", "Master", "Master Front", "PCM", "Line", "CD", 
                     "Mic", "Aux", "Headphone", "Speaker" , "PC Speaker", 
                     "vol", "pcm", "line", "cd", "mic",
                     "Mix", "PCM2"]
@@ -215,6 +215,8 @@ hidden_network_ifaces=["lo", "sit0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "
 dont_show_users_in_group=None
 
 check_tcosmonitor_user_group=False
+
+tnc_only_ports="no"
 
 cache_timeout=20
 

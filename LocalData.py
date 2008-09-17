@@ -626,10 +626,10 @@ class LocalData:
         return False
     
     def BlockNet(self, action, username, ports=None, iface=None):
-        print_debug("BlockNet() action=%s username=%s ports=%s iface=%s"%(action, username, ports, iface))
+        print_debug("BlockNet() action=%s username=%s ports=%s iface=%s only-ports=%s"%(action, username, ports, iface, shared.tnc_only_ports))
         if ports == None: ports=""
         if iface == None: iface=""
-        cmd="/usr/lib/tcos/tnc %s %s %s %s"%(action, ports, iface, username)
+        cmd="/usr/lib/tcos/tnc %s --only-ports=%s %s %s %s"%(action, shared.tnc_only_ports, ports, iface, username)
         output=self.main.common.exe_cmd(cmd)
         print_debug("output=%s"%output)
         return output

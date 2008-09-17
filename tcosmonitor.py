@@ -120,8 +120,11 @@ class TcosMonitor(object):
         
         if self.groupconf['dont_show_users_in_group'] != '':
             shared.dont_show_users_in_group=self.groupconf['dont_show_users_in_group']
-        else:
-            shared.dont_show_users_in_group=None
+        #else:
+        #    shared.dont_show_users_in_group=None
+
+        if self.groupconf['tnc_only_ports'] != "no":
+            shared.tnc_only_ports="yes"
             
         ##################################################
         

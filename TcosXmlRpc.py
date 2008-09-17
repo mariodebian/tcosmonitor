@@ -637,18 +637,18 @@ class TcosXmlRpc:
         return False
     
     def tnc(self, action, username, ports=None, ip=None):
-        print_debug("tnc() action=%s username=%s ports=%s ip=%s"%(action, username, ports, ip))
+        print_debug("tnc() action=%s username=%s ports=%s ip=%s only-ports=%s"%(action, username, ports, ip, shared.tnc_only_ports))
         if ip: self.newhost(ip)
         if action == "status":
-            return self.tc.tcos.tnc("%s" %action, "", "%s" %username, \
+            return self.tc.tcos.tnc("%s" %action, "", "", "%s" %username, \
                         self.main.config.GetVar("xmlrpc_username"), \
                         self.main.config.GetVar("xmlrpc_password") )
         elif action == "enable-internet":
-            return self.tc.tcos.tnc("%s" %action, "", "%s" %username, \
+            return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "", "%s" %username, \
                         self.main.config.GetVar("xmlrpc_username"), \
                         self.main.config.GetVar("xmlrpc_password"))
         elif action == "disable-internet":
-            return self.tc.tcos.tnc("%s" %action, "%s" %ports, "%s" %username, \
+            return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "%s" %ports, "%s" %username, \
                         self.main.config.GetVar("xmlrpc_username"), \
                         self.main.config.GetVar("xmlrpc_password"))
         return False
