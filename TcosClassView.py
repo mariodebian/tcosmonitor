@@ -224,8 +224,8 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         if not data['active']:
             pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
         
-        if data['blocked_screen']:
-            pixbuf2 = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+        if data['image_blocked']:
+            pixbuf2 = data['image_blocked']
             pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         
         iconview.set_model(model)
@@ -245,7 +245,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         button.drag_source_set(gtk.gdk.BUTTON1_MASK, [], gtk.gdk.ACTION_COPY)
         if data['active']:
             button.connect("button_press_event", self.on_iconview_click, data['ip'])
-        button.connect("enter", self.on_button_enter, data)
+        button.connect("enter", self.on_button_enter, data['ip'])
         button.show_all()
         
         if self.oldpos.has_key(data['ip']):
@@ -333,8 +333,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             self.main.allmenu.popup( None, None, None, event.button, event.time)
             return
 
-    def on_button_enter(self, button, data):
+    def on_button_enter(self, button, ip):
         txt=""
+        data=self.hosts[ip]
         for info in self.avalaible_info:
             if data[info[1]] == True:
                 value=_("yes")
@@ -383,8 +384,10 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             self.icon_tooltips.set_tip(widget, self.default_tip)
 
 
-    def change_lockscreen(self, ip, pixbuf2):
+    def change_lockscreen(self, ip, pixbuf2, status_screen, status_net):
         print_debug("change_lockscreen() ip=%s pixbuf=%s"%(ip, pixbuf2))
+        self.hosts[ip]['blocked_screen']=status_screen
+        self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
         if data['standalone']:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')

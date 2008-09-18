@@ -37,8 +37,8 @@ def print_debug(txt):
 
 class RestartXorg(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Restart X session with new settings"), "menu_newconf.png", 0, self.restartx)
-        self.main.menus.register_all( _("Restart X session of all clients"),  "menu_newconf.png" , 0, self.restartx_all)
+        self.main.menus.register_simple( _("Restart X session with new settings"), "menu_newconf.png", 0, self.restartx, "xorg")
+        self.main.menus.register_all( _("Restart X session of all clients"),  "menu_newconf.png" , 0, self.restartx_all, "xorg")
         
 
     def restartx(self, w, ip):

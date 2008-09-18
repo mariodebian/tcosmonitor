@@ -338,7 +338,7 @@ class TcosPreferences:
             first_run=True
             print_debug("visible_menus is empty first_run=%s"%first_run)
         
-        
+        self.visible_menu_items={"menuone":[], "menuall":[], "names":[]}
         for menu in shared.preferences_menus:
             pref_name=menu.replace('ck_menu_', '')
             widget=getattr(self.main, "pref_" + menu)
@@ -353,10 +353,10 @@ class TcosPreferences:
             if pref_name in visible_menus:
                 widget.set_active(1)
                 visible_menu_items.append(menu)
+                self.visible_menu_items["names"].append(pref_name)
             else:
                 widget.set_active(0)
         
-        self.visible_menu_items={"menuone":[], "menuall":[]}
         for item in visible_menu_items:
             self.visible_menu_items["menuone"]+=shared.preferences_menus[item][1]
             self.visible_menu_items["menuall"]+=shared.preferences_menus[item][2]

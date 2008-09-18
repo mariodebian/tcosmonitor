@@ -38,10 +38,10 @@ def print_debug(txt):
 
 class LockUnlockScreen(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Lock screen"), "menu_lock.png", 0, self.lock)
-        self.main.menus.register_all( _("Lock all screens"), "menu_lock.png", 0, self.lock_all)
-        self.main.menus.register_simple( _("Unlock screen"), "menu_unlock.png", 0, self.unlock)
-        self.main.menus.register_all( _("Unlock all screens"), "menu_unlock.png", 0, self.unlock_all)
+        self.main.menus.register_simple( _("Lock screen"), "menu_lock.png", 0, self.lock, "lock")
+        self.main.menus.register_all( _("Lock all screens"), "menu_lock.png", 0, self.lock_all, "lock")
+        self.main.menus.register_simple( _("Unlock screen"), "menu_unlock.png", 0, self.unlock, "lock")
+        self.main.menus.register_all( _("Unlock all screens"), "menu_unlock.png", 0, self.unlock_all, "lock")
 
     def lock(self, w, ip):
         if not self.get_client():

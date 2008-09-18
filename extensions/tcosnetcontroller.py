@@ -42,11 +42,11 @@ def print_debug(txt):
 
 class TcosNetController(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Lock internet"), "menu_locknet.png", 1, self.locknet_simple)
-        self.main.menus.register_simple( _("Unlock internet"), "menu_unlocknet.png", 1, self.unlocknet_simple)
+        self.main.menus.register_simple( _("Lock internet"), "menu_locknet.png", 1, self.locknet_simple, "net")
+        self.main.menus.register_simple( _("Unlock internet"), "menu_unlocknet.png", 1, self.unlocknet_simple, "net")
         
-        self.main.menus.register_all( _("Lock internet in all connected users"), "menu_locknet.png", 1, self.locknet_all)
-        self.main.menus.register_all( _("Unlock internet in all connected users"), "menu_unlocknet.png", 1, self.unlocknet_all)
+        self.main.menus.register_all( _("Lock internet in all connected users"), "menu_locknet.png", 1, self.locknet_all, "net")
+        self.main.menus.register_all( _("Unlock internet in all connected users"), "menu_unlocknet.png", 1, self.unlocknet_all, "net")
 
     def locknet_simple(self, w, ip):
         if not self.get_client():

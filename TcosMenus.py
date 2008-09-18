@@ -53,17 +53,30 @@ class TcosMenus(object):
         self.main.menu=gtk.Menu()
         self.main.allmenu=gtk.Menu()
 
-    def register_simple(self, name, icon, group, action):
-        self.simplemenus.append( [name, icon, group, action] )
-        #print_debug("%s" %[name, icon, group, action] )
+    def register_simple(self, name, icon, group, action, func_name):
+        self.simplemenus.append( [name, icon, group, action, func_name] )
+        #print_debug("%s" %[name, icon, group, action, func_name] )
 
-    def register_all(self, name, icon, group, action):
-        self.allmenus.append( [name, icon, group, action] )
+    def register_all(self, name, icon, group, action, func_name):
+        self.allmenus.append( [name, icon, group, action, func_name] )
 
-    def MustShowMenu(self, number, menutype):
-        if number in shared.preferences_menus_always_show[menutype]:
+    def MustShowMenu(self, func_name, menutype):
+        item_name="ck_menu_%s" %func_name
+
+        if not item_name in shared.preferences_menus:
             return True
-        if number in self.main.preferences.visible_menu_items[menutype]:
+
+        if menutype == "menuone":
+            for number in shared.preferences_menus[item_name][1]:
+                if number in shared.preferences_menus_always_show[menutype]:
+                    return True 
+       
+        if menutype == "menuall":
+            for number in shared.preferences_menus[item_name][2]:
+                if number in shared.preferences_menus_always_show[menutype]:
+                    return True
+
+        if func_name in self.main.preferences.visible_menu_items["names"]:
             #print_debug("MustShow() number %s found at %s menutype %s"%(number, self.main.preferences.visible_menu_items[menutype], menutype))
             return True
         return False
@@ -97,7 +110,7 @@ class TcosMenus(object):
             menu_items.show()
         
         for mainmenu in menus_group:
-            if mainmenu[2] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
+            if mainmenu[2] != None and os.path.isfile(shared.IMG_DIR + mainmenu[2]):
                 menu_item = gtk.ImageMenuItem(mainmenu[1], True)
                 icon = gtk.Image()
                 icon.set_from_file(shared.IMG_DIR + mainmenu[2])
@@ -119,7 +132,7 @@ class TcosMenus(object):
                 else:
                     sub=gtk.MenuItem(_s[0])
                 # show ???
-                if True: #or self.MustShowMenu(i, "menuone"):
+                if self.MustShowMenu(_s[4], "menuone"):
                     #print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
                     sub.connect("activate", _s[3], ip)
                     sub.show()
@@ -230,7 +243,7 @@ class TcosMenus(object):
         
         
         for mainmenu in menus_group:
-            if mainmenu[2] != None and os.path.isfile(shared.IMG_DIR + mainmenu[1]):
+            if mainmenu[2] != None and os.path.isfile(shared.IMG_DIR + mainmenu[2]):
                 menu_item = gtk.ImageMenuItem(mainmenu[1], True)
                 icon = gtk.Image()
                 icon.set_from_file(shared.IMG_DIR + mainmenu[2])
@@ -251,7 +264,7 @@ class TcosMenus(object):
                     sub.set_image(icon)
                 else:
                     sub=gtk.MenuItem(_s[0])
-                if True: #or self.MustShowMenu(i, "menuone"):
+                if self.MustShowMenu(_s[4], "menuall"):
                     #print_debug("RightClickMenuOne()    [SHOW] %s"%_s)
                     sub.connect("activate", _s[3], )
                     sub.show()

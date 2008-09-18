@@ -133,8 +133,8 @@ class TcosIconView(object):
         if not data['active']:
             pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
         
-        if data['blocked_screen']:
-            pixbuf2 = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
+        if data['image_blocked']:
+            pixbuf2 = data['image_blocked']
             pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         
         self.model.append([data['hostname'], data['ip'], pixbuf])
@@ -197,7 +197,9 @@ class TcosIconView(object):
                 return
 
 
-    def change_lockscreen(self, ip, pixbuf2):
+    def change_lockscreen(self, ip, pixbuf2, status_screen, status_net):
+        self.hosts[ip]['blocked_screen']=status_screen
+        self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
         if data['standalone']:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')

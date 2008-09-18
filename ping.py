@@ -165,7 +165,9 @@ class Ping:
         f.close()
         if len(data) < 1:
             print "WARNING: no gateway"
-        return data[0]
+            return ""
+        else:
+            return data[0]
 
     def __hex2dec__(self, s):
         out=[]

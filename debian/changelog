@@ -6,8 +6,12 @@ tcosmonitor (0.2.16~rc8) unstable; urgency=low
   [ Ignacio Vidal ]
   * TcosXmlRpc.py shared.py tcosmonitor.py LocalData.py tcosmonitor.conf:
     - Allow net-lock block only ports
+  * TcosActions.py TcosClassView.py extensions/* TcosMenus.py
+    TcosExtensions.py TcosIconView.py TcosPreferences.py:
+    - Fix show enabled/disabled menu items
+    - Fix change state of screens
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Wed, 17 Sep 2008 10:53:09 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Thu, 18 Sep 2008 12:12:04 +0200
 
 tcosmonitor (0.2.16~rc7) unstable; urgency=low
 

@@ -39,8 +39,8 @@ def print_debug(txt):
 
 class WOL(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Boot client (WakeOnLan)") , "menu_wol.png", 0, self.wol_one)
-        self.main.menus.register_all( _("Boot All clients (WakeOnLan)") , "menu_wol.png", 0, self.wol_all)
+        self.main.menus.register_simple( _("Boot client (WakeOnLan)") , "menu_wol.png", 0, self.wol_one, "wakeonlan")
+        self.main.menus.register_all( _("Boot All clients (WakeOnLan)") , "menu_wol.png", 0, self.wol_all, "wakeonlan")
         
 
     def wol_one(self, widget, ip):

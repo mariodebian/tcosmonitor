@@ -38,7 +38,7 @@ def print_debug(txt):
 
 class TcosPersonalize(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Configure this host"), "menu_configure.png", 0, self.launch_tcospersonalize)
+        self.main.menus.register_simple( _("Configure this host"), "menu_configure.png", 0, self.launch_tcospersonalize, "personalize")
         
 
     def launch_tcospersonalize(self, w, ip):

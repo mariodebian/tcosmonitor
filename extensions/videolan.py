@@ -41,8 +41,8 @@ def print_debug(txt):
 
 class VideoOne(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_one)
-        self.main.menus.register_all( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_all)
+        self.main.menus.register_simple( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_one, "video")
+        self.main.menus.register_all( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_all, "video")
         
 
     def video_one(self, widget, ip):

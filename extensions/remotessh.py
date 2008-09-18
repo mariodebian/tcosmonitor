@@ -38,7 +38,7 @@ def print_debug(txt):
 
 class RemoteSSH(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Give a remote xterm"), "menu_xterm.png", 0, self.remotessh)
+        self.main.menus.register_simple( _("Give a remote xterm"), "menu_xterm.png", 0, self.remotessh, "shell")
         
 
     def remotessh(self, w, ip):

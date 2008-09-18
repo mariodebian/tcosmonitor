@@ -43,7 +43,7 @@ def print_debug(txt):
 
 class Info(TcosExtension):
     def register(self):
-        self.main.menus.register_simple(_("Refresh terminal info"), "menu_refresh.png", 0, self.get_info)
+        self.main.menus.register_simple(_("Refresh terminal info"), "menu_refresh.png", 0, self.get_info, "info")
         # register file click event target
         self.main.listview.populate_datatxt=self.populate_datatxt
 

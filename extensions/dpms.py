@@ -38,10 +38,10 @@ def print_debug(txt):
 
 class Dpms(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("DPMS Power off monitor"), "menu_dpms_off.png", 0, self.dpms_off)
-        self.main.menus.register_all( _("DPMS Power off monitors"), "menu_dpms_off.png", 0, self.dpms_off_all)
-        self.main.menus.register_simple( _("DPMS Power on monitor"), "menu_dpms_on.png", 0, self.dpms_on)
-        self.main.menus.register_all( _("DPMS Power on monitors"), "menu_dpms_on.png", 0, self.dpms_on_all)
+        self.main.menus.register_simple( _("DPMS Power off monitor"), "menu_dpms_off.png", 0, self.dpms_off, "dpms")
+        self.main.menus.register_all( _("DPMS Power off monitors"), "menu_dpms_off.png", 0, self.dpms_off_all, "dpms")
+        self.main.menus.register_simple( _("DPMS Power on monitor"), "menu_dpms_on.png", 0, self.dpms_on, "dpms")
+        self.main.menus.register_all( _("DPMS Power on monitors"), "menu_dpms_on.png", 0, self.dpms_on_all, "dpms")
 
     def dpms_off(self, w, ip):
         if not self.get_client():

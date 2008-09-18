@@ -242,21 +242,23 @@ class TcosExtension(object):
         dpms_off_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_off.png')
         dpms_on_image  = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_on.png')
         
-        if status_screen and status_net:
+        if status_dpms == 'Off':
+            image=dpms_off_image
+        elif status_screen and status_net:
             image=locked_net_screen_image
         elif status_screen == False and status_net:
             image=locked_net_image
-        elif status_screen == False and status_net == False and status_dpms == 'Off':
-            image=dpms_off_image
+        #elif status_screen == False and status_net == False and status_dpms == 'On':
+        #    image=dpms_on_image
         elif status_screen and status_net == False:
             image=locked_image
         else:
             image=unlocked_image
         
         if self.main.classview.isactive():
-            self.main.classview.change_lockscreen(ip, image)
+            self.main.classview.change_lockscreen(ip, image, status_screen, status_net)
         if self.main.iconview.isactive():
-            self.main.iconview.change_lockscreen(ip, image)
+            self.main.iconview.change_lockscreen(ip, image, status_screen, status_net)
         if self.main.listview.isactive():
             self.main.listview.change_lockscreen(ip, image)
 

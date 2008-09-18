@@ -39,7 +39,7 @@ def print_debug(txt):
 
 class ViewProc(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Show running apps of this client") , "menu_proc.png", 1, self.viewproc)
+        self.main.menus.register_simple( _("Show running apps of this client") , "menu_proc.png", 1, self.viewproc, "show")
         
 
     def viewproc(self, widget, ip):

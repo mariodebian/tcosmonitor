@@ -43,10 +43,10 @@ def print_debug(txt):
 
 class VNC(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Connect to remote screen (VNC)"), "menu_remote.png", 1, self.vnc_simple)
-        self.main.menus.register_simple( _("Demo mode (from this host)") , "menu_tiza.png", 1, self.vnc_demo_simple)
+        self.main.menus.register_simple( _("Connect to remote screen (VNC)"), "menu_remote.png", 1, self.vnc_simple, "vnc")
+        self.main.menus.register_simple( _("Demo mode (from this host)") , "menu_tiza.png", 1, self.vnc_demo_simple, "demo")
         
-        self.main.menus.register_all( _("Enter demo mode, all connected users see my screen") , "menu_tiza.png", 1, self.vnc_demo_all)
+        self.main.menus.register_all( _("Enter demo mode, all connected users see my screen") , "menu_tiza.png", 1, self.vnc_demo_all, "demo")
         
 
     def vnc_demo_all(self, *args):

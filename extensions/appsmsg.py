@@ -46,11 +46,11 @@ def crono(start, txt):
 class AppsAndMsgs(TcosExtension):
     def register(self):
         self.init_ask()
-        self.main.menus.register_simple( _("Exec app on user display") , "menu_exec.png", 1, self.exe_app)
-        self.main.menus.register_simple( _("Send a text message to user") , "menu_msg.png", 1, self.send_msg)
+        self.main.menus.register_simple( _("Exec app on user display") , "menu_exec.png", 1, self.exe_app, "exe")
+        self.main.menus.register_simple( _("Send a text message to user") , "menu_msg.png", 1, self.send_msg, "text")
         
-        self.main.menus.register_all( _("Exec same app in all connected users") , "menu_exec.png", 1, self.exe_app_all)
-        self.main.menus.register_all( _("Send a text message to all connected users") , "menu_msg.png", 1, self.send_msg_all)
+        self.main.menus.register_all( _("Exec same app in all connected users") , "menu_exec.png", 1, self.exe_app_all, "exe")
+        self.main.menus.register_all( _("Send a text message to all connected users") , "menu_msg.png", 1, self.send_msg_all, "text")
 
 ##############################################################################
     def askfor(self, mode="mess", msg="", users=None):

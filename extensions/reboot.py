@@ -37,10 +37,10 @@ def print_debug(txt):
 
 class RebootPoweroff(TcosExtension):
     def register(self):
-        self.main.menus.register_simple(_("Reboot"), "menu_reboot.png", 0, self.reboot)
-        self.main.menus.register_all( _("Reboot all clients"), "menu_reboot.png", 0, self.reboot_all)
-        self.main.menus.register_simple( _("Poweroff"), "menu_poweroff.png", 0, self.poweroff)
-        self.main.menus.register_all( _("Poweroff all clients"), "menu_poweroff.png", 0, self.poweroff_all)
+        self.main.menus.register_simple(_("Reboot"), "menu_reboot.png", 0, self.reboot, "reboot")
+        self.main.menus.register_all( _("Reboot all clients"), "menu_reboot.png", 0, self.reboot_all, "reboot")
+        self.main.menus.register_simple( _("Poweroff"), "menu_poweroff.png", 0, self.poweroff, "reboot")
+        self.main.menus.register_all( _("Poweroff all clients"), "menu_poweroff.png", 0, self.poweroff_all, "reboot")
 
     def reboot(self, w, ip):
         if not self.get_client():

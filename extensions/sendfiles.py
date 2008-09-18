@@ -42,8 +42,8 @@ def print_debug(txt):
 
 class SendFiles(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Send files") , "menu_send.png", 2, self.send_one)
-        self.main.menus.register_all( _("Send files") , "menu_send.png", 2, self.send_all)
+        self.main.menus.register_simple( _("Send files") , "menu_send.png", 2, self.send_one, "send")
+        self.main.menus.register_all( _("Send files") , "menu_send.png", 2, self.send_all, "send")
         
 
     def send_one(self, widget, ip):

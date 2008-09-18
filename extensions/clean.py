@@ -37,8 +37,8 @@ def print_debug(txt):
 
 class Clean(TcosExtension):
     def register(self):
-        self.main.menus.register_simple(_("Clean info about terminal"), "menu_clear.png", 0, self.clean)
-        self.main.menus.register_all( _("Clean info about terminal"), "menu_clear.png", 0, self.clean)
+        self.main.menus.register_simple(_("Clean info about terminal"), "menu_clear.png", 0, self.clean, "clean")
+        self.main.menus.register_all( _("Clean info about terminal"), "menu_clear.png", 0, self.clean, "clean")
 
     def clean(self, *args):
         print_debug("clean()")

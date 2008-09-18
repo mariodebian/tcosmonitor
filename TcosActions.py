@@ -995,6 +995,8 @@ class TcosActions:
         locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
         locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
         unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
+        dpms_off_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_off.png')
+        dpms_on_image  = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_on.png')
         
         i=0
         for host in clients:
@@ -1087,16 +1089,23 @@ class TcosActions:
                 data['blocked_net']=True
             else:
                 data['blocked_net']=False
+
+            print_debug("populate_hostlist() => get status dpms")
+            if self.main.xmlrpc.dpms('status', data['ip']) == "Off":
+                data['dpms_off']=True
+            else:
+                data['dpms_off']=False
                 
-            if data['blocked_screen'] and data['blocked_net']:
+            if data['dpms_off']:
+                data['image_blocked']=dpms_off_image
+            elif data['blocked_screen'] and data['blocked_net']:
                 data['image_blocked']=locked_net_screen_image
             elif data['blocked_screen'] == False and data['blocked_net']:
                 data['image_blocked']=locked_net_image
             elif data['blocked_screen'] and data['blocked_net'] == False:
                 data['image_blocked']=locked_image
             else:
-                data['image_blocked']=unlocked_image
-            
+                data['image_blocked']=unlocked_image            
             
             if self.main.listview.isactive():
                 self.main.common.threads_enter("TcosActions:populate_hostlist LIST generate_icon")

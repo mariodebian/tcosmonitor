@@ -40,8 +40,8 @@ def print_debug(txt):
 
 class Screenshot(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Screenshot"), "menu_screenshot.png", 2, self.take_screenshot)
-        self.main.menus.register_all( _("Capture All clients screens") , "menu_screenshot.png", 2, self.take_all_screenshots)
+        self.main.menus.register_simple( _("Screenshot"), "menu_screenshot.png", 2, self.take_screenshot, "screenshots")
+        self.main.menus.register_all( _("Capture All clients screens") , "menu_screenshot.png", 2, self.take_all_screenshots, "screenshots")
 
     ###########  SIMPLE HOST ###############
 

@@ -37,8 +37,8 @@ def print_debug(txt):
 
 class LogOut(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Logout client"),  "menu_restartx.png", 0, self.logout)
-        self.main.menus.register_all( _("Logout clients"), "menu_restartx.png" , 0, self.logout_all)
+        self.main.menus.register_simple( _("Logout client"),  "menu_restartx.png", 0, self.logout, "restartx")
+        self.main.menus.register_all( _("Logout clients"), "menu_restartx.png" , 0, self.logout_all, "restartx")
         
 
     def logout(self, w, ip):

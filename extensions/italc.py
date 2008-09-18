@@ -41,7 +41,7 @@ def print_debug(txt):
 
 class iTalc(TcosExtension):
     def register(self):
-        self.main.menus.register_simple( _("Connect to remote screen (iTALC)"), "menu_remote.png", 1, self.ivs)
+        self.main.menus.register_simple( _("Connect to remote screen (iTALC)"), "menu_remote.png", 1, self.ivs, "italc")
         
 
     def ivs(self, w, ip):
