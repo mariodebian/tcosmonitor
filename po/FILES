@@ -14,7 +14,6 @@
 ../extensions/remotessh.py
 ../extensions/__init__.py
 ../extensions/dpms.py
-../extensions/template.py
 ../extensions/screenshot.py
 ../extensions/sendfiles.py
 ../extensions/info.py

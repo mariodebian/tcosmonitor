@@ -4,8 +4,9 @@ tcosmonitor (0.2.16~rc9) unstable; urgency=low
     - Hide menu (not very ussesfull without host IP)
   * htmltextview.py extensions/screenshot.py
     - Add onclick tag on img code and show a 'Save Screenshot' menu when user clicks on image
+  * Update translations (spanish and template)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 19 Sep 2008 15:03:21 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 19 Sep 2008 15:08:09 +0200
 
 tcosmonitor (0.2.16~rc8) unstable; urgency=low
 
