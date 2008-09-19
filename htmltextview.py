@@ -414,6 +414,11 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                 b64=None
             
             try:
+                onclick=attrs['onclick']
+            except:
+                onclick=None
+            
+            try:
                 title_rotate=attrs['title_rotate']
             except KeyError:
                 title_rotate=None
@@ -491,7 +496,19 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                         except:
                             pass
                         
-                    self.textbuf.insert_pixbuf(self.iter, pixbuf)
+                    if onclick is not None:
+                        # Connect to button events to call pixbuf action, save for example...
+                        evbox=gtk.EventBox()
+                        evbox.connect("button_press_event", self.main.screenshots_action, onclick, pixbuf)
+                        _img=gtk.Image()
+                        _img.set_from_pixbuf(pixbuf)
+                        _img.show()
+                        evbox.add(_img)
+                        evbox.show()
+                        anchor_widget = self.textbuf.create_child_anchor(self.iter)
+                        self.textview.add_child_at_anchor (evbox, anchor_widget)
+                    else:
+                        self.textbuf.insert_pixbuf(self.iter, pixbuf)
 
                     if tags:
                         start = self.textbuf.get_iter_at_mark(tmpmark)

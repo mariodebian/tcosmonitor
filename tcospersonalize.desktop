@@ -11,3 +11,4 @@ Terminal=false
 Type=Application
 Icon=/usr/share/pixmaps/tcos-icon-32x32.png
 GenericName[es_ES]=TcosPersonalize
+NoDisplay=true

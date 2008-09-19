@@ -28,6 +28,7 @@ import shared
 # needed for get_screenshot
 from time import localtime
 import gtk
+import os
 
 from TcosExtensions import TcosExtension
 
@@ -42,6 +43,9 @@ class Screenshot(TcosExtension):
     def register(self):
         self.main.menus.register_simple( _("Screenshot"), "menu_screenshot.png", 2, self.take_screenshot, "screenshots")
         self.main.menus.register_all( _("Capture All clients screens") , "menu_screenshot.png", 2, self.take_all_screenshots, "screenshots")
+        self.main.screenshots_action=None
+        self.__screenshot_counter=0
+        self.__screenshot_data={}
 
     ###########  SIMPLE HOST ###############
 
@@ -93,8 +97,8 @@ class Screenshot(TcosExtension):
         datetxt="%02d/%02d/%4d %02d:%02d:%02d" %(day, month, year, hour, minute, seconds)
         print_debug ( "get_screenshot() date=%s" %(datetxt) )
         
-        
-        block_txt=_("Screenshot of <span style='font-style: italic'>%s</span>")%(self.main.localdata.GetHostname(ip))
+        hostname=self.main.localdata.GetHostname(ip)
+        block_txt=_("Screenshot of <span style='font-style: italic'>%s</span>")%(hostname)
         block_txt+="<span style='font-size: medium'> %s </span>" %(datetxt)
         block_txt+="<span> </span><input type='button' name='self.main.another_screenshot_button' label='%s' />" %( slabel )
          
@@ -107,7 +111,11 @@ class Screenshot(TcosExtension):
         #                         %(url, _("Screenshot of %s" %(ip) )) )
         
         # Use Base64 data
-        self.main.datatxt.insert_html("""\n<img base64="%s" />\n"""%(scrot[1]))
+        self.main.screenshots_action=self.on_screenshot_click
+        self.__screenshot_counter=0
+        savedatetxt="%02d-%02d-%4d_%02d-%02d" %(day, month, year, hour, minute)
+        self.__screenshot_data["%s"%self.__screenshot_counter]={'hostname':hostname, 'ip':ip, 'date':savedatetxt}
+        self.main.datatxt.insert_html("""\n<img onclick="%s" base64="%s" />\n"""%(self.__screenshot_counter, scrot[1]))
         
         self.main.common.threads_leave("TcosActions::get_screenshot show capture")
         
@@ -118,16 +126,60 @@ class Screenshot(TcosExtension):
         
         return False
 
+    def on_screenshot_click(self, eventbox, event, number, pixbuf):
+        menu=gtk.Menu()
+        save_scrot = gtk.ImageMenuItem(_("Save Screenshot"), True)
+        icon = gtk.Image()
+        icon.set_from_stock (gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON)
+        save_scrot.set_image(icon)
+        save_scrot.connect("activate", self.save_screenshot, number, pixbuf)
+        save_scrot.show()
+        menu.append(save_scrot)
+        menu.popup( None, None, None, event.button, event.time)
+
+    def save_screenshot(self, image, number, pixbuf):
+        data=self.__screenshot_data[number]
+        
+        dialog = gtk.FileChooserDialog(title=_("Select file to save screenshot..."),
+                                      action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                      buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        dialog.set_current_name( _("screenshot_of_%(hostname)s_date_%(date)s.png") %{'hostname':data['hostname'], 'date':data['date']} )
+        folder = _folder = os.environ['HOME']
+        dialog.set_current_folder(folder)
+        _filter = gtk.FileFilter()
+        _filter.set_name( _("Image Files ( *.png, *.jpg)") )
+        file_types=["*.png", "*.jpg"]
+        for elem in file_types:
+            _filter.add_pattern( elem )
+        dialog.add_filter(_filter)
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+            filename=dialog.get_filename()
+            fext=filename.split('.')[-1]
+            if not fext in ['png', 'jpg']:
+                shared.error_msg( _("File must be png or jpg.") )
+                dialog.destroy()
+                return
+            params={}
+            if fext == "jpeg":
+                {"quality":"100"}
+            pixbuf.save(filename, fext, params)
+        dialog.destroy()
+
     ###########  MULTIPLE HOSTS ###############
 
     def take_all_screenshots(self, widget):
         if not self.get_all_clients():
             return
+        self.main.screenshots_action=self.on_screenshot_click
         self.main.worker=shared.Workers(self.main, None, None)
         self.main.worker.set_for_all_action(self.action_for_clients, self.allclients, 'screenshot' )
 
 
     def start_action(self, *args):
+        self.__screenshot_counter=0
+        self.__screenshot_data={}
         self.main.datatxt.clean()
         self.main.datatxt.insert_block( _("Screenshots of all hosts") )
         self.main.datatxt.insert_html("<br/>")
@@ -137,11 +189,15 @@ class Screenshot(TcosExtension):
         self.main.xmlrpc.newhost(ip)
         scrot=self.main.xmlrpc.getscreenshot(self.main.config.GetVar("miniscrot_size"))
         if scrot and scrot[0] == "ok":
+            self.__screenshot_counter+=1
             hostname=self.main.localdata.GetHostname(ip)
             self.main.common.threads_enter("extensions/screenshot::real_action screenshot")
+            year, month, day, hour, minute, seconds ,wdy, yday, isdst= localtime()
+            savedatetxt="%02d-%02d-%4d_%02d-%02d" %(day, month, year, hour, minute)
+            self.__screenshot_data["%s"%self.__screenshot_counter]={'hostname':hostname, 'ip':ip, 'date':savedatetxt}
             self.main.datatxt.insert_html( 
                  "<span style='background-color:#f3d160'>" +
-                 "\n\t<img base64='%s' title='%s' title_rotate='90' /> " %(scrot[1],_( "Screenshot of %s" ) %(hostname) ) +
+                 "\n\t<img onclick='%s' base64='%s' title='%s' title_rotate='90' /> " %(self.__screenshot_counter, scrot[1],_( "Screenshot of %s" ) %(hostname) ) +
                  "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>"+
                  "")
             self.main.common.threads_leave("extensions/screenshot::real_action screenshot")
