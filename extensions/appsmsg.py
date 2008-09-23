@@ -81,7 +81,7 @@ class AppsAndMsgs(TcosExtension):
             self.main.ask_dragdrop.show()
             self.main.image_entry.show()
             self.main.image_entry.set_from_stock(gtk.STOCK_DIALOG_QUESTION, 4)
-            self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s):</b>\n%s" ) %( users_txt ) )
+            self.main.ask_label.set_markup( _("<b>Exec app in user(s) screen(s) or open web address:</b>\n%s" ) %( users_txt ) )
         elif mode == "mess":
             self.main.ask_label.set_markup( _("<b>Send a message to:</b>\n%s" ) %( users_txt ) )
         elif mode == "any":
@@ -281,6 +281,9 @@ class AppsAndMsgs(TcosExtension):
         
         if self.ask_mode == "mess":
             arg=arg.replace("'", "´")
+        elif self.ask_mode == "exec":
+            if arg.startswith('http://') or arg.startswith('https://') or arg.startswith('ftp://'):
+                arg="xdg-open %s" %arg
             
         for user in usernames:
             if user.find(":") != -1:

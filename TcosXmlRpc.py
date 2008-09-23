@@ -639,20 +639,22 @@ class TcosXmlRpc:
     def tnc(self, action, username, ports=None, ip=None):
         print_debug("tnc() action=%s username=%s ports=%s ip=%s only-ports=%s"%(action, username, ports, ip, shared.tnc_only_ports))
         if ip: self.newhost(ip)
-        if action == "status":
-            return self.tc.tcos.tnc("%s" %action, "", "", "%s" %username, \
-                        self.main.config.GetVar("xmlrpc_username"), \
-                        self.main.config.GetVar("xmlrpc_password") )
-        elif action == "enable-internet":
-            return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "", "%s" %username, \
-                        self.main.config.GetVar("xmlrpc_username"), \
-                        self.main.config.GetVar("xmlrpc_password"))
-        elif action == "disable-internet":
-            return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "%s" %ports, "%s" %username, \
-                        self.main.config.GetVar("xmlrpc_username"), \
-                        self.main.config.GetVar("xmlrpc_password"))
-        return False
-    
+        try:
+            if action == "status":
+                return self.tc.tcos.tnc("%s" %action, "", "", "%s" %username, \
+                            self.main.config.GetVar("xmlrpc_username"), \
+                            self.main.config.GetVar("xmlrpc_password") )
+            elif action == "enable-internet":
+                return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "", "%s" %username, \
+                            self.main.config.GetVar("xmlrpc_username"), \
+                            self.main.config.GetVar("xmlrpc_password"))
+            elif action == "disable-internet":
+                return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "%s" %ports, "%s" %username, \
+                            self.main.config.GetVar("xmlrpc_username"), \
+                            self.main.config.GetVar("xmlrpc_password"))
+        except Exception, err:
+            print_debug ("tnc() Exception, error: %s" %err)
+            return False
         
     def screenshot(self, size="65"):
         print_debug ( "screenshot() size=%s" %(size) )
@@ -683,59 +685,87 @@ class TcosXmlRpc:
         
     def vnc(self, action, ip, *args):
         self.newhost(ip)
-        if action == "genpass":
-            passwd=args
-            return self.tc.tcos.vnc("genpass", "%s /tmp/.tcosvnc" %passwd, \
-                                self.main.config.GetVar("xmlrpc_username"), \
-                                self.main.config.GetVar("xmlrpc_password") )
-        elif action == "startserver":
-            return self.tc.tcos.vnc("startserver", "/tmp/.tcosvnc", \
-                                self.main.config.GetVar("xmlrpc_username"), \
-                                self.main.config.GetVar("xmlrpc_password") )
-        
-        elif action == "stopserver":
-            return self.tc.tcos.vnc("stopserver", "",\
-                                self.main.config.GetVar("xmlrpc_username"), \
-                                self.main.config.GetVar("xmlrpc_password") )
-        
-        elif action == "startclient":
-            server_ip=args
-            return self.tc.tcos.vnc("startclient", "%s /tmp/.tcosvnc" %server_ip, \
-                                self.main.config.GetVar("xmlrpc_username"), \
-                                self.main.config.GetVar("xmlrpc_password") )
-        
-        elif action == "stopclient":
-            return self.tc.tcos.vnc("stopclient", "", \
-                                self.main.config.GetVar("xmlrpc_username"), \
-                                self.main.config.GetVar("xmlrpc_password") )
+        try:
+            if action == "genpass":
+                passwd=args
+                return self.tc.tcos.vnc("genpass", "%s /tmp/.tcosvnc" %passwd, \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "startserver":
+                return self.tc.tcos.vnc("startserver", "/tmp/.tcosvnc", \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "stopserver":
+                return self.tc.tcos.vnc("stopserver", "",\
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "startclient":
+                server_ip=args
+                return self.tc.tcos.vnc("startclient", "%s /tmp/.tcosvnc" %server_ip, \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "stopclient":
+                return self.tc.tcos.vnc("stopclient", "", \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+        except Exception, err:
+            print_debug ("vnc() Exception, error: %s" %err)
+            return False
             
     def rtp(self, action, ip, broadcast=None):
         self.newhost(ip)
-        if action == "startrtp":
-            return self.tc.tcos.rtp("startrtp", broadcast, \
-                                self.main.config.GetVar("xmlrpc_username"), \
-                                self.main.config.GetVar("xmlrpc_password") )
-                                
-        elif action == "stoprtp":
-            return self.tc.tcos.rtp("stoprtp", "", \
-                                self.main.config.GetVar("xmlrpc_username"), \
-                                self.main.config.GetVar("xmlrpc_password") )
+        try:
+            if action == "startrtp-recv":
+                return self.tc.tcos.rtp("startrtp-recv", broadcast, \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "stoprtp-recv":
+                return self.tc.tcos.rtp("stoprtp-recv", "", \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "startrtp-send":
+                return self.tc.tcos.rtp("startrtp-send", broadcast, \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "stoprtp-send":
+                return self.tc.tcos.rtp("stoprtp-send", "", \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "startrtp-chat":
+                return self.tc.tcos.rtp("startrtp-chat", broadcast, \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+            elif action == "stoprtp-chat":
+                return self.tc.tcos.rtp("stoprtp-chat", "", \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
+        except Exception, err:
+            print_debug ("rtp() Exception, error: %s" %err)
+            return False
     
     def vlc(self, ip, volume, lock):
         self.newhost(ip)
-        return self.tc.tcos.vlc("%s" %volume, "%s" %lock, \
-                            self.main.config.GetVar("xmlrpc_username"), \
-                            self.main.config.GetVar("xmlrpc_password") )
-    
+        try:
+            return self.tc.tcos.vlc("%s" %volume, "%s" %lock, \
+                                self.main.config.GetVar("xmlrpc_username"), \
+                                self.main.config.GetVar("xmlrpc_password") )
+        except Exception, err:
+            print_debug ("vlc() Exception, error: %s" %err)
+            return False
     
     def dpms(self, action, ip=None):
         print_debug("dpms() action=%s ip=%s"%(action, ip))
         if ip: self.newhost(ip)
+        if not self.connected:
+            return False
         if action == "on" or action == "off" or action == "status":
-            return self.tc.tcos.dpms("%s" %action, \
-                        self.main.config.GetVar("xmlrpc_username"), \
-                        self.main.config.GetVar("xmlrpc_password") )
-        
+            try:
+                return self.tc.tcos.dpms("%s" %action, \
+                            self.main.config.GetVar("xmlrpc_username"), \
+                            self.main.config.GetVar("xmlrpc_password") )
+            except Exception, err:
+                print_debug ("dpms() Exception, error: %s" %err)
+                pass
         return False
     
 if __name__ == '__main__':

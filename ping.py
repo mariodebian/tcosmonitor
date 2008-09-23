@@ -165,7 +165,7 @@ class Ping:
         f.close()
         if len(data) < 1:
             print "WARNING: no gateway"
-            return ""
+            return None
         else:
             return data[0]
 

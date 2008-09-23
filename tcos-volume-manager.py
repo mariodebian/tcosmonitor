@@ -183,6 +183,7 @@ class TcosVolumeManager:
         self.get_channel_info()
         
     def on_refresh_button(self, widget):
+        self.allchannels=self.xmlrpc.GetSoundChannelsContents()
         self.scrolledwindow.foreach( self.delete_child, self.scrolledwindow )
         self.scrolledwindow2.foreach( self.delete_child, self.scrolledwindow2 )
         self.get_channel_info()    

@@ -116,10 +116,6 @@ class VideoOne(TcosExtension):
                         print_debug("Not found an available broadcast ip")
                         return
                 remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
-                result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
-                if result == "error":
-                    print_debug("Add multicast-ip route failed")
-                    return
             else:
                 uip_cmd=""
                 ip_unicast="%s:1234" %self.main.selected_ip
@@ -208,6 +204,12 @@ class VideoOne(TcosExtension):
             if shared.ask_msg ( msg ):
                 lock="enable"
             
+            if uip_cmd != "":
+                result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
+                if result == "error":
+                    print_debug("Add multicast-ip route failed")
+                    return
+                
             newusernames=[]
 
             for user in self.connected_users:
@@ -229,7 +231,8 @@ class VideoOne(TcosExtension):
             
             self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
             # new mode to Stop Button
-            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":self.newallclients, "ip":uip_cmd, "iface":eth}, _("Running in broadcast video transmission to host %s") %(ip))
+            self.vlc_count+=1
+            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":self.newallclients, "ip":uip_cmd, "iface":eth}, _("Running in broadcast video transmission to host %(host)s. Emission Nº %(count)d") %{"host":ip, "count":self.vlc_count} )
         else:
             dialog.destroy()
 
@@ -240,6 +243,7 @@ class VideoOne(TcosExtension):
         if not args['target']: return
         
         if args['target'] == "vlc":
+            self.vlc_count-=1
             if args['ip'] != "":
                 result = self.main.localdata.Route("route-del", args['ip'], "255.255.255.0", args['iface'])
                 if result == "error":
@@ -338,10 +342,6 @@ class VideoOne(TcosExtension):
                 elif uip == max_uip:
                     print_debug("Not found an available broadcast ip")
                     return
-            result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
-            if result == "error":
-                print_debug("Add multicast-ip route failed")
-                return
         else:
             max_uip=50255
             uip=50000
@@ -430,6 +430,12 @@ class VideoOne(TcosExtension):
             msg=_( "Lock keyboard and mouse on clients?" )
             if shared.ask_msg ( msg ):
                 lock="enable"
+
+            if uip_cmd != "":
+                result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
+                if result == "error":
+                    print_debug("Add multicast-ip route failed")
+                    return
                 
             newusernames=[]
             
@@ -458,7 +464,8 @@ class VideoOne(TcosExtension):
                 
             self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
             # new mode Stop Button
-            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": self.newallclients, "ip":uip_cmd, "iface":eth}, _("Running in broadcast video transmission"))
+            self.vlc_count+=1
+            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": self.newallclients, "ip":uip_cmd, "iface":eth}, _("Running in broadcast video transmission. Emission Nº %d") %(self.vlc_count) )
         else:
             dialog.destroy()
 

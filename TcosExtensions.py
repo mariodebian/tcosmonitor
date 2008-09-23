@@ -52,6 +52,9 @@ class TcosExtension(object):
         
         self.main=main
         self.preferences={}
+        self.rtp_count=0
+        self.vlc_count=0
+        self.vnc_count=0
         
     
     def register(self):

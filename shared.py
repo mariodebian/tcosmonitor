@@ -264,7 +264,7 @@ appslist=[
 onehost_mainmenus = [
     [ _("Terminal actions") , "active.png", [0,2,3,4,5,22,23,9,10,12,19,1] ],
     [ _("User actions") , "logged.png", [11,13,14,15,20,21,6,7] ],
-    [ _("Audio, video and files"), "multimedia.png", [8,17,16,18]],
+    [ _("Audio, video and files"), "multimedia.png", [8,17,16,18,24]],
 ]
 
 ###
@@ -295,6 +295,7 @@ onehost_menuitems=[
  [ _("Unlock internet"), "menu_unlocknet.png" ],              #action=21
  [ _("DPMS Power off monitor"), "menu_dpms_off.png" ] ,     #action=22
  [ _("DPMS Power on monitor"), "menu_dpms_on.png" ],     #action=23
+ [ _("Send MIC audio (from this host)"), "menu_rtp.png" ],     #action=24
  ]
 
 
@@ -305,7 +306,7 @@ onehost_menuitems=[
 allhost_mainmenus = [
     [ _("Terminal actions") , "active.png", [0,1,2,3,4,5,13,16,17] ],
     [ _("User actions") , "logged.png", [6,7,8,14,15] ],
-    [ _("Audio, video and files"), "multimedia.png", [10,12,11,9]],
+    [ _("Audio, video and files"), "multimedia.png", [10,12,11,9,18]],
 ]
 
 ###
@@ -330,6 +331,7 @@ allhost_menuitems=[
  [ _("Unlock internet in all connected users"), "menu_unlocknet.png" ],              #action=15
  [ _("DPMS Power off monitors"), "menu_dpms_off.png" ] ,     #action=16
  [ _("DPMS Power on monitors"), "menu_dpms_on.png" ],     #action=17
+ [ _("Chat audio conference"), "menu_rtp.png" ],     #action=18
  ]
 
 preferences_menus_always_show={"menuone":[0,1,11], "menuall":[4]}
@@ -352,7 +354,7 @@ preferences_menus={
 "ck_menu_send":[        True,  [17],   [12] ],
 "ck_menu_demo":[        True,  [18],   [8] ],
 "ck_menu_wakeonlan":[   False, [19],   [13] ],
-"ck_menu_conference":[  True,  [],     [9] ],
+"ck_menu_conference":[  True,  [24],     [9,18] ],
 "ck_menu_net":[         True,  [20,21],[14,15] ],
 "ck_menu_dpms":[        True,  [22,23],[16,17] ],
 }

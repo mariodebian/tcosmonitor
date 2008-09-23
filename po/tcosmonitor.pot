@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-19 15:06+0200\n"
+"POT-Creation-Date: 2008-09-23 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgid "Send files disabled. rsync not configured."
 msgstr ""
 
 #: ../tcosmonitor.py:304 ../tcospersonalize.py:566
-#: ../tcos-volume-manager.py:361
+#: ../tcos-volume-manager.py:362
 msgid "Exiting"
 msgstr ""
 
@@ -383,15 +383,15 @@ msgstr ""
 msgid "Lists, icons and classroom with tabs"
 msgstr ""
 
-#: ../shared.py:265 ../shared.py:306 ../TcosMenus.py:35
+#: ../shared.py:265 ../shared.py:307 ../TcosMenus.py:35
 msgid "Terminal actions"
 msgstr ""
 
-#: ../shared.py:266 ../shared.py:307 ../TcosMenus.py:36
+#: ../shared.py:266 ../shared.py:308 ../TcosMenus.py:36
 msgid "User actions"
 msgstr ""
 
-#: ../shared.py:267 ../shared.py:308 ../TcosMenus.py:37
+#: ../shared.py:267 ../shared.py:309 ../TcosMenus.py:37
 msgid "Audio, video and files"
 msgstr ""
 
@@ -459,12 +459,12 @@ msgstr ""
 msgid "Show running apps of this client"
 msgstr ""
 
-#: ../shared.py:290 ../shared.py:326 ../extensions/videolan.py:44
+#: ../shared.py:290 ../shared.py:327 ../extensions/videolan.py:44
 #: ../extensions/videolan.py:45
 msgid "Audio/Video broadcast"
 msgstr ""
 
-#: ../shared.py:291 ../shared.py:327 ../extensions/sendfiles.py:45
+#: ../shared.py:291 ../shared.py:328 ../extensions/sendfiles.py:45
 #: ../extensions/sendfiles.py:46 ../tcosmonitor.glade:2452
 msgid "Send files"
 msgstr ""
@@ -493,81 +493,89 @@ msgstr ""
 msgid "DPMS Power on monitor"
 msgstr ""
 
-#: ../shared.py:315 ../extensions/reboot.py:41
+#: ../shared.py:298 ../extensions/audiortp.py:48
+msgid "Send MIC audio (from this host)"
+msgstr ""
+
+#: ../shared.py:316 ../extensions/reboot.py:41
 msgid "Reboot all clients"
 msgstr ""
 
-#: ../shared.py:316 ../extensions/reboot.py:43
+#: ../shared.py:317 ../extensions/reboot.py:43
 msgid "Poweroff all clients"
 msgstr ""
 
-#: ../shared.py:317 ../extensions/lockscreen.py:42
+#: ../shared.py:318 ../extensions/lockscreen.py:42
 msgid "Lock all screens"
 msgstr ""
 
-#: ../shared.py:318 ../extensions/lockscreen.py:44
+#: ../shared.py:319 ../extensions/lockscreen.py:44
 msgid "Unlock all screens"
 msgstr ""
 
-#: ../shared.py:319 ../extensions/logout.py:41
+#: ../shared.py:320 ../extensions/logout.py:41
 msgid "Logout clients"
 msgstr ""
 
-#: ../shared.py:320 ../extensions/restartxorg.py:41
+#: ../shared.py:321 ../extensions/restartxorg.py:41
 msgid "Restart X session of all clients"
 msgstr ""
 
-#: ../shared.py:321 ../extensions/appsmsg.py:52
+#: ../shared.py:322 ../extensions/appsmsg.py:52
 msgid "Exec same app in all connected users"
 msgstr ""
 
-#: ../shared.py:322 ../extensions/appsmsg.py:53
+#: ../shared.py:323 ../extensions/appsmsg.py:53
 msgid "Send a text message to all connected users"
 msgstr ""
 
-#: ../shared.py:323 ../extensions/vnc.py:49
+#: ../shared.py:324 ../extensions/vnc.py:49
 msgid "Enter demo mode, all connected users see my screen"
 msgstr ""
 
-#: ../shared.py:324
+#: ../shared.py:325
 msgid "Enter conference mode, all connected users can hear me"
 msgstr ""
 
-#: ../shared.py:325 ../extensions/screenshot.py:45
+#: ../shared.py:326 ../extensions/screenshot.py:45
 msgid "Capture All clients screens"
 msgstr ""
 
-#: ../shared.py:328 ../extensions/wakeonlan.py:43
+#: ../shared.py:329 ../extensions/wakeonlan.py:43
 msgid "Boot All clients (WakeOnLan)"
 msgstr ""
 
-#: ../shared.py:329 ../extensions/tcosnetcontroller.py:48
+#: ../shared.py:330 ../extensions/tcosnetcontroller.py:48
 msgid "Lock internet in all connected users"
 msgstr ""
 
-#: ../shared.py:330 ../extensions/tcosnetcontroller.py:49
+#: ../shared.py:331 ../extensions/tcosnetcontroller.py:49
 msgid "Unlock internet in all connected users"
 msgstr ""
 
-#: ../shared.py:331 ../extensions/dpms.py:42
+#: ../shared.py:332 ../extensions/dpms.py:42
 msgid "DPMS Power off monitors"
 msgstr ""
 
-#: ../shared.py:332 ../extensions/dpms.py:44
+#: ../shared.py:333 ../extensions/dpms.py:44
 msgid "DPMS Power on monitors"
 msgstr ""
 
-#: ../shared.py:516
+#: ../shared.py:334 ../extensions/audiortp.py:47
+msgid "Chat audio conference"
+msgstr ""
+
+#: ../shared.py:518
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr ""
 
-#: ../shared.py:528
+#: ../shared.py:530
 #, python-format
 msgid "INFO: %s"
 msgstr ""
 
-#: ../shared.py:539
+#: ../shared.py:541
 #, python-format
 msgid "ERROR: %s"
 msgstr ""
@@ -754,7 +762,7 @@ msgstr ""
 #: ../extensions/appsmsg.py:84
 #, python-format
 msgid ""
-"<b>Exec app in user(s) screen(s):</b>\n"
+"<b>Exec app in user(s) screen(s) or open web address:</b>\n"
 "%s"
 msgstr ""
 
@@ -778,14 +786,14 @@ msgstr ""
 msgid "%s is not application"
 msgstr ""
 
-#: ../extensions/appsmsg.py:299
+#: ../extensions/appsmsg.py:302
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
 "Reason: %s"
 msgstr ""
 
-#: ../extensions/appsmsg.py:306
+#: ../extensions/appsmsg.py:309
 #, python-format
 msgid ""
 "Error while send message:\n"
@@ -903,8 +911,8 @@ msgid ""
 msgstr ""
 
 #: ../extensions/sendfiles.py:131 ../extensions/sendfiles.py:221
-#: ../extensions/reboot.py:108 ../extensions/videolan.py:226
-#: ../extensions/videolan.py:454
+#: ../extensions/reboot.py:108 ../extensions/videolan.py:228
+#: ../extensions/videolan.py:460
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
@@ -920,9 +928,11 @@ msgid "Files sent."
 msgstr ""
 
 #: ../extensions/sendfiles.py:146 ../extensions/tcosnetcontroller.py:123
-#: ../extensions/tcosnetcontroller.py:166 ../extensions/videolan.py:284
-#: ../extensions/vnc.py:58 ../extensions/vnc.py:103 ../extensions/vnc.py:284
-#: ../extensions/audiortp.py:54 ../extensions/audiortp.py:88
+#: ../extensions/tcosnetcontroller.py:166 ../extensions/videolan.py:288
+#: ../extensions/vnc.py:58 ../extensions/vnc.py:103 ../extensions/vnc.py:286
+#: ../extensions/audiortp.py:55 ../extensions/audiortp.py:93
+#: ../extensions/audiortp.py:174 ../extensions/audiortp.py:191
+#: ../extensions/audiortp.py:236
 msgid "No users logged."
 msgstr ""
 
@@ -1142,7 +1152,7 @@ msgstr ""
 msgid "Remote Sound Mixer"
 msgstr ""
 
-#: ../extensions/info.py:426 ../tcos-volume-manager.py:283
+#: ../extensions/info.py:426 ../tcos-volume-manager.py:284
 msgid "Mute"
 msgstr ""
 
@@ -1214,27 +1224,27 @@ msgstr ""
 msgid "Sound server is not running"
 msgstr ""
 
-#: ../extensions/info.py:541 ../tcos-volume-manager.py:315
+#: ../extensions/info.py:541 ../tcos-volume-manager.py:316
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr ""
 
-#: ../extensions/info.py:548 ../tcos-volume-manager.py:322
+#: ../extensions/info.py:548 ../tcos-volume-manager.py:323
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr ""
 
-#: ../extensions/info.py:555 ../tcos-volume-manager.py:329
+#: ../extensions/info.py:555 ../tcos-volume-manager.py:330
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr ""
 
-#: ../extensions/info.py:560 ../tcos-volume-manager.py:334
+#: ../extensions/info.py:560 ../tcos-volume-manager.py:335
 #, python-format
 msgid "Muting %s channel..."
 msgstr ""
 
-#: ../extensions/info.py:563 ../tcos-volume-manager.py:337
+#: ../extensions/info.py:563 ../tcos-volume-manager.py:338
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr ""
@@ -1331,58 +1341,60 @@ msgstr ""
 msgid "Can't send video broadcast, user is not logged"
 msgstr ""
 
-#: ../extensions/videolan.py:147 ../extensions/videolan.py:365
+#: ../extensions/videolan.py:143 ../extensions/videolan.py:365
 msgid "Select audio/video file.."
 msgstr ""
 
-#: ../extensions/videolan.py:150 ../extensions/videolan.py:368
+#: ../extensions/videolan.py:146 ../extensions/videolan.py:368
 msgid "Play DVD"
 msgstr ""
 
-#: ../extensions/videolan.py:151 ../extensions/videolan.py:369
+#: ../extensions/videolan.py:147 ../extensions/videolan.py:369
 msgid "Play SVCD/VCD"
 msgstr ""
 
-#: ../extensions/videolan.py:152 ../extensions/videolan.py:370
+#: ../extensions/videolan.py:148 ../extensions/videolan.py:370
 msgid "Play AudioCD"
 msgstr ""
 
-#: ../extensions/videolan.py:179 ../extensions/videolan.py:398
+#: ../extensions/videolan.py:175 ../extensions/videolan.py:398
 #, python-format
 msgid ""
 "Not allowed white spaces in \"%s\".\n"
 "Please rename it."
 msgstr ""
 
-#: ../extensions/videolan.py:196 ../extensions/videolan.py:419
+#: ../extensions/videolan.py:192 ../extensions/videolan.py:419
 msgid "Waiting for start video transmission..."
 msgstr ""
 
-#: ../extensions/videolan.py:198 ../extensions/videolan.py:421
+#: ../extensions/videolan.py:194 ../extensions/videolan.py:421
 msgid ""
 "First select the DVD chapter or play movie\n"
 "then press enter to send clients..."
 msgstr ""
 
-#: ../extensions/videolan.py:204 ../extensions/videolan.py:427
-#: ../extensions/vnc.py:89 ../extensions/vnc.py:269
+#: ../extensions/videolan.py:200 ../extensions/videolan.py:427
+#: ../extensions/vnc.py:89 ../extensions/vnc.py:271
 msgid "Error while exec app"
 msgstr ""
 
-#: ../extensions/videolan.py:207
+#: ../extensions/videolan.py:203
 msgid "Lock keyboard and mouse on client?"
 msgstr ""
 
-#: ../extensions/videolan.py:230 ../extensions/videolan.py:459
+#: ../extensions/videolan.py:232 ../extensions/videolan.py:465
 msgid "Running in broadcast video transmission."
 msgstr ""
 
-#: ../extensions/videolan.py:232
+#: ../extensions/videolan.py:235
 #, python-format
-msgid "Running in broadcast video transmission to host %s"
+msgid ""
+"Running in broadcast video transmission to host %(host)s. Emission Nº %"
+"(count)d"
 msgstr ""
 
-#: ../extensions/videolan.py:271
+#: ../extensions/videolan.py:275
 msgid "Video broadcast stopped."
 msgstr ""
 
@@ -1390,8 +1402,9 @@ msgstr ""
 msgid "Lock keyboard and mouse on clients?"
 msgstr ""
 
-#: ../extensions/videolan.py:461
-msgid "Running in broadcast video transmission"
+#: ../extensions/videolan.py:468
+#, python-format
+msgid "Running in broadcast video transmission. Emission Nº %d"
 msgstr ""
 
 #: ../extensions/restartxorg.py:50
@@ -1413,7 +1426,7 @@ msgstr ""
 msgid "Do you want to restart X screens (only thin clients):%s?"
 msgstr ""
 
-#: ../extensions/italc.py:52 ../extensions/vnc.py:119
+#: ../extensions/italc.py:52 ../extensions/vnc.py:120
 msgid "No user logged."
 msgstr ""
 
@@ -1435,59 +1448,60 @@ msgstr ""
 msgid "Waiting for start demo mode..."
 msgstr ""
 
-#: ../extensions/vnc.py:107 ../extensions/vnc.py:288
+#: ../extensions/vnc.py:107 ../extensions/vnc.py:290
 #, python-format
 msgid "Running in demo mode with %s clients."
 msgstr ""
 
-#: ../extensions/vnc.py:111
-msgid "Running in demo mode from server"
+#: ../extensions/vnc.py:112
+#, python-format
+msgid "Running in demo mode from server. Emission Nº %d"
 msgstr ""
 
-#: ../extensions/vnc.py:133 ../extensions/vnc.py:230
+#: ../extensions/vnc.py:134 ../extensions/vnc.py:232
 #, python-format
 msgid "Connecting with %s to start VNC support"
 msgstr ""
 
-#: ../extensions/vnc.py:162
+#: ../extensions/vnc.py:163
 #, python-format
 msgid ""
 "Can't start VNC, error:\n"
 "%s"
 msgstr ""
 
-#: ../extensions/vnc.py:166
+#: ../extensions/vnc.py:167
 msgid "Waiting for start of VNC server..."
 msgstr ""
 
-#: ../extensions/vnc.py:193
+#: ../extensions/vnc.py:194
 msgid "Can't start VNC, please add X11VNC support"
 msgstr ""
 
-#: ../extensions/vnc.py:207
+#: ../extensions/vnc.py:208
 msgid "Can't start demo mode, user is not logged"
 msgstr ""
 
-#: ../extensions/vnc.py:210
+#: ../extensions/vnc.py:211
 #, python-format
 msgid "Do you want demo mode from %s?"
 msgstr ""
 
-#: ../extensions/vnc.py:216
+#: ../extensions/vnc.py:217 ../extensions/audiortp.py:127
 msgid "No clients selected, do you want to select all?"
 msgstr ""
 
-#: ../extensions/vnc.py:253
+#: ../extensions/vnc.py:255
 #, python-format
 msgid "Waiting for start demo mode from host %s..."
 msgstr ""
 
-#: ../extensions/vnc.py:296
+#: ../extensions/vnc.py:299
 #, python-format
-msgid "Running in demo mode from host %s..."
+msgid "Running in demo mode from host %(host)s. Emission Nº %(count)d"
 msgstr ""
 
-#: ../extensions/vnc.py:331
+#: ../extensions/vnc.py:335
 msgid "Demo mode off."
 msgstr ""
 
@@ -1563,26 +1577,75 @@ msgstr ""
 msgid "Send my MIC audio"
 msgstr ""
 
-#: ../extensions/audiortp.py:57
+#: ../extensions/audiortp.py:58
 #, python-format
 msgid "Do you want to start conference mode the following users:%s?"
 msgstr ""
 
-#: ../extensions/audiortp.py:80
+#: ../extensions/audiortp.py:85
 msgid "Waiting for start conference mode..."
 msgstr ""
 
-#: ../extensions/audiortp.py:92
+#: ../extensions/audiortp.py:100 ../extensions/audiortp.py:181
 #, python-format
 msgid "Running in conference mode with %s clients."
 msgstr ""
 
-#: ../extensions/audiortp.py:94
-msgid "Running in conference mode from server"
+#: ../extensions/audiortp.py:103
+#, python-format
+msgid "Running in conference mode from server. Emission Nº %d"
 msgstr ""
 
-#: ../extensions/audiortp.py:110
+#: ../extensions/audiortp.py:112
+msgid "Can't start conference mode, user is not logged"
+msgstr ""
+
+#: ../extensions/audiortp.py:118 ../extensions/audiortp.py:197
+msgid ""
+"Your pulseaudio server is too old.\n"
+"Is required pulseaudio version >= 0.9.10"
+msgstr ""
+
+#: ../extensions/audiortp.py:121
+#, python-format
+msgid "Do you want conference mode from %s?"
+msgstr ""
+
+#: ../extensions/audiortp.py:160
+#, python-format
+msgid "Waiting for start conference mode from host %s..."
+msgstr ""
+
+#: ../extensions/audiortp.py:184
+#, python-format
+msgid "Running in conference mode from host %(host)s. Emission Nº %(count)d"
+msgstr ""
+
+#: ../extensions/audiortp.py:200
+#, python-format
+msgid "Do you want to start chat conference mode the following users:%s?"
+msgstr ""
+
+#: ../extensions/audiortp.py:226
+msgid "Waiting for start chat conference mode..."
+msgstr ""
+
+#: ../extensions/audiortp.py:244
+#, python-format
+msgid "Running in chat conference mode with %s clients."
+msgstr ""
+
+#: ../extensions/audiortp.py:247
+#, python-format
+msgid "Running in chat conference mode. Emission Nº %d"
+msgstr ""
+
+#: ../extensions/audiortp.py:269
 msgid "Conference mode off."
+msgstr ""
+
+#: ../extensions/audiortp.py:282
+msgid "Chat conference mode off."
 msgstr ""
 
 #: ../TcosXmlRpc.py:75
@@ -1620,7 +1683,7 @@ msgstr ""
 msgid "GPL-2 license file not found"
 msgstr ""
 
-#: ../tcos-volume-manager.glade:9 ../tcos-volume-manager.py:216
+#: ../tcos-volume-manager.glade:9 ../tcos-volume-manager.py:217
 msgid "Tcos Volume Manager"
 msgstr ""
 
@@ -1657,7 +1720,7 @@ msgstr ""
 msgid "New settings saved."
 msgstr ""
 
-#: ../TcosPreferences.py:432 ../TcosExtensions.py:269
+#: ../TcosPreferences.py:432 ../TcosExtensions.py:272
 msgid "Stop"
 msgstr ""
 
@@ -1750,24 +1813,24 @@ msgstr ""
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr ""
 
-#: ../tcos-volume-manager.py:200
+#: ../tcos-volume-manager.py:201
 msgid "Loading channels info..."
 msgstr ""
 
-#: ../tcos-volume-manager.py:213
+#: ../tcos-volume-manager.py:214
 msgid "Error loading channels info (xauth error)"
 msgstr ""
 
-#: ../tcos-volume-manager.py:217
+#: ../tcos-volume-manager.py:218
 #, python-format
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr ""
 
-#: ../tcos-volume-manager.py:302
+#: ../tcos-volume-manager.py:303
 msgid "Main controls ready"
 msgstr ""
 
-#: ../tcos-volume-manager.py:306
+#: ../tcos-volume-manager.py:307
 msgid "All remote controls loaded."
 msgstr ""
 
@@ -1792,25 +1855,25 @@ msgstr ""
 msgid "Exception:"
 msgstr ""
 
-#: ../TcosExtensions.py:73
+#: ../TcosExtensions.py:76
 msgid "Error: no IP!"
 msgstr ""
 
-#: ../TcosExtensions.py:118
+#: ../TcosExtensions.py:121
 msgid "No clients connected, press refresh button."
 msgstr ""
 
-#: ../TcosExtensions.py:184 ../TcosExtensions.py:186
+#: ../TcosExtensions.py:187 ../TcosExtensions.py:189
 #, python-format
 msgid "Can't exec this action at '%s' because you are connected at this host!"
 msgstr ""
 
-#: ../TcosExtensions.py:200
+#: ../TcosExtensions.py:203
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr ""
 
-#: ../TcosExtensions.py:216
+#: ../TcosExtensions.py:219
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr ""

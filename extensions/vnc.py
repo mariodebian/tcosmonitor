@@ -108,7 +108,8 @@ class VNC(TcosExtension):
             #server_ip=self.main.xmlrpc.GetStandalone("get_server")
             #hostname=self.main.localdata.GetHostname(server_ip)
             # new mode Stop Button
-            self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":self.newallclients}, _("Running in demo mode from server") )
+            self.vnc_count+=1
+            self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":self.newallclients}, _("Running in demo mode from server. Emission Nº %d") %(self.vnc_count) )
         
 
     def vnc_simple(self, w, ip):
@@ -220,7 +221,8 @@ class VNC(TcosExtension):
             # get all clients connected
             self.allclients=self.main.localdata.allclients
             
-        if len(self.allclients) == 0: return
+        # Allow one client
+        # if len(self.allclients) == 0: return
         
         # force kill x11vnc in client
         self.main.xmlrpc.newhost(ip)
@@ -250,7 +252,7 @@ class VNC(TcosExtension):
         self.main.xmlrpc.vnc("genpass", ip, passwd )
         self.main.xmlrpc.vnc("startserver", ip )
         
-        self.main.write_into_statusbar( _("Waiting for start demo mode from host %s...") %(ip) )
+        self.main.write_into_statusbar( _("Waiting for start demo mode from host %s...") %(self.host) )
             
         # need to wait for start, PingPort loop
         from ping import PingPort
@@ -293,7 +295,8 @@ class VNC(TcosExtension):
             else:
                 p=subprocess.Popen(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
             # new mode for stop button
-            self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %s...") %(self.host) )
+            self.vnc_count+=1
+            self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %(host)s. Emission Nº %(count)d") %{"host":self.host, "count":self.vnc_count} )
 
 
     def on_progressbox_click(self, widget, args, box):
@@ -303,6 +306,7 @@ class VNC(TcosExtension):
         if not args['target']: return
         
         if args['target'] == "vnc":
+            self.vnc_count-=1
             if args['ip'] != "":
                 for client in args['allclients']:
                     self.main.localdata.newhost(client)
