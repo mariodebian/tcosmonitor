@@ -43,6 +43,7 @@ def print_debug(txt):
 
 class VNC(TcosExtension):
     def register(self):
+        self.vnc_count={}
         self.main.menus.register_simple( _("Connect to remote screen (VNC)"), "menu_remote.png", 1, self.vnc_simple, "vnc")
         self.main.menus.register_simple( _("Demo mode (from this host)") , "menu_tiza.png", 1, self.vnc_demo_simple, "demo")
         
@@ -108,8 +109,14 @@ class VNC(TcosExtension):
             #server_ip=self.main.xmlrpc.GetStandalone("get_server")
             #hostname=self.main.localdata.GetHostname(server_ip)
             # new mode Stop Button
-            self.vnc_count+=1
-            self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":self.newallclients}, _("Running in demo mode from server. Emission Nº %d") %(self.vnc_count) )
+            if len(self.vnc_count.keys()) != 0:
+                count=len(self.vnc_count.keys())-1
+                nextkey=self.vnc_count.keys()[count]+1
+                self.vnc_count[nextkey]=None
+            else:
+                nextkey=1
+                self.vnc_count[nextkey]=None
+            self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":self.newallclients, "key":nextkey}, _("Running in demo mode from server. Demo Nº %d") %(nextkey) )
         
 
     def vnc_simple(self, w, ip):
@@ -295,8 +302,14 @@ class VNC(TcosExtension):
             else:
                 p=subprocess.Popen(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
             # new mode for stop button
-            self.vnc_count+=1
-            self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients}, _("Running in demo mode from host %(host)s. Emission Nº %(count)d") %{"host":self.host, "count":self.vnc_count} )
+            if len(self.vnc_count.keys()) != 0:
+                count=len(self.vnc_count.keys())-1
+                nextkey=self.vnc_count.keys()[count]+1
+                self.vnc_count[nextkey]=None
+            else:
+                nextkey=1
+                self.vnc_count[nextkey]=None
+            self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients, "key":nextkey}, _("Running in demo mode from host %(host)s. Demo Nº %(count)d") %{"host":self.host, "count":nextkey} )
 
 
     def on_progressbox_click(self, widget, args, box):
@@ -306,7 +319,7 @@ class VNC(TcosExtension):
         if not args['target']: return
         
         if args['target'] == "vnc":
-            self.vnc_count-=1
+            del self.vnc_count[args['key']]
             if args['ip'] != "":
                 for client in args['allclients']:
                     self.main.localdata.newhost(client)

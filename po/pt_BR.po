@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-23 18:57+0200\n"
+"POT-Creation-Date: 2008-09-24 18:45+0200\n"
 "PO-Revision-Date: 2008-05-24 18:58+0200\n"
 "Last-Translator: Aécio dos Santos Pires <aecio@comunicacaodigital.org>\n"
 "Language-Team: Português/Brazil <pt_BR@li.org>\n"
@@ -473,7 +473,7 @@ msgstr "Desbloquear a tela"
 msgid "Connect to remote screen (iTALC)"
 msgstr "Conectar remotamente a um cliente (iTALC)"
 
-#: ../shared.py:281 ../extensions/vnc.py:46
+#: ../shared.py:281 ../extensions/vnc.py:47
 msgid "Connect to remote screen (VNC)"
 msgstr "Conectar a uma tela remota (VNC)"
 
@@ -509,8 +509,8 @@ msgstr "Enviar uma mensagem de texto ao usuário"
 msgid "Show running apps of this client"
 msgstr "Mostrar as aplicações executadas por este cliente"
 
-#: ../shared.py:290 ../shared.py:327 ../extensions/videolan.py:44
-#: ../extensions/videolan.py:45
+#: ../shared.py:290 ../shared.py:327 ../extensions/videolan.py:45
+#: ../extensions/videolan.py:46
 msgid "Audio/Video broadcast"
 msgstr "Difusão de aúdio/vídeo"
 
@@ -519,7 +519,7 @@ msgstr "Difusão de aúdio/vídeo"
 msgid "Send files"
 msgstr "Enviar arquivos"
 
-#: ../shared.py:292 ../extensions/vnc.py:47
+#: ../shared.py:292 ../extensions/vnc.py:48
 msgid "Demo mode (from this host)"
 msgstr "Modo demostração (a partir deste cliente)"
 
@@ -546,7 +546,7 @@ msgstr "Controle de energía do monitor DPMS"
 msgid "DPMS Power on monitor"
 msgstr "Controle de energía do monitor DPMS"
 
-#: ../shared.py:298 ../extensions/audiortp.py:48
+#: ../shared.py:298 ../extensions/audiortp.py:49
 #, fuzzy
 msgid "Send MIC audio (from this host)"
 msgstr "Modo demostração (a partir deste cliente)"
@@ -583,7 +583,7 @@ msgstr "Executar a mesma aplicação em todos os usuários conectados"
 msgid "Send a text message to all connected users"
 msgstr "Enviar uma mensagem de texto a todos os usuários conectados"
 
-#: ../shared.py:324 ../extensions/vnc.py:49
+#: ../shared.py:324 ../extensions/vnc.py:50
 msgid "Enter demo mode, all connected users see my screen"
 msgstr "Entrar no modo de demostração, todos os usuários verão a minha tela"
 
@@ -619,7 +619,7 @@ msgstr "Controle de energía do monitor DPMS"
 msgid "DPMS Power on monitors"
 msgstr "Controle de energía do monitor DPMS"
 
-#: ../shared.py:334 ../extensions/audiortp.py:47
+#: ../shared.py:334 ../extensions/audiortp.py:48
 #, fuzzy
 msgid "Chat audio conference"
 msgstr "Modo aúdio conferência"
@@ -1001,8 +1001,8 @@ msgstr ""
 "%(basenames)s"
 
 #: ../extensions/sendfiles.py:131 ../extensions/sendfiles.py:221
-#: ../extensions/reboot.py:108 ../extensions/videolan.py:228
-#: ../extensions/videolan.py:460
+#: ../extensions/reboot.py:108 ../extensions/videolan.py:229
+#: ../extensions/videolan.py:467
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
@@ -1020,11 +1020,11 @@ msgid "Files sent."
 msgstr "Arquivos enviados."
 
 #: ../extensions/sendfiles.py:146 ../extensions/tcosnetcontroller.py:123
-#: ../extensions/tcosnetcontroller.py:166 ../extensions/videolan.py:288
-#: ../extensions/vnc.py:58 ../extensions/vnc.py:103 ../extensions/vnc.py:286
-#: ../extensions/audiortp.py:55 ../extensions/audiortp.py:93
-#: ../extensions/audiortp.py:174 ../extensions/audiortp.py:191
-#: ../extensions/audiortp.py:236
+#: ../extensions/tcosnetcontroller.py:166 ../extensions/videolan.py:295
+#: ../extensions/vnc.py:59 ../extensions/vnc.py:104 ../extensions/vnc.py:293
+#: ../extensions/audiortp.py:56 ../extensions/audiortp.py:100
+#: ../extensions/audiortp.py:187 ../extensions/audiortp.py:210
+#: ../extensions/audiortp.py:255
 msgid "No users logged."
 msgstr "Não há usuários conectados."
 
@@ -1436,29 +1436,29 @@ msgstr "Quer iniciar o modo conferência aos seguintes usuários: %s?"
 msgid "Do you want enable internet to following users:%s?"
 msgstr "Quer desconectar os seguintes usuários: %s ?"
 
-#: ../extensions/videolan.py:57
+#: ../extensions/videolan.py:58
 msgid "Can't send video broadcast, user is not logged"
 msgstr ""
 "Não pode enviar a difusão de vídeo,\n"
 "o usuário não está conectado."
 
-#: ../extensions/videolan.py:143 ../extensions/videolan.py:365
+#: ../extensions/videolan.py:144 ../extensions/videolan.py:372
 msgid "Select audio/video file.."
 msgstr "Selecionar o arquivo de audio/vídeo ..."
 
-#: ../extensions/videolan.py:146 ../extensions/videolan.py:368
+#: ../extensions/videolan.py:147 ../extensions/videolan.py:375
 msgid "Play DVD"
 msgstr "Reproduzir o DVD"
 
-#: ../extensions/videolan.py:147 ../extensions/videolan.py:369
+#: ../extensions/videolan.py:148 ../extensions/videolan.py:376
 msgid "Play SVCD/VCD"
 msgstr "Reproduzir o SVCD/VCD"
 
-#: ../extensions/videolan.py:148 ../extensions/videolan.py:370
+#: ../extensions/videolan.py:149 ../extensions/videolan.py:377
 msgid "Play AudioCD"
 msgstr "Reproduzir o CD de aúdio"
 
-#: ../extensions/videolan.py:175 ../extensions/videolan.py:398
+#: ../extensions/videolan.py:176 ../extensions/videolan.py:405
 #, fuzzy, python-format
 msgid ""
 "Not allowed white spaces in \"%s\".\n"
@@ -1467,11 +1467,11 @@ msgstr ""
 "Não é permitido espaços no nome do arquivo %s.\n"
 "Por favor, renomei-o."
 
-#: ../extensions/videolan.py:192 ../extensions/videolan.py:419
+#: ../extensions/videolan.py:193 ../extensions/videolan.py:426
 msgid "Waiting for start video transmission..."
 msgstr "Aguardando o boot do modo difusão de vídeo ..."
 
-#: ../extensions/videolan.py:194 ../extensions/videolan.py:421
+#: ../extensions/videolan.py:195 ../extensions/videolan.py:428
 msgid ""
 "First select the DVD chapter or play movie\n"
 "then press enter to send clients..."
@@ -1479,37 +1479,37 @@ msgstr ""
 "Primeiro selecione o capítulo do DVD ou reproduza o vídeo.\n"
 "Depois, pressione «enter» para enviá-lo aos clientes ..."
 
-#: ../extensions/videolan.py:200 ../extensions/videolan.py:427
-#: ../extensions/vnc.py:89 ../extensions/vnc.py:271
+#: ../extensions/videolan.py:201 ../extensions/videolan.py:434
+#: ../extensions/vnc.py:90 ../extensions/vnc.py:278
 msgid "Error while exec app"
 msgstr "Erro quando executava a aplicação"
 
-#: ../extensions/videolan.py:203
+#: ../extensions/videolan.py:204
 msgid "Lock keyboard and mouse on client?"
 msgstr "Bloquear o teclado e mouse do cliente?"
 
-#: ../extensions/videolan.py:232 ../extensions/videolan.py:465
+#: ../extensions/videolan.py:233 ../extensions/videolan.py:472
 msgid "Running in broadcast video transmission."
 msgstr "Modo difusão de vídeo ativado."
 
-#: ../extensions/videolan.py:235
+#: ../extensions/videolan.py:242
 #, fuzzy, python-format
 msgid ""
-"Running in broadcast video transmission to host %(host)s. Emission Nº %"
+"Running in broadcast video transmission to host %(host)s. Broadcast Nº %"
 "(count)d"
 msgstr "Executando o modo de difusão de vídeo no cliente %s"
 
-#: ../extensions/videolan.py:275
+#: ../extensions/videolan.py:282
 msgid "Video broadcast stopped."
 msgstr "Difusão de vídeo parada."
 
-#: ../extensions/videolan.py:430
+#: ../extensions/videolan.py:437
 msgid "Lock keyboard and mouse on clients?"
 msgstr "Bloquear o teclado e mouse nos clientes?"
 
-#: ../extensions/videolan.py:468
+#: ../extensions/videolan.py:481
 #, fuzzy, python-format
-msgid "Running in broadcast video transmission. Emission Nº %d"
+msgid "Running in broadcast video transmission. Broadcast Nº %d"
 msgstr "Modo difusão de vídeo ativado."
 
 #: ../extensions/restartxorg.py:50
@@ -1533,7 +1533,7 @@ msgstr ""
 "Quer reiniciar as sessões X dos seguintes clientes (somente thin clients): %"
 "s?"
 
-#: ../extensions/italc.py:52 ../extensions/vnc.py:120
+#: ../extensions/italc.py:52 ../extensions/vnc.py:127
 msgid "No user logged."
 msgstr "Usuário não conectado."
 
@@ -1546,31 +1546,31 @@ msgstr "Não pôde iniciar o processo IVS. Adicione o suporte ao iTALC."
 msgid "%s is not supported to personalize!"
 msgstr "¡%s não há suporte para personalizar!"
 
-#: ../extensions/vnc.py:61
+#: ../extensions/vnc.py:62
 #, python-format
 msgid "Do you want to start demo mode the following users:%s?"
 msgstr "Quer iniciar o modo demostração aos seguintes usuários: %s ?"
 
-#: ../extensions/vnc.py:73
+#: ../extensions/vnc.py:74
 msgid "Waiting for start demo mode..."
 msgstr "Aguardando o início do modo demostração ..."
 
-#: ../extensions/vnc.py:107 ../extensions/vnc.py:290
+#: ../extensions/vnc.py:108 ../extensions/vnc.py:297
 #, python-format
 msgid "Running in demo mode with %s clients."
 msgstr "Executando no modo demostração com %s cliente(s)."
 
-#: ../extensions/vnc.py:112
+#: ../extensions/vnc.py:119
 #, fuzzy, python-format
-msgid "Running in demo mode from server. Emission Nº %d"
+msgid "Running in demo mode from server. Demo Nº %d"
 msgstr "Executando-se no modo demostração a partir do servidor ..."
 
-#: ../extensions/vnc.py:134 ../extensions/vnc.py:232
+#: ../extensions/vnc.py:141 ../extensions/vnc.py:239
 #, python-format
 msgid "Connecting with %s to start VNC support"
 msgstr "Conectando a %s para iniciar o suporte ao VNC."
 
-#: ../extensions/vnc.py:163
+#: ../extensions/vnc.py:170
 #, python-format
 msgid ""
 "Can't start VNC, error:\n"
@@ -1579,40 +1579,40 @@ msgstr ""
 "Não pôde iniciar o VNC, erro:\n"
 "%s"
 
-#: ../extensions/vnc.py:167
+#: ../extensions/vnc.py:174
 msgid "Waiting for start of VNC server..."
 msgstr "Aguardando o início do servidor VNC ..."
 
-#: ../extensions/vnc.py:194
+#: ../extensions/vnc.py:201
 msgid "Can't start VNC, please add X11VNC support"
 msgstr "Não pôde iniciar o VNC, por favor adicione o suporte ao X11VNC."
 
-#: ../extensions/vnc.py:208
+#: ../extensions/vnc.py:215
 msgid "Can't start demo mode, user is not logged"
 msgstr ""
 "Não pôde arrancar no modo demostração,\n"
 "o usuário não está conectado."
 
-#: ../extensions/vnc.py:211
+#: ../extensions/vnc.py:218
 #, python-format
 msgid "Do you want demo mode from %s?"
 msgstr "Quer iniciar o modo demostração do %s?"
 
-#: ../extensions/vnc.py:217 ../extensions/audiortp.py:127
+#: ../extensions/vnc.py:224 ../extensions/audiortp.py:140
 msgid "No clients selected, do you want to select all?"
 msgstr "Não foi selecionado nenhum cliente, quer selecionar todos?"
 
-#: ../extensions/vnc.py:255
+#: ../extensions/vnc.py:262
 #, python-format
 msgid "Waiting for start demo mode from host %s..."
 msgstr "Aguardando o início do modo demostração a partir do %s ..."
 
-#: ../extensions/vnc.py:299
+#: ../extensions/vnc.py:312
 #, fuzzy, python-format
-msgid "Running in demo mode from host %(host)s. Emission Nº %(count)d"
+msgid "Running in demo mode from host %(host)s. Demo Nº %(count)d"
 msgstr "Executando no modo demostração a partir do cliente %s ..."
 
-#: ../extensions/vnc.py:335
+#: ../extensions/vnc.py:348
 msgid "Demo mode off."
 msgstr "Modo demostração desativado."
 
@@ -1694,82 +1694,83 @@ msgstr ""
 "Erro a fechar a aplicação:\n"
 "Motivo: %s"
 
-#: ../extensions/audiortp.py:46
+#: ../extensions/audiortp.py:47
 msgid "Send my MIC audio"
 msgstr ""
 
-#: ../extensions/audiortp.py:58
+#: ../extensions/audiortp.py:62 ../extensions/audiortp.py:131
+#: ../extensions/audiortp.py:216
+msgid ""
+"Your pulseaudio server is too old.\n"
+"Is required pulseaudio version >= 0.9.10"
+msgstr ""
+
+#: ../extensions/audiortp.py:65
 #, python-format
 msgid "Do you want to start conference mode the following users:%s?"
 msgstr "Quer iniciar o modo conferência aos seguintes usuários: %s?"
 
-#: ../extensions/audiortp.py:85
+#: ../extensions/audiortp.py:92
 msgid "Waiting for start conference mode..."
 msgstr "Aguardando o início do modo confêrencia ..."
 
-#: ../extensions/audiortp.py:100 ../extensions/audiortp.py:181
+#: ../extensions/audiortp.py:107 ../extensions/audiortp.py:194
 #, python-format
 msgid "Running in conference mode with %s clients."
 msgstr "Executando o modo conferência com %s clientes."
 
-#: ../extensions/audiortp.py:103
+#: ../extensions/audiortp.py:116
 #, fuzzy, python-format
-msgid "Running in conference mode from server. Emission Nº %d"
+msgid "Running in conference mode from server. Conference Nº %d"
 msgstr "Executando o modo conferência a partir do servidor ..."
 
-#: ../extensions/audiortp.py:112
+#: ../extensions/audiortp.py:125
 #, fuzzy
 msgid "Can't start conference mode, user is not logged"
 msgstr ""
 "Não pôde arrancar no modo demostração,\n"
 "o usuário não está conectado."
 
-#: ../extensions/audiortp.py:118 ../extensions/audiortp.py:197
-msgid ""
-"Your pulseaudio server is too old.\n"
-"Is required pulseaudio version >= 0.9.10"
-msgstr ""
-
-#: ../extensions/audiortp.py:121
+#: ../extensions/audiortp.py:134
 #, fuzzy, python-format
 msgid "Do you want conference mode from %s?"
 msgstr "Quer iniciar o modo demostração do %s?"
 
-#: ../extensions/audiortp.py:160
+#: ../extensions/audiortp.py:173
 #, fuzzy, python-format
 msgid "Waiting for start conference mode from host %s..."
 msgstr "Aguardando o início do modo demostração a partir do %s ..."
 
-#: ../extensions/audiortp.py:184
+#: ../extensions/audiortp.py:203
 #, fuzzy, python-format
-msgid "Running in conference mode from host %(host)s. Emission Nº %(count)d"
+msgid "Running in conference mode from host %(host)s. Conference Nº %(count)d"
 msgstr "Executando o modo conferência a partir do servidor ..."
 
-#: ../extensions/audiortp.py:200
+#: ../extensions/audiortp.py:219
 #, fuzzy, python-format
 msgid "Do you want to start chat conference mode the following users:%s?"
 msgstr "Quer iniciar o modo conferência aos seguintes usuários: %s?"
 
-#: ../extensions/audiortp.py:226
+#: ../extensions/audiortp.py:245
 #, fuzzy
 msgid "Waiting for start chat conference mode..."
 msgstr "Aguardando o início do modo confêrencia ..."
 
-#: ../extensions/audiortp.py:244
+#: ../extensions/audiortp.py:263
 #, fuzzy, python-format
 msgid "Running in chat conference mode with %s clients."
 msgstr "Executando o modo conferência com %s clientes."
 
-#: ../extensions/audiortp.py:247
+#: ../extensions/audiortp.py:272
 #, fuzzy, python-format
-msgid "Running in chat conference mode. Emission Nº %d"
+msgid "Running in chat conference mode. Conference Nº %d"
 msgstr "Executando o modo conferência a partir do servidor ..."
 
-#: ../extensions/audiortp.py:269
+#: ../extensions/audiortp.py:294
 msgid "Conference mode off."
 msgstr "Modo conferência desativado."
 
-#: ../extensions/audiortp.py:282
+#: ../extensions/audiortp.py:307
 #, fuzzy
 msgid "Chat conference mode off."
 msgstr "Modo conferência desativado."
@@ -1857,7 +1858,7 @@ msgstr ""
 msgid "New settings saved."
 msgstr "Configuração salva."
 
-#: ../TcosPreferences.py:432 ../TcosExtensions.py:272
+#: ../TcosPreferences.py:432 ../TcosExtensions.py:269
 msgid "Stop"
 msgstr "Parar"
 
@@ -1998,25 +1999,25 @@ msgstr "Conectando a %s..."
 msgid "Exception:"
 msgstr "Extensões"
 
-#: ../TcosExtensions.py:76
+#: ../TcosExtensions.py:73
 msgid "Error: no IP!"
 msgstr ""
 
-#: ../TcosExtensions.py:121
+#: ../TcosExtensions.py:118
 msgid "No clients connected, press refresh button."
 msgstr "Não foi encontrado nenhum cliente, clique no botão atualizar."
 
-#: ../TcosExtensions.py:187 ../TcosExtensions.py:189
+#: ../TcosExtensions.py:184 ../TcosExtensions.py:186
 #, fuzzy, python-format
 msgid "Can't exec this action at '%s' because you are connected at this host!"
 msgstr "Não pôde executar esta ação porque você está conectado a este cliente!"
 
-#: ../TcosExtensions.py:203
+#: ../TcosExtensions.py:200
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr "Realizando a ação \"%(action)s\" no cliente %(ip)s ..."
 
-#: ../TcosExtensions.py:219
+#: ../TcosExtensions.py:216
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr "Ação \"%(action)s\" terminada em %(ip)s"

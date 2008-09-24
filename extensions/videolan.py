@@ -41,6 +41,7 @@ def print_debug(txt):
 
 class VideoOne(TcosExtension):
     def register(self):
+        self.vlc_count={}
         self.main.menus.register_simple( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_one, "video")
         self.main.menus.register_all( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_all, "video")
         
@@ -231,8 +232,14 @@ class VideoOne(TcosExtension):
             
             self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
             # new mode to Stop Button
-            self.vlc_count+=1
-            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":self.newallclients, "ip":uip_cmd, "iface":eth}, _("Running in broadcast video transmission to host %(host)s. Emission Nº %(count)d") %{"host":ip, "count":self.vlc_count} )
+            if len(self.vlc_count.keys()) != 0:
+                count=len(self.vlc_count.keys())-1
+                nextkey=self.vlc_count.keys()[count]+1
+                self.vlc_count[nextkey]=uip_cmd
+            else:
+                nextkey=1
+                self.vlc_count[nextkey]=uip_cmd
+            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":self.newallclients, "ip":uip_cmd, "iface":eth, "key":nextkey}, _("Running in broadcast video transmission to host %(host)s. Broadcast Nº %(count)d") %{"host":ip, "count":nextkey} )
         else:
             dialog.destroy()
 
@@ -243,7 +250,7 @@ class VideoOne(TcosExtension):
         if not args['target']: return
         
         if args['target'] == "vlc":
-            self.vlc_count-=1
+            del self.vlc_count[args['key']]
             if args['ip'] != "":
                 result = self.main.localdata.Route("route-del", args['ip'], "255.255.255.0", args['iface'])
                 if result == "error":
@@ -464,8 +471,14 @@ class VideoOne(TcosExtension):
                 
             self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
             # new mode Stop Button
-            self.vlc_count+=1
-            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": self.newallclients, "ip":uip_cmd, "iface":eth}, _("Running in broadcast video transmission. Emission Nº %d") %(self.vlc_count) )
+            if len(self.vlc_count.keys()) != 0:
+                count=len(self.vlc_count.keys())-1
+                nextkey=self.vlc_count.keys()[count]+1
+                self.vlc_count[nextkey]=uip_cmd
+            else:
+                nextkey=1
+                self.vlc_count[nextkey]=uip_cmd
+            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": self.newallclients, "ip":uip_cmd, "iface":eth, "key":nextkey}, _("Running in broadcast video transmission. Broadcast Nº %d") %(nextkey) )
         else:
             dialog.destroy()
 

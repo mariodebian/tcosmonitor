@@ -43,6 +43,7 @@ def print_debug(txt):
 
 class AudioRTP(TcosExtension):
     def register(self):
+        self.rtp_count={}
         self.main.menus.register_all( _("Send my MIC audio") , "menu_rtp.png", 2, self.rtp_all, "conference")
         self.main.menus.register_all( _("Chat audio conference") , "menu_rtp.png", 2, self.rtp_chat, "conference")
         self.main.menus.register_simple( _("Send MIC audio (from this host)") , "menu_rtp.png", 2, self.rtp_simple, "conference")
@@ -53,6 +54,12 @@ class AudioRTP(TcosExtension):
         # conference mode
         if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
             shared.error_msg( _("No users logged.") )
+            return
+
+        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
+        output=self.main.common.exe_cmd(cmd)
+        if output != "1":
+            shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
             return
         
         msg=_( _("Do you want to start conference mode the following users:%s?" )%(self.newallclients_txt) )
@@ -99,8 +106,14 @@ class AudioRTP(TcosExtension):
         else:
             self.main.write_into_statusbar( _("Running in conference mode with %s clients.") %(total) )
             # new mode Stop Button
-            self.rtp_count+=1
-            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":self.newallclients, "ip":"", "ip_broadcast":ip_broadcast, "iface":eth}, _("Running in conference mode from server. Emission Nº %d") %(self.rtp_count) )
+            if len(self.rtp_count.keys()) != 0:
+                count=len(self.rtp_count.keys())-1
+                nextkey=self.rtp_count.keys()[count]+1
+                self.rtp_count[nextkey]=ip_broadcast
+            else:
+                nextkey=1
+                self.rtp_count[nextkey]=ip_broadcast
+            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":self.newallclients, "ip":"", "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in conference mode from server. Conference Nº %d") %(nextkey) )
 
 
     def rtp_simple(self, widget, ip):
@@ -112,7 +125,7 @@ class AudioRTP(TcosExtension):
             shared.error_msg( _("Can't start conference mode, user is not logged") )
             return
         
-        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version | awk '{print $2}' | awk -F\".\" '{if (($2 >= 9) && ($3 >= 10)) printf 1}'")
+        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
         output=self.main.common.exe_cmd(cmd)
         if output != "1":
             shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
@@ -173,15 +186,21 @@ class AudioRTP(TcosExtension):
         if total < 1:
             self.main.write_into_statusbar( _("No users logged.") )
             self.main.common.exe_cmd("pactl unload-module %s" %output)
-            self.main.xmlrpc.rtp("stoprtp-send", ip, ip_broadcast )
+            self.main.xmlrpc.rtp("stoprtp-send", ip )
             result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.0", eth)
             if result == "error":
                 print_debug("Del multicast-ip route failed")
         else:
             self.main.write_into_statusbar( _("Running in conference mode with %s clients.") %(total) )
             # new mode Stop Button
-            self.rtp_count+=1
-            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":newallclients, "ip":ip, "ip_broadcast":ip_broadcast, "iface":eth}, _("Running in conference mode from host %(host)s. Emission Nº %(count)d") %{"host":self.host, "count":self.rtp_count} )
+            if len(self.rtp_count.keys()) != 0:
+                count=len(self.rtp_count.keys())-1
+                nextkey=self.rtp_count.keys()[count]+1
+                self.rtp_count[nextkey]=ip_broadcast
+            else:
+                nextkey=1
+                self.rtp_count[nextkey]=ip_broadcast
+            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":newallclients, "ip":ip, "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in conference mode from host %(host)s. Conference Nº %(count)d") %{"host":self.host, "count":nextkey} )
 
     def rtp_chat(self, *args):
         if not self.get_all_clients():
@@ -191,7 +210,7 @@ class AudioRTP(TcosExtension):
             shared.error_msg( _("No users logged.") )
             return
 
-        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version | awk '{print $2}' | awk -F\".\" '{if (($2 >= 9) && ($3 >= 10)) printf 1}'")
+        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
         output=self.main.common.exe_cmd(cmd)
         if output != "1":
             shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
@@ -243,8 +262,14 @@ class AudioRTP(TcosExtension):
         else:
             self.main.write_into_statusbar( _("Running in chat conference mode with %s clients.") %(total) )
             # new mode Stop Button
-            self.rtp_count+=1
-            self.add_progressbox( {"target": "rtp-chat", "pid_send":output_send, "pid_recv":output_recv, "allclients":self.newallclients, "ip":"", "ip_broadcast":ip_broadcast, "iface":eth}, _("Running in chat conference mode. Emission Nº %d") %(self.rtp_count) )
+            if len(self.rtp_count.keys()) != 0:
+                count=len(self.rtp_count.keys())-1
+                nextkey=self.rtp_count.keys()[count]+1
+                self.rtp_count[nextkey]=ip_broadcast
+            else:
+                nextkey=1
+                self.rtp_count[nextkey]=ip_broadcast
+            self.add_progressbox( {"target": "rtp-chat", "pid_send":output_send, "pid_recv":output_recv, "allclients":self.newallclients, "ip":"", "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in chat conference mode. Conference Nº %d") %(nextkey) )
 
 
     def on_progressbox_click(self, widget, args, box):
@@ -255,7 +280,7 @@ class AudioRTP(TcosExtension):
             return
         
         if args['target'] == "rtp":
-            self.rtp_count-=1
+            del self.rtp_count[args['key']]
             if args['ip_broadcast'] != "":
                 result = self.main.localdata.Route("route-del", args['ip_broadcast'], "255.255.255.0", args['iface'])
                 if result == "error":
@@ -269,7 +294,7 @@ class AudioRTP(TcosExtension):
             self.main.write_into_statusbar( _("Conference mode off.") )
         
         if args['target'] == "rtp-chat":
-            self.rtp_count-=1
+            del self.rtp_count[args['key']]
             if args['ip_broadcast'] != "":
                 result = self.main.localdata.Route("route-del", args['ip_broadcast'], "255.255.255.0", args['iface'])
                 if result == "error":
