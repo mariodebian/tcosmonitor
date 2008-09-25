@@ -16,12 +16,16 @@ tcosmonitor (0.2.16~rc9) unstable; urgency=low
     - Update get sound channels on refresh
   * po/*
     - Update translations (spanish and template)
+  * TcosPreferences.py:
+    - Show menus compatibility with old user conf
+  * TcosConf.py:
+    - Create conf file if is empy to avoid problems
 
   [ Mario Izquierdo (mariodebian) ]
   * Fix __import__ in python < 2.5
-  * Fix props.has_tooltip in gtk old versions 
+  * Fix props.has_tooltip in gtk old versions
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 25 Sep 2008 14:19:42 +0200
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Thu, 25 Sep 2008 15:19:54 +0200
 
 tcosmonitor (0.2.16~rc8) unstable; urgency=low
 

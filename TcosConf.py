@@ -113,9 +113,28 @@ class TcosConf:
         return
     
     def CheckConfFile(self):
+        conf=None
+        conf=[]
         if not os.path.isfile(shared.config_file):
             print_debug ( "CheckConfFile() %s not exists" %(shared.config_file) )
             self.CreateConfFile()
+            return
+        
+        try:
+            fd=file(shared.config_file, 'r')
+        except Exception, err:
+            print("Error Opening %s file, error=%s"%(shared.config_file, err) )
+            return
+        self.data=fd.readlines()
+        fd.close()
+        for line in self.data:
+            if line != '\n':
+                line=line.replace('\n', '')
+                conf.append(line)
+        if len(conf) <1:
+            print_debug ( "CheckConfFile() FILE IS EMPTY!!!" )
+            self.CreateConfFile()
+            return
         
     def CreateConfFile(self):
         print_debug ( "CreateConfFile()" )

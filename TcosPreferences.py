@@ -198,7 +198,9 @@ class TcosPreferences:
             pref_name=menu.replace('ck_menu_', '')
             widget=getattr(self.main, "pref_" + menu)
             if widget.get_active():
-                visible_menus.append(pref_name)
+                visible_menus.append("%s:1" %pref_name)
+            else:
+                visible_menus.append("%s:0" %pref_name)
         # convert array into string separated by comas
         self.main.config.SetVar("visible_menus", ",".join(visible_menus) )
         
@@ -348,9 +350,15 @@ class TcosPreferences:
                     #widget.set_active(shared.preferences_menus[menu][0])
                     #visible_menu_items.append(menu)
                     #continue
-                    visible_menus.append(pref_name)
+                    visible_menus.append("%s:1" %pref_name)
                 
-            if pref_name in visible_menus:
+            if "%s:1" %pref_name in visible_menus or pref_name in visible_menus:
+                widget.set_active(1)
+                visible_menu_items.append(menu)
+                self.visible_menu_items["names"].append(pref_name)
+            elif "%s:0" %pref_name in visible_menus:
+                widget.set_active(0)
+            elif pref_name not in visible_menus and shared.preferences_menus[menu][0] != False:
                 widget.set_active(1)
                 visible_menu_items.append(menu)
                 self.visible_menu_items["names"].append(pref_name)

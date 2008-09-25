@@ -241,10 +241,15 @@ class AudioRTP(TcosExtension):
         if result == "error":
             print_debug("Add multicast-ip route failed")
             return
-
+        
         self.main.write_into_statusbar( _("Waiting for start chat conference mode...") )
-        output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send destination=%s rate=11025 channels=2 port=1234" %ip_broadcast)
-        output_recv = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %ip_broadcast)
+
+        output_send=""
+        output_recv=""
+        msg=_( "Do you want connect to this chat conference now?" )
+        if shared.ask_msg ( msg ):
+            output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send destination=%s rate=11025 channels=2 port=1234" %ip_broadcast)
+            output_recv = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %ip_broadcast)
                     
         total=0
         for client in self.newallclients:
@@ -254,8 +259,9 @@ class AudioRTP(TcosExtension):
         if total < 1:
             self.main.write_into_statusbar( _("No users logged.") )
             # kill x11vnc
-            self.main.common.exe_cmd("pactl unload-module %s" %output_send)
-            self.main.common.exe_cmd("pactl unload-module %s" %output_recv)
+            if output_send != "" or output_recv != "":
+                self.main.common.exe_cmd("pactl unload-module %s" %output_send)
+                self.main.common.exe_cmd("pactl unload-module %s" %output_recv)
             result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.0", eth)
             if result == "error":
                 print_debug("Del multicast-ip route failed")
@@ -301,7 +307,7 @@ class AudioRTP(TcosExtension):
                     print_debug("Del multicast-ip route failed")
             for client in args['allclients']:
                 self.main.xmlrpc.rtp("stoprtp-chat", client)
-            if "pid_send" in args and "pid_recv" in args:
+            if args['pid_send'] != "" or args['pid_recv'] != "":
                 self.main.common.exe_cmd("pactl unload-module %s" %args['pid_send'])
                 self.main.common.exe_cmd("pactl unload-module %s" %args['pid_recv'])
             self.main.write_into_statusbar( _("Chat conference mode off.") )
