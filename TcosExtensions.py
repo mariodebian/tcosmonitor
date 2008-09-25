@@ -24,6 +24,7 @@
 
 import shared
 import os
+import sys
 import exceptions
 from gettext import gettext as _
 import gtk
@@ -314,7 +315,10 @@ class TcosExtLoader(object):
     def register_extension(self, ext):
         #print_debug("register_extension() ext=%s"%ext)
         try:
-            tmp=__import__('extensions.' + ext, fromlist=['extensions'])
+            if sys.version_info[0:3] < (2, 5, 0):
+                tmp=__import__('extensions.' + ext,  globals(), locals(), ['extensions'])
+            else:
+                tmp=__import__('extensions.' + ext, fromlist=['extensions'])
         except Exception, err:
             if shared.debug:
                 raise Error, "register_extension() EXCEPTION registering '%s', error=%s" % (ext, err)

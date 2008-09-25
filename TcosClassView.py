@@ -231,7 +231,8 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         iconview.set_model(model)
         iconview.set_text_column(0)
         iconview.set_pixbuf_column(2)
-        iconview.props.has_tooltip = True
+        if hasattr(iconview.props, 'has_tooltip'):
+            iconview.props.has_tooltip = True
         
             
         model.append([data['hostname'], data['ip'], pixbuf])

@@ -61,7 +61,8 @@ class TcosIconView(object):
         self.iconview.set_text_column(0)
         self.iconview.set_pixbuf_column(2)
         
-        self.iconview.props.has_tooltip = True
+        if hasattr(self.iconview.props, 'has_tooltip'):
+            self.iconview.props.has_tooltip = True
         self.iconview.connect("motion-notify-event", self.on_iconview_event)
         self.iconview.connect("button_press_event", self.on_iconview_click)
 

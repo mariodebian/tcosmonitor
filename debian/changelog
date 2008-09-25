@@ -17,7 +17,11 @@ tcosmonitor (0.2.16~rc9) unstable; urgency=low
   * po/*
     - Update translations (spanish and template)
 
- -- Ignacio Vidal <vidal_joshur@gva.es>  Tue, 23 Sep 2008 18:57:36 +0200
+  [ Mario Izquierdo (mariodebian) ]
+  * Fix __import__ in python < 2.5
+  * Fix props.has_tooltip in gtk old versions 
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 25 Sep 2008 14:19:42 +0200
 
 tcosmonitor (0.2.16~rc8) unstable; urgency=low
 
