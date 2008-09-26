@@ -329,12 +329,19 @@ class TcosPreferences:
         # menus show hide
         visible_menus=[]
         visible_menu_items=[]
+        visible_menu_keys={}
         first_run=False
         
         visible_menus_txt=self.main.config.GetVar("visible_menus")
         if visible_menus_txt != "":
             print_debug("visible_menus is not empty")
             visible_menus=visible_menus_txt.split(',')
+            for item in visible_menus:
+                item = item.split(":")
+                if len(item) == 1:
+                    visible_menu_keys[item[0]]="1"
+                else:
+                    visible_menu_keys[item[0]]=item[1]                    
         else:
             first_run=self.main.config.IsNew("visible_menus")
             first_run=True
@@ -350,15 +357,17 @@ class TcosPreferences:
                     #widget.set_active(shared.preferences_menus[menu][0])
                     #visible_menu_items.append(menu)
                     #continue
-                    visible_menus.append("%s:1" %pref_name)
+                    #visible_menus.append("%s:1" %pref_name)
+                    visible_menu_keys[pref_name]="1"
                 
-            if "%s:1" %pref_name in visible_menus or pref_name in visible_menus:
-                widget.set_active(1)
-                visible_menu_items.append(menu)
-                self.visible_menu_items["names"].append(pref_name)
-            elif "%s:0" %pref_name in visible_menus:
-                widget.set_active(0)
-            elif pref_name not in visible_menus and shared.preferences_menus[menu][0] != False:
+            if pref_name in visible_menu_keys.keys():
+                if visible_menu_keys[pref_name] == "1":
+                    widget.set_active(1)
+                    visible_menu_items.append(menu)
+                    self.visible_menu_items["names"].append(pref_name)
+                elif visible_menu_keys[pref_name] == "0":
+                    widget.set_active(0)
+            elif pref_name not in visible_menu_keys.keys() and shared.preferences_menus[menu][0] != False:
                 widget.set_active(1)
                 visible_menu_items.append(menu)
                 self.visible_menu_items["names"].append(pref_name)
