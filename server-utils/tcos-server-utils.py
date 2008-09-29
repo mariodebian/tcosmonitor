@@ -38,12 +38,9 @@ if os.geteuid() != 0:
 
 
 
-if not os.path.isfile("shared.py"):
-        sys.path.append('/usr/share/tcosmonitor')
-else:
-        sys.path.append('./')
+from tcosmonitor import shared
 
-import shared
+
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" %("tcos-server-utils", txt)
@@ -110,12 +107,12 @@ class ServerUtils:
         self.worker_running = False
         
         # get all devices
-        import TcosCommon
-        import TcosXmlRpc
-        import TcosConf
-        self.common=TcosCommon.TcosCommon(self)
-        self.config=TcosConf.TcosConf(self)
-        self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
+        import tcosmonitor.TcosCommon
+        import tcosmonitor.TcosXmlRpc
+        import tcosmonitor.TcosConf
+        self.common=tcosmonitor.TcosCommon.TcosCommon(self)
+        self.config=tcosmonitor.TcosConf.TcosConf(self)
+        self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
         
         
         if self.config.GetVar("xmlrpc_username") == "" or self.config.GetVar("xmlrpc_password") == "":
@@ -123,8 +120,8 @@ class ServerUtils:
             print "                         see /usr/share/doc/tcosmonitor/README.tcos-server-utils"
             sys.exit(1)
         
-        import LocalData
-        self.localdata=LocalData.LocalData(self)
+        import tcosmonitor.LocalData
+        self.localdata=tcosmonitor.LocalData.LocalData(self)
         
         self.allclients=self.localdata.GetAllClients("netstat")
         self.alltcosclients=[]
@@ -160,7 +157,7 @@ class ServerUtils:
                 
                     print ( "Connected users: %s" %connected_users)
                         
-                from TcosDBus import TcosDBusAction
+                from tcosmonitor.TcosDBus import TcosDBusAction
                 self.dbus_action=TcosDBusAction( self, \
                     admin=self.config.GetVar("xmlrpc_username"), \
                     passwd=self.config.GetVar("xmlrpc_password") )

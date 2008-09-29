@@ -17,11 +17,12 @@ dist-clean:
 	
 
 clean:
-	rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup
+	rm -rf tmp build
+	rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup *gladep
+	cd tcosmonitor && rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup
 	cd po && make clean
-	$(MAKE) -f Makefile.ltsp clean
 	cd dbus && $(MAKE) clean
-	cd extensions && $(MAKE) clean
+	cd tcosmonitor/extensions && $(MAKE) clean
 
 
 glade:
@@ -32,13 +33,7 @@ fix-glade:
 	bash fix-glade.sh
 
 exec:
-	python2.4 $(PACKAGE).py --debug
-
-gedit:
-	gedit *.py >/dev/null 2>&1 &
-
-gedit-cvs:
-	gedit-cvs *.py >/dev/null 2>&1 &
+	python $(PACKAGE).py --debug
 
 pot:
 	cd po && make pot
@@ -48,9 +43,6 @@ es.po:
 	#   OBSOLETE Makefile target => cd po and make into it     #
 	############################################################
 	@exit 1
-
-es.gmo: es.po
-
 
 dbus:
 	cd dbus && $(MAKE)
@@ -119,34 +111,6 @@ install:
 	# extensions
 	cd extensions && $(MAKE) install PREFIX=$(PREFIX) DESTDIR=$(DESTDIR)
 
-install-pxes1.0:
-	@echo "Making pxes-1.0"
-	@$(MAKE) -f Makefile.pxes PXES_VERSION=1.0 install
-
-install-pxes1.1:
-	@echo "Making pxes-1.1"
-	@$(MAKE) -f Makefile.pxes PXES_VERSION=1.1 install
-	
-install-pxes1.2:
-	@echo "Making pxes-1.2"
-	@$(MAKE) -f Makefile.pxes PXES_VERSION=1.2 install
-
-install-ltsp:
-	@echo "Making ltsp"
-	@$(MAKE) -f Makefile.ltsp install
-
-install-tcos:
-	install -d $(DESTDIR)/etc/tcos
-	install -d $(DESTDIR)/$(PREFIX)/sbin
-	install -d $(DESTDIR)/$(PREFIX)/bin
-	install -d $(DESTDIR)/$(TCOS_DIR)/bin
-	install -d $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/xmlrpc/
-
-#	# install tcos hooks
-#	install -d $(DESTDIR)$(TCOS_DIR)/hooks-addons/
-#	install -m 644 hooks-addons/tcosmonitor $(DESTDIR)$(TCOS_DIR)/hooks-addons/
-
-
 targz: clean
 	rm -rf ../tmp 2> /dev/null
 	mkdir ../tmp
@@ -155,13 +119,6 @@ targz: clean
 	mv ../tmp ../tcosmonitor-$(VERSION)
 	tar -czf ../tcosmonitor-$(VERSION).tar.gz ../tcosmonitor-$(VERSION)
 	rm -rf ../tcosmonitor-$(VERSION)
-
-tcos:
-	rm -f ../tcosmonitor_*deb ../pxes-*-tcosmonitor*deb ../ltsp-tcos*deb ../tcos-tcosmon*deb
-	dpkg-buildpackage -us -uc -rfakeroot
-	#debuild -uc -us; true
-	sudo dpkg -i ../tcosmonitor_*deb  ../tcos-tcosmoni*deb
-
 
 patch_version:
 	@for f in $(shell find -type f -name "*.py"); do \

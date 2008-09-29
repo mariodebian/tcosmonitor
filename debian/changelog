@@ -1,3 +1,19 @@
+tcosmonitor (0.2.17~rc1) unstable; urgency=low
+
+  * Split package in tcosmonitor and tcosmonitor-common
+    - tcos-standalone will depend on tcosmonitor-common package (less files)
+  * debian/rules, debian/control:
+    - Switch package to CDBS
+  * Move Python code into tcosmonitor and tcosmonitor/extensions dirs
+  * Create setup.py (Python distutils):
+    - Install in Python path as module (import tcosmonitor)
+    - Edit all init scripts to import correct tcosmonitor modules
+  * Remove old LTSP and PXES code and Makefiles
+  * tcosmonitor/__init__.py tcosmonitor/extensions/__init__.py:
+    - Load all modules in __all__ list
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 29 Sep 2008 16:51:38 +0200
+
 tcosmonitor (0.2.16~rc9) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]

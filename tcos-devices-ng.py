@@ -42,20 +42,16 @@ if remotehost == "":
     print "tcos-devices-ng: Not allowed to run in local DISPLAY"
     sys.exit(0)
 
+from tcosmonitor import shared
 
-if not os.path.isfile("shared.py"):
-        sys.path.append('/usr/share/tcosmonitor')
-else:
-        sys.path.append('./')
-        
-import shared
+
 # load conf file and exit if not active
 if not shared.test_start("tcos-devices-ng") :
     print "tcos-devices-ng disabled at %s" % (shared.module_conf_file)
     sys.exit(1)
 
-    
-from TcosTrayIcon import TcosTrayIcon
+
+from tcosmonitor.TcosTrayIcon import TcosTrayIcon
 import threading
 
 import pygtk
@@ -247,16 +243,19 @@ class TcosDevicesNG:
   
     def initremote(self):
         # get all devices
-        import TcosXmlRpc
-        import TcosConf
-        import TcosCommon
-        import TcosXauth
-        self.xauth=TcosXauth.TcosXauth(self)
+        import tcosmonitor.TcosXmlRpc
+        import tcosmonitor.TcosConf
+        import tcosmonitor.TcosCommon
+        import tcosmonitor.TcosXauth
+        
+        self.xauth=tcosmonitor.TcosXauth.TcosXauth(self)
         self.xauth.init_standalone()
-        self.common=TcosCommon.TcosCommon(self)
+        
+        self.common=tcosmonitor.TcosCommon.TcosCommon(self)
         print_debug ( "loading config class..." )
-        self.config=TcosConf.TcosConf(self, openfile=False)
-        self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
+        
+        self.config=tcosmonitor.TcosConf.TcosConf(self, openfile=False)
+        self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
         
         self.username=self.common.get_username()
         self.host=self.common.get_display(ip_mode=True)

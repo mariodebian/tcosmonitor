@@ -1,0 +1,13 @@
+debian/tmp/etc/X11/Xsession.d/81tcos-utils
+debian/tmp/usr/bin/tcos-dbus-client.py
+
+debian/tmp/usr/share/locale/*
+
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosDBus.py
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/shared.py
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosCommon.py
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/LocalData.py
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosXauth.py
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/__init__.py
+
+debian/tmp/usr/share/pixmaps/tcos-icon-32x32.png

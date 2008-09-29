@@ -26,16 +26,12 @@
 import os, sys
 import getopt
 
-if not os.path.isfile("shared.py"):
-	#print "tcos-dbus-client: adding path..."
-	sys.path.append('/usr/share/tcosmonitor')
-else:
-	sys.path.append('./')
-	
+from tcosmonitor import shared
+
 
 print "tcos-dbus-client: starting daemon..."
 
-import shared
+
 #shared.debug=True
 def print_debug(txt):
     if shared.debug:
@@ -68,7 +64,7 @@ if host != "" and shared.allow_local_display:
 	print "tcos-dbus-client: Not allowed to run in remote DISPLAY: \"%s\"" %(host)
 	sys.exit(0)
 	
-from TcosDBus import TcosDBusServer
+from tcosmonitor.TcosDBus import TcosDBusServer
 try:
     server=TcosDBusServer().start()
 except KeyboardInterrupt:

@@ -53,7 +53,8 @@ load-plugins=
 #enable-msg=
 
 # Disable the message(s) with the given id(s).
-disable-msg=C0322
+disable-msg=C0322,C0111,C0103,C0301
+#C0301,C0302
 
 
 [REPORTS]
@@ -71,7 +72,7 @@ include-ids=yes
 files-output=no
 
 # Tells wether to display a full report or only the messages
-reports=no
+reports=yes
 
 # Python expression which should return a note less than 10 (10 is the highest
 # note).You have access to the variables errors warning, statement which
@@ -82,7 +83,7 @@ evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / stateme
 
 # Add a comment according to your evaluation note. This is used by the global
 # evaluation report (R0004).
-comment=no
+comment=yes
 
 # Enable the report(s) with the given id(s).
 #enable-report=

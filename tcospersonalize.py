@@ -27,10 +27,7 @@ import sys
 import os
 import glob
 
-if not os.path.isfile("Initialize.py"):
-    #print "DEBUG: append tcosmonitor dir"
-    sys.path.append("/usr/share/tcosmonitor")
-
+from tcosmonitor import shared
 
 import pygtk
 pygtk.require('2.0')
@@ -38,21 +35,11 @@ pygtk.require('2.0')
 import gtk
 import gtk.glade
 
-#from time import time, sleep
 from time import time
 import getopt
 from gettext import gettext as _
-#from subprocess import Popen, PIPE, STDOUT
 
 import gobject
-
-if not os.path.isfile("shared.py"):
-    sys.path.append('/usr/share/tcosmonitor')
-else:
-    sys.path.append('./')
-
-import shared
-#import pwd, grp
 import grp
 
 
@@ -139,7 +126,6 @@ class TcosPersonalize:
         
         self.remotehost_config = os.path.join ("/var/lib/tcos/tftp/conf/", shared.remotehost + ".conf" )
         
-        #import shared
         gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
         gtk.glade.textdomain(shared.PACKAGE)
         
@@ -447,12 +433,12 @@ class TcosPersonalize:
         
     def on_buttongetavalaible_click(self, widget):
         print_debug( "on_button_getavalaible_click()" )
-        import TcosXauth
-        self.xauth=TcosXauth.TcosXauth(self)
-        import TcosConf
-        self.config=TcosConf.TcosConf(self)
-        import TcosXmlRpc
-        self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
+        import tcosmonitor.TcosXauth
+        self.xauth=tcosmonitor.TcosXauth.TcosXauth(self)
+        import tcosmonitor.TcosConf
+        self.config=tcosmonitor.TcosConf.TcosConf(self)
+        import tcosmonitor.TcosXmlRpc
+        self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
         self.xmlrpc.newhost(shared.remotehost)
         if not self.xmlrpc.connected:
             shared.error_msg ( _("Host down, can't connect to tcosxmlrpc.") )

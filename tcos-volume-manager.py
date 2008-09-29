@@ -30,12 +30,8 @@ import gobject
 import getopt
 from gettext import gettext as _
 
-if not os.path.isfile("shared.py"):
-    sys.path.append('/usr/share/tcosmonitor')
-else:
-    sys.path.append('./')
+from tcosmonitor import shared
 
-import shared
 # load conf file and exit if not active
 if not shared.test_start("tcos-volume-manager") :
     print "tcos-volume-manager disabled at %s" % (shared.module_conf_file)
@@ -121,21 +117,21 @@ class TcosVolumeManager:
             eventbox.connect("button_press_event", self.on_tray_icon_press_event)
         
         
-        from ping import PingPort
+        from tcosmonitor.ping import PingPort
         if PingPort(self.host, shared.xmlremote_port, 0.5).get_status() != "OPEN":
             shared.error_msg( _("ERROR: It appears that TcosXmlRpc is not running on %s.") %(self.host) )
             sys.exit(1)
             
         
-        import TcosXauth
-        self.xauth=TcosXauth.TcosXauth(self)
+        import tcosmonitor.TcosXauth
+        self.xauth=tcosmonitor.TcosXauth.TcosXauth(self)
         self.xauth.init_standalone()
         
         # get all channels
-        import TcosXmlRpc
-        import TcosConf
-        self.config=TcosConf.TcosConf(self, openfile=False)
-        self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
+        import tcosmonitor.TcosXmlRpc
+        import tcosmonitor.TcosConf
+        self.config=tcosmonitor.TcosConf.TcosConf(self, openfile=False)
+        self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
         
         # make a test and exit if no cookie match
         if not self.xauth.test_auth():

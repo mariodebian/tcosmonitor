@@ -26,9 +26,9 @@
 import sys
 import os
 
-if not os.path.isfile("Initialize.py"):
-    #print "DEBUG: append tcosmonitor dir"
-    sys.path.append("/usr/share/tcosmonitor")
+#if not os.path.isfile("Initialize.py"):
+#    #print "DEBUG: append tcosmonitor dir"
+#    sys.path.append("/usr/share/tcosmonitor")
 
 import pygtk
 pygtk.require('2.0')
@@ -48,7 +48,8 @@ gtk.gdk.threads_init()
 
 import gobject
 
-import shared
+from tcosmonitor import shared
+
 import grp, pwd
 
 
@@ -86,20 +87,7 @@ for o, a in OPTS:
         usage()
         sys.exit()
 
-from TcosExtensions import TcosExtLoader
-import TcosCommon
-import Initialize
-import TcosXmlRpc
-import LocalData
-import TcosConf
-import TcosActions
-import TcosXauth
-import TcosStaticHosts
-import TcosPreferences
-import TcosMenus
-import TcosListView
-import TcosIconView
-import TcosClassView
+import tcosmonitor
 
 class TcosMonitor(object):
     def __init__(self):
@@ -164,10 +152,10 @@ class TcosMonitor(object):
         
         # FIXME
         self.scrolledtextview = self.ui.get_widget('scrolledtextview')
-        import htmltextview
+        #import htmltextview
         #htmltextview.HtmlHandler().set_main(self)
         
-        self.datatxt = htmltextview.HtmlTextView(self)
+        self.datatxt = tcosmonitor.htmltextview.HtmlTextView(self)
         self.datatxt.show()
         self.scrolledtextview.add(self.datatxt)
         self.datatxt.clean()
@@ -175,28 +163,28 @@ class TcosMonitor(object):
         
         
         # init classes
-        self.common=TcosCommon.TcosCommon(self)
-        self.config=TcosConf.TcosConf(self)
-        self.localdata=LocalData.LocalData(self)
-        self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
-        self.xauth=TcosXauth.TcosXauth(self)
-        self.preferences=TcosPreferences.TcosPreferences(self)
+        self.common=tcosmonitor.TcosCommon.TcosCommon(self)
+        self.config=tcosmonitor.TcosConf.TcosConf(self)
+        self.localdata=tcosmonitor.LocalData.LocalData(self)
+        self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
+        self.xauth=tcosmonitor.TcosXauth.TcosXauth(self)
+        self.preferences=tcosmonitor.TcosPreferences.TcosPreferences(self)
         
-        self.menus=TcosMenus.TcosMenus(self)
+        self.menus=tcosmonitor.TcosMenus.TcosMenus(self)
         
-        self.actions=TcosActions.TcosActions(self)
+        self.actions=tcosmonitor.TcosActions.TcosActions(self)
         
         # views
-        self.listview=TcosListView.TcosListView(self)
-        self.iconview=TcosIconView.TcosIconView(self)
-        self.classview=TcosClassView.TcosClassView(self)
+        self.listview=tcosmonitor.TcosListView.TcosListView(self)
+        self.iconview=tcosmonitor.TcosIconView.TcosIconView(self)
+        self.classview=tcosmonitor.TcosClassView.TcosClassView(self)
         
         
         
-        self.init=Initialize.Initialize(self)
+        self.init=tcosmonitor.Initialize.Initialize(self)
         
         
-        self.static=TcosStaticHosts.TcosStaticHosts(self)
+        self.static=tcosmonitor.TcosStaticHosts.TcosStaticHosts(self)
         
         
         #########  init some elements ###########
@@ -212,12 +200,12 @@ class TcosMonitor(object):
         
         self.actions.update_hostlist()
         
-        self.extloader=TcosExtLoader(self)
+        self.extloader=tcosmonitor.TcosExtensions.TcosExtLoader(self)
         
         
         if not shared.dbus_disabled:
-            from TcosDBus import TcosDBusAction
-            self.dbus_action=TcosDBusAction(self, admin=self.config.GetVar("xmlrpc_username"),
+            #from TcosDBus import TcosDBusAction
+            self.dbus_action=tcosmonitor.TcosDBus.TcosDBusAction(self, admin=self.config.GetVar("xmlrpc_username"),
                                   passwd=self.config.GetVar("xmlrpc_password")  )
         
         

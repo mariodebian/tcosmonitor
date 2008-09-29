@@ -1,0 +1,72 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+
+	$(MAKE) -B
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	$(MAKE) clean
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+	$(MAKE) install         DESTDIR=$(CURDIR)/debian/tmp PREFIX=/usr
+
+	dh_link /usr/share/applications/tcosmonitor.desktop /usr/share/control-center-2.0/capplets/tcosmonitor.desktop
+
+	find $(CURDIR)/debian/tmp -name ".svn" | xargs rm -f --
+
+	@if [ `find $(CURDIR)/debian/tmp/ -name "*.py" | xargs grep __VERSION__ | wc -l` != 0 ]; then \
+		echo "__VERSION__ unparsed"; \
+		find *.py | xargs grep __VERSION__;\
+		exit 1; \
+	fi
+
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs 
+	dh_installdocs -ptcosmonitor-common
+	rm -rf debian/tcosmonitor/usr/share/doc/tcosmonitor
+	ln -s tcosmonitor-common debian/tcosmonitor/usr/share/doc/tcosmonitor
+	dh_installexamples
+	dh_install --sourcedir=`pwd`/debian/tmp --list-missing
+#	dh_install
+	dh_installman
+	dh_installinit
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_desktop
+	dh_pysupport
+	dh_python
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep
+.PHONY: build clean binary-indep binary install configure
