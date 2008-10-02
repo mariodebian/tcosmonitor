@@ -12,8 +12,12 @@ tcosmonitor (0.2.17~rc1) unstable; urgency=low
   * tcosmonitor/__init__.py tcosmonitor/extensions/__init__.py:
     - Load all modules in __all__ list
   * Forget to readd debian/rules to SVN
+  * tcosmonitor/TcosExtensions.py:
+    - call xmlrpc.newhost before real_action (fix icons change)
+  * tcosmonitor/*.py:
+    - import ping package from tcosmonitor
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 29 Sep 2008 17:23:36 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 02 Oct 2008 10:35:36 +0200
 
 tcosmonitor (0.2.16~rc9) unstable; urgency=low
 

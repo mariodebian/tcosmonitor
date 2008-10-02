@@ -206,6 +206,8 @@ class TcosExtension(object):
                 continue
             
             try:
+                # call new IP
+                self.main.xmlrpc.newhost(ip)
                 # overwrite real_action in your extension
                 self.real_action(ip, action)
                 ########################################

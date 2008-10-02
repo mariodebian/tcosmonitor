@@ -30,6 +30,7 @@ import os
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
+from tcosmonitor.ping import PingPort
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -369,7 +370,6 @@ class Info(TcosExtension):
             self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             # make a ping to port
-            from ping import PingPort
             if PingPort(ip, shared.pulseaudio_soundserver_port, 0.5).get_status() == "OPEN":
                 self.datatxt.insert_block ( _("PulseAudio Sound server is running"), image=shared.IMG_DIR + "info_sound_ok.png" )
                 

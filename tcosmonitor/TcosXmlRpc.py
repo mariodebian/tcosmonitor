@@ -32,6 +32,7 @@ from gettext import gettext as _
 import socket
 from subprocess import Popen, PIPE, STDOUT
 
+from tcosmonitor.ping import PingPort
 
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
@@ -112,7 +113,7 @@ class TcosXmlRpc:
             print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s CLOSED" %(ip,port))
             return False
         
-        from ping import PingPort
+        
         self.aliveStatus=PingPort(ip,port).get_status()
         self.lastport=port
         #print_debug ( "isPortListening() PING PORT DONE status=%s" %(self.aliveStatus) )

@@ -26,13 +26,10 @@ import shared
 
 import os
 from gettext import gettext as _
-#from time import time, ctime, localtime
 from time import time
-#from ping import *
-from ping import Ping
+from tcosmonitor.ping import Ping
 
 import utmp
-#from UTMPCONST import *
 from UTMPCONST import WTMP_FILE, USER_PROCESS
 
 import pwd, grp
@@ -591,9 +588,12 @@ class LocalData:
         return if lockscreen is exec
         """
         self.main.xmlrpc.newhost(host)
-        if self.main.xmlrpc.status_lockscreen() == 1:
+        status=self.main.xmlrpc.status_lockscreen()
+        if status == 1:
+            print_debug("IsBlocked(ip=%s) TRUE status=%s"%(host, status))
             return True
         else:
+            print_debug("IsBlocked(ip=%s) FALSE status=%s"%(host, status))
             return False
     
     def IsBlockedNet(self, host, username=None):

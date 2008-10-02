@@ -25,9 +25,7 @@
 
 import gtk
 from gettext import gettext as _
-#import gobject
-#import os,subprocess
-#import string
+
 
 
 import shared

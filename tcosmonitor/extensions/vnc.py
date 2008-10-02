@@ -35,6 +35,8 @@ import string
 import subprocess
 import signal
 
+from tcosmonitor.ping import PingPort
+
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" % ("extensions::vnc", txt)
@@ -74,7 +76,6 @@ class VNC(TcosExtension):
         self.main.write_into_statusbar( _("Waiting for start demo mode...") )
         
         # need to wait for start, PingPort loop
-        from ping import PingPort
         status = "CLOSED"
         max_wait=10
         wait=0
@@ -134,7 +135,7 @@ class VNC(TcosExtension):
         # force kill x11vnc in client
         self.main.xmlrpc.newhost(ip)
         host=self.main.localdata.GetHostname(self.main.selected_ip)
-        from ping import PingPort
+        
         max_wait=5
         wait=0
         self.main.common.threads_enter("TcosActions:start_vnc print status msg")
@@ -233,7 +234,6 @@ class VNC(TcosExtension):
         
         # force kill x11vnc in client
         self.main.xmlrpc.newhost(ip)
-        from ping import PingPort
         max_wait=5
         wait=0
         self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
@@ -262,7 +262,6 @@ class VNC(TcosExtension):
         self.main.write_into_statusbar( _("Waiting for start demo mode from host %s...") %(self.host) )
             
         # need to wait for start, PingPort loop
-        from ping import PingPort
         status = "CLOSED"
         max_wait=10
         wait=0

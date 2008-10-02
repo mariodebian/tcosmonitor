@@ -81,8 +81,8 @@ class TcosDBusServer:
         
         # for standalone use local ip as self.host
         if shared.allow_local_display:
-            import ping
-            p=ping.Ping(None)
+            import tcosmonitor.ping
+            p=tcosmonitor.ping.Ping(None)
             ips=p.get_server_ips()
             if len(ips) < 1:
                 print "tcos-dbus-client **WARNING** Can't get IP adrress, trying with hostname"
@@ -98,8 +98,7 @@ class TcosDBusServer:
             
         
         # check if tcosxmlrpc is running
-        from ping import PingPort
-        status=PingPort(self.host, shared.xmlremote_port).get_status()
+        status=tcosmonitor.ping.PingPort(self.host, shared.xmlremote_port).get_status()
         print_debug ( "isPortListening() status=%s" %(status) )
         
         if status == "CLOSED" or status == "ERROR":
