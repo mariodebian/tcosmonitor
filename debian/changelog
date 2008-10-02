@@ -1,3 +1,10 @@
+tcosmonitor (0.2.17~rc2) unstable; urgency=low
+
+  * tcosmonitor/TcosConf.py
+    - Really close file descriptor (thanks Vidal)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 02 Oct 2008 16:40:26 +0200
+
 tcosmonitor (0.2.17~rc1) unstable; urgency=low
 
   * Split package in tcosmonitor and tcosmonitor-common

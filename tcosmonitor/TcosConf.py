@@ -145,7 +145,7 @@ class TcosConf:
             value=item[1]
             print_debug ("key=%s value=%s" %(key, value))
             fd.write("%s=%s\n" %(key, value) )
-        fd.close
+        fd.close()
         # make chmod 600
         os.chmod(shared.config_file, 0600)
         self.FirstRunning=True
