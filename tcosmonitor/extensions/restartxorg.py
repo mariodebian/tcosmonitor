@@ -48,7 +48,7 @@ class RestartXorg(TcosExtension):
         # restart xorg with new settings
         # thin client must download again XXX.XXX.XXX.XXX.conf and rebuild xorg.conf
         if self.client_type == "tcos":
-            msg=_( "Restart X session of %s with new config?" ) %(ip)
+            msg=_( "Restart X session of %s with new config?" ) %(self.host)
             if shared.ask_msg ( msg ):
                 # see xmlrpc/xorg.h, rebuild will download and sed xorg.conf.tpl
                 try:
@@ -102,6 +102,8 @@ class RestartXorg(TcosExtension):
         locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
         locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
         unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
+        dpms_off_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_off.png')
+        dpms_on_image  = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_on.png')
         
         # disable cache
         self.main.localdata.cache_timeout=0
@@ -156,8 +158,15 @@ class RestartXorg(TcosExtension):
             data['blocked_net']=True
         else:
             data['blocked_net']=False
-                
-        if data['blocked_screen'] and data['blocked_net']:
+        
+        if self.main.xmlrpc.dpms('status', ip) == "Off":
+            data['dpms_off']=True
+        else:
+            data['dpms_off']=False
+        
+        if data['dpms_off']:
+            data['image_blocked']=dpms_off_image
+        elif data['blocked_screen'] and data['blocked_net']:
             data['image_blocked']=locked_net_screen_image
         elif data['blocked_screen'] == False and data['blocked_net']:
             data['image_blocked']=locked_net_image
@@ -170,11 +179,11 @@ class RestartXorg(TcosExtension):
         self.main.localdata.cache_timeout=shared.cache_timeout
         
         if self.main.classview.isactive():
-            self.main.classview.change_lockscreen(ip, data['image_blocked'])
+            self.main.classview.change_lockscreen(ip, data['image_blocked'], data['blocked_screen'], data['blocked_net'])
         if self.main.iconview.isactive():
-            self.main.iconview.change_lockscreen(ip, data['image_blocked'])
+            self.main.iconview.change_lockscreen(ip, data['image_blocked'], data['blocked_screen'], data['blocked_net'])
         if self.main.listview.isactive():
-            self.main.listview.refresh_client_info(ip, data)
+            self.main.listview.refresh_client_info(ip, data['image_blocked'])
 
 
 

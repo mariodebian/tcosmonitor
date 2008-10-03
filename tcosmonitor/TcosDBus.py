@@ -78,10 +78,10 @@ class TcosDBusServer:
             self.error_msg=_("TcosDBus not allowed in local display")
             print_debug ( "auth() not allowed in local display" )
             return False
-        
+
+        import tcosmonitor.ping
         # for standalone use local ip as self.host
         if shared.allow_local_display:
-            import tcosmonitor.ping
             p=tcosmonitor.ping.Ping(None)
             ips=p.get_server_ips()
             if len(ips) < 1:
@@ -239,7 +239,10 @@ class TcosDBusServer:
 
     def show_notification(self, title, msg, urgency=pynotify.URGENCY_CRITICAL):
         pynotify.init("tcosmonitor")
-        image_uri="file://usr/share/pixmaps/tcos-icon-32x32.png"
+        if os.path.isfile("usr/share/pixmaps/tcos-icon-32x32-custom.png"):
+            image_uri="file://usr/share/pixmaps/tcos-icon-32x32-custom.png"
+        else:
+            image_uri="file://usr/share/pixmaps/tcos-icon-32x32.png"
         #image_uri="file://" + os.path.abspath(shared.IMG_DIR) + "/tcos-icon-32x32.png"
         n = pynotify.Notification( title , msg, image_uri )
         n.set_urgency(urgency)

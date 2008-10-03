@@ -1,9 +1,16 @@
 tcosmonitor (0.2.17~rc2) unstable; urgency=low
 
+  [ Mario Izquierdo (mariodebian) ]
   * tcosmonitor/TcosConf.py
     - Really close file descriptor (thanks Vidal)
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 02 Oct 2008 16:40:26 +0200
+  [ Ignacio Vidal ]
+  * tcosmonitor/TcosDBus.py
+    - Fix import
+  * tcosmonitor/extensions/restartxorg.py
+    - Update change lockscreen
+
+ -- Ignacio Vidal <vidal_joshur@gva.es>  Fri, 03 Oct 2008 14:36:01 +0200
 
 tcosmonitor (0.2.17~rc1) unstable; urgency=low
 
