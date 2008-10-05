@@ -23,9 +23,6 @@ install/tcosmonitor::
 		exit 1; \
 	fi
 
-	#DELETEME
-	find debian/ -name "__init__.py" | xargs head -50 
-
 
 binary-predeb/tcosmonitor-common::
 	# link doc

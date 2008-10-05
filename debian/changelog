@@ -1,3 +1,9 @@
+tcosmonitor (0.2.17~rc3) unstable; urgency=low
+
+  * Remove tree from Build-Depends and remove debug code in debian/rules
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 05 Oct 2008 17:57:58 +0200
+
 tcosmonitor (0.2.17~rc2) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]
