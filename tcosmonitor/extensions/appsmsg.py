@@ -281,7 +281,7 @@ class AppsAndMsgs(TcosExtension):
         # not needed because now we are using pynotify        
         #if self.ask_mode == "mess":
         #    arg=arg.replace("'", "´")
-        elif self.ask_mode == "exec":
+        if self.ask_mode == "exec":
             if arg.startswith('http://') or arg.startswith('https://') or arg.startswith('ftp://'):
                 arg="xdg-open %s" %arg
             
