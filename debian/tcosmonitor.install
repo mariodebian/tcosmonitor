@@ -18,7 +18,6 @@ debian/tmp/usr/bin/tcos-server-utils.py    usr/sbin/
 
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/htmltextview.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/Initialize.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/ping.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosActions.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosClassView.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosConf.py

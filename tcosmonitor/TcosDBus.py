@@ -36,6 +36,8 @@ import sys
 from gettext import gettext as _
 import pynotify
 
+# needed for __escape__ function
+import xml.sax.saxutils
 
 import shared
 def print_debug(txt):
@@ -51,6 +53,12 @@ class TcosDBusServer:
         self.error_msg=None
         print_debug ( "TcosDBusServer() __init__ as username=%s" %(self.username) )
         print_debug ( "TcosDBusServer() admin=\"%s\" passwd=\"%s\""  %(self.admin, self.passwd) )
+        
+        self.__dic__= {
+             '\"'    :    '&quot;',
+             '\''    :    '&apos;'
+                      }
+
         
         import TcosCommon
         self.common=TcosCommon.TcosCommon(self)        
@@ -221,11 +229,14 @@ class TcosDBusServer:
             print_debug ( "user_exec() error, error=%s" %(err) )
             pass
         return
-        
+
+    def __escape__(self, txt):
+        return xml.sax.saxutils.escape(txt, self.__dic__)
+
     def user_msg(self, txt):
         print_debug ( "user_msg() %s" %(txt) )
         # use pynotify better???
-        self.show_notification( _("Message from admin").replace("'", "´"), txt.replace("'", "´") )
+        self.show_notification( self.__escape__( _("Message from admin") ), self.__escape__( txt ) )
 #        p = subprocess.Popen("zenity --info --text='%s' --title='%s'" %(txt.replace("'", "´"), _("Message from admin").replace("'", "´")), shell=True, close_fds=True)
 #        try:
 #            th=threading.Thread(target=self.cleanproc, args=(p,) )
@@ -238,6 +249,7 @@ class TcosDBusServer:
 #        return
 
     def show_notification(self, title, msg, urgency=pynotify.URGENCY_CRITICAL):
+        print_debug("show_notification() title='%s', msg='%s'" %(title, msg) )
         pynotify.init("tcosmonitor")
         if os.path.isfile("usr/share/pixmaps/tcos-icon-32x32-custom.png"):
             image_uri="file://usr/share/pixmaps/tcos-icon-32x32-custom.png"
@@ -316,7 +328,7 @@ class TcosDBusAction:
         return self.done
         
     def do_message(self, users, text=""):
-        print_debug ( "do_message() users=%s text=%s" %(users, text) )
+        print_debug ( "do_message() users=%s text='%s'" %(users, text) )
         
         if not self.connection:
             print_debug ( self.error )

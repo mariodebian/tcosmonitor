@@ -277,9 +277,10 @@ class AppsAndMsgs(TcosExtension):
                 or arg.startswith('mv ') or arg.find(" mv ") != -1 \
                 or arg.startswith('cp ') or arg.find(" cp ") != -1:
             arg=""
-        
-        if self.ask_mode == "mess":
-            arg=arg.replace("'", "´")
+
+        # not needed because now we are using pynotify        
+        #if self.ask_mode == "mess":
+        #    arg=arg.replace("'", "´")
         elif self.ask_mode == "exec":
             if arg.startswith('http://') or arg.startswith('https://') or arg.startswith('ftp://'):
                 arg="xdg-open %s" %arg

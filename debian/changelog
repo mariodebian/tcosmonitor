@@ -1,3 +1,12 @@
+tcosmonitor (0.2.17~rc4) unstable; urgency=low
+
+  * debian/tcosmonitor.install debian/tcosmonitor-common.install:
+    - Install ping.py in tcomsonitor-common package (TcosDBus need it)
+  * tcosmonitor/TcosDBus.py tcosmonitor/extensions/appsmsg.py
+    - Use xml.sax.saxutils.escape to escape pynotify text messages.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 06 Oct 2008 14:39:46 +0200
+
 tcosmonitor (0.2.17~rc3) unstable; urgency=low
 
   * Remove tree from Build-Depends and remove debug code in debian/rules
