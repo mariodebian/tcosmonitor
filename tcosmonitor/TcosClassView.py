@@ -219,7 +219,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         iconview=gtk.IconView()
         model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
         if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + icon_image_standalone)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
         else:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         
@@ -444,9 +444,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
         if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         for w in self.classview.get_children():
             for c in w.get_children():

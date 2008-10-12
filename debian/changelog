@@ -7,8 +7,9 @@ tcosmonitor (0.2.17~rc5) unstable; urgency=low
     - Add some images of new toolbar
   * tcosmonitor/TcosClassView.py:
     - Set iconview size in old versions of GTK+ (< 2.10.0) for Debian etch
+    - Fix icons names
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 12 Oct 2008 22:19:05 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 12 Oct 2008 22:38:05 +0200
 
 tcosmonitor (0.2.17~rc4) unstable; urgency=low
 
