@@ -33,17 +33,13 @@ import os
 import pygtk
 pygtk.require('2.0')
 import gtk
-#from gtk import *
 import gtk.glade
 
 from time import time
 import getopt
 from gettext import gettext as _
 from threading import Thread
-#import threading
 
-# deprecated
-#gtk.threads_init()
 gtk.gdk.threads_init()
 
 import gobject
@@ -198,7 +194,7 @@ class TcosMonitor(object):
         self.init.initbuttons()
         self.preferences.populate_pref()
         
-        self.actions.update_hostlist()
+
         
         self.extloader=tcosmonitor.TcosExtensions.TcosExtLoader(self)
         
@@ -212,7 +208,7 @@ class TcosMonitor(object):
         # generate host list if checked
         if self.config.GetVar("populate_list_at_startup") == "1":
             self.populate_host_list()
-        
+        #self.actions.update_hostlist()
         # create tmp dir
         try:
             fd1=open("/etc/default/rsync", 'r')
@@ -257,7 +253,31 @@ class TcosMonitor(object):
         print_debug( "loadconf conf=%s" %conf )
         return conf
 
+    def button_actions(self, widget, action):
+        print_debug ( "button_actionst() action=%s" %action)
 
+        if action == "audio":
+            if self.actions.button_action_audio != None:
+                self.actions.button_action_audio()
+        elif action == "chat":
+            if self.actions.button_action_chat != None:
+                self.actions.button_action_chat()
+        elif action == "list":
+            if self.actions.button_action_list != None:
+                self.actions.button_action_list()
+        elif action == "video":
+            if self.actions.button_action_video != None:
+                self.actions.button_action_video()
+        elif action == "send":
+            if self.actions.button_action_send != None:
+                self.actions.button_action_send()
+        elif action == "exe":
+            if self.actions.button_action_exe != None:
+                self.actions.button_action_exe()
+        elif action == "text":
+            if self.actions.button_action_text != None:
+                self.actions.button_action_text()
+        return
 
     def search_host(self, widget):
         print_debug ( "search_host()" )

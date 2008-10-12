@@ -53,6 +53,8 @@ class TcosMenus(object):
         self.main.menu=gtk.Menu()
         self.main.allmenu=gtk.Menu()
 
+        self.broadcast_count={}
+
     def register_simple(self, name, icon, group, action, func_name):
         #print_debug("register_simple() name=%s, icons=%s, group=%s, action=%s" %(name, icon, group, action))
         self.simplemenus.append( [name, icon, group, action, func_name] )

@@ -127,9 +127,9 @@ class TcosIconView(object):
         print_debug("generate_icon() data=%s"%data)
         
         if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         
         if not data['active']:
             pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
@@ -203,9 +203,9 @@ class TcosIconView(object):
         self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
         if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         for m in self.model:
             if m[1] == ip:

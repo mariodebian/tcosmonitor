@@ -42,6 +42,10 @@ if remotehost == "":
     print "tcos-devices-ng: Not allowed to run in local DISPLAY"
     sys.exit(0)
 
+import pygtk
+pygtk.require('2.0')
+import gtk
+
 from tcosmonitor import shared
 
 
@@ -54,10 +58,6 @@ if not shared.test_start("tcos-devices-ng") :
 from tcosmonitor.TcosTrayIcon import TcosTrayIcon
 import threading
 
-import pygtk
-pygtk.require('2.0')
-#from gtk import *
-import gtk
 import gtk.glade
 import pynotify
 import pwd

@@ -44,7 +44,7 @@ class LogOut(TcosExtension):
     def logout(self, w, ip):
         if not self.get_client():
             return
-        msg=_( _("Do you want to logout user \"%s\"?" ) %(self.connected_users[0]) )
+        msg=_( _("Do you want to logout user \"%s\"?" ) %(self.connected_users_txt) )
         if shared.ask_msg ( msg ):
             newusernames=[]
             timeout=self.main.config.GetVar("actions_timeout")
@@ -62,7 +62,7 @@ class LogOut(TcosExtension):
     def logout_all(self, widget):
         if not self.get_all_clients():
             return
-        msg=_( _("Do you want to logout the following users:%s?" )%(self.newallclients_txt) )
+        msg=_( _("Do you want to logout the following users:%s?" )%(self.connected_users_txt) )
         if shared.ask_msg ( msg ):
             newusernames=[]
             timeout=self.main.config.GetVar("actions_timeout")

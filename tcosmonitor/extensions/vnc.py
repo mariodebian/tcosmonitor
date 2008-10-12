@@ -61,7 +61,7 @@ class VNC(TcosExtension):
             shared.error_msg( _("No users logged.") )
             return
         
-        msg=_( _("Do you want to start demo mode the following users:%s?" )%(self.newallclients_txt) )
+        msg=_( _("Do you want to start demo mode the following users: %s?" )%(self.connected_users_txt) )
                                                 
         if not shared.ask_msg ( msg ):
             return
@@ -117,7 +117,7 @@ class VNC(TcosExtension):
             else:
                 nextkey=1
                 self.vnc_count[nextkey]=None
-            self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":self.newallclients, "key":nextkey}, _("Running in demo mode from server. Demo Nº %d") %(nextkey) )
+            self.add_progressbox( {"target": "vnc", "ip":"", "pid":p.pid, "allclients":self.newallclients, "key":nextkey}, _("Running in demo mode from server. Demo Nº %s") %(nextkey) )
         
 
     def vnc_simple(self, w, ip):
@@ -216,15 +216,15 @@ class VNC(TcosExtension):
             shared.error_msg ( _("Can't start demo mode, user is not logged") )
             return
             
-        msg=_( _("Do you want demo mode from %s?" ) %(self.host) )
+        msg=_( _("Do you want demo mode from user %s?" ) %(self.connected_users_txt) )
         if not shared.ask_msg ( msg ): return
             
         if self.main.listview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
             self.allclients=self.main.listview.getmultiple()
             if len(self.allclients) == 0:
-                msg=_( _("No clients selected, do you want to select all?" ) )
-                if shared.ask_msg ( msg ):
-                    allclients=self.main.localdata.allclients
+                #msg=_( _("No clients selected, do you want to select all?" ) )
+                #if shared.ask_msg ( msg ):
+                allclients=self.main.localdata.allclients
         else:
             # get all clients connected
             self.allclients=self.main.localdata.allclients
@@ -236,7 +236,7 @@ class VNC(TcosExtension):
         self.main.xmlrpc.newhost(ip)
         max_wait=5
         wait=0
-        self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(ip) )
+        self.main.write_into_statusbar( _("Connecting with %s to start VNC support") %(self.connected_users_txt) )
             
         status="OPEN"
         while status != "CLOSED":
@@ -259,7 +259,7 @@ class VNC(TcosExtension):
         self.main.xmlrpc.vnc("genpass", ip, passwd )
         self.main.xmlrpc.vnc("startserver", ip )
         
-        self.main.write_into_statusbar( _("Waiting for start demo mode from host %s...") %(self.host) )
+        self.main.write_into_statusbar( _("Waiting for start demo mode from user %s...") %(self.connected_users_txt) )
             
         # need to wait for start, PingPort loop
         status = "CLOSED"
@@ -308,8 +308,7 @@ class VNC(TcosExtension):
             else:
                 nextkey=1
                 self.vnc_count[nextkey]=None
-            self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients, "key":nextkey}, _("Running in demo mode from host %(host)s. Demo Nº %(count)d") %{"host":self.host, "count":nextkey} )
-
+            self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients, "key":nextkey}, _("Running in demo mode from user %(host)s. Demo Nº %(count)s") %{"host":self.connected_users_txt, "count":nextkey} )
 
     def on_progressbox_click(self, widget, args, box):
         box.destroy()

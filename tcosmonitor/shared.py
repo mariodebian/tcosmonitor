@@ -143,6 +143,7 @@ DefaultConfig=[
 ["vlc_method_send", "ffmpeg-MPEG4", "str"],
 ["show_donate", 1, "int"],
 ["visible_menus", "", "str"],
+["visible_buttons_menus", "", "str"],
 ["enable_sslxmlrpc", 0, "int"],
 ["ports_tnc", "", "str"],
 ["listmode", "list", "str"],
@@ -225,6 +226,8 @@ dbus_disabled=False
 
 disable_textview_on_update=True
 
+icon_image_thin="host_tcos.png"
+icon_image_standalone="host_standalone.png"
 
 NO_LOGIN_MSG="---"
 
@@ -355,6 +358,16 @@ preferences_menus={
 "ck_menu_conference":[  True,  [24],     [9,18] ],
 "ck_menu_net":[         True,  [20,21],[14,15] ],
 "ck_menu_dpms":[        True,  [22,23],[16,17] ],
+}
+
+button_preferences_menus={
+"ck_button_menu_chat":[               False ],
+"ck_button_menu_list":[       False ],
+"ck_button_menu_exe":[                False ],
+"ck_button_menu_text":[               False ],
+"ck_button_menu_video":[              False ],
+"ck_button_menu_send":[               False ],
+"ck_button_menu_audio":[         False ],
 }
 
 

@@ -125,6 +125,57 @@ class Initialize(object):
         self.main.searchtxt = self.ui.get_widget('searchtxt')
         self.main.searchtxt.connect('activate', self.main.search_host)
 
+        self.main.toolbar2 = self.ui.get_widget('toolbar2')
+
+        self.main.button_audio = self.ui.get_widget('button_audio')
+        self.main.handlebox_audio = self.ui.get_widget('handlebox_audio')
+        self.main.button_audio.connect('clicked', self.main.button_actions, "audio")
+
+        self.main.button_chat = self.ui.get_widget('button_chat')
+        self.main.handlebox_chat = self.ui.get_widget('handlebox_chat')
+        self.main.button_chat.connect('clicked', self.main.button_actions, "chat")
+
+        self.main.button_list = self.ui.get_widget('button_list')
+        self.main.handlebox_list = self.ui.get_widget('handlebox_list')
+        self.main.button_list.connect('clicked', self.main.button_actions, "list")
+
+        self.main.button_video = self.ui.get_widget('button_video')
+        self.main.handlebox_video = self.ui.get_widget('handlebox_video')
+        self.main.button_video.connect('clicked', self.main.button_actions, "video")
+
+        self.main.button_send = self.ui.get_widget('button_send')
+        self.main.handlebox_send = self.ui.get_widget('handlebox_send')
+        self.main.button_send.connect('clicked', self.main.button_actions, "send")
+
+        self.main.button_exe = self.ui.get_widget('button_exe')
+        self.main.handlebox_exe = self.ui.get_widget('handlebox_exe')
+        self.main.button_exe.connect('clicked', self.main.button_actions, "exe")
+
+        self.main.button_text = self.ui.get_widget('button_text')
+        self.main.handlebox_text = self.ui.get_widget('handlebox_text')
+        self.main.button_text.connect('clicked', self.main.button_actions, "text")
+
+        for button in ['button_audio', 'button_chat', 'button_list', 'button_video', 'button_send', 'button_exe', 'button_text']:
+            
+            if os.path.isfile(shared.IMG_DIR + "/%s.png" %(button)):
+                img=self.ui.get_widget( button.replace("button", "image") )
+                if img:
+                    img.set_from_file(shared.IMG_DIR + "/%s.png" %(button) )
+                else:
+                    print_debug("WARNING: Error loading button image %s"%button)
+            else:
+                print_debug("WARNING: Image file '%s' don't exists" %(shared.IMG_DIR + "/%s.png" %(button)) )
+
+        """
+        <property name="pixbuf">/usr/share/tcosmonitor/images/button_rtp.png</property>
+        <property name="pixbuf">/usr/share/tcosmonitor/images/button_chat.png</property>
+        <property name="pixbuf">/usr/share/tcosmonitor/images/button_list.png</property>
+        <property name="pixbuf">/usr/share/tcosmonitor/images/button_broadcast.png</property>
+        <property name="pixbuf">/usr/share/tcosmonitor/images/button_send.png</property>
+        <property name="pixbuf">/usr/share/tcosmonitor/images/button_exec.png</property>
+        <property name="pixbuf">/usr/share/tcosmonitor/images/button_msg.png</property>
+        """
+
 
     def initabouttcos(self):
         self.main.abouttcos = self.main.ui.get_widget('abouttcos')

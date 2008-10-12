@@ -47,8 +47,7 @@ class TcosNetController(TcosExtension):
         # lock net
         eth=self.main.config.GetVar("network_interface")
         ports="--ports=%s" %self.main.config.GetVar("ports_tnc")
-        timeout=0
-        remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled").replace("'", "´"))
+        remote_msg=_("Internet connection has been disabled")
         act="disable-internet"
         
         if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
@@ -62,11 +61,11 @@ class TcosNetController(TcosExtension):
                 return
             result = self.main.localdata.BlockNet(act, self.connected_users[0], ports, eth)
             if result == "disabled":
-                self.main.dbus_action.do_exec(self.connected_users , remote_cmd)
+                self.main.dbus_action.do_message( self.connected_users, remote_msg )
         else:
             result = self.main.xmlrpc.tnc(act, self.connected_users[0].split(":")[0], ports)
             if result == "disabled":
-                self.main.xmlrpc.DBus("exec", remote_cmd)
+                self.main.xmlrpc.DBus("mess", remote_msg)
         
         self.change_lockscreen(ip)
 
@@ -75,8 +74,7 @@ class TcosNetController(TcosExtension):
         if not self.get_client():
             return
         # unlock net
-        timeout=0
-        remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled").replace("'", "´"))
+        remote_msg=_("Internet connection has been enabled")
         act="enable-internet"
         
         if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
@@ -89,11 +87,11 @@ class TcosNetController(TcosExtension):
                 return
             result = self.main.localdata.BlockNet(act, self.connected_users[0])
             if result == "enabled":
-                self.main.dbus_action.do_exec(self.connected_users , remote_cmd)
+                self.main.dbus_action.do_message( self.connected_users, remote_msg )
         else:
             result = self.main.xmlrpc.tnc(act, self.connected_users[0].split(":")[0])
             if result == "enabled":
-                self.main.xmlrpc.DBus("exec", remote_cmd)
+                self.main.xmlrpc.DBus("mess", remote_msg)
         
         self.change_lockscreen(ip)
 
@@ -108,8 +106,7 @@ class TcosNetController(TcosExtension):
         # disable internet
         eth=self.main.config.GetVar("network_interface")
         ports="--ports=%s" %self.main.config.GetVar("ports_tnc")
-        timeout=0
-        remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been disabled").replace("'", "´"))
+        remote_msg=_("Internet connection has been disabled")
         act="disable-internet"
         
         if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
@@ -129,13 +126,13 @@ class TcosNetController(TcosExtension):
                 self.main.xmlrpc.newhost(ip)
                 result = self.main.xmlrpc.tnc(act, usern, ports)
                 if result == "disabled":
-                    self.main.xmlrpc.DBus("exec", remote_cmd)
+                    self.main.xmlrpc.DBus("mess", remote_msg)
             else:
                 result = self.main.localdata.BlockNet(act, user, ports, eth)
                 if result == "disabled":
                     newusernames.append(user)
                 
-        result = self.main.dbus_action.do_exec(newusernames , remote_cmd)
+        result = self.main.dbus_action.do_message( newusernames, remote_msg )
         
         for client in self.newallclients:
             self.main.localdata.newhost(client)
@@ -151,8 +148,7 @@ class TcosNetController(TcosExtension):
             shared.error_msg ( msg )
             return
         # enable internet
-        timeout=0
-        remote_cmd="/usr/lib/tcos/session-cmd-send MESSAGE %s %s" %(timeout, _("Internet connection has been enabled").replace("'", "´"))
+        remote_msg=_("Internet connection has been enabled")
         act="enable-internet"
         
         if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
@@ -172,13 +168,13 @@ class TcosNetController(TcosExtension):
                 self.main.xmlrpc.newhost(ip)
                 result = self.main.xmlrpc.tnc(act, usern)
                 if result == "enabled":
-                    self.main.xmlrpc.DBus("exec", remote_cmd)
+                    self.main.xmlrpc.DBus("mess", remote_msg)
             else:
                 result = self.main.localdata.BlockNet(act, user)
                 if result == "enabled":
                     newusernames.append(user)
                 
-        result = self.main.dbus_action.do_exec(newusernames , remote_cmd)
+        result = self.main.dbus_action.do_message( newusernames, remote_msg )
         
         for client in self.newallclients:
             self.main.localdata.newhost(client)

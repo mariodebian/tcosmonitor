@@ -75,19 +75,28 @@ class TcosExtension(object):
             return False
         
         self.connected_users=[]
+        self.connected_users_txt=""
         self.newallclients=[]
         self.allclients_logged=[]
         self.main.localdata.newhost(self.main.selected_ip)
         self.main.xmlrpc.newhost(self.main.selected_ip)
         self.client_type = self.main.xmlrpc.ReadInfo("get_client")
         self.host=self.main.localdata.GetHostname(self.main.selected_ip)
-
+        counter=1
         if self.main.localdata.IsLogged(self.main.selected_ip):
-            self.connected_users.append(self.main.localdata.GetUsernameAndHost(self.main.selected_ip))
+            username=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
+            self.connected_users.append(username)
+            self.connected_users_txt+="%s, " %(username)
+            if counter % 4 == 0:
+                self.connected_users_txt+="\n"
+            counter=int(counter+1)
             self.newallclients.append(self.main.selected_ip)
             self.allclients_logged.append(self.main.selected_ip)
         elif not self.main.xmlrpc.IsStandalone(self.main.selected_ip):
             self.allclients_logged.append(self.main.selected_ip)
+
+        if self.connected_users_txt[-2:] == "\n": self.connected_users_txt=self.connected_users_txt[:-2]
+        if self.connected_users_txt[-2:] == ", ": self.connected_users_txt=self.connected_users_txt[:-2]
         
         print_debug("get_clients() self.main.selected_ip=%s self.main.selected_host=%s"%(self.main.selected_ip, self.main.selected_host) )
         return True
@@ -122,17 +131,23 @@ class TcosExtension(object):
         self.allclients=allclients
         
         self.connected_users=[]
+        self.connected_users_txt=""
         self.allclients_txt=""
         self.newallclients=[]
         self.newallclients_txt=""
         self.allclients_logged=[]
         self.allclients_logged_txt=""
-            
+        counter=1
         for client in allclients:
             self.allclients_txt+="\n %s" %(client)
             self.main.localdata.newhost(client)
             if self.main.localdata.IsLogged(client):
-                self.connected_users.append(self.main.localdata.GetUsernameAndHost(client))
+                username=self.main.localdata.GetUsernameAndHost(client)
+                self.connected_users.append(username)
+                self.connected_users_txt+="%s, " %(username)
+                if counter % 4 == 0:
+                    self.connected_users_txt+="\n"
+                counter=int(counter+1)
                 self.newallclients.append(client)
                 self.newallclients_txt+="\n %s" %(client)
                 self.allclients_logged.append(client)
@@ -140,6 +155,9 @@ class TcosExtension(object):
             elif not self.main.xmlrpc.IsStandalone(client):
                 self.allclients_logged.append(client)
                 self.allclients_logged_txt+="\n %s" %(client)
+
+        if self.connected_users_txt[-2:] == "\n": self.connected_users_txt=self.connected_users_txt[:-2]
+        if self.connected_users_txt[-2:] == ", ": self.connected_users_txt=self.connected_users_txt[:-2]
         return True
 
 ########################################################################################

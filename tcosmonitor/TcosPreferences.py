@@ -120,6 +120,9 @@ class TcosPreferences:
         # menus show hide
         for menu in shared.preferences_menus:
             setattr(self.main, "pref_" + menu, self.main.ui.get_widget(menu) )
+            
+        for menu in shared.button_preferences_menus:
+            setattr(self.main, "pref_" + menu, self.main.ui.get_widget(menu) )
 
 
     def SaveSettings(self):
@@ -204,6 +207,20 @@ class TcosPreferences:
         # convert array into string separated by comas
         self.main.config.SetVar("visible_menus", ",".join(visible_menus) )
         
+        visible_buttons_menus=[]
+        for menu in shared.button_preferences_menus:
+            pref_name=menu.replace('ck_button_menu_', '')
+            widget=getattr(self.main, "pref_" + menu)
+            if widget.get_active():
+                visible_buttons_menus.append("%s:1" %pref_name)
+            else:
+                visible_buttons_menus.append("%s:0" %pref_name)
+        # convert array into string separated by comas
+        self.main.config.SetVar("visible_buttons_menus", ",".join(visible_buttons_menus) )
+
+        # reput auth in dbus
+        self.main.dbus_action.set_auth( self.main.pref_xmlrpc_username.get_text(), self.main.pref_xmlrpc_password.get_text() )
+        
         self.main.config.SaveToFile()
 
     def read_checkbox(self, widget, varname):
@@ -232,7 +249,21 @@ class TcosPreferences:
         self.main.pref.hide()
         return True
 
+    def check_button_pref_menus(self):
+        total=0
+        for menu in shared.button_preferences_menus:
+            pref_name=menu.replace('ck_button_menu_', '')
+            widget_pref=getattr(self.main, "pref_" + menu)
+            if widget_pref.get_active():
+                total+=1
+        if total > 5:
+            shared.info_msg(_("You have select more than 5 button menus.\nOnly allowed to select a maximum of 5 buttons."))
+            return True
+        return False
+
     def on_pref_ok_button_click(self, widget):
+        if self.check_button_pref_menus():
+            return
         self.SaveSettings()
         # refresh pref widgets
         self.populate_pref()
@@ -326,6 +357,59 @@ class TcosPreferences:
         
         self.populate_checkboxes(self.main.pref_menugroups, "menugroups")
         
+        # button menus show hide
+        visible_buttons_menus=[]
+        visible_buttons_menu_keys={}
+        first_run=False
+        total=0
+        
+        visible_buttons_menus_txt=self.main.config.GetVar("visible_buttons_menus")
+        if visible_buttons_menus_txt != "":
+            print_debug("visible_buttons_menus is not empty")
+            visible_buttons_menus=visible_buttons_menus_txt.split(',')
+            for item in visible_buttons_menus:
+                item = item.split(":")
+                if len(item) == 1:
+                    visible_buttons_menu_keys[item[0]]="1"
+                else:
+                    visible_buttons_menu_keys[item[0]]=item[1]                    
+        else:
+            first_run=self.main.config.IsNew("visible_buttons_menus")
+            first_run=True
+            print_debug("visible_buttons_menus is empty first_run=%s"%first_run)
+
+        self.main.toolbar2.show()
+        for menu in shared.button_preferences_menus:
+            pref_name=menu.replace('ck_button_menu_', '')
+            widget_button=getattr(self.main, "handlebox_" + pref_name)
+            widget_pref=getattr(self.main, "pref_" + menu)
+            if first_run:
+                # first run, set defaults
+                if shared.button_preferences_menus[menu][0] != False:
+                    #widget.set_active(shared.preferences_menus[menu][0])
+                    #visible_menu_items.append(menu)
+                    #continue
+                    #visible_menus.append("%s:1" %pref_name)
+                    visible_buttons_menu_keys[pref_name]="1"
+                
+            if pref_name in visible_buttons_menu_keys.keys():
+                if visible_buttons_menu_keys[pref_name] == "1":
+                    widget_button.show()
+                    widget_pref.set_active(1)
+                    total+=1
+                elif visible_buttons_menu_keys[pref_name] == "0":
+                    widget_button.hide()
+                    widget_pref.set_active(0)
+            elif pref_name not in visible_buttons_menu_keys.keys() and shared.button_preferences_menus[menu][0] != False:
+                widget_button.show()
+                widget_pref.set_active(1)
+                total+=1
+            else:
+                widget_button.hide()
+                widget_pref.set_active(0)
+        if total == 0:
+            self.main.toolbar2.hide()
+
         # menus show hide
         visible_menus=[]
         visible_menu_items=[]
@@ -403,9 +487,9 @@ class TcosPreferences:
             self.main.searchtxt.set_sensitive(False)
         else:
             self.main.viewtabs.set_property('show-tabs', True)
-            self.main.viewtabs.set_current_page(oldtab)
-            self.main.searchbutton.set_sensitive(True)
-            self.main.searchtxt.set_sensitive(True)
+            self.main.viewtabs.set_current_page(2)
+            self.main.searchbutton.set_sensitive(False)
+            self.main.searchtxt.set_sensitive(False)
         
         
         print_debug("populate_pref() done")

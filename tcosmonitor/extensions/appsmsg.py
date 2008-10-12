@@ -45,6 +45,10 @@ def crono(start, txt):
 class AppsAndMsgs(TcosExtension):
     def register(self):
         self.init_ask()
+        self.main.classview.class_external_exe=self.exe_app_external
+        self.main.actions.button_action_exe=self.exe_app_all
+        self.main.actions.button_action_text=self.send_msg_all
+        
         self.main.menus.register_simple( _("Exec app on user display") , "menu_exec.png", 1, self.exe_app, "exe")
         self.main.menus.register_simple( _("Send a text message to user") , "menu_msg.png", 1, self.send_msg, "text")
         
@@ -107,6 +111,44 @@ class AppsAndMsgs(TcosExtension):
         return
 ##############################################################################
 
+    def exe_app_external(self, filename):
+        if self.main.classview.ismultiple():
+            if not self.get_all_clients():
+                return
+        elif not self.get_client():
+            return
+
+        if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
+            shared.error_msg ( _("Can't exec application, user is not logged") )
+            return
+        #print_debug("user=%s data=%s" %(self.connected_users, data))
+        app=""
+        self.ask_usernames=self.connected_users
+        self.ask_mode="exec"
+        print_debug("open_file() reading data from \"%s\"..." \
+                        %(filename) )
+        try:
+            fd=file(filename, 'r')
+            data=fd.readlines()
+            fd.close()
+        except Exception, err:
+            shared.error_msg( _("%s is not a valid application") %(os.path.basename(filename)) )
+            return
+        
+        for line in data:
+            if line != '\n':
+                if line.startswith("Exec="):
+                    line=line.replace('\n', '')
+                    action, app=line.split("=",1)
+                    app=app.replace("%U","").replace("%u","").replace("%F","").replace("%f","").replace("%c","").replace("%i","").replace("%m","")
+                                    
+        if len(app) <1:
+            shared.error_msg( _("%s is not a valid application") %(os.path.basename(filename)) )
+
+        if app != "":
+            self.exe_app_in_client_display(app)
+        return
+    
 
     def exe_app(self, w, ip):
         if not self.get_client():
@@ -277,8 +319,7 @@ class AppsAndMsgs(TcosExtension):
                 or arg.startswith('mv ') or arg.find(" mv ") != -1 \
                 or arg.startswith('cp ') or arg.find(" cp ") != -1:
             arg=""
-
-        # not needed because now we are using pynotify        
+        
         #if self.ask_mode == "mess":
         #    arg=arg.replace("'", "´")
         if self.ask_mode == "exec":

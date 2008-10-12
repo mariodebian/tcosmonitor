@@ -29,6 +29,7 @@ from gettext import gettext as _
 
 
 import shared
+import os
 
 def print_debug(txt):
     if shared.debug:
@@ -42,6 +43,9 @@ class TcosClassView(object):
         self.hosts={}
         self.__selected_icon=None
         self.selected=[]
+        self.class_external_exe=None
+        self.class_external_video=None
+        self.class_external_send=None
         self.avalaible_info=[
                     [_("IP"), 'ip' ],
                     [ _("Hostname"), 'hostname' ],
@@ -215,9 +219,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         iconview=gtk.IconView()
         model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
         if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_standalone.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + icon_image_standalone)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'host_tcos.png')
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         
         if not data['active']:
             pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
@@ -233,20 +237,22 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             iconview.props.has_tooltip = True
         
             
-        model.append([data['hostname'], data['ip'], pixbuf])
-        
+        model.append([data['username'], data['ip'], pixbuf])
         iconview.show()
+        # in old versions of gtk we need to put explicity iconview size
+	if gtk.gtk_version < (2,10,0):
+            iconview.set_size_request(pixbuf.props.width+14, pixbuf.props.height+28)
         
         # connect drag and drop signal with external data
-        iconview.drag_dest_set(gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ), ], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
+        iconview.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ), ], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
         iconview.connect( 'drag_data_received', self.on_external_drag_data_received, data['ip'])
 
         
         button = gtk.Button()
         button.set_relief(gtk.RELIEF_NONE)
         button.add(iconview)
-        
-        
+
+
         button.drag_source_set(gtk.gdk.BUTTON1_MASK, [], gtk.gdk.ACTION_COPY)
         if data['active']:
             button.connect("button_press_event", self.on_iconview_click, data['ip'])
@@ -267,11 +273,41 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             
         self.hosts[data['ip']]=data
 
-    def on_external_drag_data_received(self, widget, context, x, y, selection, targetType, dtime, ip):
-        #<gtk.IconView object at 0x94b5aa4 (GtkIconView at 0x8f55800)>, <gtk.gdk.DragContext object at 0x94b5a54 (GdkDragContext at 0x93f6008)>, 41, 53, <GtkSelectionData at 0xbfabafa4>, 2L, 4899892L, '192.168.0.1'
-        desktop=selection.data.strip().replace('%20', ' ')
-        print_debug("on_external_drag_data_received() desktop=%s"%desktop)
-        # FIXME do actions with this data
+    def on_external_drag_data_received( self, widget, context, x, y, selection, targetType, dtime, ip_recv):
+        ip=None
+        if not self.ismultiple():
+            if not ip_recv: return
+            ip=ip_recv
+            self.set_selected(ip)
+        print_debug("get_selected()=%s get_multiple()=%s" %(self.get_selected(), self.get_multiple()))
+        filenames=[]
+        files = selection.data.split('\n', 1)
+        extensions = (".avi", ".mpg", ".mpeg", ".ogg", ".ogm", ".asf", ".divx", 
+                    ".wmv", ".vob", ".m2v", ".m4v", ".mp2", ".mp4", ".ac3", 
+                    ".ogg", ".mp1", ".mp2", ".mp3", ".wav", ".wma")
+        print_debug("on_external_drag_data_received() files=%s dtime=%s ip=%s"%(files, dtime, ip))
+        for f in files:
+            if f:
+                filenames.append(f.strip().replace('%20', ' '))
+                #break
+        if len(filenames) < 1:
+            return
+        
+        if filenames[0].startswith('file:///') and filenames[0].lower().endswith('.desktop') and os.path.isfile(filenames[0][7:]):
+            if self.class_external_exe != None:
+                self.class_external_exe(filenames[0][7:])
+                print_debug("get_selected() ip=%s file=%s" %(self.get_selected(), filenames[0][7:]))
+        elif filenames[0].startswith('file:///') and filter(filenames[0].lower().endswith, extensions) and os.path.isfile(filenames[0][7:]):
+            if self.class_external_video != None:
+                self.class_external_video(filenames[0][7:])
+                print_debug("get_selected() ip=%s file=%s" %(self.get_selected(), filenames[0][7:]))
+        elif filenames[0].startswith('file:///') and os.path.isfile(filenames[0][7:]):
+            if self.class_external_send != None:
+                self.class_external_send(filenames)
+                print_debug("get_selected() ip=%s file=%s" %(self.get_selected(), filenames))
+        else:
+            shared.error_msg( _("%s is not a valid file to exe or send") %(os.path.basename(filenames[0][7:])) )
+        return True
 
     def on_drag_data_received(self, widget, context, x, y, dtime):
         button=context.get_source_widget()

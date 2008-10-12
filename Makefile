@@ -19,6 +19,7 @@ dist-clean:
 clean:
 	rm -rf tmp build
 	rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup *gladep
+	python setup.py clean
 	cd tcosmonitor && rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup
 	cd po && make clean
 	cd dbus && $(MAKE) clean

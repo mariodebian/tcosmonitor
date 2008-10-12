@@ -40,6 +40,7 @@ import socket
 
 #COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 import shared
+from threading import Thread
 #import WakeOnLan
 
 def print_debug(txt):
@@ -56,6 +57,13 @@ class TcosActions:
     def __init__(self, main):
         print_debug ( "__init__()" )
         self.main=main
+        self.button_action_audio=None
+        self.button_action_chat=None
+        self.button_action_list=None
+        self.button_action_video=None
+        self.button_action_send=None
+        self.button_action_exe=None
+        self.button_action_text=None
         #self.model=self.main.init.model
         #self.main.progressstop_args={}
 
@@ -169,12 +177,13 @@ class TcosActions:
             return
         else:
             allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
+            # clean icons and files
+            self.main.listview.clear()
+            self.main.iconview.clear()
+            self.main.classview.clear()
+
             if len(allclients) == 0:
                 self.main.write_into_statusbar ( _("Not connected hosts found.") )
-                # clean icons and files
-                self.main.listview.clear()
-                self.main.iconview.clear()
-                self.main.classview.clear()
                 return
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
             # populate_list in a thread
@@ -222,10 +231,40 @@ class TcosActions:
     ############################################################################
 
     def populate_host_list(self):
-        allclients=self.main.localdata.GetAllClients()
-        self.populate_hostlist(allclients)
+        #allclients=self.main.localdata.GetAllClients( self.main.config.GetVar("scan_network_method") )
+        #Thread( target=self.populate_hostlist, args=([allclients]) ).start()
+        # clear cached ips and ports
+        self.main.xmlrpc.resethosts()
+        self.datatxt = self.main.datatxt
+        # clear datatxt if len allclients is 0
+        self.datatxt.clean()
+        
+        if self.main.config.GetVar("scan_network_method") == "ping":
+            # clean icons and files
+            self.main.listview.clear()
+            self.main.iconview.clear()
+            self.main.classview.clear()
+            allclients=self.main.localdata.GetAllClients("ping")
+            self.main.refreshbutton.set_sensitive(True)
+            return False
+            # ping will call populate_hostlist when finish
+        else:
+            allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
+            if len(allclients) != 0:
+                # clean icons and files
+                self.main.listview.clear()
+                self.main.iconview.clear()
+                self.main.classview.clear()
+                self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
+                # populate_list in a thread
+                self.main.worker=shared.Workers(self.main, self.populate_hostlist, [allclients] )
+                self.main.worker.start()
+                return False
+            self.main.refreshbutton.set_sensitive(True)
+
         print_debug ( "POPULATE_HOST_LIST() returning %s" %(self.main.updating) )
-        return self.main.updating
+        #return self.main.updating
+        return False
 
 #        
 #    def askwindow_close(self, widget, event):
@@ -976,11 +1015,15 @@ class TcosActions:
         self.main.progressbar.show()
         self.main.progressbutton.show()
         self.set_progressbar( _("Searching info of hosts..."), 0)
-        if self.main.listview.isenabled():
+        if self.main.config.GetVar("listmode") == "both":
             self.main.listview.clear()
-        if self.main.iconview.isenabled():
             self.main.iconview.clear()
-        if self.main.classview.isenabled():
+            self.main.classview.clear()
+        elif self.main.listview.isenabled():
+            self.main.listview.clear()
+        elif self.main.iconview.isenabled():
+            self.main.iconview.clear()
+        elif self.main.classview.isenabled():
             self.main.classview.clear()
         self.main.common.threads_leave("TcosActions:populate_hostlist show progressbar")
         
@@ -1105,19 +1148,26 @@ class TcosActions:
             elif data['blocked_screen'] and data['blocked_net'] == False:
                 data['image_blocked']=locked_image
             else:
-                data['image_blocked']=unlocked_image            
-            
-            if self.main.listview.isactive():
+                data['image_blocked']=unlocked_image  
+
+            if self.main.config.GetVar("listmode") == "both":
+                self.main.common.threads_enter("TcosActions:populate_hostlist all generate_icon")
+                self.main.listview.generate_file(data)
+                self.main.iconview.generate_icon(data)
+                self.main.classview.generate_icon(data)
+                self.main.common.threads_leave("TcosActions:populate_hostlist all generate_icon")
+
+            elif self.main.listview.isactive():
                 self.main.common.threads_enter("TcosActions:populate_hostlist LIST generate_icon")
                 self.main.listview.generate_file(data)
                 self.main.common.threads_leave("TcosActions:populate_hostlist LIST generate_icon")
             
-            if self.main.iconview.isactive():
+            elif self.main.iconview.isactive():
                 self.main.common.threads_enter("TcosActions:populate_hostlist ICON generate_icon")
                 self.main.iconview.generate_icon(data)
                 self.main.common.threads_leave("TcosActions:populate_hostlist ICON generate_icon")
             
-            if self.main.classview.isactive():
+            elif self.main.classview.isactive():
                 self.main.common.threads_enter("TcosActions:populate_hostlist CLASS generate_icon")
                 self.main.classview.generate_icon(data)
                 self.main.common.threads_leave("TcosActions:populate_hostlist CLASS generate_icon")
@@ -2920,12 +2970,13 @@ class TcosActions:
 #        return False
 
     def update_hostlist(self):
-        if self.main.config.GetVar("populate_list_at_startup") == "1":
-            if float(self.main.config.GetVar("refresh_interval")) > 0:
-                update_every=float(self.main.config.GetVar("refresh_interval"))
-                print_debug ( "update_hostlist() every %f secs" %(update_every) )
-                gobject.timeout_add(int(update_every * 1000), self.main.populate_host_list )
-                return
+        #if self.main.config.GetVar("populate_list_at_startup") == "1":
+        if float(self.main.config.GetVar("refresh_interval")) > 0:
+            self.main.refreshbutton.set_sensitive(False)
+            update_every=float(self.main.config.GetVar("refresh_interval"))
+            print_debug ( "update_hostlist() every %f secs" %(update_every) )
+            gobject.timeout_add(int(update_every * 1000), self.populate_host_list )
+            return
         
 #    def get_user_processes(self, ip):
 #        """get user processes in session"""

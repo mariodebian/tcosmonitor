@@ -42,9 +42,170 @@ def print_debug(txt):
 class VideoOne(TcosExtension):
     def register(self):
         self.vlc_count={}
+        self.main.classview.class_external_video=self.video_external
+        self.main.actions.button_action_video=self.video_all
+
         self.main.menus.register_simple( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_one, "video")
         self.main.menus.register_all( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_all, "video")
         
+
+
+    def video_external(self, filename):
+        if self.main.classview.ismultiple():
+            if not self.get_all_clients():
+                return
+        elif not self.get_client():
+            return
+        # action sent by vidal_joshur at gva dot es
+        # start video broadcast mode
+        # Stream to single client unicast
+        eth=self.main.config.GetVar("network_interface")
+        
+        if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
+            shared.error_msg ( _("Can't send video broadcast, user is not logged") )
+            return
+                    
+        str_scapes=[" ", "(", ")", "*", "!", "?", "\"", "`", "[", "]", "{", "}", ";", ":", ",", "=", "$"]
+        lock="disable"
+        volume="85"
+        
+        if self.main.pref_vlc_method_send.get_active() == 0:
+            vcodec=shared.vcodecs[0]
+            venc=shared.vencs[0]
+            acodec=shared.acodecs[0]
+            aenc=shared.aencs[0]
+            access=shared.accesss[0]
+            mux=shared.muxs[0]
+        elif self.main.pref_vlc_method_send.get_active() == 1:
+            vcodec=shared.vcodecs[1]
+            venc=shared.vencs[0]
+            acodec=shared.acodecs[0]
+            aenc=shared.aencs[0]
+            access=shared.accesss[0]
+            mux=shared.muxs[0]
+        elif self.main.pref_vlc_method_send.get_active() == 2:
+            vcodec=shared.vcodecs[2]
+            venc=shared.vencs[1]
+            acodec=shared.acodecs[0]
+            aenc=shared.aencs[0]
+            access=shared.accesss[0]
+            mux=shared.muxs[0]
+        elif self.main.pref_vlc_method_send.get_active() == 3:
+            vcodec=shared.vcodecs[3]
+            venc=shared.vencs[2]
+            acodec=shared.acodecs[1]
+            aenc=shared.aencs[1]
+            access=shared.accesss[1]
+            mux=shared.muxs[1]
+        elif self.main.pref_vlc_method_send.get_active() == 4:
+            vcodec=shared.vcodecs[1]
+            venc=shared.vencs[0]
+            acodec=shared.acodecs[1]
+            aenc=shared.aencs[1]
+            access=shared.accesss[1]
+            mux=shared.muxs[1]
+        
+        if access == "udp":
+            max_uip=255
+            uip=0
+            while uip <= max_uip:
+                uip_cmd="239.255.%s.0" %(uip)
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                print_debug("Check broadcast ip %s." %(uip_cmd) )
+                output=self.main.common.exe_cmd(cmd)
+                uip+=1
+                if output == "0" and uip_cmd not in self.main.menus.broadcast_count.keys():
+                    print_debug("Broadcast ip found: %s" %(uip_cmd))
+                    ip_broadcast="%s:1234" %uip_cmd
+                    break
+                elif uip == max_uip:
+                    print_debug("Not found an available broadcast ip")
+                    return
+        else:
+            max_uip=50255
+            uip=50000
+            while uip <= max_uip:
+                uip_cmd=":%s" %(uip)
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                print_debug("Check broadcast ip %s." %(uip_cmd) )
+                output=self.main.common.exe_cmd(cmd)
+                uip+=1
+                if output == "0":
+                    print_debug("Broadcast ip found: %s" %(uip_cmd))
+                    ip_broadcast=uip_cmd
+                    uip_cmd=""
+                    break
+                elif uip == max_uip:
+                    print_debug("Not found an available broadcast ip")
+                    return
+                
+        if filename.find(" ") != -1:
+            msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
+            shared.info_msg( msg )
+            return
+            
+        if access == "udp":
+            remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(ip_broadcast)
+            remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
+            
+        p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+            
+        self.main.write_into_statusbar( _("Waiting for start video transmission...") )
+            
+        #msg=_("First select the DVD chapter or play movie\nthen press enter to send client..." )
+        #shared.info_msg( msg )
+            
+        # check if vlc is running or fail like check ping in demo mode
+        running = p.poll() is None
+        if not running:
+            self.main.write_into_statusbar( _("Error while exec app"))
+            return
+            
+        #msg=_( "Lock keyboard and mouse on client?" )
+        #if shared.ask_msg ( msg ):
+        #    lock="enable"
+            
+        if uip_cmd != "":
+            result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
+            if result == "error":
+                print_debug("Add multicast-ip route failed")
+                return
+                
+        newusernames=[]
+            
+        for user in self.connected_users:
+            if user.find(":") != -1:
+                # we have a standalone user...
+                usern, ip = user.split(":")
+                self.main.xmlrpc.newhost(ip)
+                if access == "http":
+                    server=self.main.xmlrpc.GetStandalone("get_server")
+                    remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_broadcast)
+                self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
+            else:
+                newusernames.append(user)
+                        
+        if access == "http":
+            remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" % (ip_broadcast)
+                    
+        result = self.main.dbus_action.do_exec( newusernames, remote_cmd_thin )
+            
+        if not result:
+            shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
+            
+        for client in self.newallclients:
+            self.main.xmlrpc.vlc( client, volume, lock )
+            
+        self.main.write_into_statusbar( _("Running in broadcast video transmission.") )
+        # new mode to Stop Button
+        if len(self.vlc_count.keys()) != 0:
+            count=len(self.vlc_count.keys())-1
+            nextkey=self.vlc_count.keys()[count]+1
+            self.vlc_count[nextkey]=uip_cmd
+        else:
+            nextkey=1
+            self.vlc_count[nextkey]=uip_cmd
+        self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":self.newallclients, "ip":uip_cmd, "iface":eth, "key":nextkey}, _("Running in broadcast video transmission to user %(host)s. Broadcast Nº %(count)s") %{"host":self.connected_users_txt, "count":nextkey} )
 
     def video_one(self, widget, ip):
         if not self.get_client():
@@ -109,7 +270,7 @@ class VideoOne(TcosExtension):
                     print_debug("Check broadcast ip %s." %(uip_cmd) )
                     output=self.main.common.exe_cmd(cmd)
                     uip+=1
-                    if output == "0":
+                    if output == "0" and uip_cmd not in self.main.menus.broadcast_count.keys():
                         print_debug("Broadcast ip found: %s" %(uip_cmd))
                         ip_unicast="%s:1234" %uip_cmd
                         break
@@ -239,7 +400,7 @@ class VideoOne(TcosExtension):
             else:
                 nextkey=1
                 self.vlc_count[nextkey]=uip_cmd
-            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":self.newallclients, "ip":uip_cmd, "iface":eth, "key":nextkey}, _("Running in broadcast video transmission to host %(host)s. Broadcast Nº %(count)d") %{"host":ip, "count":nextkey} )
+            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients":self.newallclients, "ip":uip_cmd, "iface":eth, "key":nextkey}, _("Running in broadcast video transmission to user %(host)s. Broadcast Nº %(count)s") %{"host":self.connected_users_txt, "count":nextkey} )
         else:
             dialog.destroy()
 
@@ -342,7 +503,7 @@ class VideoOne(TcosExtension):
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1
-                if output == "0":
+                if output == "0" and uip_cmd not in self.main.menus.broadcast_count.keys():
                     print_debug("Broadcast ip found: %s" %(uip_cmd))
                     ip_broadcast="%s:1234" %uip_cmd
                     break
@@ -478,7 +639,7 @@ class VideoOne(TcosExtension):
             else:
                 nextkey=1
                 self.vlc_count[nextkey]=uip_cmd
-            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": self.newallclients, "ip":uip_cmd, "iface":eth, "key":nextkey}, _("Running in broadcast video transmission. Broadcast Nº %d") %(nextkey) )
+            self.add_progressbox( {"target": "vlc", "pid":p.pid, "lock":lock, "allclients": self.newallclients, "ip":uip_cmd, "iface":eth, "key":nextkey}, _("Running in broadcast video transmission. Broadcast Nº %s") %(nextkey) )
         else:
             dialog.destroy()
 

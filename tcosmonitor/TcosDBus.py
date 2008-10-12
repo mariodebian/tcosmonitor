@@ -259,7 +259,7 @@ class TcosDBusServer:
         n = pynotify.Notification( title , msg, image_uri )
         n.set_urgency(urgency)
         n.set_category("TcosDBus")
-        n.set_timeout(15000) # 15 sec
+        n.set_timeout(20000) # 15 sec
         if not n.show():
             print_debug  ("show_notification() Failed to send notification")
 
@@ -307,6 +307,10 @@ class TcosDBusAction:
             
         self.dbus_iface = TcosDBusClient(name)
         self.connection=True
+
+    def set_auth(self, admin, passwd):
+        self.admin=admin
+        self.passwd=passwd
 
     def get_error_msg(self):
         return self.error

@@ -30,6 +30,10 @@ import gobject
 import getopt
 from gettext import gettext as _
 
+import pygtk
+pygtk.require('2.0')
+import gtk
+import gtk.glade
 from tcosmonitor import shared
 
 # load conf file and exit if not active
@@ -38,11 +42,6 @@ if not shared.test_start("tcos-volume-manager") :
     sys.exit(1)
 
 
-import pygtk
-pygtk.require('2.0')
-#from gtk import *
-import gtk
-import gtk.glade
 import pwd
 
 def print_debug(txt):

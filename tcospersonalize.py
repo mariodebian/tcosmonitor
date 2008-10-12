@@ -27,13 +27,13 @@ import sys
 import os
 import glob
 
-from tcosmonitor import shared
-
 import pygtk
 pygtk.require('2.0')
-#from gtk import *
 import gtk
 import gtk.glade
+
+from tcosmonitor import shared
+
 
 from time import time
 import getopt
