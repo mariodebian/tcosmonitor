@@ -9,9 +9,12 @@ from distutils.command.build import build
 
 data_files = []
 
+import sys
+
 class build_locales(build):
-    os.system("sh fix-glade.sh")
-    os.system("cd po && make")
+    if not "clean" in sys.argv:
+        os.system("sh fix-glade.sh")
+        os.system("cd po && make")
 
 for (path, dirs, files) in os.walk("po"):
     if "tcosmonitor.mo" in files:
