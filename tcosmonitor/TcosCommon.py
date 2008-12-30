@@ -24,16 +24,16 @@
 
 import os
 import socket
-#import fcntl
-#import struct
 import pwd
 import shared
-#import signal
 import threading
 from subprocess import Popen, PIPE, STDOUT
 from gettext import gettext as _
 
 import netifaces
+
+import DNS
+import string
 
 from time import sleep
 
@@ -130,8 +130,9 @@ class TcosCommon:
         return self.vars["allnetworkinterfaces"]
 
     def get_my_local_ip(self, last=True, force=False):
+        print_debug("get_my_local_ip(), last=%s, force=%s" %(last,force))
         if force == True or not "local_ip" in self.vars :
-            print_debug("get_my_local_ip()")
+            #print_debug("get_my_local_ip()")
             self.vars["local_ip"]=[]
             for dev in self.GetAllNetworkInterfaces():
                 ip=self.get_ip_address(dev)
@@ -148,34 +149,62 @@ class TcosCommon:
             return self.vars["local_ip"]
         return self.get_my_local_ip(last=False)
 
+    def revlookup(self, name):
+        """ Copy from python-dns lazy.py
+        Added support for small timeout (0,5 secs)
+        convenience routine for doing a reverse lookup of an address"""
+        print_debug("revlookup name=%s"%(name) )
+        
+        if DNS.Base.defaults['server'] == []: DNS.Base.DiscoverNameServers()
+        a = string.split(name, '.')
+        a.reverse()
+        b = string.join(a, '.')+'.in-addr.arpa'
+        # this will only return one of any records returned.
+        response=_("unknow")
+        try:
+            response=DNS.Base.DnsRequest(b, qtype = 'ptr', timeout=0.5).req().answers[0]['data']
+        except DNS.Base.DNSError, err:
+            print_debug("revlookup() Exception Timeout, error=%s"%err)
+        except IndexError, err:
+            print_debug("revlookup() Exception IndexError, error=%s"%err)
+            return _("unknow")
+        return response
+
+
+    def DNSgethostbyaddr(self, ip):
+        hostname=_("unknow")
+        
+        hostname=self.revlookup(ip)
+        if hostname == _("unknow"):
+            try:
+                hostname=socket.gethostbyaddr(ip)[2][0]
+            except Exception,err:
+                print_debug("DNSgethostbyaddr Exception socket.gethostbyaddr, error=%s"%err)
+        return hostname
+
+
     def get_display(self, ip_mode=True):
-        #print_debug("get_display()")
+        print_debug("get_display() ip_mode=%s"%(ip_mode) )
         self.vars["display_host"]=os.environ["DISPLAY"].split(':')[0]
         self.vars["display_hostname"]=self.vars["display_host"]
         self.vars["display_ip"]=self.vars["display_host"]
 
-        # read hostname and ipaddress based on cookie hostname/ip
-        old_timeout=socket.getdefaulttimeout()
-        socket.setdefaulttimeout(2)
-        try:
-            if self.vars["display_host"] != "":
-                self.vars["display_hostname"]=socket.gethostbyaddr(self.vars["display_host"])[0]
-                self.vars["display_ip"]=socket.gethostbyaddr(self.vars["display_host"])[2][0]
-                
-            else:
-                print_debug("get_display() running in local DISPLAY")
-                self.vars["display_ip"]=self.get_my_local_ip()
-                self.vars["display_hostname"]=socket.gethostbyaddr(self.vars["display_ip"])[0]
-        except Exception, err:
-            print_debug("get_display() Exception, error=%s"%err)
-            pass
+
+        if self.vars["display_host"] != "":
+            self.vars["display_hostname"]=self.DNSgethostbyaddr(self.vars["display_host"])
+            self.vars["display_ip"]=self.DNSgethostbyaddr(self.vars["display_host"])
+            
+        else:
+            print_debug("get_display() running in local DISPLAY")
+            self.vars["display_ip"]=self.get_my_local_ip()
+            self.vars["display_hostname"]=self.DNSgethostbyaddr(self.vars["display_ip"])
+
 
         if ip_mode:
             display=self.vars["display_ip"]
         else:
             display=self.vars["display_hostname"]
         
-        socket.setdefaulttimeout(old_timeout)
         print_debug ( "get_display() display_host=%s display_hostname=%s display_ip=%s" %(self.vars["display_host"], self.vars["display_hostname"], self.vars["display_ip"]) )
         return display
 

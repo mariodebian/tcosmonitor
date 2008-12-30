@@ -34,6 +34,7 @@ from UTMPCONST import WTMP_FILE, USER_PROCESS
 
 import pwd, grp
 import socket
+import DNS
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 
@@ -341,6 +342,7 @@ class LocalData:
         ########  cache( ip, 1=hostname)
         cached=self.cache(ip, 1)
         if cached != None:
+            print_debug("GetHostname() return cached DATA '%s'"%cached)
             return cached
             
         start=time()
@@ -348,7 +350,12 @@ class LocalData:
         #    return self.hostname
         
         self.hostname=unknow
-        
+
+        # use python-dns module to search for reverse DNS
+        self.hostname=self.main.common.revlookup(ip)
+        if self.hostname != unknow:
+            self.add_to_cache( ip, 1 , self.hostname )
+            return self.hostname
         
         ######## new method #########
         old_timeout=socket.getdefaulttimeout()

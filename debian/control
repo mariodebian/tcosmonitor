@@ -9,7 +9,8 @@ XS-Vcs-Svn: https://www.tcosproject.org/svn/tcos/trunk/tcosmonitor
 
 Package: tcosmonitor
 Architecture: all
-Depends:  python, gksu | kdebase-bin, tcosmonitor-common, python-glade2, ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Depends:  python, gksu | kdebase-bin, tcosmonitor-common, 
+          python-glade2, ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.16~rc9)
 Description: Thin client monitor
  TCOS, thin Client Operating System is a method to create small embedded os
@@ -22,7 +23,7 @@ Description: Thin client monitor
 Package: tcosmonitor-common
 Architecture: all
 Depends:  python, dbus, zenity, python-dbus | python2.4-dbus, python-gtk2, python-netifaces, 
-          x11vnc, lsb-base (>= 3.0-6), python-notify, python-gnome2-extras, 
+          x11vnc, lsb-base (>= 3.0-6), python-notify, python-gnome2-extras, python-dns, 
           notification-daemon, libnotify-bin, tcos-core ( >= 0.89~rc0), python-utmp, 
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.16~rc9)
