@@ -144,6 +144,16 @@ class TcosMonitor(object):
         self.mainwindow.connect("delete_event", self.quitapp)
         #self.pref.connect('destroy', self.prefwindow_close )
         #self.pref.hide()
+
+        # reduce mainwindow size if running in height < 768
+        #>>> gtk.gdk.screen_height()
+        #>>> gtk.gdk.screen_width()
+        if gtk.gdk.screen_height() < 768:
+            print_debug("set lower size of glade mainwindow")
+            self.mainwindow.set_size_request(760,520)
+
+        # glade file (mainwindow) visible=False, show now
+        self.mainwindow.show()
         
         
         # FIXME
