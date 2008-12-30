@@ -170,4 +170,6 @@ patch_max: patch_version
 	
 patch_intrepid: patch_version
 
+patch_jaunty: patch_version
+
 .PHONY: fix-glade tcosxmlrpc dbus udev
