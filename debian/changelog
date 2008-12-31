@@ -6,8 +6,10 @@ tcosmonitor (0.2.17~rc6) unstable; urgency=low
     - Don't build if target is clean
   * tcosmonitor/TcosCommon.py tcosmonitor/LocalData.py debian/control
     - Add python-dns support (reduce dns timeouts)
+  * Makefile:
+    - Fix shared.py path
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 30 Dec 2008 20:22:47 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 31 Dec 2008 17:22:10 +0100
 
 tcosmonitor (0.2.17~rc5) unstable; urgency=low
 
