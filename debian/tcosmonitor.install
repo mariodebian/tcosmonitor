@@ -6,6 +6,7 @@ debian/tmp/usr/share/tcosmonitor/images/*
 debian/tmp/usr/share/tcosmonitor/tcos-volume-manager.glade
 debian/tmp/usr/share/tcosmonitor/tcosmonitor.glade
 debian/tmp/usr/share/tcosmonitor/tcospersonalize.glade
+debian/tmp/usr/share/tcosmonitor/tray.glade
 
 debian/tmp/usr/share/applications/tcosmonitor.desktop
 debian/tmp/usr/share/applications/tcospersonalize.desktop
@@ -28,6 +29,7 @@ debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosMenus.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosPreferences.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosStaticHosts.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosTrayIcon.py
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosTrayIcon2.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosXmlRpc.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/WakeOnLan.py
 

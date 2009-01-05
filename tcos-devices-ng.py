@@ -55,7 +55,7 @@ if not shared.test_start("tcos-devices-ng") :
     sys.exit(1)
 
 
-from tcosmonitor.TcosTrayIcon import TcosTrayIcon
+from tcosmonitor.TcosTrayIcon2 import TcosTrayIcon
 import threading
 
 import gtk.glade

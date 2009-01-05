@@ -1,3 +1,13 @@
+tcosmonitor (0.2.17~rc7) unstable; urgency=low
+
+  * tcosmonitor/TcosCommon.py tcosmonitor/TcosXauth.py
+    - Fix normal lookup for IP from hostname
+  * tcos-devices-ng.py tray.glade images/eject.png
+    tcosmonitor/TcosTrayIcon2.py
+    - New TrayIcon Class, with a popup window and eject buttons
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 06 Jan 2009 00:38:06 +0100
+
 tcosmonitor (0.2.17~rc6) unstable; urgency=low
 
   * tcosmonitor.glade tcosmonitor.py

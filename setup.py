@@ -36,6 +36,7 @@ data_files.append(('share/pixmaps', ['images/tcos-icon-32x32.png'] ))
 data_files.append(('share/tcosmonitor', ['tcosmonitor.glade'] ))
 data_files.append(('share/tcosmonitor', ['tcospersonalize.glade'] ))
 data_files.append(('share/tcosmonitor', ['tcos-volume-manager.glade'] ))
+data_files.append(('share/tcosmonitor', ['tray.glade'] ))
 
 
 # config files and Xsession.d launcher

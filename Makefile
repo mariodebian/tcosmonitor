@@ -85,6 +85,7 @@ install:
 	install -m 644 ping.py         $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 htmltextview.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosTrayIcon.py     $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
+	install -m 644 TcosTrayIcon2.py    $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosStaticHosts.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosPreferences.py  $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
 	install -m 644 TcosCommon.py       $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)/
