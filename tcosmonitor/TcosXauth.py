@@ -48,6 +48,9 @@ class TcosXauth:
         self.common=TcosCommon.TcosCommon(self)
         self.display_host=self.common.get_display(ip_mode=False)
         self.display_ip=self.common.get_display(ip_mode=True)
+        
+        print_debug("display_host='%s'" %self.display_host)
+        print_debug("display_ip='%s'" %self.display_ip)
 
     def init_standalone(self):
         print_debug ( "init_standalone() " )
@@ -67,9 +70,11 @@ class TcosXauth:
         print_debug ( "read_cookie() %s" %readed )
         for line in readed:
             if len(line.split()) != 3:
+                print_debug("read_cookie() INCORRECT XAUTH LINE '%s'" %line)
                 continue
             host, ctype, cookie = line.split()
             chost=host.split(':')[0]
+            print_debug("read_cookie() chost='%s' split LINE '%s' " %(chost, line))
             if chost == self.display_host or chost == self.display_ip:
                 self.cookie=cookie
                 print_debug ( "read_cookie() chost=%s HAVE COOKIE => %s" %(chost, cookie) )

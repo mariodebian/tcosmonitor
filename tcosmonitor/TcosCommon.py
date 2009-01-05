@@ -162,14 +162,26 @@ class TcosCommon:
         # this will only return one of any records returned.
         response=_("unknow")
         try:
-            response=DNS.Base.DnsRequest(b, qtype = 'ptr', timeout=0.5).req().answers[0]['data']
+            c=DNS.Base.DnsRequest(b, qtype = 'ptr', timeout=0.2).req()
+            response=c.answers[0]['data']
         except DNS.Base.DNSError, err:
             print_debug("revlookup() Exception Timeout, error=%s"%err)
         except IndexError, err:
-            print_debug("revlookup() Exception IndexError, error=%s"%err)
+            #print_debug("revlookup() Exception IndexError, error=%s"%err)
             return _("unknow")
         return response
 
+    def lookup(self, name):
+        response=name
+        try:
+            c=DNS.Base.DnsRequest(name, qtype = 'a', timeout=0.2).req()
+            response=c.answers[0]['data']
+        except DNS.Base.DNSError, err:
+            print_debug("revlookup() Exception Timeout, error=%s"%err)
+        except IndexError, err:
+            #print_debug("revlookup() Exception IndexError, error=%s"%err)
+            return name
+        return response
 
     def DNSgethostbyaddr(self, ip):
         hostname=_("unknow")
@@ -192,7 +204,7 @@ class TcosCommon:
 
         if self.vars["display_host"] != "":
             self.vars["display_hostname"]=self.DNSgethostbyaddr(self.vars["display_host"])
-            self.vars["display_ip"]=self.DNSgethostbyaddr(self.vars["display_host"])
+            self.vars["display_ip"]=self.lookup(self.vars["display_host"])
             
         else:
             print_debug("get_display() running in local DISPLAY")
@@ -205,7 +217,8 @@ class TcosCommon:
         else:
             display=self.vars["display_hostname"]
         
-        print_debug ( "get_display() display_host=%s display_hostname=%s display_ip=%s" %(self.vars["display_host"], self.vars["display_hostname"], self.vars["display_ip"]) )
+        print_debug ( "get_display() ip_mode='%s' display_host=%s display_hostname=%s display_ip=%s" 
+            %(ip_mode, self.vars["display_host"], self.vars["display_hostname"], self.vars["display_ip"]) )
         return display
 
     def get_extensions(self):
@@ -287,8 +300,10 @@ if __name__ == '__main__':
     #print app.get_my_local_ip(last=True)
     #print app.get_display()
     #print app.get_all_my_ips()
-    app.get_extensions()
-    app.init_all_extensions()
+    #app.get_extensions()
+    #app.init_all_extensions()
+    print app.get_display(ip_mode=True)
+    print app.get_display(ip_mode=False)
     #print app.get_icon_theme()
     #print app.get_all_my_ips()
     #print app.GetAllNetworkInterfaces()
