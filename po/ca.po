@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcosmonitor 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-12 11:37+0200\n"
+"POT-Creation-Date: 2009-01-09 16:17+0100\n"
 "PO-Revision-Date: 2008-06-03 08:58+0200\n"
 "Last-Translator: Carles Sadurní Anguita <po@puntnet.org>\n"
 "Language-Team: catalan\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../tcosmonitor.py:128
+#: ../tcosmonitor.py:124
 #, fuzzy, python-format
 msgid ""
 "The user \"%s\" must be member of the group \"tcos\" to exec tcosmonitor.\n"
@@ -28,113 +28,113 @@ msgstr ""
 "\n"
 "Si sou administrador/a, afegiu l'usuari al grup tcos."
 
-#: ../tcosmonitor.py:234
+#: ../tcosmonitor.py:240
 msgid "Send files disabled. rsync not configured."
 msgstr ""
 
-#: ../tcosmonitor.py:316 ../tcospersonalize.py:552
-#: ../tcos-volume-manager.py:358
+#: ../tcosmonitor.py:322 ../tcospersonalize.py:552
+#: ../tcos-volume-manager.py:357
 msgid "Exiting"
 msgstr "Eixint"
 
-#: ../tcos-devices-ng.py:185
+#: ../tcos-devices-ng.py:188
 #, python-format
 msgid "Rebooting in %s seconds"
 msgstr "Reinici en %s segons"
 
-#: ../tcos-devices-ng.py:187
+#: ../tcos-devices-ng.py:190
 #, python-format
 msgid "Shutting down in %s seconds"
 msgstr "Apagada en %s segons"
 
-#: ../tcos-devices-ng.py:203 ../tcos-devices-ng.py:206
+#: ../tcos-devices-ng.py:206 ../tcos-devices-ng.py:209
 #, python-format
 msgid ""
 "ERROR during action %(action)s:\n"
 "%(errortxt)s"
 msgstr ""
 
-#: ../tcos-devices-ng.py:233
+#: ../tcos-devices-ng.py:236
 msgid "Tcos device daemon"
 msgstr ""
 
-#: ../tcos-devices-ng.py:277 ../tcos-volume-manager.py:144
+#: ../tcos-devices-ng.py:280 ../tcos-volume-manager.py:143
 #, python-format
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr "Error en intentar connectar amb TcosXmlRpc en %s."
 
-#: ../tcos-devices-ng.py:300
+#: ../tcos-devices-ng.py:304
 #, python-format
 msgid "Cdrom device %s"
 msgstr "Dispositiu de CDROM %s"
 
-#: ../tcos-devices-ng.py:303
+#: ../tcos-devices-ng.py:307
 msgid "Mount Cdrom"
 msgstr "Munta CDROM"
 
-#: ../tcos-devices-ng.py:304
+#: ../tcos-devices-ng.py:308
 msgid "Umount Cdrom"
 msgstr "Desmunta CDROM"
 
-#: ../tcos-devices-ng.py:324
+#: ../tcos-devices-ng.py:330
 #, python-format
 msgid "Disk partition %s"
 msgstr "Partició %s"
 
-#: ../tcos-devices-ng.py:327
+#: ../tcos-devices-ng.py:333
 msgid "Mount disk partition"
 msgstr "Munta la partició de disc"
 
-#: ../tcos-devices-ng.py:328
+#: ../tcos-devices-ng.py:334
 msgid "Umount disk partition"
 msgstr "Desmunta la partició de disc"
 
-#: ../tcos-devices-ng.py:339
+#: ../tcos-devices-ng.py:346
 msgid "No floppy detected"
 msgstr "No s'ha detectat el disquet"
 
-#: ../tcos-devices-ng.py:351 ../tcos-devices-ng.py:657
-#: ../tcos-devices-ng.py:663 ../tcos-devices-ng.py:669
+#: ../tcos-devices-ng.py:358 ../tcos-devices-ng.py:664
+#: ../tcos-devices-ng.py:670 ../tcos-devices-ng.py:676
 msgid "Floppy"
 msgstr "Disquet"
 
-#: ../tcos-devices-ng.py:354
+#: ../tcos-devices-ng.py:361
 msgid "Mount Floppy"
 msgstr "Munta el disquet"
 
-#: ../tcos-devices-ng.py:355
+#: ../tcos-devices-ng.py:362
 msgid "Umount Floppy"
 msgstr "Desmunta el disquet"
 
-#: ../tcos-devices-ng.py:365
+#: ../tcos-devices-ng.py:372
 msgid "Floppy mounted. Ready for use."
 msgstr "Disquet muntat. Preparat."
 
-#: ../tcos-devices-ng.py:367
+#: ../tcos-devices-ng.py:374
 msgid "Floppy umounted. You can extract it."
 msgstr "Disquet desmuntat. Podeu extraure'l"
 
-#: ../tcos-devices-ng.py:383
+#: ../tcos-devices-ng.py:390
 msgid "Hard disk partition mounted. Ready for use."
 msgstr "Partició de disc muntada. Preparada."
 
-#: ../tcos-devices-ng.py:386
+#: ../tcos-devices-ng.py:393
 msgid "Hard disk partition umounted."
 msgstr "Partició de disc desmuntada"
 
-#: ../tcos-devices-ng.py:408
+#: ../tcos-devices-ng.py:415
 msgid "Audio cdrom mounted., you can listen music opening wav files."
 msgstr "El CD d'audio està muntat, podeu sentir música obrint els fitxers wav."
 
-#: ../tcos-devices-ng.py:410
+#: ../tcos-devices-ng.py:417
 msgid "Cdrom mounted. Ready for use."
 msgstr "CDROM muntat. Preparat."
 
-#: ../tcos-devices-ng.py:413
+#: ../tcos-devices-ng.py:420
 msgid "Cdrom umounted. You can extract it."
 msgstr "CDROM desmuntat. Podeu extraure'l."
 
-#: ../tcos-devices-ng.py:512
+#: ../tcos-devices-ng.py:519
 #, python-format
 msgid ""
 "Mounting device %s\n"
@@ -143,13 +143,13 @@ msgstr ""
 "Desmuntant el dispositiu %s.\n"
 "Per favor, espereu..."
 
-#: ../tcos-devices-ng.py:561
+#: ../tcos-devices-ng.py:568
 msgid "Error mounting LTSPFS, check versions of LTSPFS packages"
 msgstr ""
 "Error durant el muntatge de LTSPFS, comproveu les versions dels paquets "
 "LTSPFS"
 
-#: ../tcos-devices-ng.py:587
+#: ../tcos-devices-ng.py:594
 #, python-format
 msgid ""
 "Umounting device %s.\n"
@@ -158,53 +158,53 @@ msgstr ""
 "Desmuntant el dispositiu %s.\n"
 "Per favor, espereu..."
 
-#: ../tcos-devices-ng.py:634
+#: ../tcos-devices-ng.py:641
 msgid "usbdisk"
 msgstr "Disc USB"
 
-#: ../tcos-devices-ng.py:636
+#: ../tcos-devices-ng.py:643
 msgid "firewiredisk"
 msgstr "disc firewire"
 
-#: ../tcos-devices-ng.py:661
+#: ../tcos-devices-ng.py:668
 msgid "Can't mount floppy"
 msgstr "No ha estat possible muntar el disquet"
 
-#: ../tcos-devices-ng.py:672
+#: ../tcos-devices-ng.py:679
 msgid "Can't umount floppy"
 msgstr "No ha estat possible desmuntar el disquet"
 
-#: ../tcos-devices-ng.py:685 ../tcos-devices-ng.py:695
-#: ../tcos-devices-ng.py:706 ../tcos-devices-ng.py:818
-#: ../tcos-devices-ng.py:830 ../tcos-devices-ng.py:849
-#: ../tcos-devices-ng.py:861 ../tcos-devices-ng.py:893
+#: ../tcos-devices-ng.py:692 ../tcos-devices-ng.py:702
+#: ../tcos-devices-ng.py:713 ../tcos-devices-ng.py:826
+#: ../tcos-devices-ng.py:838 ../tcos-devices-ng.py:857
+#: ../tcos-devices-ng.py:869 ../tcos-devices-ng.py:901
 #, python-format
 msgid "Cdrom_%s"
 msgstr "Cdrom_%s"
 
-#: ../tcos-devices-ng.py:693
+#: ../tcos-devices-ng.py:700
 msgid "Can't mount cdrom"
 msgstr "No ha esta possible muntar el CDROM"
 
-#: ../tcos-devices-ng.py:709
+#: ../tcos-devices-ng.py:716
 msgid "Can't umount cdrom"
 msgstr "No ha estat possible desmuntar el CDROM"
 
-#: ../tcos-devices-ng.py:725 ../tcos-devices-ng.py:735
-#: ../tcos-devices-ng.py:746
+#: ../tcos-devices-ng.py:732 ../tcos-devices-ng.py:742
+#: ../tcos-devices-ng.py:753
 #, python-format
 msgid "Disk_%s"
 msgstr "Disc_%s"
 
-#: ../tcos-devices-ng.py:733
+#: ../tcos-devices-ng.py:740
 msgid "Can't mount hard disk partition"
 msgstr "No ha estat possible muntar la partició del disc"
 
-#: ../tcos-devices-ng.py:749
+#: ../tcos-devices-ng.py:756
 msgid "Can't umount hard disk partition"
 msgstr "No ha estat possible desmuntar la partició del disc"
 
-#: ../tcos-devices-ng.py:790
+#: ../tcos-devices-ng.py:797
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -212,30 +212,30 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: ../tcos-devices-ng.py:794
+#: ../tcos-devices-ng.py:801
 #, python-format
 msgid "CDROM USB device %s"
 msgstr "Dispositiu CDROM USB %s"
 
-#: ../tcos-devices-ng.py:797
+#: ../tcos-devices-ng.py:804
 #, python-format
 msgid "Mount CDROM USB device %s"
 msgstr "Munta el dispositiu CDROM USB %s"
 
-#: ../tcos-devices-ng.py:798
+#: ../tcos-devices-ng.py:805
 #, python-format
 msgid "Umount CDROM USB device %s"
 msgstr "Desmunta el dispositiu CDROM USB %s"
 
-#: ../tcos-devices-ng.py:822 ../tcos-devices-ng.py:853
-#: ../tcos-devices-ng.py:983 ../tcos-devices-ng.py:994
-#: ../tcos-devices-ng.py:1040 ../tcos-devices-ng.py:1120
-#: ../tcos-devices-ng.py:1131 ../tcos-devices-ng.py:1177
+#: ../tcos-devices-ng.py:830 ../tcos-devices-ng.py:861
+#: ../tcos-devices-ng.py:991 ../tcos-devices-ng.py:1002
+#: ../tcos-devices-ng.py:1048 ../tcos-devices-ng.py:1128
+#: ../tcos-devices-ng.py:1139 ../tcos-devices-ng.py:1185
 #, python-format
 msgid "Error, can't mount device %s"
 msgstr "Error: ha estat impossible muntar %s"
 
-#: ../tcos-devices-ng.py:880
+#: ../tcos-devices-ng.py:888
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -243,12 +243,12 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: ../tcos-devices-ng.py:908
+#: ../tcos-devices-ng.py:916
 #, python-format
 msgid "Can't umount cdrom usb %s"
 msgstr "No ha estat possible desmuntar el cdrom usb %s"
 
-#: ../tcos-devices-ng.py:933
+#: ../tcos-devices-ng.py:941
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -256,7 +256,7 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: ../tcos-devices-ng.py:936
+#: ../tcos-devices-ng.py:944
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -264,22 +264,22 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: ../tcos-devices-ng.py:964
+#: ../tcos-devices-ng.py:972
 #, python-format
 msgid "USB device %s"
 msgstr "Dispositiu USB %s"
 
-#: ../tcos-devices-ng.py:967
+#: ../tcos-devices-ng.py:975
 #, python-format
 msgid "Mount USB device %s"
 msgstr "Munta el dispositiu USB %s"
 
-#: ../tcos-devices-ng.py:968
+#: ../tcos-devices-ng.py:976
 #, python-format
 msgid "Umount USB device %s"
 msgstr "Desmunta el dispositiu USB %s"
 
-#: ../tcos-devices-ng.py:1070
+#: ../tcos-devices-ng.py:1078
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -287,7 +287,7 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: ../tcos-devices-ng.py:1073
+#: ../tcos-devices-ng.py:1081
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -295,50 +295,58 @@ msgid ""
 "%(vendor)s %(model)s"
 msgstr ""
 
-#: ../tcos-devices-ng.py:1101
+#: ../tcos-devices-ng.py:1109
 #, python-format
 msgid "Firewire device %s"
 msgstr "Dispositiu firewire %s"
 
-#: ../tcos-devices-ng.py:1104
+#: ../tcos-devices-ng.py:1112
 #, python-format
 msgid "Mount Firewire device %s"
 msgstr "Munta el dispositiu firewire %s"
 
-#: ../tcos-devices-ng.py:1105
+#: ../tcos-devices-ng.py:1113
 #, python-format
 msgid "Umount Firewire device %s"
 msgstr "Desmunta el dispositiu firewire %s"
 
-#: ../tcos-devices-ng.py:1188
+#: ../tcos-devices-ng.py:1196
 #, python-format
 msgid "CDROM USB device %s umounted. You can extract it."
 msgstr "El dispositiu CDROM USB %s està desmuntat. Podeu extraure'l."
 
-#: ../tcos-devices-ng.py:1191
+#: ../tcos-devices-ng.py:1199
 #, python-format
 msgid "CDROM USB device %s mounted. Ready for use."
 msgstr "El dispositiu CDROM USB %s està muntat. Preparat."
 
-#: ../tcos-devices-ng.py:1229
+#: ../tcos-devices-ng.py:1237
 #, python-format
 msgid "USB device %s umounted. You can extract it."
 msgstr "El dispositiu USB %s està desmuntat. Podeu extraure'l."
 
-#: ../tcos-devices-ng.py:1232
+#: ../tcos-devices-ng.py:1240
 #, python-format
 msgid "USB device %s mounted. Ready for use."
 msgstr "El dispositiu USB %s està muntat. Preparat."
 
-#: ../tcos-devices-ng.py:1268
+#: ../tcos-devices-ng.py:1276
 #, python-format
 msgid "Firewire device %s umounted. You can extract it."
 msgstr "El dispositiu firewire %s està desmuntat. Podeu extraure'l."
 
-#: ../tcos-devices-ng.py:1271
+#: ../tcos-devices-ng.py:1279
 #, python-format
 msgid "Firewire device %s mounted. Ready for use."
 msgstr "El dispositiu firewire %s està muntat. Preparat."
+
+#: ../tray.glade:38
+msgid "<big><b>TCOS devices</b></big>"
+msgstr ""
+
+#: ../tray.glade:105
+msgid "Hide"
+msgstr ""
 
 #: ../tcospersonalize.glade:8 ../tcosmonitor.glade:60
 #: ../tcosmonitor.glade:1311
@@ -421,7 +429,7 @@ msgstr ""
 msgid "Delete Config"
 msgstr "Elimina configuració"
 
-#: ../tcos-volume-manager.glade:9 ../tcos-volume-manager.py:213
+#: ../tcos-volume-manager.glade:9 ../tcos-volume-manager.py:212
 msgid "Tcos Volume Manager"
 msgstr "Gestor de volum Tcos"
 
@@ -469,7 +477,7 @@ msgstr "Eliminar la configuració de %s?"
 msgid "Deleted!"
 msgstr "Eliminat!"
 
-#: ../tcos-volume-manager.py:102 ../tcos-volume-manager.py:114
+#: ../tcos-volume-manager.py:101 ../tcos-volume-manager.py:113
 #, python-format
 msgid ""
 "Tcos Sound levels on:\n"
@@ -478,57 +486,57 @@ msgstr ""
 "Nivells de volum en:\n"
 "%s"
 
-#: ../tcos-volume-manager.py:122
+#: ../tcos-volume-manager.py:121
 #, python-format
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr "ERROR: Sembla que TcosXmlRpc no s'està executant en %s."
 
-#: ../tcos-volume-manager.py:197
+#: ../tcos-volume-manager.py:196
 msgid "Loading channels info..."
 msgstr "Càrrega de la informació dels canals..."
 
-#: ../tcos-volume-manager.py:210
+#: ../tcos-volume-manager.py:209
 msgid "Error loading channels info (xauth error)"
 msgstr "Error en intentar carregar la informació dels canals (xauth error)"
 
-#: ../tcos-volume-manager.py:214
+#: ../tcos-volume-manager.py:213
 #, python-format
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr "<span size='large'><b>Mesclador de so de l'equip %s</b></span>"
 
-#: ../tcos-volume-manager.py:280 ../tcosmonitor/extensions/info.py:426
+#: ../tcos-volume-manager.py:279 ../tcosmonitor/extensions/info.py:426
 msgid "Mute"
 msgstr "Enmudeix"
 
-#: ../tcos-volume-manager.py:299
+#: ../tcos-volume-manager.py:298
 msgid "Main controls ready"
 msgstr "Controls principals preparats"
 
-#: ../tcos-volume-manager.py:303
+#: ../tcos-volume-manager.py:302
 msgid "All remote controls loaded."
 msgstr "Carregats tots els controls remots."
 
-#: ../tcos-volume-manager.py:312 ../tcosmonitor/extensions/info.py:541
+#: ../tcos-volume-manager.py:311 ../tcosmonitor/extensions/info.py:541
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr "Canviant el valor del canal %(channel)s a %(value)s%%..."
 
-#: ../tcos-volume-manager.py:319 ../tcosmonitor/extensions/info.py:548
+#: ../tcos-volume-manager.py:318 ../tcosmonitor/extensions/info.py:548
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr ""
 
-#: ../tcos-volume-manager.py:326 ../tcosmonitor/extensions/info.py:555
+#: ../tcos-volume-manager.py:325 ../tcosmonitor/extensions/info.py:555
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr "Estic restablint el volum del canal %s..."
 
-#: ../tcos-volume-manager.py:331 ../tcosmonitor/extensions/info.py:560
+#: ../tcos-volume-manager.py:330 ../tcosmonitor/extensions/info.py:560
 #, python-format
 msgid "Muting %s channel..."
 msgstr "Estic enmudint el canal %s..."
 
-#: ../tcos-volume-manager.py:334 ../tcosmonitor/extensions/info.py:563
+#: ../tcos-volume-manager.py:333 ../tcosmonitor/extensions/info.py:563
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr ""
@@ -615,12 +623,12 @@ msgid "Clean info about terminal"
 msgstr "Neteja informació del terminal"
 
 #: ../tcosmonitor/shared.py:277 ../tcosmonitor/TcosTrayIcon.py:54
-#: ../tcosmonitor/extensions/reboot.py:40
+#: ../tcosmonitor/extensions/reboot.py:40 ../tcosmonitor/TcosTrayIcon2.py:58
 msgid "Reboot"
 msgstr "Reinicia"
 
 #: ../tcosmonitor/shared.py:278 ../tcosmonitor/TcosTrayIcon.py:55
-#: ../tcosmonitor/extensions/reboot.py:42
+#: ../tcosmonitor/extensions/reboot.py:42 ../tcosmonitor/TcosTrayIcon2.py:59
 msgid "Poweroff"
 msgstr "Apaga"
 
@@ -857,24 +865,25 @@ msgstr ""
 msgid "Positions saved."
 msgstr "S'ha desat la configuració."
 
-#: ../tcosmonitor/TcosClassView.py:307
+#: ../tcosmonitor/TcosClassView.py:309
 #, python-format
 msgid "%s is not a valid file to exe or send"
 msgstr ""
 
-#: ../tcosmonitor/TcosClassView.py:342
+#: ../tcosmonitor/TcosClassView.py:344
 msgid "Can't move icon, another host is near."
 msgstr ""
 
-#: ../tcosmonitor/TcosClassView.py:393 ../tcosmonitor/TcosIconView.py:152
+#: ../tcosmonitor/TcosClassView.py:395 ../tcosmonitor/TcosIconView.py:152
 msgid "yes"
 msgstr ""
 
-#: ../tcosmonitor/TcosClassView.py:395 ../tcosmonitor/TcosIconView.py:154
+#: ../tcosmonitor/TcosClassView.py:397 ../tcosmonitor/TcosIconView.py:154
 msgid "no"
 msgstr ""
 
-#: ../tcosmonitor/TcosTrayIcon.py:49 ../tcosmonitor.glade:43
+#: ../tcosmonitor/TcosTrayIcon.py:49 ../tcosmonitor/TcosTrayIcon2.py:53
+#: ../tcosmonitor.glade:43
 msgid "Quit"
 msgstr "Ix"
 
@@ -883,18 +892,19 @@ msgid "TcosDevices"
 msgstr ""
 
 #: ../tcosmonitor/TcosTrayIcon.py:172 ../tcosmonitor/TcosTrayIcon.py:186
+#: ../tcosmonitor/TcosTrayIcon2.py:67
 msgid "Tcos Devices"
 msgstr "Dispositius TCOS"
 
-#: ../tcosmonitor/TcosTrayIcon.py:232
+#: ../tcosmonitor/TcosTrayIcon.py:232 ../tcosmonitor/TcosTrayIcon2.py:344
 msgid "Usb flash"
 msgstr "USB flash"
 
-#: ../tcosmonitor/TcosTrayIcon.py:234
+#: ../tcosmonitor/TcosTrayIcon.py:234 ../tcosmonitor/TcosTrayIcon2.py:346
 msgid "Mount USB1"
 msgstr "Munta USB1"
 
-#: ../tcosmonitor/TcosTrayIcon.py:235
+#: ../tcosmonitor/TcosTrayIcon.py:235 ../tcosmonitor/TcosTrayIcon2.py:347
 msgid "Umount USB1"
 msgstr "Desmunta USB1"
 
@@ -1184,8 +1194,10 @@ msgstr "Informació disponible"
 msgid "Unknow client info"
 msgstr ""
 
-#: ../tcosmonitor/extensions/info.py:135 ../tcosmonitor/LocalData.py:42
-#: ../tcosmonitor/LocalData.py:61
+#: ../tcosmonitor/extensions/info.py:135 ../tcosmonitor/LocalData.py:43
+#: ../tcosmonitor/LocalData.py:62 ../tcosmonitor/TcosCommon.py:163
+#: ../tcosmonitor/TcosCommon.py:171 ../tcosmonitor/TcosCommon.py:187
+#: ../tcosmonitor/TcosCommon.py:190
 msgid "unknow"
 msgstr "desconegut"
 
@@ -1960,22 +1972,47 @@ msgstr "Sel"
 msgid "Error connecting to tcosxmlrpc in %s"
 msgstr "Error en la connexió a tcosxmlrpc en %s"
 
+#: ../tcosmonitor/TcosTrayIcon2.py:148
+#, fuzzy, python-format
+msgid "Floppy: %s"
+msgstr "Disquet"
+
+#: ../tcosmonitor/TcosTrayIcon2.py:150
+#, fuzzy, python-format
+msgid "CDROM: %s"
+msgstr "ERROR: %s"
+
+#: ../tcosmonitor/TcosTrayIcon2.py:152
+#, fuzzy, python-format
+msgid "USB: %s"
+msgstr "Dispositiu USB %s"
+
+#: ../tcosmonitor/TcosTrayIcon2.py:154
+#, fuzzy, python-format
+msgid "HDD partition: %s"
+msgstr "Partició %s"
+
+#: ../tcosmonitor/TcosTrayIcon2.py:156
+#, fuzzy, python-format
+msgid "Unknow: %s"
+msgstr "desconegut"
+
 #: ../tcosmonitor/Initialize.py:207
 msgid "GPL-2 license file not found"
 msgstr "No s"
 
-#: ../tcosmonitor/LocalData.py:210
+#: ../tcosmonitor/LocalData.py:211
 #, python-format
 msgid "Selected network inteface (%s) don't have IP address"
 msgstr "La interfície de xarxa (%s) no té cap adreça IP"
 
-#: ../tcosmonitor/LocalData.py:247 ../tcosmonitor/LocalData.py:291
+#: ../tcosmonitor/LocalData.py:248 ../tcosmonitor/LocalData.py:292
 #: ../tcosmonitor/ping.py:98
 msgid "Testing if found clients have 8998 or 8999 port open..."
 msgstr ""
 "Comprovant si els clients que s'han trobat tenen el port 8998 o 8999 obert..."
 
-#: ../tcosmonitor/LocalData.py:268
+#: ../tcosmonitor/LocalData.py:269
 msgid ""
 "Static list method configured but no hosts in list.\n"
 "\n"

@@ -66,6 +66,10 @@ class TcosTrayIcon:
         self.statusIcon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-devices-32x32.png")
         self.statusIcon.set_tooltip( _("Tcos Devices") )
 
+        # locale glade support
+        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+        gtk.glade.textdomain(shared.PACKAGE)
+
         self.ui = gtk.glade.XML( shared.GLADE_DIR  + "tray.glade")
         self.window = self.ui.get_widget('popup')
         self.hide_button = self.ui.get_widget("hide_button")
@@ -87,14 +91,15 @@ class TcosTrayIcon:
         _sorted=self.items.keys()
         _sorted.sort()
         
-        # add quit menu at bottom
-        if self.items.has_key("quit"):
-            self.append_item(self.items["quit"], "quit" )
         
         for m in _sorted:
-            if m != "quit":
+            if m not in ["poweroff", "reboot", "quit"]:
                 self.append_item(self.items[m], m)
         
+        for extra in ["poweroff", "reboot", "quit"]:
+            # add quit, reboot and poweroff menus at bottom
+            if self.items.has_key(extra):
+                self.append_item(self.items[extra], extra )
 
     def append_item(self, item, title):
         #print_debug("append_item() title=%s item=%s" %(title,item) )
@@ -109,6 +114,7 @@ class TcosTrayIcon:
         #   ####################################
         #
         table=gtk.Table(1, 3, False)
+        table.set_col_spacings(5)
         
         status=self.items[title][5]
         #if title not in ['reboot', 'poweroff', 'quit']:
@@ -127,20 +133,39 @@ class TcosTrayIcon:
             icon.set_sensitive(status)
         
         icon.show()
-        table.attach(icon, 0, 1, 0, 1, gtk.FILL, False, 0, 0)
+        #table.attach(icon, 0, 1, 0, 1, gtk.FILL, False, 0, 0)
+        table.attach(icon, 0, 1, 0, 1, gtk.FILL)
         ########################################
         
         
         
         label=gtk.Label()
         label.set_use_markup(True)
+        label.set_alignment(0, 0.5)
+        label.set_justify(gtk.JUSTIFY_LEFT)
         if title not in ['reboot', 'poweroff', 'quit']:
-            label.set_markup( "<b>Device</b>\n<small>%s</small>" %item[0] )
+            if "floppy" in title:
+                devtype=_("Floppy: %s") %item[4]
+            elif "cdrom" in title:
+                devtype=_("CDROM: %s") %item[4]
+            elif "usb" in title:
+                devtype=_("USB: %s") %item[4]
+            elif "hdd" in title:
+                devtype=_("HDD partition: %s") %item[4]
+            else:
+                devtype=_("Unknow: %s") %item[4]
+            # have device description???
+            if item[6] is not None and item[6] != "unknow":
+                devdesc=item[6]
+            else:
+                devdesc=item[0]
+            label.set_markup( "<b>%s</b>\n<small>%s</small>" %(devtype,devdesc) )
             label.set_sensitive(status)
         else:
             label.set_markup("<b>%s</b>"%item[0])
         label.show()
-        table.attach(label, 1, 2, 0, 1, gtk.EXPAND, False, 0, 0)
+        #table.attach(label, 1, 2, 0, 1, gtk.EXPAND, False, 0, 0)
+        table.attach(label, 1, 2, 0, 1, gtk.EXPAND)
         
         ########## BUTTON ########
         
@@ -157,7 +182,8 @@ class TcosTrayIcon:
         button.set_image(button_image)
         button.connect("clicked", self.do_action, title, item)
         button.show()
-        table.attach(button, 2, 3, 0, 1, gtk.FILL, False, 0, 0)
+        #table.attach(button, 2, 3, 0, 1, gtk.FILL, False, 0, 0)
+        table.attach(button, 2, 3, 0, 1, gtk.FILL)
         
         table.show()
         self.devbox.add(table)
@@ -194,7 +220,7 @@ class TcosTrayIcon:
         
         if rect.y + winy > height:
             #print( "rect.y=%s + winy=%s GREATER que height=%s" %(rect.y, winy, height) )
-            newy=abs( height-winy-(self.statusIcon.get_size()) )
+            newy=abs( height-winy-(self.statusIcon.get_size()) -5 )
         else:
             #print( "rect.y=%s + winy=%s LOWER que height=%s" %(rect.y, winy, height) )
             newy=abs( rect.y-(self.statusIcon.get_size()) )
@@ -205,8 +231,8 @@ class TcosTrayIcon:
         
         # ugly hack to avoid wrong height
         if self.first_time:
-            self.window.show()
-            self.window.hide()
+            #self.window.show()
+            #self.window.hide()
             self.first_time=False
             self.popup_window()
         
@@ -235,7 +261,7 @@ class TcosTrayIcon:
             print_debug( " WW: no updating status of %s"%(actions) )
             
     def register_action(self, action, function, *args):
-        print_debug("register_action() action=%s function=%s, args=%s" %(action, function, args) )
+        #print_debug("register_action() action=%s function=%s, args=%s" %(action, function, args) )
         self.actions["%s" %action]=function
         self.args["%s" %action]=args
         #self.InitMenu()
@@ -246,10 +272,12 @@ class TcosTrayIcon:
         #self.InitMenu()
         return
     
-    def register_device(self, device, devname, devimage, show, actions, devid):
-        print_debug("register_device() device='%s' devname='%s' devimage='%s' show='%s' actions='%s' devid='%s'" 
-                    %(device, devname, devimage, show, actions, devid) )
-        self.items["%s"%(device)]=[ devname, devimage, show, actions, devid, False]
+    def register_device(self, device, devname, devimage, show, actions, devid, devdesc=None):
+        if devdesc is not None:
+            devdesc=devdesc.replace('_', ' ').replace('|', '')
+        print_debug("register_device() device='%s' devname='%s' devimage='%s' show='%s' actions='%s' devid='%s' devdesc='%s'" 
+                    %(device, devname, devimage, show, actions, devid, devdesc) )
+        self.items["%s"%(device)]=[ devname, devimage, show, actions, devid, False, devdesc]
         self.InitMenu()
         #print self.items["%s"%(device)]
     

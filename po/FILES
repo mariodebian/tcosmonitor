@@ -1,6 +1,7 @@
 ../tcosmonitor.py
 ../tcos-devices-ng.py
 ../server-utils/tcos-server-utils.py
+../tray.glade
 ../tcospersonalize.glade
 ../setup.py
 ../tcos-volume-manager.glade
@@ -38,6 +39,7 @@
 ../tcosmonitor/TcosMonitorDaemon.py
 ../tcosmonitor/TcosIconView.py
 ../tcosmonitor/TcosListView.py
+../tcosmonitor/TcosTrayIcon2.py
 ../tcosmonitor/TcosConf.py
 ../tcosmonitor/Initialize.py
 ../tcosmonitor/LocalData.py

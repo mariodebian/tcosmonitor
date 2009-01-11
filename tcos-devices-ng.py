@@ -35,7 +35,10 @@ CONF_FILE="~/.tcos-devices-ng.conf"
 ALL_CONF_FILE="/etc/tcos/tcos-devices-ng.conf"
 
 # check for local DISPLAY
-remotehost, display =  os.environ["DISPLAY"].split(':')
+remotehost=display=""
+if "DISPLAY" in os.environ and os.environ['DISPLAY'] != '':
+    remotehost, display =  os.environ["DISPLAY"].split(':')
+
 action = ""
 
 if remotehost == "":
@@ -296,6 +299,7 @@ class TcosDevicesNG:
             else:
                 mount=False
                 umount=True
+            cdrom_desc = self.xmlrpc.GetDevicesInfo(device="/dev/%s" %cdrom, mode="--getid")
             self.systray.register_device("cdrom_%s"%cdrom, 
                             _("Cdrom device %s" ) %cdrom, 
                             "cdrom.png", True, 
@@ -303,7 +307,8 @@ class TcosDevicesNG:
                         "cdrom_%s_mount" %cdrom: [ _("Mount Cdrom"),  "cdrom_mount.png", mount,  None, "/dev/%s"%cdrom],
                         "cdrom_%s_umount"%cdrom: [ _("Umount Cdrom"), "cdrom_umount.png", umount, None, "/dev/%s"%cdrom]
                             }, 
-                            "/dev/%s"%(cdrom))
+                            "/dev/%s"%(cdrom),
+                            cdrom_desc)
             self.systray.register_action("cdrom_%s_mount" %cdrom, self.cdrom, "mount", cdrom )
             self.systray.register_action("cdrom_%s_umount" %cdrom, self.cdrom, "umount", cdrom )
 
@@ -320,6 +325,7 @@ class TcosDevicesNG:
             else:
                 mount=False
                 umount=True
+            hdd_desc = self.xmlrpc.GetDevicesInfo(device="/dev/%s" %hdd[0:3], mode="--getid")
             self.systray.register_device("hdd_%s"%hdd, 
                             _("Disk partition %s") %hdd, 
                             "hdd_mount.png", True, 
@@ -327,7 +333,8 @@ class TcosDevicesNG:
                         "hdd_%s_mount" %hdd: [ _("Mount disk partition"),  "hdd_mount.png", mount,  None, "/dev/%s"%hdd],
                         "hdd_%s_umount"%hdd: [ _("Umount disk partition"), "hdd_umount.png", umount, None, "/dev/%s"%hdd]
                             }, 
-                            "/dev/%s"%(hdd))
+                            "/dev/%s"%(hdd),
+                            hdd_desc)
             self.systray.register_action("hdd_%s_mount" %hdd, self.hdd, "mount", hdd )
             self.systray.register_action("hdd_%s_umount" %hdd, self.hdd, "umount", hdd )
 
@@ -797,7 +804,8 @@ class TcosDevicesNG:
                         "usb_%s_mount" %devid: [ _("Mount CDROM USB device %s") %(devid),  "usb_mount.png", mount,  None, device],
                         "usb_%s_umount" %devid: [ _("Umount CDROM USB device %s") %(devid), "usb_umount.png", not mount, None, device]
                             }, 
-                            device)
+                            device,
+                            "%s %s"%(vendor, model))
                 
             self.systray.register_action("usb_%s_mount" %devid , self.cdrom_usb, {
                                     "DEVNAME": device, "ACTION": "mount", "ID_FS_TYPE": fstype, "FORCE_MOUNT":True

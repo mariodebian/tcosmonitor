@@ -48,4 +48,8 @@ def __load__():
             print "Exception importing tcosmonitor='%s', err='%s'"%(_ext_name, err)
     return _ext
 
-__all__=__load__()
+
+if not "DISPLAY" in __os__.environ or __os__.environ['DISPLAY'] == '':
+    print "WARNING: [tcosmonitor.__init__] No display defined, no importing extensions"
+else:
+    __all__=__load__()

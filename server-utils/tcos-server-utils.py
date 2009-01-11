@@ -26,7 +26,6 @@
 
 
 import os, sys
-import gobject
 import getopt
 from gettext import gettext as _
 
@@ -36,7 +35,10 @@ if os.geteuid() != 0:
     print "tcos-server-utils ERROR: you must be root to run this"
     sys.exit(1)
 
-
+# append current dir to sys-path if exec from sources
+for m in range(len(sys.path)):
+    if "server-utils" in sys.path[m]:
+        sys.path[m]=os.path.dirname(sys.path[m])
 
 from tcosmonitor import shared
 
@@ -97,7 +99,7 @@ for o, a in opts:
 
 
 if action=="":
-    print "TCOS tcos-server-utils ERROR: action must be in: %s" %(", ".join(actions) )
+    print "tcos-server-utils ERROR: action must be in: %s" %(", ".join(actions) )
     sys.exit(0)
 
 
@@ -116,7 +118,7 @@ class ServerUtils:
         
         
         if self.config.GetVar("xmlrpc_username") == "" or self.config.GetVar("xmlrpc_password") == "":
-            print "TCOS tcos-server-utils ERROR: need to create /root/.tcosmonitor.conf with user and pass."
+            print "tcos-server-utils ERROR: need to create /root/.tcosmonitor.conf with user and pass."
             print "                         see /usr/share/doc/tcosmonitor/README.tcos-server-utils"
             sys.exit(1)
         
@@ -126,6 +128,10 @@ class ServerUtils:
         self.allclients=self.localdata.GetAllClients("netstat")
         self.alltcosclients=[]
         
+        if len(self.alltcosclients) == 0:
+            print "tcos-server-utils No host connected, exiting..."
+            sys.exit(0)
+        
         for host in self.allclients:
             self.xmlrpc.newhost(host)
             if self.xmlrpc.connected:
@@ -133,10 +139,7 @@ class ServerUtils:
                 self.alltcosclients.append(host)
             else:
                 print_debug ("Host %s NOT connected" %(host) )
-                
-        if len(self.alltcosclients) == 0:
-            print "TCOS tcos-server-utils No host connected, exiting..."
-            sys.exit(0)
+        
         
         print ("Doing action \"%s\" in %s" %(action, self.alltcosclients) )
         
