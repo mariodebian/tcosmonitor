@@ -1,3 +1,9 @@
+tcosmonitor (0.2.17~rc9) unstable; urgency=low
+
+  * Update pt_BR translation.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 19 Jan 2009 19:46:46 +0100
+
 tcosmonitor (0.2.17~rc8) unstable; urgency=low
 
   * tcosmonitor/__init__.py:
