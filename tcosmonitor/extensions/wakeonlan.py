@@ -44,6 +44,7 @@ class WOL(TcosExtension):
 
     def wol_one(self, widget, ip):
         if not self.get_client():
+            print_debug("wol_one() no client")
             return
         if self.main.config.GetVar("scan_network_method") != "static":
             msg=(_("Wake On Lan only works with static list.\n\nEnable scan method \"static\" in Preferences\nand (wake on lan) support in bios of clients." ))
@@ -60,12 +61,13 @@ class WOL(TcosExtension):
             data=data[:-1]
             for host in data:
                 mip, mac=host.split("|")
+                print_debug("wol_one() ip=%s mac=%s" %(mip, mac) )
                 if mip == self.main.selected_ip:
                     if mac == "":
                         self.main.write_into_statusbar(_("No register MAC address for ip: \"%s\"")%ip)
                         continue
                     print_debug("Send magic packet to mac=%s" %mac)
-                    if not WakeOnLan.WakeOnLan("%s"%mac):
+                    if not WakeOnLan("%s"%mac):
                         self.main.write_into_statusbar(_("Not valid MAC address: \"%s\"")%mac)
 
     def wol_all(self, *args):
@@ -89,7 +91,7 @@ class WOL(TcosExtension):
                     self.main.write_into_statusbar(_("No register MAC address for ip: \"%s\"")%host)
                     continue
                 print_debug("Send magic packet to mac=%s" %mac)
-                if not WakeOnLan.WakeOnLan("%s"%mac):
+                if not WakeOnLan("%s"%mac):
                     errors.append(mac)
             if len(errors) >1:
                 print_debug("menu_event_all() errors=%s"%errors)
