@@ -21,6 +21,7 @@ clean:
 	rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup *gladep
 	python setup.py clean
 	cd tcosmonitor && rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup
+	find -name "*~" | xargs rm -f
 	cd po && make clean
 	cd dbus && $(MAKE) clean
 	cd tcosmonitor/extensions && $(MAKE) clean

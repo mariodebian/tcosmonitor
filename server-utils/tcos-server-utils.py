@@ -125,10 +125,10 @@ class ServerUtils:
         import tcosmonitor.LocalData
         self.localdata=tcosmonitor.LocalData.LocalData(self)
         
-        self.allclients=self.localdata.GetAllClients("netstat")
         self.alltcosclients=[]
+        self.allclients=self.localdata.GetAllClients("netstat")
         
-        if len(self.alltcosclients) == 0:
+        if len(self.allclients) == 0:
             print "tcos-server-utils No host connected, exiting..."
             sys.exit(0)
         
@@ -138,7 +138,7 @@ class ServerUtils:
                 print_debug ("Host %s connected" %(host) )
                 self.alltcosclients.append(host)
             else:
-                print_debug ("Host %s NOT connected" %(host) )
+                print_debug ("Host %s NOT connected" %(alhost) )
         
         
         print ("Doing action \"%s\" in %s" %(action, self.alltcosclients) )
@@ -154,7 +154,7 @@ class ServerUtils:
                     print "Users from cdmline: %s" %(connected_users)
                 else:
                     
-                    for client in self.allclients:
+                    for client in self.alltcosclients:
                         if self.localdata.IsLogged(client):
                             connected_users.append(self.localdata.GetUsername(client))
                 
