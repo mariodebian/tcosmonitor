@@ -4,8 +4,8 @@ Priority: optional
 Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
 Build-Depends: debhelper (>= 5.0.37.2), cdbs, python, python-support (>= 0.3)
 Standards-Version: 3.7.2
-XS-Vcs-Browser: http://trac.tcosproject.org/browser/trunk/tcosmonitor
-XS-Vcs-Svn: https://www.tcosproject.org/svn/tcos/trunk/tcosmonitor
+Vcs-Git: http://tcosproject.org/git/tcosmonitor.git
+Vcs-Browser: http://tcosproject.org/cgit/cgit.cgi/tcosmonitor.git/
 
 Package: tcosmonitor
 Architecture: all
