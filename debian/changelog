@@ -1,8 +1,10 @@
 tcosmonitor (0.2.17~rc11) unstable; urgency=low
 
   * Update Vcs- debian/control headers to new GIT repos
+  * tcospersonalize.desktop:
+    - Don't show in any desktop
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 02 Feb 2009 01:31:48 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 03 Feb 2009 18:38:38 +0100
 
 tcosmonitor (0.2.17~rc10) unstable; urgency=low
 
