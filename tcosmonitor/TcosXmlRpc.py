@@ -548,6 +548,38 @@ class TcosXmlRpc:
                 return {}
             return {'name':c[0], 'type': c[1], 'level': c[2], 'mute': c[3]}
 
+    def RestartSoundDaemon(self):
+        """
+        Exec soundctl.sh  --restartpulse
+                  ( return nothing )
+        """
+        
+        if self.main.name == "TcosVolumeManager":
+            user=self.main.xauth.get_cookie()
+            passwd=self.main.xauth.get_hostname()
+            if user == None:
+                print_debug ( "RestartSoundDaemon() error loading cookie info" )
+                return []
+            print_debug ( "RestartSoundDaemon() cookie=%s hostname=%s" %(user, passwd) )
+        else:
+            user=self.main.config.GetVar("xmlrpc_username")
+            passwd=self.main.config.GetVar("xmlrpc_password")
+        
+        if not self.connected:
+            print_debug ( "RestartSoundDaemon() NO CONNECTION" )
+            return []
+        
+        try:
+            result=self.tc.tcos.sound("--restartpulse", "", user, passwd )
+        except Exception, err:
+            print_debug("RestartSoundDaemon (--restartpulse) Exception error: %s"%err)
+            return []
+
+        if result.find('error') == 0:
+            print_debug ( "RestartSoundDaemon(): ERROR, result contains error string!!!\n%s" %(result))
+        return
+
+
     def GetDevicesInfo(self, device, mode="--getsize"):
         if not self.connected:
             print_debug ( "GetDevicesInfo() NO CONNECTION" )

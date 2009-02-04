@@ -171,6 +171,18 @@ class TcosVolumeManager:
         self.refreshbutton=self.ui.get_widget('refreshbutton')
         self.refreshbutton.connect('clicked', self.on_refresh_button )
         
+        self.restartbutton=self.ui.get_widget('restartbutton')
+        self.restartbutton.connect('clicked', self.on_restart_button )
+        
+        # only show if we found this file in $HOME dir
+        allowfile=os.path.expanduser("~/.tcos-volume-manager.allow.restartpulse")
+        if os.path.isfile(allowfile):
+            self.restartbutton.show()
+        
+        # restart on start
+        restartfile=os.path.expanduser("~/.tcos-volume-manager.start.restartpulse")
+        if os.path.isfile(restartfile):
+            self.xmlrpc.RestartSoundDaemon()
         
         # FIXME try to not focus on quitbutton
         self.refreshbutton.grab_focus()
@@ -181,7 +193,11 @@ class TcosVolumeManager:
         self.allchannels=self.xmlrpc.GetSoundChannelsContents()
         self.scrolledwindow.foreach( self.delete_child, self.scrolledwindow )
         self.scrolledwindow2.foreach( self.delete_child, self.scrolledwindow2 )
-        self.get_channel_info()    
+        self.get_channel_info()
+
+    def on_restart_button(self, widget):
+        self.xmlrpc.RestartSoundDaemon()
+        self.on_refresh_button(None)
 
     def delete_child(self, widget, scrolled):
         scrolled.remove(widget)
