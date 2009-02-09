@@ -45,8 +45,8 @@ class VideoOne(TcosExtension):
         self.main.classview.class_external_video=self.video_external
         self.main.actions.button_action_video=self.video_all
 
-        self.main.menus.register_simple( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_one, "video")
-        self.main.menus.register_all( _("Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_all, "video")
+        self.main.menus.register_simple( _("Send Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_one, "video")
+        self.main.menus.register_all( _("Send Audio/Video broadcast") , "menu_broadcast.png", 2, self.video_all, "video")
         
 
 
@@ -109,12 +109,12 @@ class VideoOne(TcosExtension):
             max_uip=255
             uip=0
             while uip <= max_uip:
-                uip_cmd="239.255.%s.0" %(uip)
+                uip_cmd="239.254.%s.0" %(uip)
                 cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1
-                if output == "0" and uip_cmd not in self.main.menus.broadcast_count.keys():
+                if output == "0":
                     print_debug("Broadcast ip found: %s" %(uip_cmd))
                     ip_broadcast="%s:1234" %uip_cmd
                     break
@@ -138,6 +138,12 @@ class VideoOne(TcosExtension):
                 elif uip == max_uip:
                     print_debug("Not found an available broadcast ip")
                     return
+
+        if uip_cmd != "":
+            result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
+            if result == "error":
+                print_debug("Add multicast-ip route failed")
+                return
                 
         if filename.find(" ") != -1:
             msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
@@ -145,8 +151,8 @@ class VideoOne(TcosExtension):
             return
             
         if access == "udp":
-            remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(ip_broadcast)
-            remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
+            remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --loop" %(ip_broadcast)
+            remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --loop" %(ip_broadcast)
             
         p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             
@@ -164,12 +170,6 @@ class VideoOne(TcosExtension):
         #msg=_( "Lock keyboard and mouse on client?" )
         #if shared.ask_msg ( msg ):
         #    lock="enable"
-            
-        if uip_cmd != "":
-            result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
-            if result == "error":
-                print_debug("Add multicast-ip route failed")
-                return
                 
         newusernames=[]
             
@@ -180,13 +180,13 @@ class VideoOne(TcosExtension):
                 self.main.xmlrpc.newhost(ip)
                 if access == "http":
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_broadcast)
+                    remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_broadcast)
                 self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
             else:
                 newusernames.append(user)
                         
         if access == "http":
-            remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" % (ip_broadcast)
+            remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" % (ip_broadcast)
                     
         result = self.main.dbus_action.do_exec( newusernames, remote_cmd_thin )
             
@@ -265,23 +265,23 @@ class VideoOne(TcosExtension):
                 max_uip=255
                 uip=0
                 while uip <= max_uip:
-                    uip_cmd="239.255.%s.0" %(uip)
+                    uip_cmd="239.254.%s.0" %(uip)
                     cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
                     print_debug("Check broadcast ip %s." %(uip_cmd) )
                     output=self.main.common.exe_cmd(cmd)
                     uip+=1
-                    if output == "0" and uip_cmd not in self.main.menus.broadcast_count.keys():
+                    if output == "0":
                         print_debug("Broadcast ip found: %s" %(uip_cmd))
                         ip_unicast="%s:1234" %uip_cmd
                         break
                     elif uip == max_uip:
                         print_debug("Not found an available broadcast ip")
                         return
-                remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
+                remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --loop" %(ip_unicast)
             else:
                 uip_cmd=""
                 ip_unicast="%s:1234" %self.main.selected_ip
-                remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3"
+                remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --loop"
         else:
             max_uip=50255
             uip=50000
@@ -300,8 +300,14 @@ class VideoOne(TcosExtension):
                     print_debug("Not found an available broadcast ip")
                     return
             if self.client_type == "tcos":
-                remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_unicast)
-        
+                remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" %(ip_unicast)
+       
+        if uip_cmd != "":
+            result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
+            if result == "error":
+                print_debug("Add multicast-ip route failed")
+                return
+     
         dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                             None,
                             gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -333,20 +339,19 @@ class VideoOne(TcosExtension):
             filename=dialog.get_filename()
             dialog.destroy()
             
-            if filename.find(" ") != -1:
-                msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                shared.info_msg( msg )
-                return
-            
             #for scape in str_scapes:
             #    filename=filename.replace("%s" %scape, "\%s" %scape)
             
             if response == gtk.RESPONSE_OK:
+                if filename.find(" ") != -1:
+                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
+                    shared.info_msg( msg )
+                    return
                 p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             elif response == 1:
-                p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "dvdsimple:///dev/cdrom", "--sout=#duplicate{dst=display{delay=700},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             elif response == 2:
-                p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "vcd:///dev/cdrom", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             elif response == 3:
                 p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             # exec this app on client
@@ -365,12 +370,6 @@ class VideoOne(TcosExtension):
             msg=_( "Lock keyboard and mouse on client?" )
             if shared.ask_msg ( msg ):
                 lock="enable"
-            
-            if uip_cmd != "":
-                result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
-                if result == "error":
-                    print_debug("Add multicast-ip route failed")
-                    return
                 
             newusernames=[]
 
@@ -379,7 +378,7 @@ class VideoOne(TcosExtension):
                     # we have a standalone user...
                     if access == "http":
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_unicast)
+                        remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_unicast)
                     self.main.xmlrpc.DBus("exec", remote_cmd )
                 else:
                     newusernames.append(user)
@@ -409,6 +408,8 @@ class VideoOne(TcosExtension):
         print_debug("on_progressbox_click() widget=%s, args=%s, box=%s" %(widget, args, box) )
         
         if not args['target']: return
+
+        self.main.stop_running_actions.remove(widget)
         
         if args['target'] == "vlc":
             del self.vlc_count[args['key']]
@@ -498,12 +499,12 @@ class VideoOne(TcosExtension):
             max_uip=255
             uip=0
             while uip <= max_uip:
-                uip_cmd="239.255.%s.0" %(uip)
+                uip_cmd="239.254.%s.0" %(uip)
                 cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1
-                if output == "0" and uip_cmd not in self.main.menus.broadcast_count.keys():
+                if output == "0":
                     print_debug("Broadcast ip found: %s" %(uip_cmd))
                     ip_broadcast="%s:1234" %uip_cmd
                     break
@@ -530,6 +531,13 @@ class VideoOne(TcosExtension):
         
         lock="disable"
         volume="85"
+
+        if uip_cmd != "":
+            result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
+            if result == "error":
+                print_debug("Add multicast-ip route failed")
+                return
+
         dialog = gtk.FileChooserDialog(_("Select audio/video file.."),
                            None,
                            gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -561,28 +569,27 @@ class VideoOne(TcosExtension):
             
             filename=dialog.get_filename()
             dialog.destroy()
-
-            if filename.find(" ") != -1:
-                msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                shared.info_msg( msg )
-                return
                 
             #for scape in str_scapes:
             #    filename=filename.replace("%s" %scape, "\%s" %scape)
             
             if response == gtk.RESPONSE_OK:
+                if filename.find(" ") != -1:
+                    msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
+                    shared.info_msg( msg )
+                    return
                 p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             elif response == 1:
-                p=subprocess.Popen(["vlc", "dvd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "dvdsimple:///dev/cdrom", "--sout=#duplicate{dst=display{delay=700},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             elif response == 2:
-                p=subprocess.Popen(["vlc", "vcd://", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "vcd:///dev/cdrom", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             elif response == 3:
                 p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
             # exec this app on client
             
             if access == "udp":
-                remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(ip_broadcast)
-                remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" %(ip_broadcast)
+                remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --loop" %(ip_broadcast)
+                remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --loop" %(ip_broadcast)
 
             self.main.write_into_statusbar( _("Waiting for start video transmission...") )
         
@@ -598,12 +605,6 @@ class VideoOne(TcosExtension):
             msg=_( "Lock keyboard and mouse on clients?" )
             if shared.ask_msg ( msg ):
                 lock="enable"
-
-            if uip_cmd != "":
-                result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
-                if result == "error":
-                    print_debug("Add multicast-ip route failed")
-                    return
                 
             newusernames=[]
             
@@ -614,13 +615,13 @@ class VideoOne(TcosExtension):
                     self.main.xmlrpc.newhost(ip)
                     if access == "http":
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3" %(server, ip_broadcast)
+                        remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_broadcast)
                     self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
                 else:
                     newusernames.append(user)
                         
             if access == "http":
-                remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3" % (ip_broadcast)
+                remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" % (ip_broadcast)
                     
             result = self.main.dbus_action.do_exec( newusernames, remote_cmd_thin )
             

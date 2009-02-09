@@ -29,23 +29,23 @@ from subprocess import Popen, PIPE, STDOUT
 #import socket
 
 
-import shared
+from tcosmonitor import shared
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" % ("TcosXauth", txt)
     return
 
 
-import TcosCommon
-import TcosConf
-import TcosXmlRpc
+import tcosmonitor.TcosCommon
+import tcosmonitor.TcosConf
+import tcosmonitor.TcosXmlRpc
 
 class TcosXauth:
     def __init__(self, main):
         self.main=main
         self.cookie=None
         
-        self.common=TcosCommon.TcosCommon(self)
+        self.common=tcosmonitor.TcosCommon.TcosCommon(self)
         self.display_host=self.common.get_display(ip_mode=False)
         self.display_ip=self.common.get_display(ip_mode=True)
         
@@ -55,8 +55,8 @@ class TcosXauth:
     def init_standalone(self):
         print_debug ( "init_standalone() " )
         self.name="TcosXauth"
-        self.config=TcosConf.TcosConf(self, openfile=False)
-        self.xmlrpc=TcosXmlRpc.TcosXmlRpc(self)
+        self.config=tcosmonitor.TcosConf.TcosConf(self, openfile=False)
+        self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
         
     def read_cookie(self):
         if self.cookie != None:
@@ -87,13 +87,13 @@ class TcosXauth:
     def get_hostname(self):
         return self.display_ip
 
-    def test_auth(self):
+    def test_auth(self, nossl=False):
         cookie=self.read_cookie()
         print_debug("test_auth() cookie=%s ip=%s"%(cookie, self.display_ip))
         if cookie == None:
             print_debug ( "test_auth() Can't read cookie" )
             return
-        self.xmlrpc.newhost(self.display_ip)
+        self.xmlrpc.newhost(self.display_ip, nossl)
         if not self.xmlrpc.connected:
             print_debug ( "test_auth() No connection" )
             return

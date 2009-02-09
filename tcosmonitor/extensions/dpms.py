@@ -76,7 +76,7 @@ class Dpms(TcosExtension):
     def dpms_off_all(self, *args):
         if not self.get_all_clients():
             return
-        msg=_( _("Do you want to switch off the following monitors:%s?" ) %(self.allclients_logged_txt) )
+        msg=_( _("Do you want to switch off the following monitors: %s?" ) %(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             self.main.worker=shared.Workers(self.main, None, None)
             self.main.worker.set_for_all_action(self.action_for_clients, \
@@ -85,7 +85,7 @@ class Dpms(TcosExtension):
     def dpms_on_all(self, *args):
         if not self.get_all_clients():
             return
-        msg=_( _("Do you want to switch on the following monitors:%s?" ) %(self.allclients_logged_txt) )
+        msg=_( _("Do you want to switch on the following monitors: %s?" ) %(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             self.main.worker=shared.Workers(self.main, None, None)
             self.main.worker.set_for_all_action(self.action_for_clients, \

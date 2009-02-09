@@ -139,7 +139,11 @@ class TcosDBusServer:
         cmd= "uname"
         # try to exec something
         print_debug("connect_tcosxmlrpc() try to exec \"%s\" " %(cmd) )
-        result=self.tc.tcos.exe(cmd, self.admin, self.passwd)
+        try:
+            result=self.tc.tcos.exe(cmd, self.admin, self.passwd)
+        except Exception, err:
+            print_debug("connect_tcosxmlrpc() cmd error=%s"%err)
+            pass
         if result == cmd:
             print_debug ( "connect_tcosxmlrpc() cmd run OK." )
             return True
@@ -251,7 +255,7 @@ class TcosDBusServer:
     def show_notification(self, title, msg, urgency=pynotify.URGENCY_CRITICAL):
         print_debug("show_notification() title='%s', msg='%s'" %(title, msg) )
         pynotify.init("tcosmonitor")
-        if os.path.isfile("usr/share/pixmaps/tcos-icon-32x32-custom.png"):
+        if os.path.isfile("/usr/share/pixmaps/tcos-icon-32x32-custom.png"):
             image_uri="file://usr/share/pixmaps/tcos-icon-32x32-custom.png"
         else:
             image_uri="file://usr/share/pixmaps/tcos-icon-32x32.png"
@@ -259,7 +263,7 @@ class TcosDBusServer:
         n = pynotify.Notification( title , msg, image_uri )
         n.set_urgency(urgency)
         n.set_category("TcosDBus")
-        n.set_timeout(20000) # 15 sec
+        n.set_timeout(40000) # 15 sec
         if not n.show():
             print_debug  ("show_notification() Failed to send notification")
 

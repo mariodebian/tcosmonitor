@@ -53,6 +53,7 @@ LICENSE_FILE="/usr/share/common-licenses/GPL-2"
 
 # default debug value (overwrite with --debug or -d)
 debug=False
+lab=False
 
 # default TCOS config file (default in this path, if installed use global)
 tcos_config_file="./tcos.conf"
@@ -110,11 +111,16 @@ list_modes=[
 ['class', _("Simulate classroom") ],
 ['both', _("Lists, icons and classroom with tabs") ],
     ]
+    
+program_modes=[
+['lab', _("Lliurex Lab") ],
+['normal', _("Normal") ]
+]
 
 DefaultConfig=[
 ["populate_list_at_startup", 0, "int"],
 #["work_as_cyber_mode", 0, "int"],
-["refresh_interval", 10, "int"],
+["refresh_interval", 0, "int"],
 ["cache_timeout", 0, "int"],
 ["actions_timeout", 0, "int"],
 ["scan_network_method", "netstat", "str"],
@@ -148,7 +154,9 @@ DefaultConfig=[
 ["ports_tnc", "", "str"],
 ["listmode", "list", "str"],
 ["menugroups", 1, "int"],
-["positions", "", "str"]
+["positions", "", "str"],
+["show_about", 1, "int"],
+["program_mode", "normal", "str"]
 ]
 
 #
@@ -204,14 +212,14 @@ pulseaudio_soundserver_port=4713
 #        "Monitor" };
 #
 sound_only_channels=["Front", "Master", "Master Front", "PCM", "Line", "CD", 
-                    "Mic", "Aux", "Headphone", "Speaker" , "PC Speaker", 
+                    "Mic", "Front Mic", "Aux", "Headphone", "Speaker" , "PC Speaker", 
                     "vol", "pcm", "line", "cd", "mic",
-                    "Mix", "PCM2"]
+                    "Mix", "PCM2", "Capture"]
 
 hidden_network_ifaces=["lo", "sit0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
 
 # for enable exclude users, change to "tcosmonitor-exclude"
-dont_show_users_in_group=None
+dont_show_users_in_group="tcosmonitor-exclude"
 
 check_tcosmonitor_user_group=False
 
@@ -226,8 +234,10 @@ dbus_disabled=False
 
 disable_textview_on_update=True
 
-icon_image_thin="host_tcos.png"
-icon_image_standalone="host_standalone.png"
+icon_image_thin="client.png"
+icon_image_standalone="client.png"
+icon_image_no_logged="client_no_logged.png"
+
 
 NO_LOGIN_MSG="---"
 
@@ -297,6 +307,7 @@ onehost_menuitems=[
  [ _("DPMS Power off monitor"), "menu_dpms_off.png" ] ,     #action=22
  [ _("DPMS Power on monitor"), "menu_dpms_on.png" ],     #action=23
  [ _("Send MIC audio (from this host)"), "menu_rtp.png" ],     #action=24
+# [ _("Clone clients (from this host)"), "menu_clone.png" ],     #action=25
  ]
 
 
@@ -333,6 +344,7 @@ allhost_menuitems=[
  [ _("DPMS Power off monitors"), "menu_dpms_off.png" ] ,     #action=16
  [ _("DPMS Power on monitors"), "menu_dpms_on.png" ],     #action=17
  [ _("Chat audio conference"), "menu_rtp.png" ],     #action=18
+# [ _("Clone clients"), "menu_clone.png" ],     #action=19
  ]
 
 preferences_menus_always_show={"menuone":[0,1,11], "menuall":[4]}
@@ -529,15 +541,31 @@ if have_display:
         print_debug( _("QUESTION: %(txt)s, RESPONSE %(response)s")  %{"txt":txt, "response":response} )
         return response
 
-    def info_msg(txt):
-        d = gtk.MessageDialog(None,
-                      gtk.DIALOG_MODAL |
-                      gtk.DIALOG_DESTROY_WITH_PARENT,
-                      gtk.MESSAGE_INFO,
-                      gtk.BUTTONS_OK,
-                      txt)
-        d.run()
-        d.destroy()
+    def info_msg(txt, urgency=False):
+        if urgency:
+            d = gtk.MessageDialog(None,
+                          gtk.DIALOG_MODAL |
+                          gtk.DIALOG_DESTROY_WITH_PARENT,
+                          gtk.MESSAGE_INFO,
+                          gtk.BUTTONS_OK_CANCEL,
+                          None)
+            d.set_markup(txt)
+            if d.run() == gtk.RESPONSE_OK:
+                response=True
+            else:
+                response=False
+            d.destroy()
+            print_debug ( _("INFO: %s") % txt )
+            return response
+        else:
+            d = gtk.MessageDialog(None,
+                          gtk.DIALOG_MODAL |
+                          gtk.DIALOG_DESTROY_WITH_PARENT,
+                          gtk.MESSAGE_INFO,
+                          gtk.BUTTONS_OK,
+                          txt)
+            d.run()
+            d.destroy()
         print_debug ( _("INFO: %s") % txt )
 
     def error_msg(txt):

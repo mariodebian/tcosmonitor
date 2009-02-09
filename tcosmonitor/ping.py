@@ -114,7 +114,7 @@ class Ping:
         
         if len(reachip) == 0:
             self.main.common.threads_enter("Ping:ping_iprange print no hosts")
-            self.main.write_into_statusbar ( _("No host found") )
+            self.main.write_into_statusbar ( _("Not connected hosts found.") )
             self.main.progressbar.hide()
             self.main.progressbutton.hide()
             self.main.common.threads_leave("Ping:ping_iprange print no hosts")
@@ -126,6 +126,67 @@ class Ping:
             
             self.main.localdata.allclients=reachip
             
+            self.main.worker=shared.Workers( self.main,\
+                     target=self.main.actions.populate_hostlist, args=([reachip]) )
+            self.main.worker.start()
+            
+        return reachip
+    
+    
+    def ping_iprange_static(self, allclients):
+        print_debug("ping_iprange_static() ip=%s"%allclients)
+        pinglist=[]
+        reachip=[]
+            
+        for ip in allclients:
+            #print "ping to %s" %(ip)
+            if self.main.worker.is_stoped():
+                print_debug("ping_iprange() WORKER is stoped")
+                # this is a stop thread var
+                break
+            current = pingip(ip)
+            pinglist.append(current)
+            current.start()
+        
+##        self.main.common.threads_enter("Ping:ping_iprange_static print waiting")
+##        self.main.actions.set_progressbar( _("Waiting for hosts...") , float(1) )
+##        self.main.common.threads_leave("Ping:ping_iprange_static print waiting")
+     
+        for pingle in pinglist:
+            pingle.join()
+            if pingle.status == 2:
+                # only show in list hosts running tcosxmlrpc in 8998 or 8999 port
+                if self.main.config.GetVar("onlyshowtcos") == 1:
+                    self.main.common.threads_enter("Ping:only show tcos")
+                    self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open..."))
+                    self.main.common.threads_leave("Ping:only show tcos")
+                    # view status of port 8998 or 8999
+                    if self.main.xmlrpc.newhost(pingle.ip):
+                        if self.main.xmlrpc.GetVersion():
+                            print_debug("ping_iprange() host=%s ports 8998 or 8999 OPEN" %(pingle.ip))
+                            reachip.append(pingle.ip)
+                        else:
+                            print_debug("ping_iprange() host=%s ports 8998 or 8999 OPEN but not tcosxmlrpc" %(pingle.ip))
+                    else:
+                        print_debug("ping_iprange() host=%s ports 8998 or 8999 closed" %(pingle.ip))
+                else:
+                    reachip.append(pingle.ip)
+        
+        print_debug("ping_iprange_static() discovered host finished" )
+        self.main.worker.set_finished()
+
+        self.main.localdata.allclients=reachip
+        
+        if len(reachip) == 0:
+            self.main.common.threads_enter("Ping:ping_iprange_static print no hosts")
+            self.main.write_into_statusbar ( _("Not connected hosts found.") )
+            self.main.common.threads_leave("Ping:ping_iprange_static print no hosts")
+        
+        if len(reachip) > 0:
+            self.main.common.threads_enter("Ping:ping_iprange_static print num hosts")
+            self.main.write_into_statusbar ( _("Found %d hosts" ) %len(reachip) )
+            self.main.common.threads_leave("Ping:ping_iprange_static print num hosts")
+                        
             self.main.worker=shared.Workers( self.main,\
                      target=self.main.actions.populate_hostlist, args=([reachip]) )
             self.main.worker.start()

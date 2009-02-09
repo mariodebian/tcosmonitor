@@ -33,6 +33,8 @@ import socket
 from subprocess import Popen, PIPE, STDOUT
 
 from tcosmonitor.ping import PingPort
+# needed for __escape__ function
+import xml.sax.saxutils
 
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
@@ -63,6 +65,11 @@ class TcosXmlRpc:
         self.sslconnection=False
         self.ports=[]
         self.resethosts()
+
+        self.__dic__= {
+             '\"'    :    '´´',
+             '\''    :    '´'
+                      }
         
         if self.main != None:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
@@ -125,7 +132,7 @@ class TcosXmlRpc:
             return False
         
                 
-    def newhost(self, ip):
+    def newhost(self, ip, nossl=False):
         #print_debug ( "newhost(%s)" %(ip) )
         if not ip:
             print_debug("\n\n##########################################\n\n")
@@ -158,7 +165,7 @@ class TcosXmlRpc:
         
         #print_debug("newhost() enable_sslxmlrpc='%s'" %(self.main.config.GetVar("enable_sslxmlrpc")) )
         
-        if self.main.config.GetVar("enable_sslxmlrpc") == 1:
+        if self.main.config.GetVar("enable_sslxmlrpc") == 1 and nossl == False:
             print_debug("newhost() SSL enabled, trying to ping %s port" %(shared.xmlremote_sslport))
             force=True
             if self.isPortListening(ip, shared.xmlremote_sslport):
@@ -189,9 +196,17 @@ class TcosXmlRpc:
         except Exception, err:
             print_debug("newhost() ERROR conection unavalaible !!! error: %s"%err)
             self.connected=False
+            self.CheckSSL(err)
             return False
         
-        
+    def CheckSSL(self, err):
+        txt="%s" %err
+        if txt.find("SSL2_READ_INTERNAL") != -1 and txt.find("bad mac decode") != -1:
+            print_debug("SSL BAD MAC DECODE... Deactivating ssl security layer over xmlrpc.")
+            self.main.config.SetVar("enable_sslxmlrpc", 0)
+            self.main.config.SaveToFile()
+            self.main.xmlrpc.resethosts()
+        return True
 
     def GetVersion(self):
         if not self.connected:
@@ -204,6 +219,7 @@ class TcosXmlRpc:
             return self.version
         except Exception, err:
             print_debug("GetVersion() Exception error %s"%err)
+            self.CheckSSL(err)
             return None
     
         
@@ -225,6 +241,7 @@ class TcosXmlRpc:
               self.main.config.GetVar("xmlrpc_password"))
         except Exception, err:
             print_debug("Exe() Exception error %s"%err)
+            self.CheckSSL(err)
             pass
         
     def Kill(self, app):
@@ -242,6 +259,7 @@ class TcosXmlRpc:
               self.main.config.GetVar("xmlrpc_password"))
         except Exception, err:
             print_debug("Kill() Exception error %s"%err)
+            self.CheckSSL(err)
             pass
     
     def GetStatus(self, cmd):
@@ -260,6 +278,7 @@ class TcosXmlRpc:
             status=self._ParseResult( self.tc.tcos.status(cmd) )
         except Exception, err:
             print_debug("GetStatus() Exception PARSER error %s"%err)
+            self.CheckSSL(err)
             return False
 
         if status == "1":
@@ -290,6 +309,7 @@ class TcosXmlRpc:
             result=self.tc.tcos.info(string)
         except Exception, err:
             print_debug ( "ReadInfo(%s): ERROR, can't connect to XMLRPC server!!! error %s" %(string,err) )
+            self.CheckSSL(err)
             return ""
         if result.find('error') == 0:
             print_debug ( "ReadInfo(%s): ERROR, result contains error string!!!" %string )
@@ -332,6 +352,7 @@ class TcosXmlRpc:
                 result=self.tc.tcos.standalone("get_user", "")
             except Exception, err:
                 print_debug("GetStandalone(get_user) Exception error: %s"%err)
+                self.CheckSSL(err)
                 return shared.NO_LOGIN_MSG
             
             if result.find('error') == 0:
@@ -346,13 +367,16 @@ class TcosXmlRpc:
                 return self.tc.tcos.standalone("get_process", "")
             except Exception, err:
                 print_debug("GetStandalone(get_process) Exception error: %s"%err)
+                self.CheckSSL(err)
                 return ""
         
         elif item == "get_server":
+            nossl=self.main.config.GetVar("enable_sslxmlrpc")
             try:
-                return self.tc.tcos.standalone("get_server", "")
+                return self.tc.tcos.standalone("get_server", "%s" %nossl)
             except Exception, err:
                 print_debug("GetStandalone(get_server) Exception error %s"%err)
+                self.CheckSSL(err)
                 return ""
         
         elif item == "get_time":
@@ -360,6 +384,7 @@ class TcosXmlRpc:
                 return self.tc.tcos.standalone("get_time", "")
             except Exception, err:
                 print_debug("GetStandalone(get_time) Exception error %s"%err)
+                self.CheckSSL(err)
                 return None
             
         elif item == "get_exclude":
@@ -374,22 +399,28 @@ class TcosXmlRpc:
                     return True
             except Exception, err:
                 print_debug("GetStandalone(get_exclude) Exception error %s"%err)
+                self.CheckSSL(err)
                 return False
             
         else:
             return ""
     
+    def __escape__(self, txt):
+        return xml.sax.saxutils.escape(txt, self.__dic__)
     
     def DBus(self, action, data):
         username=self.GetStandalone("get_user")
         remote_user=self.main.config.GetVar("xmlrpc_username")
         remote_passwd=self.main.config.GetVar("xmlrpc_password")
+        if action == "mess":
+            data=self.__escape__( data )
         cmd="--auth='%s:%s' --type=%s --text='%s' --username=%s" %(remote_user, remote_passwd, action, data, username )
         print_debug ("DBus() cmd=%s" %(cmd) )
         try:
             return self.tc.tcos.dbus(cmd, remote_user, remote_passwd)
         except Exception, err:
             print_debug("DBus Exception error %s"%err)
+            self.CheckSSL(err)
             return None
         
     def GetSoundChannels(self):
@@ -424,6 +455,7 @@ class TcosXmlRpc:
             result=self.tc.tcos.sound("--showcontrols", "", user, passwd )
         except Exception, err:
             print_debug("GetSoundChannels(--showcontrols) Exception error: %s"%err)
+            self.CheckSSL(err)
             return ""
 
         if result.find('error') == 0:
@@ -461,6 +493,7 @@ class TcosXmlRpc:
             result=self.tc.tcos.sound("--showcontents", "", user, passwd )
         except Exception, err:
             print_debug("GetSoundChannelsContents(--showcontents) Exception error: %s"%err)
+            self.CheckSSL(err)
             return []
 
         if result.find('error') == 0:
@@ -505,6 +538,7 @@ class TcosXmlRpc:
             result=self.tc.tcos.sound(mode, " \"%s\" " %(channel), user, passwd )
         except Exception, err:
             print_debug("GetSoundInfo() Exception error: %s"%err)
+            self.CheckSSL(err)
             return ""
 
         if result.find('error') == 0:
@@ -535,6 +569,7 @@ class TcosXmlRpc:
             print_debug("SetSound() result=%s"%result)
         except Exception, err:
             print_debug("SetSound() Exception error: %s"%err)
+            self.CheckSSL(err)
             return {}
 
         if result.find('error') == 0:
@@ -606,6 +641,7 @@ class TcosXmlRpc:
         except Exception, err:
             self.lock=False
             print_debug("GetDevicesInfo(device=%s, mode=%s) EXCEPTION getting info err=%s"%(device, mode, err) )
+            self.CheckSSL(err)
             return ""
 
     def lockscreen(self, ip=None):
@@ -618,6 +654,7 @@ class TcosXmlRpc:
                 return True
             except Exception, err:
                 print_debug ("lockscreen() Exception, error: %s" %err)
+                self.CheckSSL(err)
                 pass
         return False
         
@@ -631,6 +668,7 @@ class TcosXmlRpc:
                 return True
             except Exception, err:
                 print_debug ("unlockscreen() Exception, error: %s" %err)
+                self.CheckSSL(err)
                 pass
         return False
     
@@ -644,6 +682,7 @@ class TcosXmlRpc:
                 return True
             except Exception, err:
                 print_debug ("lockcontroller() Exception, error: %s" %err)
+                self.CheckSSL(err)
                 pass
         return False
         
@@ -657,6 +696,7 @@ class TcosXmlRpc:
                 return True
             except Exception, err:
                 print_debug ("unlockcontroller() Exception, error: %s" %err)
+                self.CheckSSL(err)
                 pass
         return False
 
@@ -687,6 +727,7 @@ class TcosXmlRpc:
                             self.main.config.GetVar("xmlrpc_password"))
         except Exception, err:
             print_debug ("tnc() Exception, error: %s" %err)
+            self.CheckSSL(err)
             return False
         
     def screenshot(self, size="65"):
@@ -701,6 +742,7 @@ class TcosXmlRpc:
             return True
         except Exception, err:
             print_debug ("screenshot() Exception, error: %s" %err)
+            self.CheckSSL(err)
             return False
 
     def getscreenshot(self, size="65"):
@@ -714,6 +756,7 @@ class TcosXmlRpc:
             return result
         except Exception, err:
             print_debug ("getscreenshot() Exception, error: %s" %err)
+            self.CheckSSL(err)
             return [False, err]
         
     def vnc(self, action, ip, *args):
@@ -743,6 +786,7 @@ class TcosXmlRpc:
                                     self.main.config.GetVar("xmlrpc_password") )
         except Exception, err:
             print_debug ("vnc() Exception, error: %s" %err)
+            self.CheckSSL(err)
             return False
             
     def rtp(self, action, ip, broadcast=None):
@@ -774,7 +818,20 @@ class TcosXmlRpc:
                                     self.main.config.GetVar("xmlrpc_password") )
         except Exception, err:
             print_debug ("rtp() Exception, error: %s" %err)
+            self.CheckSSL(err)
             return False
+        
+    #def clone(self, action, ip, broadcast=None):
+    #    self.newhost(ip)
+    #    if broadcast == None: broadcast=""
+    #    try:
+    #        return self.tc.tcos.clone("%s" %action, "%s" %broadcast, \
+    #                                self.main.config.GetVar("xmlrpc_username"), \
+    #                                self.main.config.GetVar("xmlrpc_password") )
+    #    except Exception, err:
+    #        print_debug ("clone() Exception, error: %s" %err)
+    #        self.CheckSSL(err)
+    #        return False
     
     def vlc(self, ip, volume, lock):
         self.newhost(ip)
@@ -784,6 +841,7 @@ class TcosXmlRpc:
                                 self.main.config.GetVar("xmlrpc_password") )
         except Exception, err:
             print_debug ("vlc() Exception, error: %s" %err)
+            self.CheckSSL(err)
             return False
     
     def dpms(self, action, ip=None):
@@ -798,6 +856,7 @@ class TcosXmlRpc:
                             self.main.config.GetVar("xmlrpc_password") )
             except Exception, err:
                 print_debug ("dpms() Exception, error: %s" %err)
+                self.CheckSSL(err)
                 pass
         return False
     

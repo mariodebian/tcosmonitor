@@ -78,7 +78,7 @@ class LockUnlockScreen(TcosExtension):
     def lock_all(self, *args):
         if not self.get_all_clients():
             return
-        msg=_( _("Do you want to lock the following screens:%s?" )%(self.allclients_logged_txt) )
+        msg=_( _("Do you want to lock the following screens: %s?" )%(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             self.main.worker=shared.Workers(self.main, None, None)
             self.main.worker.set_for_all_action(self.action_for_clients, \
@@ -87,7 +87,7 @@ class LockUnlockScreen(TcosExtension):
     def unlock_all(self, *args):
         if not self.get_all_clients():
             return
-        msg=_( _("Do you want to unlock the following screens:%s?" )%(self.allclients_logged_txt) )
+        msg=_( _("Do you want to unlock the following screens: %s?" )%(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             self.main.worker=shared.Workers(self.main, None, None)
             self.main.worker.set_for_all_action(self.action_for_clients, \

@@ -225,11 +225,21 @@ class Info(TcosExtension):
             self.datatxt.insert_block( _("PCI buses: ") , image=shared.IMG_DIR + "info_pci.png" )
             
             pcilist=[]
-            allpci=self.main.xmlrpc.tc.tcos.pci("pci_all").split(' ')
+            try:
+                allpci=self.main.xmlrpc.tc.tcos.pci("pci_all").split(' ')
+            except Exception, err:
+                print_debug("info() Exception pci error %s"%err)
+                self.main.xmlrpc.CheckSSL(err)
+                pass
             for pci_id in allpci:
                 if pci_id != "":
-                    pci_info=self.main.xmlrpc.tc.tcos.pci(pci_id)
-                    pcilist.append( [pci_id + " ", pci_info] )
+                    try:
+                        pci_info=self.main.xmlrpc.tc.tcos.pci(pci_id)
+                        pcilist.append( [pci_id + " ", pci_info] )
+                    except Exception, err:
+                        print_debug("info() Exception pci error %s"%err)
+                        self.main.xmlrpc.CheckSSL(err)
+                        pass
             
             self.datatxt.insert_list( pcilist )
         
@@ -312,13 +322,19 @@ class Info(TcosExtension):
             self.datatxt.insert_block( _("Xorg info") , image=shared.IMG_DIR + "info_xorg.png" )
         
             xorglist=[]
-            
-            alldata=self.main.xmlrpc.tc.tcos.xorg("get", "", \
-                 self.main.config.GetVar("xmlrpc_username"), \
-                 self.main.config.GetVar("xmlrpc_password")  ).split()
+            try:
+                alldata=self.main.xmlrpc.tc.tcos.xorg("get", "", \
+                    self.main.config.GetVar("xmlrpc_username"), \
+                    self.main.config.GetVar("xmlrpc_password")  ).split()
+            except Exception, err:
+                print_debug("info() Exception networking error %s"%err)
+                self.main.xmlrpc.CheckSSL(err)
+                pass
+                
             print_debug ( "populate_datatxt() %s" %( " ".join(alldata) ) )
             if alldata[0].find("error") == 0:
-                shared.error_msg( _("Error getting Xorg info:\n%s" ) %( " ".join(alldata)) )
+                #shared.error_msg( _("Error getting Xorg info:\n%s" ) %( " ".join(alldata)) )
+                pass
             else:
                 for data in alldata:
                     try:

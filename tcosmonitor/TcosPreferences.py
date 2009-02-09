@@ -48,6 +48,8 @@ class TcosPreferences:
         self.main.pref = self.main.ui.get_widget('prefwindow')            
         self.main.pref.hide()
         self.main.pref.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
+        if shared.lab:
+            self.main.pref.set_icon_from_file(shared.IMG_DIR + 'lliurex-lab.png')
         # dont destroy window
         # http://www.async.com.br/faq/pygtk/index.py?req=show&file=faq10.006.htp
         self.main.pref.connect('delete-event', self.prefwindow_close )
@@ -93,6 +95,9 @@ class TcosPreferences:
         # listmode method
         self.main.pref_combo_listmode = self.main.ui.get_widget('combo_listmode')
         self.populate_select(self.main.pref_combo_listmode, shared.list_modes )
+
+        self.main.pref_combo_program_mode = self.main.ui.get_widget('combo_program_mode')
+        self.populate_select(self.main.pref_combo_program_mode, shared.program_modes )
         
         
         # checkboxes
@@ -176,6 +181,9 @@ class TcosPreferences:
         
         active=self.main.pref_combo_listmode.get_active()
         self.main.config.SetVar("listmode", shared.list_modes[active][0])
+
+        active_mode=self.main.pref_combo_program_mode.get_active()
+        self.main.config.SetVar("program_mode", shared.program_modes[active_mode][0])
         
         self.main.config.SetVar("statichosts", self.main.static.get_static_conf() )
         
@@ -208,13 +216,18 @@ class TcosPreferences:
         self.main.config.SetVar("visible_menus", ",".join(visible_menus) )
         
         visible_buttons_menus=[]
-        for menu in shared.button_preferences_menus:
-            pref_name=menu.replace('ck_button_menu_', '')
-            widget=getattr(self.main, "pref_" + menu)
-            if widget.get_active():
-                visible_buttons_menus.append("%s:1" %pref_name)
-            else:
-                visible_buttons_menus.append("%s:0" %pref_name)
+        if shared.lab:
+            visible_buttons_menus_txt=self.main.config.GetVar("visible_buttons_menus")
+            if visible_buttons_menus_txt != "":
+                visible_buttons_menus=visible_buttons_menus_txt.split(',')
+        else:
+            for menu in shared.button_preferences_menus:
+                pref_name=menu.replace('ck_button_menu_', '')
+                widget=getattr(self.main, "pref_" + menu)
+                if widget.get_active():
+                    visible_buttons_menus.append("%s:1" %pref_name)
+                else:
+                    visible_buttons_menus.append("%s:0" %pref_name)
         # convert array into string separated by comas
         self.main.config.SetVar("visible_buttons_menus", ",".join(visible_buttons_menus) )
 
@@ -290,6 +303,15 @@ class TcosPreferences:
     
 
     def populate_pref(self):
+        if self.main.config.GetVar("program_mode") == "lab":
+            shared.lab=True
+            shared.icon_image_thin="idiomas.png"
+            shared.icon_image_standalone="idiomas.png"
+        else:
+            shared.lab=False
+            shared.icon_image_thin="client.png"
+            shared.icon_image_standalone="client.png"
+
         # set default for combos
         self.set_active_in_select(self.main.pref_combo_scan_method, \
                          self.main.config.GetVar("scan_network_method"))
@@ -334,6 +356,9 @@ class TcosPreferences:
         
         self.set_active_in_select(self.main.pref_combo_listmode, \
                         self.main.config.GetVar("listmode") )
+
+        self.set_active_in_select(self.main.pref_combo_program_mode, \
+                        self.main.config.GetVar("program_mode") )
         
         # populate checkboxes
         self.populate_checkboxes(self.main.pref_populatelistatstartup, "populate_list_at_startup")
@@ -363,7 +388,11 @@ class TcosPreferences:
         first_run=False
         total=0
         
-        visible_buttons_menus_txt=self.main.config.GetVar("visible_buttons_menus")
+        if shared.lab:
+            visible_buttons_menus_txt="chat:1,list:1,audio:1,video:1,exe:1"
+        else:
+            visible_buttons_menus_txt=self.main.config.GetVar("visible_buttons_menus")
+
         if visible_buttons_menus_txt != "":
             print_debug("visible_buttons_menus is not empty")
             visible_buttons_menus=visible_buttons_menus_txt.split(',')
@@ -407,6 +436,17 @@ class TcosPreferences:
             else:
                 widget_button.hide()
                 widget_pref.set_active(0)
+            if shared.lab:
+                widget_pref.set_sensitive(False)
+            else:
+                widget_pref.set_sensitive(True)
+        if shared.lab:
+            widget_button=getattr(self.main, "handlebox_" + "share")
+            widget_button.show()
+            total+=1
+        else:
+            widget_button=getattr(self.main, "handlebox_" + "share")
+            widget_button.hide()
         if total == 0:
             self.main.toolbar2.hide()
 
@@ -480,16 +520,25 @@ class TcosPreferences:
             self.main.viewtabs.set_current_page(1)
             self.main.searchbutton.set_sensitive(False)
             self.main.searchtxt.set_sensitive(False)
+            if shared.lab:
+                self.main.searchbutton.set_sensitive(True)
+                self.main.searchtxt.set_sensitive(True)
         elif listmode == 'class':
             self.main.viewtabs.set_property('show-tabs', False)
             self.main.viewtabs.set_current_page(2)
             self.main.searchbutton.set_sensitive(False)
             self.main.searchtxt.set_sensitive(False)
+            if shared.lab:
+                self.main.searchbutton.set_sensitive(True)
+                self.main.searchtxt.set_sensitive(True)
         else:
             self.main.viewtabs.set_property('show-tabs', True)
             self.main.viewtabs.set_current_page(2)
             self.main.searchbutton.set_sensitive(False)
             self.main.searchtxt.set_sensitive(False)
+            if shared.lab:
+                self.main.searchbutton.set_sensitive(True)
+                self.main.searchtxt.set_sensitive(True)
         
         
         print_debug("populate_pref() done")

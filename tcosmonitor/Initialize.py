@@ -78,8 +78,12 @@ class Initialize(object):
         
     def on_viewtabs_change(self, widget, pointer, tabnum):
         if tabnum != 0:
-            self.main.searchbutton.set_sensitive(False)
-            self.main.searchtxt.set_sensitive(False)
+            if shared.lab:
+                self.main.searchbutton.set_sensitive(True)
+                self.main.searchtxt.set_sensitive(True)
+            else:
+                self.main.searchbutton.set_sensitive(False)
+                self.main.searchtxt.set_sensitive(False)
         else:
             self.main.searchbutton.set_sensitive(True)
             self.main.searchtxt.set_sensitive(True)
@@ -102,6 +106,11 @@ class Initialize(object):
         print_debug ( "initbuttons()" )
         self.main.quitbutton = self.ui.get_widget('quitbutton')
         self.main.quitbutton.connect('clicked', self.main.quitapp)
+        #if shared.lab:
+        tooltip=gtk.Tooltips()
+        self.main.quitbutton.set_tooltip(tooltip,_("Quit from TcosMonitor"))
+        if shared.lab:
+            self.main.quitbutton.set_tooltip(tooltip,_("Salir de Lliurex Lab"))
         
         self.main.preferencesbutton = self.ui.get_widget('preferencesbutton')
         self.main.preferencesbutton.connect('clicked', self.main.actions.on_preferencesbutton_click)
@@ -181,6 +190,8 @@ class Initialize(object):
         self.main.abouttcos = self.main.ui.get_widget('abouttcos')
         self.main.abouttcos.hide()
         self.main.abouttcos.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
+        if shared.lab:
+            self.main.abouttcos.set_icon_from_file(shared.IMG_DIR +'lliurex-lab.png')
         
         self.main.abouttabs = self.main.ui.get_widget('abouttabs')
         
@@ -208,6 +219,8 @@ class Initialize(object):
         
         self.main.abouttcos_logo = self.ui.get_widget('abouttcos_logo')
         self.main.abouttcos_logo.set_from_file(shared.IMG_DIR +'tcos-logo.png')
+        if shared.lab:
+            self.main.abouttcos_logo.set_from_file(shared.IMG_DIR +'tcos-lliurex-logo.png')
         
         self.main.abouttcos_webbutton = self.ui.get_widget('abouttcos_webbutton')
         self.main.abouttcos_webbutton.connect('clicked', self.main.actions.on_weburl_click)
@@ -215,12 +228,24 @@ class Initialize(object):
         self.main.abouttcos_donatecheck = self.ui.get_widget('abouttcos_donatecheck')
         self.main.abouttcos_donatecheck.connect('toggled', self.main.actions.on_abouttcos_donatecheck_change)
         
+        if self.main.config.GetVar("show_about") == 1:
+            self.main.abouttcos.show()
+            self.main.abouttabs.set_current_page(0)
+            self.main.config.SetVar("show_about", "0")
+            self.main.config.SaveToFile()
+
         if self.main.config.GetVar("show_donate") == 1:
             self.main.abouttcos.show()
             self.main.abouttabs.set_current_page(self.main.abouttabs.get_n_pages()-1)
             self.main.abouttcos_donatecheck.set_active(False)
         else:
             self.main.abouttcos_donatecheck.set_active(True)
+            
+        if shared.lab:
+            self.main.about_title = self.ui.get_widget('label149')
+            self.main.about_title.set_markup( _("<span size=\"xx-large\">Lliurex Lab</span>")  )
+            self.main.abouttcos.set_title( _("About Lliurex Lab")  )
+            #self.main.abouttabs.remove_page(4)
         
         
     

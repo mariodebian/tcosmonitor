@@ -132,13 +132,13 @@ class TcosVolumeManager:
         self.config=tcosmonitor.TcosConf.TcosConf(self, openfile=False)
         self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
         
+        nossl=True
         # make a test and exit if no cookie match
-        if not self.xauth.test_auth():
+        if not self.xauth.test_auth(nossl):
             print "tcos-volume-manager: ERROR: Xauth cookie don't match"
             #sys.exit(1)
         
-        
-        self.xmlrpc.newhost(self.host)
+        self.xmlrpc.newhost(self.host,nossl)
         if not self.xmlrpc.connected:
             shared.error_msg( _("Error connecting with TcosXmlRpc in %s.") %(self.host) )
             sys.exit(1)
@@ -204,7 +204,8 @@ class TcosVolumeManager:
 
     def get_channel_info(self):
         # retry cookie auth
-        self.xauth.test_auth()
+        nossl=True
+        self.xauth.test_auth(nossl)
         
         primary_channels=[]
         secondary_channels=[]

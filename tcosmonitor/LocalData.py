@@ -201,6 +201,7 @@ class LocalData:
         """
             
         if method == "ping":
+            self.allclients=[]
             interface=self.main.config.GetVar("network_interface")
             print_debug ( "GetAllClients() using method \"ping\" in interface %s" %(interface) )
             
@@ -268,6 +269,8 @@ class LocalData:
             if len(self.main.static.data) < 1:
                 shared.error_msg( _("Static list method configured but no hosts in list.\n\nPlease, open preferences, click on 'Open Static Host list' and add some hosts.") )
                 return self.allclients
+            
+            ping=Ping(self.main)
                 
             for host in self.main.static.data:
                 # we have a single ip or range of ips??
@@ -286,25 +289,30 @@ class LocalData:
                             self.allclients.append(newip)
                 else:
                     self.allclients.append(ip)
-            # try if client is connected
-            if self.main.config.GetVar("onlyshowtcos") == 1:
-                if hasattr(self.main, "write_into_statusbar"):
-                    self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open..."))
-                hosts=[]
-                for host in self.allclients:
-                    # view status of port 8998 or 8999
-                    if self.main.xmlrpc.newhost(host):
-                        if self.main.xmlrpc.GetVersion():
-                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN" %(host))
-                            hosts.append(host)
-                        else:
-                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN but not tcosxmlrpc" %(host))
-                    else:
-                        print_debug("GetAllClients() host=%s ports 8998 or 8999 CLOSED" %(host))
-                        #hosts.append(host)
-                self.allclients=hosts
-                print_debug("GetAllClients() returning static list %s"%self.allclients)
-            return self.allclients
+
+            self.main.worker=shared.Workers(self.main, ping.ping_iprange_static, [self.allclients], dog=False )
+            self.main.worker.start()
+
+##            # try if client is connected
+##            if self.main.config.GetVar("onlyshowtcos") == 1:
+##                if hasattr(self.main, "write_into_statusbar"):
+##                    self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open..."))
+##                hosts=[]
+##                for host in self.allclients:
+##                    # view status of port 8998 or 8999
+##                    if self.main.xmlrpc.newhost(host):
+##                        if self.main.xmlrpc.GetVersion():
+##                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN" %(host))
+##                            hosts.append(host)
+##                        else:
+##                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN but not tcosxmlrpc" %(host))
+##                    else:
+##                        print_debug("GetAllClients() host=%s ports 8998 or 8999 CLOSED" %(host))
+##                        #hosts.append(host)
+##                self.allclients=hosts
+##                print_debug("GetAllClients() returning static list %s"%self.allclients)
+##            return self.allclients
+            return []
 
     
     def ipValid(self, ip):
@@ -470,8 +478,10 @@ class LocalData:
                     if not b:
                         break
                     if b[0] == USER_PROCESS:
-                        #print_debug("  => Searching for host \"%s:0\" found host=%s ut_line=%s"%(ip, b.ut_host,b.ut_line))
+                        print_debug("  => Searching for host \"%s:0\", hostname=%s found host=%s ut_line=%s"%(ip, hostname, b.ut_host,b.ut_line))
                         if b.ut_host == "%s:0" % (ip) or b.ut_line == "%s:0" % (ip) or b.ut_host == "%s" % hostname :
+                            if b.ut_line.startswith("pts/") and not os.path.isdir("/proc/%s"%b.ut_pid): continue
+                            print_debug(" Ip \"%s:0\" => found host=%s hostname=%s ut_line=%s user=%s pid=%s"%(ip, hostname, b.ut_host,b.ut_line, b.ut_user, b.ut_pid))
                             last=b
                 a.endutent()
                 if last and os.path.isdir("/proc/%s"%last.ut_pid): break
