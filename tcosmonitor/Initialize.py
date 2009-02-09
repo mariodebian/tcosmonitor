@@ -109,8 +109,6 @@ class Initialize(object):
         #if shared.lab:
         tooltip=gtk.Tooltips()
         self.main.quitbutton.set_tooltip(tooltip,_("Quit from TcosMonitor"))
-        if shared.lab:
-            self.main.quitbutton.set_tooltip(tooltip,_("Salir de Lliurex Lab"))
         
         self.main.preferencesbutton = self.ui.get_widget('preferencesbutton')
         self.main.preferencesbutton.connect('clicked', self.main.actions.on_preferencesbutton_click)
@@ -164,6 +162,11 @@ class Initialize(object):
         self.main.handlebox_text = self.ui.get_widget('handlebox_text')
         self.main.button_text.connect('clicked', self.main.button_actions, "text")
 
+        self.main.button_share = self.ui.get_widget('button_share')
+        self.main.handlebox_share = self.ui.get_widget('handlebox_share')
+        self.main.button_share.connect('clicked', self.main.button_actions, "share")
+        self.main.handlebox_share.hide()
+
         for button in ['button_audio', 'button_chat', 'button_list', 'button_video', 'button_send', 'button_exe', 'button_text']:
             
             if os.path.isfile(shared.IMG_DIR + "/%s.png" %(button)):
@@ -184,7 +187,23 @@ class Initialize(object):
         <property name="pixbuf">/usr/share/tcosmonitor/images/button_exec.png</property>
         <property name="pixbuf">/usr/share/tcosmonitor/images/button_msg.png</property>
         """
+        if shared.lab:
+            self.main.quitbutton.set_tooltip(tooltip,_("Salir de Lliurex Lab"))
+            self.lab_change_buttons()
 
+    def __change_toolbutton_icon(self, widget, imgfile):
+        img=gtk.Image()
+        img.set_from_file(imgfile)
+        img.show()
+        widget.set_icon_widget(img)
+
+    def lab_change_buttons(self):
+        self.__change_toolbutton_icon( self.main.quitbutton, shared.IMG_DIR +'button_exit.png')
+        self.__change_toolbutton_icon( self.main.preferencesbutton, shared.IMG_DIR +'button_pref.png')
+        self.__change_toolbutton_icon( self.main.refreshbutton, shared.IMG_DIR + 'button_refresh.png')
+        self.__change_toolbutton_icon( self.main.allhostbutton, shared.IMG_DIR + 'button_all.png')
+        self.__change_toolbutton_icon( self.main.searchbutton, shared.IMG_DIR + 'button_search.png')
+        
 
     def initabouttcos(self):
         self.main.abouttcos = self.main.ui.get_widget('abouttcos')

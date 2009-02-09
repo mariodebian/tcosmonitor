@@ -8,13 +8,545 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-07 10:16+0100\n"
+"POT-Creation-Date: 2009-02-09 20:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../tcosmonitor.py:127
+#, python-format
+msgid ""
+"The user \"%s\" must be member of the group \"tcos\" to exec tcosmonitor.\n"
+"\n"
+"If you are system administrator, add your user to tcos group."
+msgstr ""
+
+#: ../tcosmonitor.py:144 ../tcosmonitor/shared.py:116
+msgid "Lliurex Lab"
+msgstr ""
+
+#: ../tcosmonitor.py:255
+msgid "Send files disabled. rsync not configured."
+msgstr ""
+
+#: ../tcosmonitor.py:340 ../tcospersonalize.py:552
+#: ../tcos-volume-manager.py:374
+msgid "Exiting"
+msgstr ""
+
+#: ../tcos-devices-ng.py:189
+#, python-format
+msgid "Rebooting in %s seconds"
+msgstr ""
+
+#: ../tcos-devices-ng.py:191
+#, python-format
+msgid "Shutting down in %s seconds"
+msgstr ""
+
+#: ../tcos-devices-ng.py:207 ../tcos-devices-ng.py:210
+#, python-format
+msgid ""
+"ERROR during action %(action)s:\n"
+"%(errortxt)s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:240
+msgid "Tcos device daemon"
+msgstr ""
+
+#: ../tcos-devices-ng.py:284 ../tcos-volume-manager.py:143
+#, python-format
+msgid "Error connecting with TcosXmlRpc in %s."
+msgstr ""
+
+#: ../tcos-devices-ng.py:308
+#, python-format
+msgid "Cdrom device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:311
+msgid "Mount Cdrom"
+msgstr ""
+
+#: ../tcos-devices-ng.py:312
+msgid "Umount Cdrom"
+msgstr ""
+
+#: ../tcos-devices-ng.py:334
+#, python-format
+msgid "Disk partition %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:337
+msgid "Mount disk partition"
+msgstr ""
+
+#: ../tcos-devices-ng.py:338
+msgid "Umount disk partition"
+msgstr ""
+
+#: ../tcos-devices-ng.py:350
+msgid "No floppy detected"
+msgstr ""
+
+#: ../tcos-devices-ng.py:362 ../tcos-devices-ng.py:683
+#: ../tcos-devices-ng.py:689 ../tcos-devices-ng.py:695
+msgid "Floppy"
+msgstr ""
+
+#: ../tcos-devices-ng.py:365
+msgid "Mount Floppy"
+msgstr ""
+
+#: ../tcos-devices-ng.py:366
+msgid "Umount Floppy"
+msgstr ""
+
+#: ../tcos-devices-ng.py:376
+msgid "Floppy mounted. Ready for use."
+msgstr ""
+
+#: ../tcos-devices-ng.py:378
+msgid "Floppy umounted. You can extract it."
+msgstr ""
+
+#: ../tcos-devices-ng.py:394
+msgid "Hard disk partition mounted. Ready for use."
+msgstr ""
+
+#: ../tcos-devices-ng.py:397
+msgid "Hard disk partition umounted."
+msgstr ""
+
+#: ../tcos-devices-ng.py:419
+msgid "Audio cdrom mounted., you can listen music opening wav files."
+msgstr ""
+
+#: ../tcos-devices-ng.py:421
+msgid "Cdrom mounted. Ready for use."
+msgstr ""
+
+#: ../tcos-devices-ng.py:424
+msgid "Cdrom umounted. You can extract it."
+msgstr ""
+
+#: ../tcos-devices-ng.py:448
+msgid ""
+"Cloning client, please wait.\n"
+"Poweroff button has been temporaly disabled..."
+msgstr ""
+
+#: ../tcos-devices-ng.py:453
+msgid "Client successfully cloned!!. Please restart client."
+msgstr ""
+
+#: ../tcos-devices-ng.py:458
+msgid "Cloning has failed!!"
+msgstr ""
+
+#: ../tcos-devices-ng.py:538
+#, python-format
+msgid ""
+"Mounting device %s\n"
+"Please wait..."
+msgstr ""
+
+#: ../tcos-devices-ng.py:587
+msgid "Error mounting LTSPFS, check versions of LTSPFS packages"
+msgstr ""
+
+#: ../tcos-devices-ng.py:613
+#, python-format
+msgid ""
+"Umounting device %s.\n"
+"Please wait..."
+msgstr ""
+
+#: ../tcos-devices-ng.py:660
+msgid "usbdisk"
+msgstr ""
+
+#: ../tcos-devices-ng.py:662
+msgid "firewiredisk"
+msgstr ""
+
+#: ../tcos-devices-ng.py:687
+msgid "Can't mount floppy"
+msgstr ""
+
+#: ../tcos-devices-ng.py:698
+msgid "Can't umount floppy"
+msgstr ""
+
+#: ../tcos-devices-ng.py:711 ../tcos-devices-ng.py:721
+#: ../tcos-devices-ng.py:732 ../tcos-devices-ng.py:847
+#: ../tcos-devices-ng.py:859 ../tcos-devices-ng.py:878
+#: ../tcos-devices-ng.py:890 ../tcos-devices-ng.py:922
+#, python-format
+msgid "Cdrom_%s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:719
+msgid "Can't mount cdrom"
+msgstr ""
+
+#: ../tcos-devices-ng.py:735
+msgid "Can't umount cdrom"
+msgstr ""
+
+#: ../tcos-devices-ng.py:753 ../tcos-devices-ng.py:763
+#: ../tcos-devices-ng.py:774
+#, python-format
+msgid "Disk_%s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:761
+msgid "Can't mount hard disk partition"
+msgstr ""
+
+#: ../tcos-devices-ng.py:777
+msgid "Can't umount hard disk partition"
+msgstr ""
+
+#: ../tcos-devices-ng.py:818
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Connected CDROM USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:822
+#, python-format
+msgid "CDROM USB device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:825
+#, python-format
+msgid "Mount CDROM USB device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:826
+#, python-format
+msgid "Umount CDROM USB device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:851 ../tcos-devices-ng.py:882
+#: ../tcos-devices-ng.py:1012 ../tcos-devices-ng.py:1023
+#: ../tcos-devices-ng.py:1069 ../tcos-devices-ng.py:1149
+#: ../tcos-devices-ng.py:1160 ../tcos-devices-ng.py:1206
+#, python-format
+msgid "Error, can't mount device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:909
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Disconnected CDROM USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:937
+#, python-format
+msgid "Can't umount cdrom usb %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:962
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Connected USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:965
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Disconnected USB device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:993
+#, python-format
+msgid "USB device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:996
+#, python-format
+msgid "Mount USB device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:997
+#, python-format
+msgid "Umount USB device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:1099
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Connected Firewire device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:1102
+#, python-format
+msgid ""
+"From terminal %(host)s.\n"
+"Disconnected Firewire device %(device)s\n"
+"%(vendor)s %(model)s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:1130
+#, python-format
+msgid "Firewire device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:1133
+#, python-format
+msgid "Mount Firewire device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:1134
+#, python-format
+msgid "Umount Firewire device %s"
+msgstr ""
+
+#: ../tcos-devices-ng.py:1217
+#, python-format
+msgid "CDROM USB device %s umounted. You can extract it."
+msgstr ""
+
+#: ../tcos-devices-ng.py:1220
+#, python-format
+msgid "CDROM USB device %s mounted. Ready for use."
+msgstr ""
+
+#: ../tcos-devices-ng.py:1258
+#, python-format
+msgid "USB device %s umounted. You can extract it."
+msgstr ""
+
+#: ../tcos-devices-ng.py:1261
+#, python-format
+msgid "USB device %s mounted. Ready for use."
+msgstr ""
+
+#: ../tcos-devices-ng.py:1297
+#, python-format
+msgid "Firewire device %s umounted. You can extract it."
+msgstr ""
+
+#: ../tcos-devices-ng.py:1300
+#, python-format
+msgid "Firewire device %s mounted. Ready for use."
+msgstr ""
+
+#: ../tray.glade:38
+msgid "<big><b>TCOS devices</b></big>"
+msgstr ""
+
+#: ../tray.glade:105
+msgid "Hide"
+msgstr ""
+
+#: ../tcospersonalize.glade:8 ../tcosmonitor.glade:60
+#: ../tcosmonitor.glade:1405
+msgid "Preferences"
+msgstr ""
+
+#: ../tcospersonalize.glade:57
+msgid "<b>unknow host</b>"
+msgstr ""
+
+#: ../tcospersonalize.glade:103 ../tcosmonitor/extensions/info.py:365
+msgid "Enable mouse wheel"
+msgstr ""
+
+#: ../tcospersonalize.glade:125
+msgid "Disable Ctrl + Alt + Backspace (for kill Xorg)"
+msgstr ""
+
+#: ../tcospersonalize.glade:146 ../tcosmonitor/extensions/info.py:357
+msgid "Xorg Resolution"
+msgstr ""
+
+#: ../tcospersonalize.glade:208 ../tcosmonitor/extensions/info.py:359
+msgid "Xorg Color depth"
+msgstr ""
+
+#: ../tcospersonalize.glade:253 ../tcosmonitor/extensions/info.py:353
+msgid "X Session Type"
+msgstr ""
+
+#: ../tcospersonalize.glade:299 ../tcosmonitor/extensions/info.py:361
+msgid "DPMS energy monitor control"
+msgstr ""
+
+#: ../tcospersonalize.glade:326 ../tcosmonitor/extensions/info.py:355
+msgid "Xorg Driver"
+msgstr ""
+
+#: ../tcospersonalize.glade:352
+msgid "Get avalaible drivers"
+msgstr ""
+
+#: ../tcospersonalize.glade:383
+msgid "Display Settings"
+msgstr ""
+
+#: ../tcospersonalize.glade:426 ../tcosmonitor/extensions/info.py:375
+msgid "X Horiz sync"
+msgstr ""
+
+#: ../tcospersonalize.glade:454 ../tcosmonitor/extensions/info.py:377
+msgid "X Vert sync"
+msgstr ""
+
+#: ../tcospersonalize.glade:541 ../tcosmonitor.glade:2500
+msgid "Advanced"
+msgstr ""
+
+#: ../tcospersonalize.glade:573
+msgid "Default boot kernel"
+msgstr ""
+
+#: ../tcospersonalize.glade:617
+msgid "<b>PXE Boot options</b>"
+msgstr ""
+
+#: ../tcospersonalize.glade:645
+msgid "Default boot method"
+msgstr ""
+
+#: ../tcospersonalize.glade:690
+msgid "Command line"
+msgstr ""
+
+#: ../tcospersonalize.glade:801
+msgid "Boot options"
+msgstr ""
+
+#: ../tcospersonalize.glade:915
+msgid "Delete Config"
+msgstr ""
+
+#: ../tcos-volume-manager.glade:9 ../tcos-volume-manager.py:229
+msgid "Tcos Volume Manager"
+msgstr ""
+
+#: ../tcos-volume-manager.glade:67
+msgid "Restart sound"
+msgstr ""
+
+#: ../tcos-volume-manager.glade:90
+msgid "Sound levels"
+msgstr ""
+
+#: ../tcos-volume-manager.glade:152
+msgid "Main Channels"
+msgstr ""
+
+#: ../tcos-volume-manager.glade:194
+msgid "Secondary Channels"
+msgstr ""
+
+#: ../tcospersonalize.py:115
+msgid ""
+"Need a host to configure!!!\n"
+"Try exec:\n"
+" tcospersonalize --host=XXX.XXX.XXX.XXX"
+msgstr ""
+
+#: ../tcospersonalize.py:180
+msgid "host: "
+msgstr ""
+
+#: ../tcospersonalize.py:444
+msgid "Host down, can't connect to tcosxmlrpc."
+msgstr ""
+
+#: ../tcospersonalize.py:452
+#, python-format
+msgid "New %d drivers loaded from terminal."
+msgstr ""
+
+#: ../tcospersonalize.py:511
+#, python-format
+msgid "Really delete config of %s?"
+msgstr ""
+
+#: ../tcospersonalize.py:514
+msgid "Deleted!"
+msgstr ""
+
+#: ../tcos-volume-manager.py:101 ../tcos-volume-manager.py:113
+#, python-format
+msgid ""
+"Tcos Sound levels on:\n"
+"%s"
+msgstr ""
+
+#: ../tcos-volume-manager.py:121
+#, python-format
+msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
+msgstr ""
+
+#: ../tcos-volume-manager.py:213
+msgid "Loading channels info..."
+msgstr ""
+
+#: ../tcos-volume-manager.py:226
+msgid "Error loading channels info (xauth error)"
+msgstr ""
+
+#: ../tcos-volume-manager.py:230
+#, python-format
+msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
+msgstr ""
+
+#: ../tcos-volume-manager.py:296 ../tcosmonitor/extensions/info.py:442
+msgid "Mute"
+msgstr ""
+
+#: ../tcos-volume-manager.py:315
+msgid "Main controls ready"
+msgstr ""
+
+#: ../tcos-volume-manager.py:319
+msgid "All remote controls loaded."
+msgstr ""
+
+#: ../tcos-volume-manager.py:328 ../tcosmonitor/extensions/info.py:557
+#, python-format
+msgid "Changing value of %(channel)s channel, to %(value)s%%..."
+msgstr ""
+
+#: ../tcos-volume-manager.py:335 ../tcosmonitor/extensions/info.py:564
+#, python-format
+msgid "Changed value of %(channel)s channel, to %(value)s"
+msgstr ""
+
+#: ../tcos-volume-manager.py:342 ../tcosmonitor/extensions/info.py:571
+#, python-format
+msgid "Unmuting %s channel..."
+msgstr ""
+
+#: ../tcos-volume-manager.py:347 ../tcosmonitor/extensions/info.py:576
+#, python-format
+msgid "Muting %s channel..."
+msgstr ""
+
+#: ../tcos-volume-manager.py:350 ../tcosmonitor/extensions/info.py:579
+#, python-format
+msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
+msgstr ""
 
 #: ../tcosmonitor/TcosDBus.py:86
 msgid "TcosDBus not allowed in local display"
@@ -37,348 +569,16 @@ msgstr ""
 msgid "Message from admin"
 msgstr ""
 
-#: ../tcosmonitor/TcosDBus.py:329 ../tcosmonitor/TcosDBus.py:345
-#: ../tcosmonitor/TcosDBus.py:363 ../tcosmonitor/TcosDBus.py:381
+#: ../tcosmonitor/TcosDBus.py:333 ../tcosmonitor/TcosDBus.py:349
+#: ../tcosmonitor/TcosDBus.py:367 ../tcosmonitor/TcosDBus.py:385
 msgid "User not allowed to run this dbus call."
-msgstr ""
-
-#: ../tcosmonitor.py:131
-#, python-format
-msgid ""
-"The user \"%s\" must be member of the group \"tcos\" to exec tcosmonitor.\n"
-"\n"
-"If you are system administrator, add your user to tcos group."
-msgstr ""
-
-#: ../tcosmonitor.py:145 ../tcosmonitor/shared.py:116
-msgid "Lliurex Lab"
-msgstr ""
-
-#: ../tcosmonitor.py:245
-msgid "Send files disabled. rsync not configured."
-msgstr ""
-
-#: ../tcosmonitor.py:330 ../tcospersonalize.py:552
-#: ../tcos-volume-manager.py:360
-msgid "Exiting"
-msgstr ""
-
-#: ../tcos-devices-ng.py:186
-#, python-format
-msgid "Rebooting in %s seconds"
-msgstr ""
-
-#: ../tcos-devices-ng.py:188
-#, python-format
-msgid "Shutting down in %s seconds"
-msgstr ""
-
-#: ../tcos-devices-ng.py:204 ../tcos-devices-ng.py:207
-#, python-format
-msgid ""
-"ERROR during action %(action)s:\n"
-"%(errortxt)s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:237
-msgid "Tcos device daemon"
-msgstr ""
-
-#: ../tcos-devices-ng.py:281 ../tcos-volume-manager.py:144
-#, python-format
-msgid "Error connecting with TcosXmlRpc in %s."
-msgstr ""
-
-#: ../tcos-devices-ng.py:304
-#, python-format
-msgid "Cdrom device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:307
-msgid "Mount Cdrom"
-msgstr ""
-
-#: ../tcos-devices-ng.py:308
-msgid "Umount Cdrom"
-msgstr ""
-
-#: ../tcos-devices-ng.py:328
-#, python-format
-msgid "Disk partition %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:331
-msgid "Mount disk partition"
-msgstr ""
-
-#: ../tcos-devices-ng.py:332
-msgid "Umount disk partition"
-msgstr ""
-
-#: ../tcos-devices-ng.py:343
-msgid "No floppy detected"
-msgstr ""
-
-#: ../tcos-devices-ng.py:355 ../tcos-devices-ng.py:676
-#: ../tcos-devices-ng.py:682 ../tcos-devices-ng.py:688
-msgid "Floppy"
-msgstr ""
-
-#: ../tcos-devices-ng.py:358
-msgid "Mount Floppy"
-msgstr ""
-
-#: ../tcos-devices-ng.py:359
-msgid "Umount Floppy"
-msgstr ""
-
-#: ../tcos-devices-ng.py:369
-msgid "Floppy mounted. Ready for use."
-msgstr ""
-
-#: ../tcos-devices-ng.py:371
-msgid "Floppy umounted. You can extract it."
-msgstr ""
-
-#: ../tcos-devices-ng.py:387
-msgid "Hard disk partition mounted. Ready for use."
-msgstr ""
-
-#: ../tcos-devices-ng.py:390
-msgid "Hard disk partition umounted."
-msgstr ""
-
-#: ../tcos-devices-ng.py:412
-msgid "Audio cdrom mounted., you can listen music opening wav files."
-msgstr ""
-
-#: ../tcos-devices-ng.py:414
-msgid "Cdrom mounted. Ready for use."
-msgstr ""
-
-#: ../tcos-devices-ng.py:417
-msgid "Cdrom umounted. You can extract it."
-msgstr ""
-
-#: ../tcos-devices-ng.py:441
-msgid ""
-"Cloning client, please wait.\n"
-"Poweroff button has been temporaly disabled..."
-msgstr ""
-
-#: ../tcos-devices-ng.py:446
-msgid "Client successfully cloned!!. Please restart client."
-msgstr ""
-
-#: ../tcos-devices-ng.py:451
-msgid "Cloning has failed!!"
-msgstr ""
-
-#: ../tcos-devices-ng.py:531
-#, python-format
-msgid ""
-"Mounting device %s\n"
-"Please wait..."
-msgstr ""
-
-#: ../tcos-devices-ng.py:580
-msgid "Error mounting LTSPFS, check versions of LTSPFS packages"
-msgstr ""
-
-#: ../tcos-devices-ng.py:606
-#, python-format
-msgid ""
-"Umounting device %s.\n"
-"Please wait..."
-msgstr ""
-
-#: ../tcos-devices-ng.py:653
-msgid "usbdisk"
-msgstr ""
-
-#: ../tcos-devices-ng.py:655
-msgid "firewiredisk"
-msgstr ""
-
-#: ../tcos-devices-ng.py:680
-msgid "Can't mount floppy"
-msgstr ""
-
-#: ../tcos-devices-ng.py:691
-msgid "Can't umount floppy"
-msgstr ""
-
-#: ../tcos-devices-ng.py:704 ../tcos-devices-ng.py:714
-#: ../tcos-devices-ng.py:725 ../tcos-devices-ng.py:839
-#: ../tcos-devices-ng.py:851 ../tcos-devices-ng.py:870
-#: ../tcos-devices-ng.py:882 ../tcos-devices-ng.py:914
-#, python-format
-msgid "Cdrom_%s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:712
-msgid "Can't mount cdrom"
-msgstr ""
-
-#: ../tcos-devices-ng.py:728
-msgid "Can't umount cdrom"
-msgstr ""
-
-#: ../tcos-devices-ng.py:746 ../tcos-devices-ng.py:756
-#: ../tcos-devices-ng.py:767
-#, python-format
-msgid "Disk_%s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:754
-msgid "Can't mount hard disk partition"
-msgstr ""
-
-#: ../tcos-devices-ng.py:770
-msgid "Can't umount hard disk partition"
-msgstr ""
-
-#: ../tcos-devices-ng.py:811
-#, python-format
-msgid ""
-"From terminal %(host)s.\n"
-"Connected CDROM USB device %(device)s\n"
-"%(vendor)s %(model)s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:815
-#, python-format
-msgid "CDROM USB device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:818
-#, python-format
-msgid "Mount CDROM USB device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:819
-#, python-format
-msgid "Umount CDROM USB device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:843 ../tcos-devices-ng.py:874
-#: ../tcos-devices-ng.py:1004 ../tcos-devices-ng.py:1015
-#: ../tcos-devices-ng.py:1061 ../tcos-devices-ng.py:1141
-#: ../tcos-devices-ng.py:1152 ../tcos-devices-ng.py:1198
-#, python-format
-msgid "Error, can't mount device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:901
-#, python-format
-msgid ""
-"From terminal %(host)s.\n"
-"Disconnected CDROM USB device %(device)s\n"
-"%(vendor)s %(model)s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:929
-#, python-format
-msgid "Can't umount cdrom usb %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:954
-#, python-format
-msgid ""
-"From terminal %(host)s.\n"
-"Connected USB device %(device)s\n"
-"%(vendor)s %(model)s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:957
-#, python-format
-msgid ""
-"From terminal %(host)s.\n"
-"Disconnected USB device %(device)s\n"
-"%(vendor)s %(model)s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:985
-#, python-format
-msgid "USB device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:988
-#, python-format
-msgid "Mount USB device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:989
-#, python-format
-msgid "Umount USB device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:1091
-#, python-format
-msgid ""
-"From terminal %(host)s.\n"
-"Connected Firewire device %(device)s\n"
-"%(vendor)s %(model)s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:1094
-#, python-format
-msgid ""
-"From terminal %(host)s.\n"
-"Disconnected Firewire device %(device)s\n"
-"%(vendor)s %(model)s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:1122
-#, python-format
-msgid "Firewire device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:1125
-#, python-format
-msgid "Mount Firewire device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:1126
-#, python-format
-msgid "Umount Firewire device %s"
-msgstr ""
-
-#: ../tcos-devices-ng.py:1209
-#, python-format
-msgid "CDROM USB device %s umounted. You can extract it."
-msgstr ""
-
-#: ../tcos-devices-ng.py:1212
-#, python-format
-msgid "CDROM USB device %s mounted. Ready for use."
-msgstr ""
-
-#: ../tcos-devices-ng.py:1250
-#, python-format
-msgid "USB device %s umounted. You can extract it."
-msgstr ""
-
-#: ../tcos-devices-ng.py:1253
-#, python-format
-msgid "USB device %s mounted. Ready for use."
-msgstr ""
-
-#: ../tcos-devices-ng.py:1289
-#, python-format
-msgid "Firewire device %s umounted. You can extract it."
-msgstr ""
-
-#: ../tcos-devices-ng.py:1292
-#, python-format
-msgid "Firewire device %s mounted. Ready for use."
 msgstr ""
 
 #: ../tcosmonitor/TcosStaticHosts.py:154 ../tcosmonitor/TcosListView.py:69
 msgid "IP address"
 msgstr ""
 
-#: ../tcosmonitor/TcosStaticHosts.py:160 ../tcosmonitor.glade:4781
+#: ../tcosmonitor/TcosStaticHosts.py:160 ../tcosmonitor.glade:4775
 msgid "MAC address"
 msgstr ""
 
@@ -431,12 +631,12 @@ msgid "Clean info about terminal"
 msgstr ""
 
 #: ../tcosmonitor/shared.py:287 ../tcosmonitor/TcosTrayIcon.py:54
-#: ../tcosmonitor/extensions/reboot.py:40
+#: ../tcosmonitor/extensions/reboot.py:40 ../tcosmonitor/TcosTrayIcon2.py:58
 msgid "Reboot"
 msgstr ""
 
 #: ../tcosmonitor/shared.py:288 ../tcosmonitor/TcosTrayIcon.py:55
-#: ../tcosmonitor/extensions/reboot.py:42
+#: ../tcosmonitor/extensions/reboot.py:42 ../tcosmonitor/TcosTrayIcon2.py:59
 msgid "Poweroff"
 msgstr ""
 
@@ -495,8 +695,8 @@ msgstr ""
 
 #: ../tcosmonitor/shared.py:302 ../tcosmonitor/shared.py:340
 #: ../tcosmonitor/extensions/sendfiles.py:49
-#: ../tcosmonitor/extensions/sendfiles.py:50 ../tcosmonitor.glade:632
-#: ../tcosmonitor.glade:3211 ../tcosmonitor.glade:3659
+#: ../tcosmonitor/extensions/sendfiles.py:50 ../tcosmonitor.glade:627
+#: ../tcosmonitor.glade:3205 ../tcosmonitor.glade:3653
 msgid "Send files"
 msgstr ""
 
@@ -600,17 +800,17 @@ msgstr ""
 msgid "Chat audio conference"
 msgstr ""
 
-#: ../tcosmonitor/shared.py:542
+#: ../tcosmonitor/shared.py:541
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr ""
 
-#: ../tcosmonitor/shared.py:559 ../tcosmonitor/shared.py:570
+#: ../tcosmonitor/shared.py:558 ../tcosmonitor/shared.py:569
 #, python-format
 msgid "INFO: %s"
 msgstr ""
 
-#: ../tcosmonitor/shared.py:581
+#: ../tcosmonitor/shared.py:580
 #, python-format
 msgid "ERROR: %s"
 msgstr ""
@@ -662,20 +862,21 @@ msgstr ""
 msgid "Positions saved."
 msgstr ""
 
-#: ../tcosmonitor/TcosClassView.py:310
+#: ../tcosmonitor/TcosClassView.py:314
 #, python-format
 msgid "%s is not a valid file to exe or send"
 msgstr ""
 
-#: ../tcosmonitor/TcosClassView.py:396 ../tcosmonitor/TcosIconView.py:155
+#: ../tcosmonitor/TcosClassView.py:400 ../tcosmonitor/TcosIconView.py:155
 msgid "yes"
 msgstr ""
 
-#: ../tcosmonitor/TcosClassView.py:398 ../tcosmonitor/TcosIconView.py:157
+#: ../tcosmonitor/TcosClassView.py:402 ../tcosmonitor/TcosIconView.py:157
 msgid "no"
 msgstr ""
 
-#: ../tcosmonitor/TcosTrayIcon.py:49 ../tcosmonitor.glade:43
+#: ../tcosmonitor/TcosTrayIcon.py:49 ../tcosmonitor/TcosTrayIcon2.py:53
+#: ../tcosmonitor.glade:43
 msgid "Quit"
 msgstr ""
 
@@ -684,100 +885,20 @@ msgid "TcosDevices"
 msgstr ""
 
 #: ../tcosmonitor/TcosTrayIcon.py:172 ../tcosmonitor/TcosTrayIcon.py:186
+#: ../tcosmonitor/TcosTrayIcon2.py:67
 msgid "Tcos Devices"
 msgstr ""
 
-#: ../tcosmonitor/TcosTrayIcon.py:232
+#: ../tcosmonitor/TcosTrayIcon.py:232 ../tcosmonitor/TcosTrayIcon2.py:344
 msgid "Usb flash"
 msgstr ""
 
-#: ../tcosmonitor/TcosTrayIcon.py:234
+#: ../tcosmonitor/TcosTrayIcon.py:234 ../tcosmonitor/TcosTrayIcon2.py:346
 msgid "Mount USB1"
 msgstr ""
 
-#: ../tcosmonitor/TcosTrayIcon.py:235
+#: ../tcosmonitor/TcosTrayIcon.py:235 ../tcosmonitor/TcosTrayIcon2.py:347
 msgid "Umount USB1"
-msgstr ""
-
-#: ../tcospersonalize.glade:8 ../tcosmonitor.glade:60
-#: ../tcosmonitor.glade:1412
-msgid "Preferences"
-msgstr ""
-
-#: ../tcospersonalize.glade:57
-msgid "<b>unknow host</b>"
-msgstr ""
-
-#: ../tcospersonalize.glade:103 ../tcosmonitor/extensions/info.py:365
-msgid "Enable mouse wheel"
-msgstr ""
-
-#: ../tcospersonalize.glade:125
-msgid "Disable Ctrl + Alt + Backspace (for kill Xorg)"
-msgstr ""
-
-#: ../tcospersonalize.glade:146 ../tcosmonitor/extensions/info.py:357
-msgid "Xorg Resolution"
-msgstr ""
-
-#: ../tcospersonalize.glade:208 ../tcosmonitor/extensions/info.py:359
-msgid "Xorg Color depth"
-msgstr ""
-
-#: ../tcospersonalize.glade:253 ../tcosmonitor/extensions/info.py:353
-msgid "X Session Type"
-msgstr ""
-
-#: ../tcospersonalize.glade:299 ../tcosmonitor/extensions/info.py:361
-msgid "DPMS energy monitor control"
-msgstr ""
-
-#: ../tcospersonalize.glade:326 ../tcosmonitor/extensions/info.py:355
-msgid "Xorg Driver"
-msgstr ""
-
-#: ../tcospersonalize.glade:352
-msgid "Get avalaible drivers"
-msgstr ""
-
-#: ../tcospersonalize.glade:383
-msgid "Display Settings"
-msgstr ""
-
-#: ../tcospersonalize.glade:426 ../tcosmonitor/extensions/info.py:375
-msgid "X Horiz sync"
-msgstr ""
-
-#: ../tcospersonalize.glade:454 ../tcosmonitor/extensions/info.py:377
-msgid "X Vert sync"
-msgstr ""
-
-#: ../tcospersonalize.glade:541 ../tcosmonitor.glade:2506
-msgid "Advanced"
-msgstr ""
-
-#: ../tcospersonalize.glade:573
-msgid "Default boot kernel"
-msgstr ""
-
-#: ../tcospersonalize.glade:617
-msgid "<b>PXE Boot options</b>"
-msgstr ""
-
-#: ../tcospersonalize.glade:645
-msgid "Default boot method"
-msgstr ""
-
-#: ../tcospersonalize.glade:690
-msgid "Command line"
-msgstr ""
-
-#: ../tcospersonalize.glade:801
-msgid "Boot options"
-msgstr ""
-
-#: ../tcospersonalize.glade:915
-msgid "Delete Config"
 msgstr ""
 
 #: ../tcosmonitor/extensions/lockscreen.py:49
@@ -831,20 +952,20 @@ msgstr ""
 msgid "Can't send message, user is not logged"
 msgstr ""
 
-#: ../tcosmonitor/extensions/appsmsg.py:287
-#: ../tcosmonitor/extensions/appsmsg.py:296
+#: ../tcosmonitor/extensions/appsmsg.py:288
+#: ../tcosmonitor/extensions/appsmsg.py:297
 #, python-format
 msgid "%s is not application"
 msgstr ""
 
-#: ../tcosmonitor/extensions/appsmsg.py:351
+#: ../tcosmonitor/extensions/appsmsg.py:354
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
 "Reason: %s"
 msgstr ""
 
-#: ../tcosmonitor/extensions/appsmsg.py:358
+#: ../tcosmonitor/extensions/appsmsg.py:361
 #, python-format
 msgid ""
 "Error while send message:\n"
@@ -1042,8 +1163,10 @@ msgstr ""
 msgid "Unknow client info"
 msgstr ""
 
-#: ../tcosmonitor/extensions/info.py:135 ../tcosmonitor/LocalData.py:42
-#: ../tcosmonitor/LocalData.py:61
+#: ../tcosmonitor/extensions/info.py:135 ../tcosmonitor/LocalData.py:43
+#: ../tcosmonitor/LocalData.py:62 ../tcosmonitor/TcosCommon.py:163
+#: ../tcosmonitor/TcosCommon.py:171 ../tcosmonitor/TcosCommon.py:187
+#: ../tcosmonitor/TcosCommon.py:190
 msgid "unknow"
 msgstr ""
 
@@ -1187,7 +1310,7 @@ msgstr ""
 msgid "Data send(tx): "
 msgstr ""
 
-#: ../tcosmonitor/extensions/info.py:322 ../tcosmonitor.glade:2902
+#: ../tcosmonitor/extensions/info.py:322 ../tcosmonitor.glade:2896
 msgid "Xorg info"
 msgstr ""
 
@@ -1225,10 +1348,6 @@ msgstr ""
 
 #: ../tcosmonitor/extensions/info.py:408
 msgid "Remote Sound Mixer"
-msgstr ""
-
-#: ../tcosmonitor/extensions/info.py:442 ../tcos-volume-manager.py:282
-msgid "Mute"
 msgstr ""
 
 #: ../tcosmonitor/extensions/info.py:480
@@ -1297,31 +1416,6 @@ msgstr ""
 
 #: ../tcosmonitor/extensions/info.py:528
 msgid "Sound server is not running"
-msgstr ""
-
-#: ../tcosmonitor/extensions/info.py:557 ../tcos-volume-manager.py:314
-#, python-format
-msgid "Changing value of %(channel)s channel, to %(value)s%%..."
-msgstr ""
-
-#: ../tcosmonitor/extensions/info.py:564 ../tcos-volume-manager.py:321
-#, python-format
-msgid "Changed value of %(channel)s channel, to %(value)s"
-msgstr ""
-
-#: ../tcosmonitor/extensions/info.py:571 ../tcos-volume-manager.py:328
-#, python-format
-msgid "Unmuting %s channel..."
-msgstr ""
-
-#: ../tcosmonitor/extensions/info.py:576 ../tcos-volume-manager.py:333
-#, python-format
-msgid "Muting %s channel..."
-msgstr ""
-
-#: ../tcosmonitor/extensions/info.py:579 ../tcos-volume-manager.py:336
-#, python-format
-msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr ""
 
 #: ../tcosmonitor/extensions/info.py:589 ../tcosmonitor/extensions/info.py:597
@@ -1418,7 +1512,7 @@ msgstr ""
 
 #: ../tcosmonitor/extensions/tcosnetcontroller.py:158
 #, python-format
-msgid "Do you want enable internet to following users: %s?"
+msgid "Do you want enable internet to following users:%s?"
 msgstr ""
 
 #: ../tcosmonitor/extensions/videolan.py:48
@@ -1605,8 +1699,8 @@ msgstr ""
 msgid "Demo mode off."
 msgstr ""
 
-#: ../tcosmonitor/extensions/wakeonlan.py:49
-#: ../tcosmonitor/extensions/wakeonlan.py:73
+#: ../tcosmonitor/extensions/wakeonlan.py:50
+#: ../tcosmonitor/extensions/wakeonlan.py:75
 msgid ""
 "Wake On Lan only works with static list.\n"
 "\n"
@@ -1614,24 +1708,24 @@ msgid ""
 "and (wake on lan) support in bios of clients."
 msgstr ""
 
-#: ../tcosmonitor/extensions/wakeonlan.py:53
+#: ../tcosmonitor/extensions/wakeonlan.py:54
 #, python-format
 msgid "Do you want boot %s client?"
 msgstr ""
 
-#: ../tcosmonitor/extensions/wakeonlan.py:65
-#: ../tcosmonitor/extensions/wakeonlan.py:89
+#: ../tcosmonitor/extensions/wakeonlan.py:67
+#: ../tcosmonitor/extensions/wakeonlan.py:91
 #, python-format
 msgid "No register MAC address for ip: \"%s\""
 msgstr ""
 
-#: ../tcosmonitor/extensions/wakeonlan.py:69
-#: ../tcosmonitor/extensions/wakeonlan.py:96
+#: ../tcosmonitor/extensions/wakeonlan.py:71
+#: ../tcosmonitor/extensions/wakeonlan.py:98
 #, python-format
 msgid "Not valid MAC address: \"%s\""
 msgstr ""
 
-#: ../tcosmonitor/extensions/wakeonlan.py:77
+#: ../tcosmonitor/extensions/wakeonlan.py:79
 msgid "Do you want boot all clients?"
 msgstr ""
 
@@ -1676,15 +1770,15 @@ msgid ""
 "Reason: %s"
 msgstr ""
 
-#: ../tcosmonitor/extensions/audiortp.py:49 ../tcosmonitor.glade:256
+#: ../tcosmonitor/extensions/audiortp.py:49 ../tcosmonitor.glade:255
 msgid "Send audio conference"
 msgstr ""
 
-#: ../tcosmonitor/extensions/audiortp.py:50 ../tcosmonitor.glade:3703
+#: ../tcosmonitor/extensions/audiortp.py:50 ../tcosmonitor.glade:3697
 msgid "Audio chat conference"
 msgstr ""
 
-#: ../tcosmonitor/extensions/audiortp.py:51 ../tcosmonitor.glade:444
+#: ../tcosmonitor/extensions/audiortp.py:51 ../tcosmonitor.glade:441
 msgid "Audio chat list"
 msgstr ""
 
@@ -1827,49 +1921,62 @@ msgstr ""
 msgid "Error connecting to tcosxmlrpc in %s"
 msgstr ""
 
-#: ../tcosmonitor/Initialize.py:107
+#: ../tcosmonitor/TcosTrayIcon2.py:148
+#, python-format
+msgid "Floppy: %s"
+msgstr ""
+
+#: ../tcosmonitor/TcosTrayIcon2.py:150
+#, python-format
+msgid "CDROM: %s"
+msgstr ""
+
+#: ../tcosmonitor/TcosTrayIcon2.py:152
+#, python-format
+msgid "USB: %s"
+msgstr ""
+
+#: ../tcosmonitor/TcosTrayIcon2.py:154
+#, python-format
+msgid "HDD partition: %s"
+msgstr ""
+
+#: ../tcosmonitor/TcosTrayIcon2.py:156
+#, python-format
+msgid "Unknow: %s"
+msgstr ""
+
+#: ../tcosmonitor/Initialize.py:111
+msgid "Quit from TcosMonitor"
+msgstr ""
+
+#: ../tcosmonitor/Initialize.py:191
 msgid "Salir de Lliurex Lab"
 msgstr ""
 
-#: ../tcosmonitor/Initialize.py:196
+#: ../tcosmonitor/Initialize.py:237
 msgid "GPL-2 license file not found"
 msgstr ""
 
-#: ../tcosmonitor/Initialize.py:222
+#: ../tcosmonitor/Initialize.py:265
 msgid "<span size=\"xx-large\">Lliurex Lab</span>"
 msgstr ""
 
-#: ../tcosmonitor/Initialize.py:223
+#: ../tcosmonitor/Initialize.py:266
 msgid "About Lliurex Lab"
 msgstr ""
 
-#: ../tcos-volume-manager.glade:9 ../tcos-volume-manager.py:215
-msgid "Tcos Volume Manager"
-msgstr ""
-
-#: ../tcos-volume-manager.glade:75
-msgid "Sound levels"
-msgstr ""
-
-#: ../tcos-volume-manager.glade:137
-msgid "Main Channels"
-msgstr ""
-
-#: ../tcos-volume-manager.glade:179
-msgid "Secondary Channels"
-msgstr ""
-
-#: ../tcosmonitor/LocalData.py:211
+#: ../tcosmonitor/LocalData.py:212
 #, python-format
 msgid "Selected network inteface (%s) don't have IP address"
 msgstr ""
 
-#: ../tcosmonitor/LocalData.py:248 ../tcosmonitor/ping.py:98
+#: ../tcosmonitor/LocalData.py:249 ../tcosmonitor/ping.py:98
 #: ../tcosmonitor/ping.py:161
 msgid "Testing if found clients have 8998 or 8999 port open..."
 msgstr ""
 
-#: ../tcosmonitor/LocalData.py:269
+#: ../tcosmonitor/LocalData.py:270
 msgid ""
 "Static list method configured but no hosts in list.\n"
 "\n"
@@ -1877,17 +1984,17 @@ msgid ""
 "hosts."
 msgstr ""
 
-#: ../tcosmonitor/TcosPreferences.py:269
+#: ../tcosmonitor/TcosPreferences.py:273
 msgid ""
 "You have select more than 5 button menus.\n"
 "Only allowed to select a maximum of 5 buttons."
 msgstr ""
 
-#: ../tcosmonitor/TcosPreferences.py:280
+#: ../tcosmonitor/TcosPreferences.py:284
 msgid "New settings saved."
 msgstr ""
 
-#: ../tcosmonitor/TcosPreferences.py:569 ../tcosmonitor/TcosExtensions.py:364
+#: ../tcosmonitor/TcosPreferences.py:582 ../tcosmonitor/TcosExtensions.py:365
 msgid "Stop"
 msgstr ""
 
@@ -1921,35 +2028,6 @@ msgstr ""
 msgid "Reset hosts positions"
 msgstr ""
 
-#: ../tcospersonalize.py:115
-msgid ""
-"Need a host to configure!!!\n"
-"Try exec:\n"
-" tcospersonalize --host=XXX.XXX.XXX.XXX"
-msgstr ""
-
-#: ../tcospersonalize.py:180
-msgid "host: "
-msgstr ""
-
-#: ../tcospersonalize.py:444
-msgid "Host down, can't connect to tcosxmlrpc."
-msgstr ""
-
-#: ../tcospersonalize.py:452
-#, python-format
-msgid "New %d drivers loaded from terminal."
-msgstr ""
-
-#: ../tcospersonalize.py:511
-#, python-format
-msgid "Really delete config of %s?"
-msgstr ""
-
-#: ../tcospersonalize.py:514
-msgid "Deleted!"
-msgstr ""
-
 #: ../tcosmonitor/ping.py:80
 #, python-format
 msgid "Ping to %s..."
@@ -1960,58 +2038,25 @@ msgid "Waiting for pings..."
 msgstr ""
 
 #: ../tcosmonitor/ping.py:117 ../tcosmonitor/ping.py:182
-#: ../tcosmonitor/TcosActions.py:186 ../tcosmonitor/TcosActions.py:266
+#: ../tcosmonitor/TcosActions.py:186 ../tcosmonitor/TcosActions.py:272
 msgid "Not connected hosts found."
 msgstr ""
 
 #: ../tcosmonitor/ping.py:124 ../tcosmonitor/ping.py:187
-#: ../tcosmonitor/TcosActions.py:189 ../tcosmonitor/TcosActions.py:261
+#: ../tcosmonitor/TcosActions.py:189 ../tcosmonitor/TcosActions.py:267
 #, python-format
 msgid "Found %d hosts"
 msgstr ""
 
-#: ../tcos-volume-manager.py:102 ../tcos-volume-manager.py:114
-#, python-format
-msgid ""
-"Tcos Sound levels on:\n"
-"%s"
-msgstr ""
-
-#: ../tcos-volume-manager.py:122
-#, python-format
-msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
-msgstr ""
-
-#: ../tcos-volume-manager.py:199
-msgid "Loading channels info..."
-msgstr ""
-
-#: ../tcos-volume-manager.py:212
-msgid "Error loading channels info (xauth error)"
-msgstr ""
-
-#: ../tcos-volume-manager.py:216
-#, python-format
-msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
-msgstr ""
-
-#: ../tcos-volume-manager.py:301
-msgid "Main controls ready"
-msgstr ""
-
-#: ../tcos-volume-manager.py:305
-msgid "All remote controls loaded."
-msgstr ""
-
-#: ../tcosmonitor/TcosActions.py:163 ../tcosmonitor/TcosActions.py:243
+#: ../tcosmonitor/TcosActions.py:163 ../tcosmonitor/TcosActions.py:249
 msgid "Searching for connected hosts..."
 msgstr ""
 
-#: ../tcosmonitor/TcosActions.py:1021
+#: ../tcosmonitor/TcosActions.py:1027
 msgid "Searching info of hosts..."
 msgstr ""
 
-#: ../tcosmonitor/TcosActions.py:1060
+#: ../tcosmonitor/TcosActions.py:1066
 #, python-format
 msgid "Connecting to %s..."
 msgstr ""
@@ -2028,23 +2073,33 @@ msgstr ""
 msgid "No clients connected, press refresh button."
 msgstr ""
 
-#: ../tcosmonitor/TcosExtensions.py:242 ../tcosmonitor/TcosExtensions.py:250
+#: ../tcosmonitor/TcosExtensions.py:243 ../tcosmonitor/TcosExtensions.py:251
 msgid "Clonning clients...."
 msgstr ""
 
-#: ../tcosmonitor/TcosExtensions.py:277 ../tcosmonitor/TcosExtensions.py:279
+#: ../tcosmonitor/TcosExtensions.py:278 ../tcosmonitor/TcosExtensions.py:280
 #, python-format
 msgid "Can't exec this action at '%s' because you are connected at this host!"
 msgstr ""
 
-#: ../tcosmonitor/TcosExtensions.py:293
+#: ../tcosmonitor/TcosExtensions.py:294
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr ""
 
-#: ../tcosmonitor/TcosExtensions.py:311
+#: ../tcosmonitor/TcosExtensions.py:312
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
+msgstr ""
+
+#: ../tcosmonitor/TcosCommon.py:85
+#, python-format
+msgid ""
+"ThreadController: Found error executing %(cmd)s\n"
+"\n"
+"If problem persist, disable Thread Controller\n"
+"in Preferences and report bug.\n"
+"Error=%(error)s"
 msgstr ""
 
 #: ../tcosmonitor.glade:10
@@ -2079,177 +2134,177 @@ msgstr ""
 msgid "About this app"
 msgstr ""
 
-#: ../tcosmonitor.glade:350
+#: ../tcosmonitor.glade:348
 msgid "Start audio chat"
 msgstr ""
 
-#: ../tcosmonitor.glade:538
+#: ../tcosmonitor.glade:534
 msgid "Send audio/video"
 msgstr ""
 
-#: ../tcosmonitor.glade:726
+#: ../tcosmonitor.glade:720
 msgid "Exe app"
 msgstr ""
 
-#: ../tcosmonitor.glade:820
+#: ../tcosmonitor.glade:813
 msgid "Send message"
 msgstr ""
 
-#: ../tcosmonitor.glade:914
+#: ../tcosmonitor.glade:907
 msgid "Open share"
 msgstr ""
 
-#: ../tcosmonitor.glade:1029
+#: ../tcosmonitor.glade:1022
 msgid "List view"
 msgstr ""
 
-#: ../tcosmonitor.glade:1107
+#: ../tcosmonitor.glade:1100
 msgid "Icon view"
 msgstr ""
 
-#: ../tcosmonitor.glade:1204
+#: ../tcosmonitor.glade:1197
 msgid "Simulate my classroom"
 msgstr ""
 
-#: ../tcosmonitor.glade:1328 ../tcosmonitor.glade:4534
-#: ../tcosmonitor.glade:4917
+#: ../tcosmonitor.glade:1321 ../tcosmonitor.glade:4528
+#: ../tcosmonitor.glade:4911
 msgid "Cancel"
 msgstr ""
 
-#: ../tcosmonitor.glade:1456
+#: ../tcosmonitor.glade:1449
 msgid "Show host list on startup"
 msgstr ""
 
-#: ../tcosmonitor.glade:1477
+#: ../tcosmonitor.glade:1470
 msgid "Scan network method"
 msgstr ""
 
-#: ../tcosmonitor.glade:1505
+#: ../tcosmonitor.glade:1498
 msgid ""
 "Network interface\n"
 "(thin client)"
 msgstr ""
 
-#: ../tcosmonitor.glade:1593
+#: ../tcosmonitor.glade:1586
 msgid "Show system process"
 msgstr ""
 
-#: ../tcosmonitor.glade:1614
-msgid "Don't do actions when running Lliurex Lab in thin client"
+#: ../tcosmonitor.glade:1608
+msgid "Don't do actions when running TcosMonitor in thin client"
 msgstr ""
 
-#: ../tcosmonitor.glade:1635
+#: ../tcosmonitor.glade:1629
 msgid "List of hosts"
 msgstr ""
 
-#: ../tcosmonitor.glade:1705
+#: ../tcosmonitor.glade:1699
 msgid "Open static host list"
 msgstr ""
 
-#: ../tcosmonitor.glade:1745
+#: ../tcosmonitor.glade:1739
 msgid "Only show hosts running tcosxmlrpc (8998 port)"
 msgstr ""
 
-#: ../tcosmonitor.glade:1767
-msgid "Only do all actions on selected hosts (requires restart Lliurex Lab)"
+#: ../tcosmonitor.glade:1761
+msgid "Only do all actions on selected hosts (requires restart TcosMonitor)"
 msgstr ""
 
-#: ../tcosmonitor.glade:1789
+#: ../tcosmonitor.glade:1783
 msgid "Enable SSL connections to XMLRPC clients"
 msgstr ""
 
-#: ../tcosmonitor.glade:1810
+#: ../tcosmonitor.glade:1804
 msgid "Host list mode"
 msgstr ""
 
-#: ../tcosmonitor.glade:1868
+#: ../tcosmonitor.glade:1862
 msgid "Show right menu with groups (NEW)"
 msgstr ""
 
-#: ../tcosmonitor.glade:1889
+#: ../tcosmonitor.glade:1883
 msgid "Program mode"
 msgstr ""
 
-#: ../tcosmonitor.glade:1975
+#: ../tcosmonitor.glade:1969
 msgid "Settings"
 msgstr ""
 
-#: ../tcosmonitor.glade:2015
+#: ../tcosmonitor.glade:2009
 msgid "Update host list every (seg)"
 msgstr ""
 
-#: ../tcosmonitor.glade:2044
+#: ../tcosmonitor.glade:2038
 msgid ""
 "Update host list every selected seconds.\n"
 "\n"
 "Value=0 disable update."
 msgstr ""
 
-#: ../tcosmonitor.glade:2068
+#: ../tcosmonitor.glade:2062
 msgid "Cache timeout (seg)"
 msgstr ""
 
-#: ../tcosmonitor.glade:2096
+#: ../tcosmonitor.glade:2090
 msgid ""
 "Cache some data and connection status during selected seconds.\n"
 "\n"
 "Value=0 disable cache."
 msgstr ""
 
-#: ../tcosmonitor.glade:2120
+#: ../tcosmonitor.glade:2114
 msgid "Screenshot size:"
 msgstr ""
 
-#: ../tcosmonitor.glade:2148 ../tcosmonitor.glade:2198
+#: ../tcosmonitor.glade:2142 ../tcosmonitor.glade:2192
 msgid "% Size of screnshot."
 msgstr ""
 
-#: ../tcosmonitor.glade:2170
+#: ../tcosmonitor.glade:2164
 msgid "Mini screenshot size:"
 msgstr ""
 
-#: ../tcosmonitor.glade:2220
+#: ../tcosmonitor.glade:2214
 msgid "Timeout actions (seg)"
 msgstr ""
 
-#: ../tcosmonitor.glade:2248
+#: ../tcosmonitor.glade:2242
 msgid ""
 "Timeout in seg for actions\n"
 "\n"
 "Value=0 default"
 msgstr ""
 
-#: ../tcosmonitor.glade:2272
+#: ../tcosmonitor.glade:2266
 msgid "SSH remote username"
 msgstr ""
 
-#: ../tcosmonitor.glade:2321
+#: ../tcosmonitor.glade:2315
 msgid "VLC method to send"
 msgstr ""
 
-#: ../tcosmonitor.glade:2377
+#: ../tcosmonitor.glade:2371
 msgid ""
 "<b>Experimental: Thread Controller</b>\n"
 "( if you have problems, disable it )"
 msgstr ""
 
-#: ../tcosmonitor.glade:2407
+#: ../tcosmonitor.glade:2401
 msgid "Actions controlled"
 msgstr ""
 
-#: ../tcosmonitor.glade:2428
+#: ../tcosmonitor.glade:2422
 msgid "Block ports: (80,8080... etc)"
 msgstr ""
 
-#: ../tcosmonitor.glade:2546
+#: ../tcosmonitor.glade:2540
 msgid "TcosXmlRpc username"
 msgstr ""
 
-#: ../tcosmonitor.glade:2595
+#: ../tcosmonitor.glade:2589
 msgid "TcosXmlRpc password"
 msgstr ""
 
-#: ../tcosmonitor.glade:2644
+#: ../tcosmonitor.glade:2638
 msgid ""
 "<b>NOTE:</b>\n"
 "Default user is <b>root</b> and default password is <b>root</b>.\n"
@@ -2263,191 +2318,191 @@ msgid ""
 "and your root acount will be secure."
 msgstr ""
 
-#: ../tcosmonitor.glade:2706
+#: ../tcosmonitor.glade:2700
 msgid "Authentication "
 msgstr ""
 
-#: ../tcosmonitor.glade:2743
+#: ../tcosmonitor.glade:2737
 msgid "<b>Info avalaible from tcosxmlrpc</b>"
 msgstr ""
 
-#: ../tcosmonitor.glade:2769
+#: ../tcosmonitor.glade:2763
 msgid "Tcos general info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2788
+#: ../tcosmonitor.glade:2782
 msgid "Cpu info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2807
+#: ../tcosmonitor.glade:2801
 msgid "Kernel and modules info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2826
+#: ../tcosmonitor.glade:2820
 msgid "PCI bus info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2845
+#: ../tcosmonitor.glade:2839
 msgid "Ram and swap info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2864
+#: ../tcosmonitor.glade:2858
 msgid "Process info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2883
+#: ../tcosmonitor.glade:2877
 msgid "Network info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2921
+#: ../tcosmonitor.glade:2915
 msgid "Sound server info"
 msgstr ""
 
-#: ../tcosmonitor.glade:2972
+#: ../tcosmonitor.glade:2966
 msgid "Avalaible info"
 msgstr ""
 
-#: ../tcosmonitor.glade:3009
+#: ../tcosmonitor.glade:3003
 msgid "<b>Show / hide menu items</b>"
 msgstr ""
 
-#: ../tcosmonitor.glade:3044
+#: ../tcosmonitor.glade:3038
 msgid "Lock and unlock screen"
 msgstr ""
 
-#: ../tcosmonitor.glade:3066
+#: ../tcosmonitor.glade:3060
 msgid "Remote SSH shell"
 msgstr ""
 
-#: ../tcosmonitor.glade:3088
+#: ../tcosmonitor.glade:3082
 msgid "Configure Xorg settings"
 msgstr ""
 
-#: ../tcosmonitor.glade:3123 ../tcosmonitor.glade:3593
+#: ../tcosmonitor.glade:3117 ../tcosmonitor.glade:3587
 msgid "Exe app on user display"
 msgstr ""
 
-#: ../tcosmonitor.glade:3145 ../tcosmonitor.glade:3615
+#: ../tcosmonitor.glade:3139 ../tcosmonitor.glade:3609
 msgid "Send a text message"
 msgstr ""
 
-#: ../tcosmonitor.glade:3167
+#: ../tcosmonitor.glade:3161
 msgid "Show running apps"
 msgstr ""
 
-#: ../tcosmonitor.glade:3189 ../tcosmonitor.glade:3637
+#: ../tcosmonitor.glade:3183 ../tcosmonitor.glade:3631
 msgid "Send video broadcast"
 msgstr ""
 
-#: ../tcosmonitor.glade:3233
+#: ../tcosmonitor.glade:3227
 msgid "Demo mode"
 msgstr ""
 
-#: ../tcosmonitor.glade:3268
+#: ../tcosmonitor.glade:3262
 msgid "Wake on LAN"
 msgstr ""
 
-#: ../tcosmonitor.glade:3290
+#: ../tcosmonitor.glade:3284
 msgid "Audio conference mode"
 msgstr ""
 
-#: ../tcosmonitor.glade:3312
+#: ../tcosmonitor.glade:3306
 msgid "Screenshots"
 msgstr ""
 
-#: ../tcosmonitor.glade:3334
+#: ../tcosmonitor.glade:3328
 msgid "Reboot and poweroff"
 msgstr ""
 
-#: ../tcosmonitor.glade:3356
+#: ../tcosmonitor.glade:3350
 msgid "Lock and unlock internet"
 msgstr ""
 
-#: ../tcosmonitor.glade:3378
+#: ../tcosmonitor.glade:3372
 msgid "DPMS monitor on/off"
 msgstr ""
 
-#: ../tcosmonitor.glade:3400
+#: ../tcosmonitor.glade:3394
 msgid "Connect using VNC"
 msgstr ""
 
-#: ../tcosmonitor.glade:3421
+#: ../tcosmonitor.glade:3415
 msgid "Connect using iTALC"
 msgstr ""
 
-#: ../tcosmonitor.glade:3442
+#: ../tcosmonitor.glade:3436
 msgid "Clone clients"
 msgstr ""
 
-#: ../tcosmonitor.glade:3464
+#: ../tcosmonitor.glade:3458
 msgid "Restart session with new settings"
 msgstr ""
 
-#: ../tcosmonitor.glade:3521
+#: ../tcosmonitor.glade:3515
 msgid "Menus"
 msgstr ""
 
-#: ../tcosmonitor.glade:3558
+#: ../tcosmonitor.glade:3552
 msgid "<b>Show / hide menu buttons</b>"
 msgstr ""
 
-#: ../tcosmonitor.glade:3681
+#: ../tcosmonitor.glade:3675
 msgid "Audio conference"
 msgstr ""
 
-#: ../tcosmonitor.glade:3725
+#: ../tcosmonitor.glade:3719
 msgid "Audio Chat control"
 msgstr ""
 
-#: ../tcosmonitor.glade:3782
+#: ../tcosmonitor.glade:3776
 msgid "Menu buttons"
 msgstr ""
 
-#: ../tcosmonitor.glade:3870
+#: ../tcosmonitor.glade:3864
 msgid "Question"
 msgstr ""
 
-#: ../tcosmonitor.glade:3945
+#: ../tcosmonitor.glade:3939
 msgid "You can drag and drop launcher file to this box"
 msgstr ""
 
-#: ../tcosmonitor.glade:3970
+#: ../tcosmonitor.glade:3964
 msgid "<b>Run app in unknow host</b>"
 msgstr ""
 
-#: ../tcosmonitor.glade:4064
+#: ../tcosmonitor.glade:4058
 msgid "Static hosts list"
 msgstr ""
 
-#: ../tcosmonitor.glade:4087
+#: ../tcosmonitor.glade:4081
 msgid "<span size=\"x-large\">Static Hosts list</span>"
 msgstr ""
 
-#: ../tcosmonitor.glade:4196
+#: ../tcosmonitor.glade:4190
 msgid "Add"
 msgstr ""
 
-#: ../tcosmonitor.glade:4274
+#: ../tcosmonitor.glade:4268
 msgid "Modify"
 msgstr ""
 
-#: ../tcosmonitor.glade:4352
+#: ../tcosmonitor.glade:4346
 msgid "Delete"
 msgstr ""
 
-#: ../tcosmonitor.glade:4431
+#: ../tcosmonitor.glade:4425
 msgid "Get from connected"
 msgstr ""
 
-#: ../tcosmonitor.glade:4612 ../tcosmonitor.glade:4995
+#: ../tcosmonitor.glade:4606 ../tcosmonitor.glade:4989
 msgid "Save"
 msgstr ""
 
-#: ../tcosmonitor.glade:4658
+#: ../tcosmonitor.glade:4652
 msgid "New or edit hosts"
 msgstr ""
 
-#: ../tcosmonitor.glade:4712
+#: ../tcosmonitor.glade:4706
 msgid ""
 "You can add a simple host, \n"
 "   example: <b>192.168.0.100</b>\n"
@@ -2458,42 +2513,41 @@ msgid ""
 "MAC address is optional"
 msgstr ""
 
-#: ../tcosmonitor.glade:4753
+#: ../tcosmonitor.glade:4747
 msgid "IP address *"
 msgstr ""
 
-#: ../tcosmonitor.glade:5039
+#: ../tcosmonitor.glade:5033
 msgid "About TCOS"
 msgstr ""
 
-#: ../tcosmonitor.glade:5062
+#: ../tcosmonitor.glade:5056
 msgid "<span size=\"xx-large\">TcosMonitor</span>"
 msgstr ""
 
-#: ../tcosmonitor.glade:5135
+#: ../tcosmonitor.glade:5129
 msgid "<b>Version:</b>"
 msgstr ""
 
-#: ../tcosmonitor.glade:5192
+#: ../tcosmonitor.glade:5186
 msgid ""
-"Lliurex Lab is a customized program\n"
-"based on Mario Izquierdo TcosMonitor\n"
-"and Tcos monitoring tool."
+"Thin client and standalone\n"
+"monitoring tool."
 msgstr ""
 
-#: ../tcosmonitor.glade:5261
+#: ../tcosmonitor.glade:5254
 msgid "Project web site"
 msgstr ""
 
-#: ../tcosmonitor.glade:5339
+#: ../tcosmonitor.glade:5332
 msgid "About"
 msgstr ""
 
-#: ../tcosmonitor.glade:5397
+#: ../tcosmonitor.glade:5390
 msgid "License"
 msgstr ""
 
-#: ../tcosmonitor.glade:5430
+#: ../tcosmonitor.glade:5423
 msgid ""
 "Main developers:\n"
 "  * Mario Izquierdo <mariodebian at gmail.com>\n"
@@ -2507,23 +2561,23 @@ msgid ""
 "  Comunidad de Madrid, MaX group (Spain)"
 msgstr ""
 
-#: ../tcosmonitor.glade:5474
+#: ../tcosmonitor.glade:5467
 msgid "Authors"
 msgstr ""
 
-#: ../tcosmonitor.glade:5503
+#: ../tcosmonitor.glade:5496
 msgid "Translated to your language by:"
 msgstr ""
 
-#: ../tcosmonitor.glade:5528
+#: ../tcosmonitor.glade:5521
 msgid "Mario Izquierdo <mariodebian@gmail.com>"
 msgstr ""
 
-#: ../tcosmonitor.glade:5563
+#: ../tcosmonitor.glade:5556
 msgid "Translators"
 msgstr ""
 
-#: ../tcosmonitor.glade:5592
+#: ../tcosmonitor.glade:5585
 msgid ""
 "TCOS is a free software project that need a lot of work to be the best thin "
 "client plataform.\n"
@@ -2537,44 +2591,34 @@ msgid ""
 "Click on next url to get some info."
 msgstr ""
 
-#: ../tcosmonitor.glade:5664
+#: ../tcosmonitor.glade:5657
 msgid "<u>http://wiki.tcosproject.org/TcosProject:Site_support</u>"
 msgstr ""
 
-#: ../tcosmonitor.glade:5702
+#: ../tcosmonitor.glade:5695
 msgid "Don't show donations message on start."
 msgstr ""
 
-#: ../tcosmonitor.glade:5726
+#: ../tcosmonitor.glade:5719
 msgid "Donate"
 msgstr ""
 
-#: ../tcosmonitor.glade:5763
+#: ../tcosmonitor.glade:5756
 msgid "Chat emission list"
 msgstr ""
 
-#: ../tcosmonitor.glade:5786
+#: ../tcosmonitor.glade:5779
 msgid "<span size=\"x-large\">Chat emission list</span>"
 msgstr ""
 
-#: ../tcosmonitor.glade:5895
+#: ../tcosmonitor.glade:5888
 msgid "Connect"
 msgstr ""
 
-#: ../tcosmonitor.glade:5973
+#: ../tcosmonitor.glade:5966
 msgid "Disconnect"
 msgstr ""
 
-#: ../tcosmonitor.glade:6051
+#: ../tcosmonitor.glade:6044
 msgid "Exit"
-msgstr ""
-
-#: ../tcosmonitor/TcosCommon.py:85
-#, python-format
-msgid ""
-"ThreadController: Found error executing %(cmd)s\n"
-"\n"
-"If problem persist, disable Thread Controller\n"
-"in Preferences and report bug.\n"
-"Error=%(error)s"
 msgstr ""
