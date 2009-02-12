@@ -64,7 +64,6 @@ class TcosActions:
         self.button_action_send=None
         self.button_action_exe=None
         self.button_action_text=None
-        self.button_action_share=None
         #self.model=self.main.init.model
         #self.main.progressstop_args={}
 
@@ -185,7 +184,6 @@ class TcosActions:
             if len(allclients) == 0:
                 self.main.write_into_statusbar ( _("Not connected hosts found.") )
                 return
- 
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
             # populate_list in a thread
             self.main.worker=shared.Workers(self.main, self.populate_hostlist, [allclients] )
@@ -212,15 +210,9 @@ class TcosActions:
     
     def on_donateurl_click(self, *args):
         url=self.main.donateurllabel.get_text()
-        if shared.lab:
-            self.main.common.exe_cmd("firefox -new-window %s"%url, verbose=0, background=True)
-            return
         self.main.common.exe_cmd("x-www-browser %s"%url, verbose=0, background=True)
     
     def on_weburl_click(self, *args):
-        if shared.lab:
-            self.main.common.exe_cmd("firefox -new-window %s"%shared.website, verbose=0, background=True)
-            return
         self.main.common.exe_cmd("x-www-browser %s"%shared.website, verbose=0, background=True)
 
     def on_abouttcos_close(self, *args):

@@ -237,8 +237,6 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             iconview.props.has_tooltip = True
         
         if data['username'] == shared.NO_LOGIN_MSG:
-            model.append([data['hostname'].replace('.aula',''), data['ip'], pixbuf])
-        else:
             model.append([data['username'], data['ip'], pixbuf])
         
         iconview.show()

@@ -48,7 +48,6 @@ class AppsAndMsgs(TcosExtension):
         self.main.classview.class_external_exe=self.exe_app_external
         self.main.actions.button_action_exe=self.exe_app_all
         self.main.actions.button_action_text=self.send_msg_all
-        self.main.actions.button_action_share=self.exe_app_external
         
         self.main.menus.register_simple( _("Exec app on user display") , "menu_exec.png", 1, self.exe_app, "exe")
         self.main.menus.register_simple( _("Send a text message to user") , "menu_msg.png", 1, self.send_msg, "text")
@@ -128,7 +127,7 @@ class AppsAndMsgs(TcosExtension):
         self.ask_mode="exec"
 
         if txt != None:
-            app="firefox %s" %txt
+            app="x-www-browser %s" %txt
             self.exe_app_in_client_display(app)
             return
         
@@ -192,8 +191,6 @@ class AppsAndMsgs(TcosExtension):
         self.main.ask = self.main.ui.get_widget('askwindow')
         self.main.ask.connect('delete-event', self.askwindow_close )
         self.main.ask.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
-        if shared.lab:
-            self.main.ask.set_icon_from_file(shared.IMG_DIR +'lliurex-lab.png')
         
         
         self.main.ask_label = self.main.ui.get_widget('txt_asklabel')
@@ -334,8 +331,6 @@ class AppsAndMsgs(TcosExtension):
         if self.ask_mode == "exec":
             if arg.startswith('http://') or arg.startswith('https://') or arg.startswith('ftp://'):
                 arg="xdg-open %s" %arg
-                if shared.lab:
-                    arg="firefox -new-window %s" %arg
             
         for user in usernames:
             if user.find(":") != -1:

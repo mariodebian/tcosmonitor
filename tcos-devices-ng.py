@@ -117,7 +117,6 @@ class TcosDevicesNG:
         self.username=None
         self.loadconf(CONF_FILE)
         self.loadconf(ALL_CONF_FILE)
-        self.clone_percent=False
         
         ######## Create icon #############
         disable_quit=self.mntconf.has_key("disable_quit") and self.mntconf['disable_quit'] == "1"
@@ -442,21 +441,6 @@ class TcosDevicesNG:
         udev=self.xmlrpc.GetDevicesInfo(device="", mode="--getudev").split('|')
         print_debug("udev_daemon GetDevicesInfo time=%f" %(time.time() - start1) )
         if "error" in " ".join(udev): return
-        if "cloning" in " ".join(udev):
-            if self.clone_percent == False:
-                self.clone_percent=True
-                self.show_notification( _("Cloning client, please wait.\nPoweroff button has been temporaly disabled..." ), urgency=pynotify.URGENCY_NORMAL, timeout=pynotify.EXPIRES_NEVER )
-            return
-        elif "cloned" in " ".join(udev):
-            if self.clone_percent == True:
-                self.clone_percent=False
-                self.show_notification( _("Client successfully cloned!!. Please restart client." ), urgency=pynotify.URGENCY_NORMAL, timeout=pynotify.EXPIRES_NEVER )
-            return
-        elif "clone-failed" in " ".join(udev):
-            if self.clone_percent == True:
-                self.clone_percent=False
-                self.show_notification( _("Cloning has failed!!" ), urgency=pynotify.URGENCY_NORMAL, timeout=pynotify.EXPIRES_NEVER )
-            return
         udev=udev[:-1]
         if len(udev) < 1 or udev[0] == "unknow": return
         udev=self.remove_dupes(udev)
@@ -741,8 +725,6 @@ class TcosDevicesNG:
 
 
     def hdd(self, *args):
-        if self.clone_percent == True:
-            return
         action=args[0][0]
         hdd_device=args[0][1]
         desktop=self.get_desktop_patch()

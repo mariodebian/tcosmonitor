@@ -29,7 +29,6 @@ import exceptions
 from gettext import gettext as _
 import gtk
 import socket
-from time import sleep
 
 def print_debug(txt):
     if shared.debug:
@@ -54,7 +53,6 @@ class TcosExtension(object):
         
         self.main=main
         self.preferences={}
-        self.th_clone=None
     
     def register(self):
         raise Error, "TcosExtension register() not defined"
@@ -231,35 +229,6 @@ class TcosExtension(object):
         return True
 
 
-    def action_for_clone_clients(self, *args):
-        
-        print_debug("action_for_clone_clients() ip='%s' widget='%s'"%(args[0], args[1]))
-        ip=args[0]
-        widget=args[1]
-        self.start_action_clone=True
-        self.clone_fail=True
-        self.main.common.threads_enter("TcosActions::action_for_clone_clients cleaning")
-        self.main.progressbar.show()
-        self.main.actions.set_progressbar( _("Clonning clients....") , 0 )
-        self.main.common.threads_leave("TcosActions::action_for_clone_clients cleaning")
-        
-        while [ 1 ]:
-            sleep(15)
-            if self.real_action_clone(ip) == False: 
-                break
-        self.main.common.threads_enter("TcosActions::action_for_clone_clients END")
-        self.main.actions.set_progressbar( _("Clonning clients...."), 1 )
-        self.main.progressbar.hide()
-        self.main.common.threads_leave("TcosActions::action_for_clone_clients END")
-        try:
-            if self.start_action_clone != False:
-                widget.clicked()
-        except Exception, err:
-            pass
-            
-        return
-        
-
     def action_for_clients(self, allclients, action):
         if not allclients or len(allclients) < 1:
             return
@@ -375,9 +344,6 @@ class TcosExtension(object):
         self.main.progressbox.add(table)
         self.main.progressbox.show()
         self.main.stop_running_actions.append(button)
-        if args['target'] == "clone":
-            self.th_clone=shared.Workers(self.main, target=self.action_for_clone_clients, args=([args['ip'],button]) )
-            self.th_clone.start()
         print_debug("add_progressbox() widget=%s" %(button))
 
     def on_progressbox_click(self, widget, args, box):

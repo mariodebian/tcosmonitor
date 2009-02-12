@@ -68,7 +68,7 @@ def usage():
 
 
 try:
-    OPTS, ARGS = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug", "lab"])
+    OPTS, ARGS = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug"])
 except getopt.error, msg:
     print msg
     print "for command line options use tcosconfig --help"
@@ -82,9 +82,6 @@ for o, a in OPTS:
     if o in ("-h", "--help"):
         usage()
         sys.exit()
-    if o in ("--lab"):
-        shared.lab = True
-
 
 import tcosmonitor
 
@@ -136,15 +133,8 @@ class TcosMonitor(object):
         # Widgets
         self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcosmonitor.glade')
         self.mainwindow = self.ui.get_widget('mainwindow')
-        #self.mainwindow.set_icon_from_file(shared.IMG_DIR +\
-        #                             'tcos-icon-32x32.png')
         self.mainwindow.set_icon_from_file(shared.IMG_DIR +\
                                      'tcos-icon-32x32.png')
-        if shared.lab:
-            self.mainwindow.set_title( _("Lliurex Lab")  )
-            self.mainwindow.set_icon_from_file(shared.IMG_DIR +\
-                                     'lliurex-lab.png')
-
         #self.pref = self.ui.get_widget('prefwindow')
         #self.main.fullscreen()
         self.is_fullscreen=False
@@ -181,11 +171,6 @@ class TcosMonitor(object):
         # init classes
         self.common=tcosmonitor.TcosCommon.TcosCommon(self)
         self.config=tcosmonitor.TcosConf.TcosConf(self)
-        #if self.config.GetVar("program_mode") == "lab" or shared.lab == True:
-        #    shared.lab=True
-        #    shared.icon_image_thin="idiomas.png"
-        #    shared.icon_image_standalone="idiomas.png"
-            
         self.localdata=tcosmonitor.LocalData.LocalData(self)
         self.xmlrpc=tcosmonitor.TcosXmlRpc.TcosXmlRpc(self)
         self.xauth=tcosmonitor.TcosXauth.TcosXauth(self)
@@ -302,9 +287,6 @@ class TcosMonitor(object):
         elif action == "text":
             if self.actions.button_action_text != None:
                 self.actions.button_action_text()
-        elif action == "share":
-            if self.actions.button_action_share != None:
-                self.actions.button_action_share(None, "http://share/")
         return
 
     def search_host(self, widget):

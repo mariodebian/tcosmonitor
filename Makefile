@@ -71,7 +71,6 @@ install:
 	install -m 644 tcosmonitor.desktop $(DESTDIR)/$(PREFIX)/share/applications/
 	install -m 644 tcospersonalize.desktop $(DESTDIR)/$(PREFIX)/share/applications/
 	install -m 644 images/tcos-icon-32x32.png $(DESTDIR)/$(PREFIX)/share/pixmaps/
-	install -m 644 images/lliurex-lab.png $(DESTDIR)/$(PREFIX)/share/pixmaps/
 
 	install -m 644 tcosmonitor.conf     $(DESTDIR)/etc/tcos/
 	install -m 644 tcos-devices-ng.conf $(DESTDIR)/etc/tcos/

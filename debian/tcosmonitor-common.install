@@ -13,4 +13,3 @@ debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosXauth.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/__init__.py
 
 debian/tmp/usr/share/pixmaps/tcos-icon-32x32.png
-debian/tmp/usr/share/pixmaps/lliurex-lab.png

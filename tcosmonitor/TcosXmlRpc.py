@@ -820,18 +820,6 @@ class TcosXmlRpc:
             print_debug ("rtp() Exception, error: %s" %err)
             self.CheckSSL(err)
             return False
-        
-    #def clone(self, action, ip, broadcast=None):
-    #    self.newhost(ip)
-    #    if broadcast == None: broadcast=""
-    #    try:
-    #        return self.tc.tcos.clone("%s" %action, "%s" %broadcast, \
-    #                                self.main.config.GetVar("xmlrpc_username"), \
-    #                                self.main.config.GetVar("xmlrpc_password") )
-    #    except Exception, err:
-    #        print_debug ("clone() Exception, error: %s" %err)
-    #        self.CheckSSL(err)
-    #        return False
     
     def vlc(self, ip, volume, lock):
         self.newhost(ip)

@@ -31,7 +31,6 @@ def get_files(ipath):
 # images (menus and buttons)
 data_files.append(('share/tcosmonitor/images', get_files("images") ))
 data_files.append(('share/pixmaps', ['images/tcos-icon-32x32.png'] ))
-data_files.append(('share/pixmaps', ['images/lliurex-lab.png'] ))
 
 # Glade files
 data_files.append(('share/tcosmonitor', ['tcosmonitor.glade'] ))

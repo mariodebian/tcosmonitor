@@ -78,12 +78,8 @@ class Initialize(object):
         
     def on_viewtabs_change(self, widget, pointer, tabnum):
         if tabnum != 0:
-            if shared.lab:
-                self.main.searchbutton.set_sensitive(True)
-                self.main.searchtxt.set_sensitive(True)
-            else:
-                self.main.searchbutton.set_sensitive(False)
-                self.main.searchtxt.set_sensitive(False)
+            self.main.searchbutton.set_sensitive(False)
+            self.main.searchtxt.set_sensitive(False)
         else:
             self.main.searchbutton.set_sensitive(True)
             self.main.searchtxt.set_sensitive(True)
@@ -106,9 +102,6 @@ class Initialize(object):
         print_debug ( "initbuttons()" )
         self.main.quitbutton = self.ui.get_widget('quitbutton')
         self.main.quitbutton.connect('clicked', self.main.quitapp)
-        #if shared.lab:
-        tooltip=gtk.Tooltips()
-        self.main.quitbutton.set_tooltip(tooltip,_("Quit from TcosMonitor"))
         
         self.main.preferencesbutton = self.ui.get_widget('preferencesbutton')
         self.main.preferencesbutton.connect('clicked', self.main.actions.on_preferencesbutton_click)
@@ -162,11 +155,6 @@ class Initialize(object):
         self.main.handlebox_text = self.ui.get_widget('handlebox_text')
         self.main.button_text.connect('clicked', self.main.button_actions, "text")
 
-        self.main.button_share = self.ui.get_widget('button_share')
-        self.main.handlebox_share = self.ui.get_widget('handlebox_share')
-        self.main.button_share.connect('clicked', self.main.button_actions, "share")
-        self.main.handlebox_share.hide()
-
         for button in ['button_audio', 'button_chat', 'button_list', 'button_video', 'button_send', 'button_exe', 'button_text']:
             
             if os.path.isfile(shared.IMG_DIR + "/%s.png" %(button)):
@@ -187,30 +175,17 @@ class Initialize(object):
         <property name="pixbuf">/usr/share/tcosmonitor/images/button_exec.png</property>
         <property name="pixbuf">/usr/share/tcosmonitor/images/button_msg.png</property>
         """
-        if shared.lab:
-            self.main.quitbutton.set_tooltip(tooltip,_("Salir de Lliurex Lab"))
-            self.lab_change_buttons()
 
-    def __change_toolbutton_icon(self, widget, imgfile):
-        img=gtk.Image()
-        img.set_from_file(imgfile)
-        img.show()
-        widget.set_icon_widget(img)
-
-    def lab_change_buttons(self):
-        self.__change_toolbutton_icon( self.main.quitbutton, shared.IMG_DIR +'button_exit.png')
-        self.__change_toolbutton_icon( self.main.preferencesbutton, shared.IMG_DIR +'button_pref.png')
-        self.__change_toolbutton_icon( self.main.refreshbutton, shared.IMG_DIR + 'button_refresh.png')
-        self.__change_toolbutton_icon( self.main.allhostbutton, shared.IMG_DIR + 'button_all.png')
-        self.__change_toolbutton_icon( self.main.searchbutton, shared.IMG_DIR + 'button_search.png')
-        
+#    def __change_toolbutton_icon(self, widget, imgfile):
+#        img=gtk.Image()
+#        img.set_from_file(imgfile)
+#        img.show()
+#        widget.set_icon_widget(img)
 
     def initabouttcos(self):
         self.main.abouttcos = self.main.ui.get_widget('abouttcos')
         self.main.abouttcos.hide()
         self.main.abouttcos.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
-        if shared.lab:
-            self.main.abouttcos.set_icon_from_file(shared.IMG_DIR +'lliurex-lab.png')
         
         self.main.abouttabs = self.main.ui.get_widget('abouttabs')
         
@@ -238,8 +213,6 @@ class Initialize(object):
         
         self.main.abouttcos_logo = self.ui.get_widget('abouttcos_logo')
         self.main.abouttcos_logo.set_from_file(shared.IMG_DIR +'tcos-logo.png')
-        if shared.lab:
-            self.main.abouttcos_logo.set_from_file(shared.IMG_DIR +'tcos-lliurex-logo.png')
         
         self.main.abouttcos_webbutton = self.ui.get_widget('abouttcos_webbutton')
         self.main.abouttcos_webbutton.connect('clicked', self.main.actions.on_weburl_click)
@@ -259,13 +232,6 @@ class Initialize(object):
             self.main.abouttcos_donatecheck.set_active(False)
         else:
             self.main.abouttcos_donatecheck.set_active(True)
-            
-        if shared.lab:
-            self.main.about_title = self.ui.get_widget('label149')
-            self.main.about_title.set_markup( _("<span size=\"xx-large\">Lliurex Lab</span>")  )
-            self.main.abouttcos.set_title( _("About Lliurex Lab")  )
-            #self.main.abouttabs.remove_page(4)
-        
         
     
 #    def initask(self):

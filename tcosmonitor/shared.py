@@ -53,7 +53,6 @@ LICENSE_FILE="/usr/share/common-licenses/GPL-2"
 
 # default debug value (overwrite with --debug or -d)
 debug=False
-lab=False
 
 # default TCOS config file (default in this path, if installed use global)
 tcos_config_file="./tcos.conf"
@@ -111,11 +110,6 @@ list_modes=[
 ['class', _("Simulate classroom") ],
 ['both', _("Lists, icons and classroom with tabs") ],
     ]
-    
-program_modes=[
-['lab', _("Lliurex Lab") ],
-['normal', _("Normal") ]
-]
 
 DefaultConfig=[
 ["populate_list_at_startup", 0, "int"],
@@ -156,7 +150,6 @@ DefaultConfig=[
 ["menugroups", 1, "int"],
 ["positions", "", "str"],
 ["show_about", 1, "int"],
-["program_mode", "normal", "str"]
 ]
 
 #
@@ -307,7 +300,6 @@ onehost_menuitems=[
  [ _("DPMS Power off monitor"), "menu_dpms_off.png" ] ,     #action=22
  [ _("DPMS Power on monitor"), "menu_dpms_on.png" ],     #action=23
  [ _("Send MIC audio (from this host)"), "menu_rtp.png" ],     #action=24
-# [ _("Clone clients (from this host)"), "menu_clone.png" ],     #action=25
  ]
 
 
@@ -344,7 +336,6 @@ allhost_menuitems=[
  [ _("DPMS Power off monitors"), "menu_dpms_off.png" ] ,     #action=16
  [ _("DPMS Power on monitors"), "menu_dpms_on.png" ],     #action=17
  [ _("Chat audio conference"), "menu_rtp.png" ],     #action=18
-# [ _("Clone clients"), "menu_clone.png" ],     #action=19
  ]
 
 preferences_menus_always_show={"menuone":[0,1,11], "menuall":[4]}
