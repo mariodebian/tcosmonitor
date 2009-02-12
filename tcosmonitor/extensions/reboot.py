@@ -45,7 +45,7 @@ class RebootPoweroff(TcosExtension):
     def reboot(self, w, ip):
         if not self.get_client():
             return
-        msg=_( _("Do you want to reboot %s?" ) %(self.host) )
+        msg=_( _("Do you want to reboot: %s?" ) %(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             timeout=self.main.config.GetVar("actions_timeout")
             msg=(_("Pc will reboot in %s seconds") %timeout)
@@ -55,7 +55,7 @@ class RebootPoweroff(TcosExtension):
     def reboot_all(self, *args):
         if not self.get_all_clients():
             return
-        msg=_( _("Do you want to reboot the following hosts: %s?" ) %(self.allclients_txt) )
+        msg=_( _("Do you want to reboot the following clients: %s?" ) %(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             timeout=self.main.config.GetVar("actions_timeout")
             msg=(_("Pc will reboot in %s seconds") %timeout)
@@ -64,7 +64,7 @@ class RebootPoweroff(TcosExtension):
     def poweroff(self, w, ip):
         if not self.get_client():
             return
-        msg=_( _("Do you want to poweroff %s?" ) %(self.host) )
+        msg=_( _("Do you want to poweroff: %s?" ) %(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             timeout=self.main.config.GetVar("actions_timeout")
             msg=(_("Pc will shutdown in %s seconds") %timeout)
@@ -74,7 +74,7 @@ class RebootPoweroff(TcosExtension):
     def poweroff_all(self, *args):
         if not self.get_all_clients():
             return
-        msg=_( _("Do you want to poweroff the following hosts: %s?" )%(self.allclients_txt) )
+        msg=_( _("Do you want to poweroff the following clients: %s?" )%(self.connected_users_txt_all) )
         if shared.ask_msg ( msg ):
             timeout=self.main.config.GetVar("actions_timeout")
             msg=(_("Pc will shutdown in %s seconds") %timeout)

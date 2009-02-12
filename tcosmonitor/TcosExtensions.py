@@ -53,7 +53,6 @@ class TcosExtension(object):
         
         self.main=main
         self.preferences={}
-        
     
     def register(self):
         raise Error, "TcosExtension register() not defined"
@@ -76,6 +75,7 @@ class TcosExtension(object):
         
         self.connected_users=[]
         self.connected_users_txt=""
+        self.connected_users_txt_all=""
         self.newallclients=[]
         self.allclients_logged=[]
         self.main.localdata.newhost(self.main.selected_ip)
@@ -83,20 +83,42 @@ class TcosExtension(object):
         self.client_type = self.main.xmlrpc.ReadInfo("get_client")
         self.host=self.main.localdata.GetHostname(self.main.selected_ip)
         counter=1
+        counter_all=1
         if self.main.localdata.IsLogged(self.main.selected_ip):
             username=self.main.localdata.GetUsernameAndHost(self.main.selected_ip)
+            if username.find(":") != -1:
+                usern, ip = username.split(":")
+                self.connected_users_txt+="%s, " %(usern)
+                self.connected_users_txt_all+="%s, " %(usern)
+            else:
+                self.connected_users_txt+="%s, " %(username)
+                self.connected_users_txt_all+="%s, " %(username)
             self.connected_users.append(username)
-            self.connected_users_txt+="%s, " %(username)
             if counter % 4 == 0:
                 self.connected_users_txt+="\n"
+            if counter_all % 4 == 0:
+                self.connected_users_txt_all+="\n"
             counter=int(counter+1)
+            counter_all=int(counter_all+1)
             self.newallclients.append(self.main.selected_ip)
             self.allclients_logged.append(self.main.selected_ip)
         elif not self.main.xmlrpc.IsStandalone(self.main.selected_ip):
             self.allclients_logged.append(self.main.selected_ip)
+            self.connected_users_txt_all+="%s, " %(self.main.selected_ip)
+            if counter_all % 4 == 0:
+                self.connected_users_txt_all+="\n"
+            counter_all=int(counter_all+1)
+        else:
+            self.connected_users_txt_all+="%s, " %(self.main.selected_ip)
+            if counter_all % 4 == 0:
+                self.connected_users_txt_all+="\n"
+            counter_all=int(counter_all+1)
 
         if self.connected_users_txt[-2:] == "\n": self.connected_users_txt=self.connected_users_txt[:-2]
         if self.connected_users_txt[-2:] == ", ": self.connected_users_txt=self.connected_users_txt[:-2]
+
+        if self.connected_users_txt_all[-2:] == "\n": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
+        if self.connected_users_txt_all[-2:] == ", ": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
         
         print_debug("get_clients() self.main.selected_ip=%s self.main.selected_host=%s"%(self.main.selected_ip, self.main.selected_host) )
         return True
@@ -116,7 +138,7 @@ class TcosExtension(object):
         elif self.main.classview.ismultiple():
             allclients=self.main.classview.get_multiple()
             
-        elif not self.main.iconview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
+        elif self.main.listview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
             allclients=self.main.listview.getmultiple()
             if len(allclients) == 0:
                 allclients=self.main.localdata.allclients
@@ -132,22 +154,33 @@ class TcosExtension(object):
         
         self.connected_users=[]
         self.connected_users_txt=""
+        self.connected_users_txt_all=""
         self.allclients_txt=""
         self.newallclients=[]
         self.newallclients_txt=""
         self.allclients_logged=[]
         self.allclients_logged_txt=""
         counter=1
+        counter_all=1
         for client in allclients:
             self.allclients_txt+="\n %s" %(client)
             self.main.localdata.newhost(client)
             if self.main.localdata.IsLogged(client):
                 username=self.main.localdata.GetUsernameAndHost(client)
+                if username.find(":") != -1:
+                    usern, ip = username.split(":")
+                    self.connected_users_txt+="%s, " %(usern)
+                    self.connected_users_txt_all+="%s, " %(usern)
+                else:
+                    self.connected_users_txt+="%s, " %(username)
+                    self.connected_users_txt_all+="%s, " %(username)
                 self.connected_users.append(username)
-                self.connected_users_txt+="%s, " %(username)
                 if counter % 4 == 0:
                     self.connected_users_txt+="\n"
+                if counter_all % 4 == 0:
+                    self.connected_users_txt_all+="\n"
                 counter=int(counter+1)
+                counter_all=int(counter_all+1)
                 self.newallclients.append(client)
                 self.newallclients_txt+="\n %s" %(client)
                 self.allclients_logged.append(client)
@@ -155,9 +188,21 @@ class TcosExtension(object):
             elif not self.main.xmlrpc.IsStandalone(client):
                 self.allclients_logged.append(client)
                 self.allclients_logged_txt+="\n %s" %(client)
+                self.connected_users_txt_all+="%s, " %(client)
+                if counter_all % 4 == 0:
+                    self.connected_users_txt_all+="\n"
+                counter_all=int(counter_all+1)
+            else:
+                self.connected_users_txt_all+="%s, " %(client)
+                if counter_all % 4 == 0:
+                    self.connected_users_txt_all+="\n"
+                counter_all=int(counter_all+1)
 
         if self.connected_users_txt[-2:] == "\n": self.connected_users_txt=self.connected_users_txt[:-2]
         if self.connected_users_txt[-2:] == ", ": self.connected_users_txt=self.connected_users_txt[:-2]
+        
+        if self.connected_users_txt_all[-2:] == "\n": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
+        if self.connected_users_txt_all[-2:] == ", ": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
         return True
 
 ########################################################################################
@@ -182,7 +227,6 @@ class TcosExtension(object):
             print_debug("doaction_onthisclient() no dangerous action")
         print_debug("doaction_onthisclient() no host match")
         return True
-
 
 
     def action_for_clients(self, allclients, action):
@@ -299,6 +343,8 @@ class TcosExtension(object):
         table.attach(label, 1, 2, 0, 1 )
         self.main.progressbox.add(table)
         self.main.progressbox.show()
+        self.main.stop_running_actions.append(button)
+        print_debug("add_progressbox() widget=%s" %(button))
 
     def on_progressbox_click(self, widget, args, box):
         #def on_progressbox_click(self, *args):

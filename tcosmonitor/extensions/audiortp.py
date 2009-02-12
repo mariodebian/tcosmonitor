@@ -46,10 +46,10 @@ class AudioRTP(TcosExtension):
         self.main.actions.button_action_chat=self.rtp_chat
         self.main.actions.button_action_list=self.control_chat
         
-        self.main.menus.register_all( _("Send my MIC audio") , "menu_rtp.png", 2, self.rtp_all, "conference")
+        self.main.menus.register_all( _("Send audio conference") , "menu_rtp.png", 2, self.rtp_all, "conference")
         self.main.menus.register_all( _("Audio chat conference") , "menu_chat.png", 2, self.rtp_chat, "conference")
         self.main.menus.register_all( _("Audio chat list") , "menu_list.png", 2, self.control_chat, "conference")
-        self.main.menus.register_simple( _("Send MIC audio (from this host)") , "menu_rtp.png", 2, self.rtp_simple, "conference")
+        self.main.menus.register_simple( _("Send audio conference (from this host)") , "menu_rtp.png", 2, self.rtp_simple, "conference")
 
 
     def init_chat(self):
@@ -173,7 +173,7 @@ class AudioRTP(TcosExtension):
             self.control_buttons(False)
             return
         self.selected_channel=model.get_value(iter, 2)
-        output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send destination=%s rate=11025 channels=2 port=1234" %self.selected_channel)
+        output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send format=ulaw channels=1 rate=22050 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %self.selected_channel)
         output_recv = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %self.selected_channel)
         if output_send != "" or output_recv != "":
             self.rtp_control_count[self.selected_channel]=[output_send, output_recv]
@@ -240,7 +240,7 @@ class AudioRTP(TcosExtension):
         max_uip=255
         uip=0
         while uip <= max_uip:
-            uip_cmd="239.255.%s.0" %(uip)
+            uip_cmd="225.0.0.%s" %(uip)
             cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
             print_debug("Check broadcast ip %s." %(uip_cmd) )
             output=self.main.common.exe_cmd(cmd)
@@ -252,11 +252,12 @@ class AudioRTP(TcosExtension):
             elif uip == max_uip:
                 print_debug("Not found an available broadcast ip")
                 return
-        result = self.main.localdata.Route("route-add", ip_broadcast, "255.255.255.0", eth)
+        result = self.main.localdata.Route("route-add", ip_broadcast, "255.255.255.255", eth)
         if result == "error":
             print_debug("Add multicast-ip route failed")
             return
-        output = self.main.common.exe_cmd("pactl load-module module-rtp-send destination=%s rate=11025 channels=2 port=1234" %ip_broadcast)
+        self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh start-server")
+        output = self.main.common.exe_cmd("pactl load-module module-rtp-send format=ulaw channels=1 rate=22050 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %ip_broadcast)
                     
         self.main.write_into_statusbar( _("Waiting for start audio conference...") )
                     
@@ -269,9 +270,11 @@ class AudioRTP(TcosExtension):
             self.main.write_into_statusbar( _("No users logged.") )
             # kill x11vnc
             self.main.common.exe_cmd("pactl unload-module %s" %output)
-            result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.0", eth)
+            result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.255", eth)
             if result == "error":
                 print_debug("Del multicast-ip route failed")
+            if len(self.rtp_count.keys()) == 0:
+                self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh stop-server")
         else:
             newusernames=[]
             for user in self.connected_users:
@@ -293,13 +296,15 @@ class AudioRTP(TcosExtension):
             else:
                 nextkey=1
                 self.rtp_count[nextkey]=ip_broadcast
-            self.main.menus.broadcast_count[ip_broadcast]=None
+            #self.main.menus.broadcast_count[ip_broadcast]=None
             self.add_progressbox( {"target": "rtp", "pid":output, "allclients":self.newallclients, "ip":"", "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in audio conference from server. Conference Nº %s") %(nextkey) )
 
 
     def rtp_simple(self, widget, ip):
         if not self.get_client():
             return
+
+        client_simple=self.connected_users_txt
         
         # conference mode
         if len(self.connected_users) == 0 or self.connected_users[0] == shared.NO_LOGIN_MSG:
@@ -312,27 +317,18 @@ class AudioRTP(TcosExtension):
             shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
             return
             
-        msg=_( _("Do you want audio conference from user %s?" ) %(self.connected_users_txt) )
+        msg=_( _("Do you want audio conference from user %s?" ) %(client_simple) )
         if not shared.ask_msg ( msg ): return
 
-        if self.main.listview.isactive() and self.main.config.GetVar("selectedhosts") == 1:
-            self.allclients=self.main.listview.getmultiple()
-            if len(self.allclients) == 0:
-                #msg=_( _("No clients selected, do you want to select all?" ) )
-                #if shared.ask_msg ( msg ):
-                allclients=self.main.localdata.allclients
-        else:
-            # get all clients connected
-            self.allclients=self.main.localdata.allclients
         
         # Allow one client    
         # if len(self.allclients) == 0: return
-        remote_msg=_("You have entered in audio conference from user %s") %self.connected_users_txt
+        remote_msg=_("You have entered in audio conference from user %s") %client_simple
         eth=self.main.config.GetVar("network_interface")
         max_uip=255
         uip=0
         while uip <= max_uip:
-            uip_cmd="239.255.%s.0" %(uip)
+            uip_cmd="225.0.0.%s" %(uip)
             cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
             print_debug("Check broadcast ip %s." %(uip_cmd) )
             output=self.main.common.exe_cmd(cmd)
@@ -344,31 +340,35 @@ class AudioRTP(TcosExtension):
             elif uip == max_uip:
                 print_debug("Not found an available broadcast ip")
                 return
-        result = self.main.localdata.Route("route-add", ip_broadcast, "255.255.255.0", eth)
+            
+        if not self.get_all_clients():
+            return
+        
+        result = self.main.localdata.Route("route-add", ip_broadcast, "255.255.255.255", eth)
         if result == "error":
             print_debug("Add multicast-ip route failed")
             return
 
         #self.main.xmlrpc.newhost(ip)
         self.main.xmlrpc.rtp("startrtp-send", ip, ip_broadcast )
-        self.main.write_into_statusbar( _("Waiting for start audio conference from user %s...") %(self.connected_users_txt) )
+        self.main.write_into_statusbar( _("Waiting for start audio conference from user %s...") %(client_simple) )
             
         output = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %ip_broadcast)
                     
-        newallclients=[]
+        newallclients2=[]
         total=1
-        for client in self.allclients:
+        for client in self.newallclients:
             self.main.localdata.newhost(client)
-            if self.main.localdata.IsLogged(client) and client != ip:
+            if client != ip:
                 self.main.xmlrpc.rtp("startrtp-recv", client, ip_broadcast )
                 total+=1
-                newallclients.append(client)
+                newallclients2.append(client)
                 
         if total < 1:
             self.main.write_into_statusbar( _("No users logged.") )
             self.main.common.exe_cmd("pactl unload-module %s" %output)
             self.main.xmlrpc.rtp("stoprtp-send", ip )
-            result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.0", eth)
+            result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.255", eth)
             if result == "error":
                 print_debug("Del multicast-ip route failed")
         else:
@@ -391,8 +391,8 @@ class AudioRTP(TcosExtension):
             else:
                 nextkey=1
                 self.rtp_count[nextkey]=ip_broadcast
-            self.main.menus.broadcast_count[ip_broadcast]=None
-            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":newallclients, "ip":ip, "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in audio conference from user %(host)s. Conference Nº %(count)s") %{"host":self.connected_users_txt, "count":nextkey} )
+            #self.main.menus.broadcast_count[ip_broadcast]=None
+            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":newallclients2, "ip":ip, "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in audio conference from user %(host)s. Conference Nº %(count)s") %{"host":client_simple, "count":nextkey} )
 
     def rtp_chat(self, *args):
         if not self.get_all_clients():
@@ -418,7 +418,7 @@ class AudioRTP(TcosExtension):
         max_uip=255
         uip=0
         while uip <= max_uip:
-            uip_cmd="239.255.%s.0" %(uip)
+            uip_cmd="225.0.0.%s" %(uip)
             cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
             print_debug("Check broadcast ip %s." %(uip_cmd) )
             output=self.main.common.exe_cmd(cmd)
@@ -430,7 +430,7 @@ class AudioRTP(TcosExtension):
             elif uip == max_uip:
                 print_debug("Not found an available broadcast ip")
                 return
-        result = self.main.localdata.Route("route-add", ip_broadcast, "255.255.255.0", eth)
+        result = self.main.localdata.Route("route-add", ip_broadcast, "255.255.255.255", eth)
         if result == "error":
             print_debug("Add multicast-ip route failed")
             return
@@ -440,9 +440,10 @@ class AudioRTP(TcosExtension):
         output_send=""
         output_recv=""
         self.rtp_control_count[ip_broadcast]=[]
+        self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh start-server")
         msg=_( "Do you want to connect to this audio chat conference now?" )
         if shared.ask_msg ( msg ):
-            output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send destination=%s rate=11025 channels=2 port=1234" %ip_broadcast)
+            output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send format=ulaw channels=1 rate=22050 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %ip_broadcast)
             output_recv = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %ip_broadcast)
             self.rtp_control_count[ip_broadcast]=[output_send, output_recv]
         total=0
@@ -457,9 +458,11 @@ class AudioRTP(TcosExtension):
                 self.main.common.exe_cmd("pactl unload-module %s" %output_send)
                 self.main.common.exe_cmd("pactl unload-module %s" %output_recv)
             del self.rtp_control_count[ip_broadcast]
-            result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.0", eth)
+            result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.255", eth)
             if result == "error":
                 print_debug("Del multicast-ip route failed")
+            if len(self.rtp_count.keys()) == 0:
+                self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh stop-server")
         else:
             newusernames=[]
             for user in self.connected_users:
@@ -483,7 +486,7 @@ class AudioRTP(TcosExtension):
                 self.rtp_count[nextkey]=ip_broadcast
             if self.control_list:
                 self.populate_data(self.rtp_count)
-            self.main.menus.broadcast_count[ip_broadcast]=None
+            #self.main.menus.broadcast_count[ip_broadcast]=None
             self.add_progressbox( {"target": "rtp-chat", "pid_send":output_send, "pid_recv":output_recv, "allclients":self.newallclients, "ip":"", "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in audio chat conference. Conference Nº %s") %(nextkey) )
 
     def on_progressbox_click(self, widget, args, box):
@@ -492,29 +495,33 @@ class AudioRTP(TcosExtension):
         
         if not args['target']:
             return
+
+        self.main.stop_running_actions.remove(widget)
         
         if args['target'] == "rtp":
             del self.rtp_count[args['key']]
             if args['ip_broadcast'] != "":
-                result = self.main.localdata.Route("route-del", args['ip_broadcast'], "255.255.255.0", args['iface'])
+                result = self.main.localdata.Route("route-del", args['ip_broadcast'], "255.255.255.255", args['iface'])
                 if result == "error":
                     print_debug("Del multicast-ip route failed")
-                del self.main.menus.broadcast_count[args['ip_broadcast']]
+                #del self.main.menus.broadcast_count[args['ip_broadcast']]
             for client in args['allclients']:
                 self.main.xmlrpc.rtp("stoprtp-recv", client)
             if "pid" in args:
                 self.main.common.exe_cmd("pactl unload-module %s" %args['pid'])
             if args['ip'] != "":
                 self.main.xmlrpc.rtp("stoprtp-send", args['ip'] )
+            if len(self.rtp_count.keys()) == 0:
+                self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh stop-server")
             self.main.write_into_statusbar( _("Conference mode off.") )
         
         if args['target'] == "rtp-chat":
             del self.rtp_count[args['key']]
             if args['ip_broadcast'] != "":
-                result = self.main.localdata.Route("route-del", args['ip_broadcast'], "255.255.255.0", args['iface'])
+                result = self.main.localdata.Route("route-del", args['ip_broadcast'], "255.255.255.255", args['iface'])
                 if result == "error":
                     print_debug("Del multicast-ip route failed")
-                del self.main.menus.broadcast_count[args['ip_broadcast']]
+                #del self.main.menus.broadcast_count[args['ip_broadcast']]
             for client in args['allclients']:
                 self.main.xmlrpc.rtp("stoprtp-chat", client)
             if self.rtp_control_count.has_key(args['ip_broadcast']) and len(self.rtp_control_count[args['ip_broadcast']]) > 0:
@@ -523,7 +530,9 @@ class AudioRTP(TcosExtension):
             del self.rtp_control_count[args['ip_broadcast']]
             if self.control_list:
                 self.chat_delete(args['ip_broadcast'])
-            self.main.write_into_statusbar( _("Chat conference mode off.") )
+            if len(self.rtp_count.keys()) == 0:
+                self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh stop-server")
+            self.main.write_into_statusbar( _("Audio chat conference off.") )
 
        
         

@@ -113,7 +113,7 @@ class TcosNetController(TcosExtension):
             shared.error_msg( _("No users logged.") )
             return
         
-        msg=_( _("Do you want disable internet to following users:%s?" )%(self.newallclients_txt) )
+        msg=_( _("Do you want disable internet to following users: %s?" )%(self.connected_users_txt) )
                                                 
         if not shared.ask_msg ( msg ):
             return

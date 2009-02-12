@@ -57,6 +57,7 @@ class RestartXorg(TcosExtension):
                         self.main.config.GetVar("xmlrpc_password")  )
                 except Exception, err:
                     print_debug("restartx() Exception error %s"%err)
+                    self.main.xmlrpc.CheckSSL(err)
                     pass
                 self.refresh_client_info(ip)
         else:

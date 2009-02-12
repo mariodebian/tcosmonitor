@@ -167,21 +167,20 @@ class TcosActions:
         # clear datatxt if len allclients is 0
         self.datatxt.clean()
         
-        if self.main.config.GetVar("scan_network_method") == "ping":
+        if self.main.config.GetVar("scan_network_method") == "ping" or self.main.config.GetVar("scan_network_method") == "static":
             # clean icons and files
             self.main.listview.clear()
             self.main.iconview.clear()
             self.main.classview.clear()
-            allclients=self.main.localdata.GetAllClients("ping")
+            allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             # ping will call populate_hostlist when finish
             return
         else:
-            allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             # clean icons and files
             self.main.listview.clear()
             self.main.iconview.clear()
             self.main.classview.clear()
-
+            allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             if len(allclients) == 0:
                 self.main.write_into_statusbar ( _("Not connected hosts found.") )
                 return
@@ -238,28 +237,31 @@ class TcosActions:
         self.datatxt = self.main.datatxt
         # clear datatxt if len allclients is 0
         self.datatxt.clean()
+
+        self.main.write_into_statusbar ( _("Searching for connected hosts...") )
         
-        if self.main.config.GetVar("scan_network_method") == "ping":
+        if self.main.config.GetVar("scan_network_method") == "ping" or self.main.config.GetVar("scan_network_method") == "static":
             # clean icons and files
             self.main.listview.clear()
             self.main.iconview.clear()
             self.main.classview.clear()
-            allclients=self.main.localdata.GetAllClients("ping")
+            allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             self.main.refreshbutton.set_sensitive(True)
             return False
             # ping will call populate_hostlist when finish
         else:
+            # clean icons and files
+            self.main.listview.clear()
+            self.main.iconview.clear()
+            self.main.classview.clear()
             allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             if len(allclients) != 0:
-                # clean icons and files
-                self.main.listview.clear()
-                self.main.iconview.clear()
-                self.main.classview.clear()
                 self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
                 # populate_list in a thread
                 self.main.worker=shared.Workers(self.main, self.populate_hostlist, [allclients] )
                 self.main.worker.start()
                 return False
+            self.main.write_into_statusbar ( _("Not connected hosts found.") )
             self.main.refreshbutton.set_sensitive(True)
 
         print_debug ( "POPULATE_HOST_LIST() returning %s" %(self.main.updating) )
@@ -2972,8 +2974,10 @@ class TcosActions:
     def update_hostlist(self):
         #if self.main.config.GetVar("populate_list_at_startup") == "1":
         if float(self.main.config.GetVar("refresh_interval")) > 0:
-            self.main.refreshbutton.set_sensitive(False)
             update_every=float(self.main.config.GetVar("refresh_interval"))
+            if float(self.main.config.GetVar("refresh_interval")) >= 10:
+                update_every=float(2)
+            self.main.refreshbutton.set_sensitive(False)
             print_debug ( "update_hostlist() every %f secs" %(update_every) )
             gobject.timeout_add(int(update_every * 1000), self.populate_host_list )
             return

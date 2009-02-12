@@ -21,7 +21,6 @@ debian/tmp/usr/lib/python*/site-packages/tcosmonitor/htmltextview.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/Initialize.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosActions.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosClassView.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosConf.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosExtensions.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosIconView.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosListView.py

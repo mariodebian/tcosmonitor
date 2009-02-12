@@ -230,16 +230,19 @@ class TcosDevicesNG:
         print_debug( "loadconf mntconf=%s" %self.mntconf )
         return
    
-    def show_notification(self, msg, urgency=pynotify.URGENCY_CRITICAL):
+    def show_notification(self, msg, urgency=pynotify.URGENCY_CRITICAL, timeout=20000):
         pynotify.init("tcos-devices-ng")
-        image_uri="file://" + os.path.abspath(shared.IMG_DIR) + "/tcos-devices-32x32.png"
+        if os.path.isfile("/usr/share/pixmaps/tcos-icon-32x32-custom.png"):
+            image_uri="file://usr/share/pixmaps/tcos-icon-32x32-custom.png"
+        else:
+            image_uri="file://" + os.path.abspath(shared.IMG_DIR) + "/tcos-devices-32x32.png"
         n = pynotify.Notification( _("Tcos device daemon") , msg, image_uri )
         n.set_urgency(urgency)
         # don't attach to status icon with multiple notifications
         #if hasattr(pynotify.Notification, 'attach_to_status_icon'):
         #    n.attach_to_status_icon(self.systray.statusIcon)
         n.set_category("device")
-        n.set_timeout(15000) # 15 sec
+        n.set_timeout(timeout) # 15 sec
         if not n.show():
             print_debug  ("show_notification() Failed to send notification")
         
@@ -269,13 +272,13 @@ class TcosDevicesNG:
         if not self.common.user_in_group("fuse"):
             print "tcos-devices-ng: ERROR: User not in group fuse"
             sys.exit(1)
-        
+        nossl=True
         # make a test and exit if no cookie match
-        if not self.xauth.test_auth():
+        if not self.xauth.test_auth(nossl):
             print "tcos-devices-ng: ERROR: Xauth cookie don't match"
             sys.exit(1)
-        
-        self.xmlrpc.newhost(self.host)
+            
+        self.xmlrpc.newhost(self.host, nossl)
         if not self.xmlrpc.connected:
             print _("Error connecting with TcosXmlRpc in %s.") %(self.host)
             sys.exit(1)

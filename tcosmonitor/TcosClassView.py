@@ -218,8 +218,8 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         iconview=gtk.IconView()
         model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
-        if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
+        if data['username'] == shared.NO_LOGIN_MSG:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
         else:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         
@@ -236,8 +236,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         if hasattr(iconview.props, 'has_tooltip'):
             iconview.props.has_tooltip = True
         
-            
-        model.append([data['username'], data['ip'], pixbuf])
+        if data['username'] == shared.NO_LOGIN_MSG:
+            model.append([data['username'], data['ip'], pixbuf])
+        
         iconview.show()
         # in old versions of gtk we need to put explicity iconview size
 	if gtk.gtk_version < (2,10,0):
@@ -247,7 +248,8 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         iconview.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ), ], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
         iconview.connect( 'drag_data_received', self.on_external_drag_data_received, data['ip'])
 
-        
+        #iconview.set_size_request(110,110)
+        iconview.set_item_width(82)
         button = gtk.Button()
         button.set_relief(gtk.RELIEF_NONE)
         button.add(iconview)
@@ -257,6 +259,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         if data['active']:
             button.connect("button_press_event", self.on_iconview_click, data['ip'])
         button.connect("enter", self.on_button_enter, data['ip'])
+        button.set_size_request(111,113)
         button.show_all()
         
         if self.oldpos.has_key(data['ip']):
@@ -264,9 +267,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             print_debug("generate_icon() found old position => %s"%self.oldpos[data['ip']])
             self.classview.put(button, self.oldpos[data['ip']][0], self.oldpos[data['ip']][1] )
         else:
-            while self.__getoverride(self.position[0], self.position[1], data['ip'] ):
-                print_debug("generate_icon() OVERRIDE ICON !!!")
-                self.__increment_position()
+            #while self.__getoverride(self.position[0], self.position[1], data['ip'] ):
+            #    print_debug("generate_icon() OVERRIDE ICON !!!")
+            #    self.__increment_position()
             self.classview.put(button, self.position[0], self.position[1])
             print_debug("generate_icon() put not positioned icon at [%s,%s] !!!"%(self.position[0], self.position[1]))
             self.__increment_position()
@@ -281,7 +284,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             self.set_selected(ip)
         print_debug("get_selected()=%s get_multiple()=%s" %(self.get_selected(), self.get_multiple()))
         filenames=[]
-        files = selection.data.split('\n', 1)
+        files = selection.data.split('\n')
         extensions = (".avi", ".mpg", ".mpeg", ".ogg", ".ogm", ".asf", ".divx", 
                     ".wmv", ".vob", ".m2v", ".m4v", ".mp2", ".mp4", ".ac3", 
                     ".ogg", ".mp1", ".mp2", ".mp3", ".wav", ".wma")
@@ -339,10 +342,10 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         if self.hosts[ip[0]]['active']:
             # set unselect if host is active
             self.change_select(c, ip[0])
-        if self.__getoverride(newx, newy, ip[0]):
-            print_debug("on_drag_data_received() ip=%s another host is near x=%s y=%s, don't move!!"%(ip[0], x, y) )
-            self.main.write_into_statusbar( _("Can't move icon, another host is near.") )
-            return
+        #if self.__getoverride(newx, newy, ip[0]):
+        #    print_debug("on_drag_data_received() ip=%s another host is near x=%s y=%s, don't move!!"%(ip[0], x, y) )
+        #    self.main.write_into_statusbar( _("Can't move icon, another host is near.") )
+        #    return
         self.classview.move(button, newx, newy)
 
     def motion_cb(self, widget, context, x, y, time):
@@ -371,7 +374,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             print_debug("on_iconview_click() ip=%s" %(ip))
             self.main.menus.RightClickMenuOne( None , None, ip)
             self.main.menu.popup( None, None, None, event.button, event.time)
-            self.set_select(ip)
+            #self.set_select(ip)
             self.set_selected(ip)
             return True
         if event.button == 1:
@@ -443,8 +446,8 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         self.hosts[ip]['blocked_screen']=status_screen
         self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
-        if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
+        if data['username'] == shared.NO_LOGIN_MSG:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
         else:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
@@ -452,7 +455,15 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             for c in w.get_children():
                 model=c.get_model()
                 if model[0][1] == ip:
-                    model[0][2]=pixbuf
+                    model2 = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
+                    c.set_model(model2)
+                    c.set_text_column(0)
+                    c.set_pixbuf_column(2)
+                    if data['username'] == shared.NO_LOGIN_MSG:
+                        model2.append([data['hostname'].replace('.aula',''), data['ip'], pixbuf])
+                    else:
+                        model2.append([data['username'], data['ip'], pixbuf])
+                    #model[0][2]=pixbuf
                     return
 
 

@@ -214,11 +214,11 @@ class TcosMonitor(object):
             self.dbus_action=tcosmonitor.TcosDBus.TcosDBusAction(self, admin=self.config.GetVar("xmlrpc_username"),
                                   passwd=self.config.GetVar("xmlrpc_password")  )
         
-        
+        self.stop_running_actions=[]
         # generate host list if checked
         if self.config.GetVar("populate_list_at_startup") == "1":
             self.populate_host_list()
-        #self.actions.update_hostlist()
+        self.actions.update_hostlist()
         # create tmp dir
         try:
             fd1=open("/etc/default/rsync", 'r')
@@ -321,6 +321,14 @@ class TcosMonitor(object):
     def quitapp(self, *args):
         print_debug ( _("Exiting") )
         #gtk.main_quit()
+        widgets=self.stop_running_actions[:]
+        print_debug("Running actions: %s" %len(widgets))
+        for widget in widgets:
+            print_debug("Stop running action... widget=%s" %(widget))
+            try:
+                widget.clicked()
+            except:
+                pass
         if os.path.isdir("/tmp/tcos_share/"):
             for filename in os.listdir("/tmp/tcos_share/"):
                 if os.path.isfile("/tmp/tcos_share/%s" %filename):

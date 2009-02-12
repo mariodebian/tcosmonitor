@@ -176,6 +176,11 @@ class Initialize(object):
         <property name="pixbuf">/usr/share/tcosmonitor/images/button_msg.png</property>
         """
 
+#    def __change_toolbutton_icon(self, widget, imgfile):
+#        img=gtk.Image()
+#        img.set_from_file(imgfile)
+#        img.show()
+#        widget.set_icon_widget(img)
 
     def initabouttcos(self):
         self.main.abouttcos = self.main.ui.get_widget('abouttcos')
@@ -215,13 +220,18 @@ class Initialize(object):
         self.main.abouttcos_donatecheck = self.ui.get_widget('abouttcos_donatecheck')
         self.main.abouttcos_donatecheck.connect('toggled', self.main.actions.on_abouttcos_donatecheck_change)
         
+        if self.main.config.GetVar("show_about") == 1:
+            self.main.abouttcos.show()
+            self.main.abouttabs.set_current_page(0)
+            self.main.config.SetVar("show_about", "0")
+            self.main.config.SaveToFile()
+
         if self.main.config.GetVar("show_donate") == 1:
             self.main.abouttcos.show()
             self.main.abouttabs.set_current_page(self.main.abouttabs.get_n_pages()-1)
             self.main.abouttcos_donatecheck.set_active(False)
         else:
             self.main.abouttcos_donatecheck.set_active(True)
-        
         
     
 #    def initask(self):

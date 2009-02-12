@@ -3,6 +3,7 @@ debian/tmp/usr/bin/tcos-dbus-client.py
 
 debian/tmp/usr/share/locale/*
 
+debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosConf.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosDBus.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/ping.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/shared.py

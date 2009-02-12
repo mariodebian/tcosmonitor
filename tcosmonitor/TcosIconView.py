@@ -126,8 +126,8 @@ class TcosIconView(object):
     def generate_icon(self, data):
         print_debug("generate_icon() data=%s"%data)
         
-        if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
+        if data['username'] == shared.NO_LOGIN_MSG:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
         else:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         
@@ -138,7 +138,10 @@ class TcosIconView(object):
             pixbuf2 = data['image_blocked']
             pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         
-        self.model.append([data['hostname'], data['ip'], pixbuf])
+        if data['username'] == shared.NO_LOGIN_MSG:
+            self.model.append([data['hostname'].replace('.aula',''), data['ip'], pixbuf])
+        else:
+            self.model.append([data['username'], data['ip'], pixbuf])
         self.hosts[data['ip']]=data
 
     def generate_tooltip(self, ip):
@@ -202,8 +205,8 @@ class TcosIconView(object):
         self.hosts[ip]['blocked_screen']=status_screen
         self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
-        if data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
+        if data['username'] == shared.NO_LOGIN_MSG:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
         else:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)

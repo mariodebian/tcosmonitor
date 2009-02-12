@@ -143,7 +143,7 @@ class Screenshot(TcosExtension):
         
         dialog = gtk.FileChooserDialog(title=_("Select file to save screenshot..."),
                                       action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                      buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+                                      buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE,gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
         dialog.set_current_name( _("screenshot_of_%(hostname)s_date_%(date)s.png") %{'hostname':data['hostname'], 'date':data['date']} )
         folder = _folder = os.environ['HOME']
@@ -186,7 +186,7 @@ class Screenshot(TcosExtension):
         self.main.datatxt.insert_html("<br/>")
 
     def real_action(self, ip, action):
-        print_debug("real_action() ip=%s")
+        print_debug("real_action() ip=%s" %ip)
         self.main.xmlrpc.newhost(ip)
         scrot=self.main.xmlrpc.getscreenshot(self.main.config.GetVar("miniscrot_size"))
         if scrot and scrot[0] == "ok":
