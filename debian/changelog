@@ -3,8 +3,9 @@ tcosmonitor (0.2.18-1) unstable; urgency=low
   * New big version
   * A lot of patches by Ignacio Vidal (merge Lliurex Lab, not all)
   * Merge to master
+  * Add patch_lenny target
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 12 Feb 2009 16:46:27 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 15 Feb 2009 19:33:24 +0100
 
 tcosmonitor (0.2.17~rc12) unstable; urgency=low
 

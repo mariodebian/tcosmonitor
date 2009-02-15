@@ -163,6 +163,8 @@ patch_etch: patch_version
 
 patch_unstable: patch_version
 
+patch_lenny: patch_version
+
 patch_testing: patch_version
 
 patch_hardy: patch_version
