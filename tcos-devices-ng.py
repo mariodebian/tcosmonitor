@@ -765,7 +765,7 @@ class TcosDevicesNG:
 
     def cdrom_usb(self, *args):
         data=args[0]
-        if type(data) == type( () ): data=args[0][0]
+        if isinstance(data, tuple): data=args[0][0]
         
         print_debug("cdrom_usb() data=%s" %data)
         if data.has_key('DEVPATH'):
@@ -924,7 +924,7 @@ class TcosDevicesNG:
 
     def usb(self, *args):
         data=args[0]
-        if type(data) == type( () ): data=args[0][0]
+        if isinstance(data, tuple): data=args[0][0]
         
         print_debug("usb() data=%s" %data)
         
@@ -1061,7 +1061,7 @@ class TcosDevicesNG:
                 
     def firewire(self, *args):
         data=args[0]
-        if type(data) == type( () ): data=args[0][0]
+        if isinstance(data, tuple): data=args[0][0]
         
         print_debug("firewire() data=%s" %data)
         
@@ -1374,11 +1374,12 @@ class TcosDevicesNG:
         return
 
     def exec_filemanager(self, *args):
-        os.system(args[0])         
+        print_debug("exec_filemanager() args='%s'" %(args[0]) )
+        self.common.exe_cmd(args[0], verbose=1, background=False, lines=0, cthreads=0 )
 
     def umount_all(self):
         mounted=self.common.exe_cmd("grep ^ltspfs /proc/mounts |grep -e \"user_id=%s\" -e \"user=%s\" | awk '{print $2}'" %(os.getuid(),  pwd.getpwuid(os.getuid())[0]), verbose=1, background=False, lines=0, cthreads=0 )
-        if type(mounted) == type(""):
+        if isinstance(mounted, str):
             mounted=[mounted]
         for mount in mounted:
             print_debug( "umount_all() umounting %s..." %mount )
@@ -1391,10 +1392,9 @@ class TcosDevicesNG:
                 print_debug("umount_all() Exception, error %s"%err)
           
     def exit(self):
-        #print_debug ( "FIXME do some thing before quiting..." )
         # say udev_daemon loop to quit
-        self.umount_all()
         self.quitting=True
+        self.umount_all()
         self.mainloop.quit()
     
     def run (self):

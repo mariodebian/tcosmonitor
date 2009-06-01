@@ -158,7 +158,7 @@ class TcosDBusServer:
 
     def parse_dbus_str(self, data):
         #print_debug( "parse_dbus_str() data=%s type=%s" %(data, type(data)) )
-        if type(data) == dbus.String:
+        if isinstance(data, dbus.String):
             return str(data)
         return(data)
             

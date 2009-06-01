@@ -209,7 +209,7 @@ sound_only_channels=["Front", "Master", "Master Front", "PCM", "Line", "CD",
                     "vol", "pcm", "line", "cd", "mic",
                     "Mix", "PCM2", "Capture"]
 
-hidden_network_ifaces=["lo", "sit0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
+hidden_network_ifaces=["lo", "sit0", "pan0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
 
 # for enable exclude users, change to "tcosmonitor-exclude"
 dont_show_users_in_group="tcosmonitor-exclude"
@@ -229,7 +229,7 @@ disable_textview_on_update=True
 
 icon_image_thin="client.png"
 icon_image_standalone="client.png"
-icon_image_no_logged="client_no_logged.png"
+icon_image_no_logged="host_tcos.png"
 
 
 NO_LOGIN_MSG="---"

@@ -508,7 +508,7 @@ class TcosPreferences:
     def populate_select(self, widget, values):
         valuelist = gtk.ListStore(str, str)
         for value in values:
-            if type(value) == type([]):
+            if isinstance(value, list):
                 valuelist.append([value[0], value[1]])
             else:
                 valuelist.append([value.split()[0], value.split()[0]])

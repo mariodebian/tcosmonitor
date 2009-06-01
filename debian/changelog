@@ -1,3 +1,15 @@
+tcosmonitor (0.2.19) unstable; urgency=low
+
+  * Fix Ubuntu jaunty modules install (use dist instead of site)
+  * Replace comparations of type() with isinstance()
+  * TcosClassView:
+    - Fix icons size and names
+  * Add pan0 as hidden network interface
+  * tcos-devices-ng.py:
+    - Call filemanager with subprocess instead of os.system()
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 01 Jun 2009 16:31:10 +0200
+
 tcosmonitor (0.2.18-1) unstable; urgency=low
 
   * New big version

@@ -33,3 +33,21 @@ debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosXmlRpc.py
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/WakeOnLan.py
 
 debian/tmp/usr/lib/python*/site-packages/tcosmonitor/extensions/*.py
+
+
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/htmltextview.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/Initialize.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosActions.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosClassView.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosExtensions.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosIconView.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosListView.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosMenus.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosPreferences.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosStaticHosts.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosTrayIcon.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosTrayIcon2.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosXmlRpc.py
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/WakeOnLan.py
+
+debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/extensions/*.py

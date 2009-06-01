@@ -228,7 +228,7 @@ class LocalData:
             output=self.main.common.exe_cmd(cmd)
             
             #avoid to have a spimple string
-            if type(output) == type(""):
+            if isinstance(output, str):
                 output=[output]
             
             for xhost in output:

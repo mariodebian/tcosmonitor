@@ -218,8 +218,10 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         iconview=gtk.IconView()
         model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
-        if data['username'] == shared.NO_LOGIN_MSG:
+        if data['username'] == shared.NO_LOGIN_MSG and not data['standalone']:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
+        elif data['standalone']:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
         else:
             pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
         
@@ -228,6 +230,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         if data['image_blocked']:
             pixbuf2 = data['image_blocked']
+            print("generate_icon() compositing isblocked=True")
             pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         
         iconview.set_model(model)
@@ -236,8 +239,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         if hasattr(iconview.props, 'has_tooltip'):
             iconview.props.has_tooltip = True
         
-        if data['username'] == shared.NO_LOGIN_MSG:
-            model.append([data['username'], data['ip'], pixbuf])
+        #if data['username'] == shared.NO_LOGIN_MSG:
+        #    model.append([data['username'], data['ip'], pixbuf])
+        model.append([data['username'], data['ip'], pixbuf])
         
         iconview.show()
         # in old versions of gtk we need to put explicity iconview size
