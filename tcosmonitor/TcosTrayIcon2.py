@@ -27,7 +27,6 @@ import os
 from gettext import gettext as _
 from time import time
 
-import gtk.glade
 import gobject
 
 import shared
@@ -66,19 +65,22 @@ class TcosTrayIcon:
         self.statusIcon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-devices-32x32.png")
         self.statusIcon.set_tooltip( _("Tcos Devices") )
 
-        # locale glade support
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
-
-        self.ui = gtk.glade.XML( shared.GLADE_DIR  + "tray.glade")
-        self.window = self.ui.get_widget('popup')
-        self.hide_button = self.ui.get_widget("hide_button")
+        import gettext
+        gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+        gettext.textdomain(shared.PACKAGE)
+        
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.add_from_file(shared.GLADE_DIR  + 'tray.glade')
+        
+        self.window = self.ui.get_object('popup')
+        self.hide_button = self.ui.get_object("hide_button")
 
         self.hide_button.connect("clicked", self.close_popup)
         self.statusIcon.connect('popup-menu', self.popup_window)
         
-        self.devbox=self.ui.get_widget("devbox")
-        self.window = self.ui.get_widget('popup')
+        self.devbox=self.ui.get_object("devbox")
+        self.window = self.ui.get_object('popup')
 
 
     def InitMenu(self):

@@ -56,7 +56,7 @@ class TcosListView(object):
         
         self.model=gtk.ListStore(str, str, str, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, str, str, bool,bool)
         
-        self.main.tabla = self.ui.get_widget('hostlist')
+        self.main.tabla = self.ui.get_object('hostlist')
         self.main.tabla.set_model (self.model)
 
         cell1 = gtk.CellRendererText ()

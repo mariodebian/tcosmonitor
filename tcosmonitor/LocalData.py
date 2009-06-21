@@ -197,7 +197,7 @@ class LocalData:
         """
         Read active connections at 6000 local port
         OTHER BEST METHOD??? "who" ???
-        read netstat -putan|grep 6000|awk '{print $5}'| awk -F ":" '{print $2}| sort|uniq'
+        read netstat -tapun|grep 6000|awk '{print $5}'| awk -F ":" '{print $2}| sort|uniq'
         """
             
         if method == "ping":
@@ -223,7 +223,7 @@ class LocalData:
             self.allclients=[]
             self.hostname=None
             #read this command output
-            cmd="LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
+            cmd="LC_ALL=C LC_MESSAGES=C netstat -tapun 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
             
             output=self.main.common.exe_cmd(cmd)
             

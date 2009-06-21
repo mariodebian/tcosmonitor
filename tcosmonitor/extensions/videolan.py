@@ -110,7 +110,7 @@ class VideoOne(TcosExtension):
             uip=0
             while uip <= max_uip:
                 uip_cmd="239.254.%s.0" %(uip)
-                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -tapun 2>/dev/null | grep -c %s" %(uip_cmd) )
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1
@@ -126,7 +126,7 @@ class VideoOne(TcosExtension):
             uip=50000
             while uip <= max_uip:
                 uip_cmd=":%s" %(uip)
-                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -tapun 2>/dev/null | grep -c %s" %(uip_cmd) )
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1
@@ -266,7 +266,7 @@ class VideoOne(TcosExtension):
                 uip=0
                 while uip <= max_uip:
                     uip_cmd="239.254.%s.0" %(uip)
-                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                    cmd=("LC_ALL=C LC_MESSAGES=C netstat -tapun 2>/dev/null | grep -c %s" %(uip_cmd) )
                     print_debug("Check broadcast ip %s." %(uip_cmd) )
                     output=self.main.common.exe_cmd(cmd)
                     uip+=1
@@ -287,7 +287,7 @@ class VideoOne(TcosExtension):
             uip=50000
             while uip <= max_uip:
                 uip_cmd=":%s" %(uip)
-                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -tapun 2>/dev/null | grep -c %s" %(uip_cmd) )
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1
@@ -500,7 +500,7 @@ class VideoOne(TcosExtension):
             uip=0
             while uip <= max_uip:
                 uip_cmd="239.254.%s.0" %(uip)
-                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -tapun 2>/dev/null | grep -c %s" %(uip_cmd) )
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1
@@ -516,7 +516,7 @@ class VideoOne(TcosExtension):
             uip=50000
             while uip <= max_uip:
                 uip_cmd=":%s" %(uip)
-                cmd=("LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep -c %s" %(uip_cmd) )
+                cmd=("LC_ALL=C LC_MESSAGES=C netstat -tapun 2>/dev/null | grep -c %s" %(uip_cmd) )
                 print_debug("Check broadcast ip %s." %(uip_cmd) )
                 output=self.main.common.exe_cmd(cmd)
                 uip+=1

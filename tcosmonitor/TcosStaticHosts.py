@@ -59,42 +59,42 @@ class TcosStaticHosts:
         self.main=main
         self.ui=self.main.ui
         self.model=gtk.ListStore(str, str)
-        self.main.staticwindow=self.ui.get_widget('staticwindow')
+        self.main.staticwindow=self.ui.get_object('staticwindow')
         self.main.staticwindow.connect('delete-event', self.staticwindow_close )
         
-        self.main.staticwindownew=self.ui.get_widget('staticwindownew')
+        self.main.staticwindownew=self.ui.get_object('staticwindownew')
         self.main.staticwindownew.connect('delete-event', self.staticwindownew_close )
         
         self.init_statichostlist()
         
-        self.main.static_button_cancel=self.ui.get_widget('button_static_cancel')
+        self.main.static_button_cancel=self.ui.get_object('button_static_cancel')
         self.main.static_button_cancel.connect('clicked', self.staticwindow_close)
         
-        self.main.static_button_save=self.ui.get_widget('button_static_save')
+        self.main.static_button_save=self.ui.get_object('button_static_save')
         self.main.static_button_save.connect('clicked', self.staticwindow_save)
         
-        self.main.static_button_add=self.ui.get_widget('button_static_add')
+        self.main.static_button_add=self.ui.get_object('button_static_add')
         self.main.static_button_add.connect('clicked', self.static_add)
         
-        self.main.static_button_modify=self.ui.get_widget('button_static_modify')
+        self.main.static_button_modify=self.ui.get_object('button_static_modify')
         self.main.static_button_modify.connect('clicked', self.static_modify)
         
-        self.main.static_button_delete=self.ui.get_widget('button_static_delete')
+        self.main.static_button_delete=self.ui.get_object('button_static_delete')
         self.main.static_button_delete.connect('clicked', self.static_delete)
         
-        self.main.static_button_get=self.ui.get_widget('button_static_get')
+        self.main.static_button_get=self.ui.get_object('button_static_get')
         self.main.static_button_get.connect('clicked', self.static_get)
         
         # static_line buttons
-        self.main.static_button_line_cancel=self.ui.get_widget('button_static_line_cancel')
+        self.main.static_button_line_cancel=self.ui.get_object('button_static_line_cancel')
         self.main.static_button_line_cancel.connect('clicked', self.staticwindownew_close)
         
-        self.main.static_button_line_save=self.ui.get_widget('button_static_line_save')
+        self.main.static_button_line_save=self.ui.get_object('button_static_line_save')
         self.main.static_button_line_save.connect('clicked', self.on_static_new)
         
         # new line
-        self.main.static_new_ip=self.ui.get_widget('static_new_ip')
-        self.main.static_new_mac=self.ui.get_widget('static_new_mac')
+        self.main.static_new_ip=self.ui.get_object('static_new_ip')
+        self.main.static_new_mac=self.ui.get_object('static_new_mac')
         
         self.control_buttons(False)
         
@@ -138,16 +138,12 @@ class TcosStaticHosts:
     def staticwindownew_close(self, *args):
         self.main.staticwindownew.hide()
         return True
-        
-    def get_widget(self, wname):
-        widgets = gtk.glade.XML( shared.GLADE_DIR + 'tcosmonitor.glade', wname )
-        return widgets.get_widget( wname )
 
 
     def init_statichostlist(self):
         print_debug ( "init_statichostlist()" )
         
-        self.main.staticlist = self.ui.get_widget('staticlist')
+        self.main.staticlist = self.ui.get_object('staticlist')
         self.main.staticlist.set_model (self.model)
 
         cell1 = gtk.CellRendererText ()
@@ -155,7 +151,7 @@ class TcosStaticHosts:
         column1.set_resizable (True)
         column1.set_sort_column_id(COL_IP)
         self.main.staticlist.append_column (column1)
-		
+        
         cell2 = gtk.CellRendererText ()
         column2 = gtk.TreeViewColumn (_("MAC address"), cell2, text = COL_MAC)
         column2.set_resizable (True)	

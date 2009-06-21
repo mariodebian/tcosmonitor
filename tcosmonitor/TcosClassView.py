@@ -62,8 +62,8 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         self.icon_tooltips = None
         
-        self.classview=self.ui.get_widget('classview')
-        self.classeventbox=self.ui.get_widget('classeventbox')
+        self.classview=self.ui.get_object('classview')
+        self.classeventbox=self.ui.get_object('classeventbox')
         self.classview.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                                   gtk.DEST_DEFAULT_HIGHLIGHT |
                                   gtk.DEST_DEFAULT_DROP,

@@ -30,7 +30,6 @@ import glob
 import pygtk
 pygtk.require('2.0')
 import gtk
-import gtk.glade
 
 from tcosmonitor import shared
 
@@ -126,22 +125,28 @@ class TcosPersonalize:
         
         self.remotehost_config = os.path.join ("/var/lib/tcos/tftp/conf/", shared.remotehost + ".conf" )
         
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
+        import gettext
+        gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+        gettext.textdomain(shared.PACKAGE)
         
         # Widgets
         print_debug("loading %s" %(shared.GLADE_DIR + 'tcospersonalize.glade'))
-        self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcospersonalize.glade')
-        self.main = self.ui.get_widget('mainwindow')
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.add_from_file(shared.GLADE_DIR + 'tcospersonalize.glade')
+        
+        
+        
+        self.main = self.ui.get_object('mainwindow')
 
         # close windows signals
         self.main.connect('destroy', self.quitapp )
         
         # buttons
-        self.buttonok=self.ui.get_widget('ok_button')
-        self.buttoncancel=self.ui.get_widget('cancel_button')
-        self.buttondelete=self.ui.get_widget('delete_button')
-        self.buttongetavalaible=self.ui.get_widget('getavalaible_button')
+        self.buttonok=self.ui.get_object('ok_button')
+        self.buttoncancel=self.ui.get_object('cancel_button')
+        self.buttondelete=self.ui.get_object('delete_button')
+        self.buttongetavalaible=self.ui.get_object('getavalaible_button')
         
         # signals on buttons
         self.buttonok.connect('clicked', self.on_buttonok_click )
@@ -150,33 +155,33 @@ class TcosPersonalize:
         self.buttongetavalaible.connect('clicked', self.on_buttongetavalaible_click )
         
         # get combos
-        self.combo_xsession=self.ui.get_widget('combo_xsession')
-        self.combo_xdriver=self.ui.get_widget('combo_xdriver')
-        self.combo_xres=self.ui.get_widget('combo_xres')
-        self.combo_xdepth=self.ui.get_widget('combo_xdepth')
+        self.combo_xsession=self.ui.get_object('combo_xsession')
+        self.combo_xdriver=self.ui.get_object('combo_xdriver')
+        self.combo_xres=self.ui.get_object('combo_xres')
+        self.combo_xdepth=self.ui.get_object('combo_xdepth')
         
         # get checkboxes
-        self.ck_xmousewheel=self.ui.get_widget('ck_xmousewheel')
-        self.ck_xdontzap=self.ui.get_widget('ck_xdontzap')
-        self.ck_xdpms=self.ui.get_widget('ck_xdpms')
+        self.ck_xmousewheel=self.ui.get_object('ck_xmousewheel')
+        self.ck_xdontzap=self.ui.get_object('ck_xdontzap')
+        self.ck_xdpms=self.ui.get_object('ck_xdpms')
         
         # get textboxes
-        #self.text_extramodules=self.ui.get_widget('txt_extramodules')
-        self.text_xhorizsync=self.ui.get_widget('txt_xhorizsync')
-        self.text_xvertsync=self.ui.get_widget('txt_xvertsync')
+        #self.text_extramodules=self.ui.get_object('txt_extramodules')
+        self.text_xhorizsync=self.ui.get_object('txt_xhorizsync')
+        self.text_xvertsync=self.ui.get_object('txt_xvertsync')
         
         # boot options
-        self.combo_kernel=self.ui.get_widget('combo_kernel')
-        self.combo_method=self.ui.get_widget('combo_method')
-        self.text_cmdline=self.ui.get_widget('txt_cmdline')
-        self.buttonapply=self.ui.get_widget('apply_button')
+        self.combo_kernel=self.ui.get_object('combo_kernel')
+        self.combo_method=self.ui.get_object('combo_method')
+        self.text_cmdline=self.ui.get_object('txt_cmdline')
+        self.buttonapply=self.ui.get_object('apply_button')
         self.buttonapply.connect('clicked', self.on_buttonapply_click )
         
-        self.deleteboot=self.ui.get_widget('delete_boot_button')
+        self.deleteboot=self.ui.get_object('delete_boot_button')
         self.deleteboot.connect('clicked', self.on_deleteboot_click )
         
         # host label
-        self.hostlabel=self.ui.get_widget('label_host')
+        self.hostlabel=self.ui.get_object('label_host')
         self.hostlabel.set_markup ( "<b>" + _("host: ") + shared.remotehost + "</b>" )
         
         # get conf file

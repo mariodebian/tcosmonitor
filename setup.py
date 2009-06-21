@@ -13,7 +13,7 @@ import sys
 
 class build_locales(build):
     if not "clean" in sys.argv:
-        os.system("sh fix-glade.sh")
+        #os.system("sh fix-glade.sh")
         os.system("cd po && make")
 
 for (path, dirs, files) in os.walk("po"):

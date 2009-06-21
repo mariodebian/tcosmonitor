@@ -33,7 +33,6 @@ from gettext import gettext as _
 import pygtk
 pygtk.require('2.0')
 import gtk
-import gtk.glade
 from tcosmonitor import shared
 
 # load conf file and exit if not active
@@ -146,32 +145,34 @@ class TcosVolumeManager:
         self.allchannels=self.xmlrpc.GetSoundChannelsContents()
         print_debug ("__init__() %s" %( self.allchannels ) )
         
-        
-        #import shared
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
+        import gettext
+        gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+        gettext.textdomain(shared.PACKAGE)
         
         # Widgets
-        self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcos-volume-manager.glade')
-        self.mainwindow = self.ui.get_widget('mainwindow')
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.add_from_file(shared.GLADE_DIR + 'tcos-volume-manager.glade')
+        
+        self.mainwindow = self.ui.get_object('mainwindow')
         
         # close windows signals
         #self.mainwindow.connect('destroy', self.quitapp )
         self.mainwindow.connect('delete-event', self.mainwindow_close )
         
-        self.mainlabel=self.ui.get_widget('mainlabel')
+        self.mainlabel=self.ui.get_object('mainlabel')
         
-        self.scrolledwindow=self.ui.get_widget('scrolledwindow')
-        self.scrolledwindow2=self.ui.get_widget('scrolledwindow2')
+        self.scrolledwindow=self.ui.get_object('scrolledwindow')
+        self.scrolledwindow2=self.ui.get_object('scrolledwindow2')
         
-        self.quitbutton=self.ui.get_widget('quitbutton')
+        self.quitbutton=self.ui.get_object('quitbutton')
         self.quitbutton.connect('clicked', self.quitapp )
         
-        self.statusbar=self.ui.get_widget('statusbar')
-        self.refreshbutton=self.ui.get_widget('refreshbutton')
+        self.statusbar=self.ui.get_object('statusbar')
+        self.refreshbutton=self.ui.get_object('refreshbutton')
         self.refreshbutton.connect('clicked', self.on_refresh_button )
         
-        self.restartbutton=self.ui.get_widget('restartbutton')
+        self.restartbutton=self.ui.get_object('restartbutton')
         self.restartbutton.connect('clicked', self.on_restart_button )
         
         # only show if we found this file in $HOME dir
@@ -227,8 +228,7 @@ class TcosVolumeManager:
         
         self.mainwindow.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
         self.mainwindow.set_title( _("Tcos Volume Manager")  )
-        self.mainlabel.set_markup( _("<span size='large'><b>Sound mixer of %s host</b></span>") %(self.host) )
-        
+        self.mainlabel.set_markup( _("<b>Sound mixer of %s host</b>") %(self.host) )
         #self.mainwindow.show()
         
         #self.populate_mixer(primary_channels, self.scrolledwindow)
@@ -245,7 +245,7 @@ class TcosVolumeManager:
             #frame = gtk.Frame(channel)
             frame = gtk.Frame(channel['name'])
             #frame.show()
-            box2 = gtk.VBox(True, 0)
+            box2 = gtk.VBox(False, 0)
             box2.set_border_width(0)
             
             ###########################################################
@@ -277,17 +277,20 @@ class TcosVolumeManager:
             volume_slider.set_digits(0)
             volume_slider.set_inverted(True)
             
-            volume_slider.set_size_request(30, 100)
-            volume_slider.set_value_pos(gtk.POS_TOP)     
+            volume_slider.set_size_request(30, 150)
+            volume_slider.set_value_pos(gtk.POS_TOP)
             volume_slider.set_value( value )
             #volume_slider.connect("button_release_event", self.slider_value_changed, adjustment, channel, self.host)
             #volume_slider.connect("scroll_event", self.slider_value_changed, adjustment, channel, self.host)
             volume_slider.connect("button_release_event", self.slider_value_changed, adjustment, channel['name'], self.host)
             volume_slider.connect("scroll_event", self.slider_value_changed, adjustment, channel['name'], self.host)
+            volume_slider.show()
             if "volume" in ctype:
-                volume_slider.show()
+                #volume_slider.show()
+                volume_slider.set_sensitive(True)
             else:
-                volume_slider.hide()
+                #volume_slider.hide()
+                volume_slider.set_sensitive(False)
             
             box2.pack_start(volume_slider, False, True, 0)
             
@@ -295,12 +298,16 @@ class TcosVolumeManager:
             
             volume_checkbox=gtk.CheckButton(label=_("Mute"), use_underline=True)
             volume_checkbox.set_active(ismute)
+            #volume_checkbox.set_size_request(30, 20)
             #volume_checkbox.connect("toggled", self.checkbox_value_changed, channel, self.host)
             volume_checkbox.connect("toggled", self.checkbox_value_changed, channel['name'], self.host)
+            volume_checkbox.show()
             if "switch" in ctype:
-                volume_checkbox.show()
+                #volume_checkbox.show()
+                volume_checkbox.set_sensitive(True)
             else:
-                volume_checkbox.hide()
+                #volume_checkbox.hide()
+                volume_checkbox.set_sensitive(False)
             
             
             box2.pack_start(volume_checkbox, False, True, 0)
