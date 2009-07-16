@@ -1,3 +1,9 @@
+tcosmonitor (0.2.19+1) unstable; urgency=low
+
+  * Update pt_BR translation (thanks Aecio)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 16 Jul 2009 21:47:36 +0200
+
 tcosmonitor (0.2.19) unstable; urgency=low
 
   * Fix Ubuntu jaunty modules install (use dist instead of site)
