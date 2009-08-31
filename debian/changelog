@@ -1,3 +1,10 @@
+tcosmonitor (0.2.19+2) unstable; urgency=low
+
+  * tcosmonitor/TcosXmlRpc.py:
+    - Change *args with args=''
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 31 Aug 2009 11:34:31 +0200
+
 tcosmonitor (0.2.19+1) unstable; urgency=low
 
   * Update pt_BR translation (thanks Aecio)

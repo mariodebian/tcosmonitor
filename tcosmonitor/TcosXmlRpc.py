@@ -759,7 +759,7 @@ class TcosXmlRpc:
             self.CheckSSL(err)
             return [False, err]
         
-    def vnc(self, action, ip, *args):
+    def vnc(self, action, ip, args=""):
         self.newhost(ip)
         try:
             if action == "genpass":
