@@ -2,10 +2,11 @@ tcosmonitor (0.2.19+2) unstable; urgency=low
 
   * tcosmonitor/TcosXmlRpc.py:
     - Change *args with args=''
+    - Debug arguments of vnc()
   * tcosmonitor/LocalData.py:
     - Disable too much verbose debug
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 31 Aug 2009 11:37:47 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 31 Aug 2009 11:45:52 +0200
 
 tcosmonitor (0.2.19+1) unstable; urgency=low
 

@@ -761,6 +761,7 @@ class TcosXmlRpc:
         
     def vnc(self, action, ip, args=""):
         self.newhost(ip)
+        print_debug("vnc(action='%s' ip='%s' args='%s')"%(action, ip, args) )
         try:
             if action == "genpass":
                 passwd=args
