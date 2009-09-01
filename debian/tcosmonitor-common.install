@@ -1,24 +1,15 @@
 debian/tmp/etc/X11/Xsession.d/81tcos-utils
-debian/tmp/usr/bin/tcos-dbus-client.py
+debian/tmp/usr/bin/tcos-dbus-client
 
 debian/tmp/usr/share/locale/*
 
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosConf.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosDBus.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/ping.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/shared.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosCommon.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/LocalData.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosXauth.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/__init__.py
-
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosConf.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosDBus.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/ping.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/shared.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosCommon.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/LocalData.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosXauth.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/__init__.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosConf.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosDBus.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/ping.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/shared.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosCommon.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/LocalData.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosXauth.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/__init__.py
 
 debian/tmp/usr/share/pixmaps/tcos-icon-32x32.png

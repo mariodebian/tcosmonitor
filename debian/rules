@@ -1,9 +1,8 @@
 #!/usr/bin/make -f
 
 DEB_PYTHON_SYSTEM=pysupport
-DEB_PYTHON_MODULE_PACKAGE = tcosmonitor
 DEB_PACKAGES = tcosmonitor
-DEB_ALL_PACKAGES= tcosmonitor
+DEB_ALL_PACKAGES= tcosmonitor tcosmonitor-common
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
@@ -11,12 +10,15 @@ include /usr/share/cdbs/1/class/python-distutils.mk
 # cdbs is confused if more than one binary package is build:
 DEB_DESTDIR=$(CURDIR)/debian/tmp
 
+cleanbuilddir/tcosmonitor::
+	$(MAKE) -C po clean
+	rm -f tcosmonitor.glade.backup
 
-clean::
-	$(MAKE) clean
+#clean::
+#	$(MAKE) clean
 
+# test if __VERSION__ is not parsed and fail
 install/tcosmonitor::
-	# test if __VERSION__ is not parsed
 	@if [ `find $(CURDIR)/debian/tmp/ -name "*.py" | xargs grep __VERSION__ | wc -l` != 0 ]; then \
 		echo "__VERSION__ unparsed"; \
 		find *.py | xargs grep __VERSION__;\
@@ -29,14 +31,3 @@ binary-predeb/tcosmonitor-common::
 	rm -rf debian/tcosmonitor/usr/share/doc/tcosmonitor
 	ln -s tcosmonitor-common debian/tcosmonitor/usr/share/doc/tcosmonitor
 
-	# rename bin
-	mv debian/tcosmonitor-common/usr/bin/tcos-dbus-client.py debian/tcosmonitor-common/usr/bin/tcos-dbus-client
-
-binary-predeb/tcosmonitor::
-	# rename bin
-	mv debian/tcosmonitor/usr/bin/tcosmonitor.py debian/tcosmonitor/usr/bin/tcosmonitor
-	mv debian/tcosmonitor/usr/bin/tcospersonalize.py debian/tcosmonitor/usr/bin/tcospersonalize
-	mv debian/tcosmonitor/usr/bin/tcos-devices-ng.py debian/tcosmonitor/usr/bin/tcos-devices-ng
-	mv debian/tcosmonitor/usr/bin/tcos-volume-manager.py debian/tcosmonitor/usr/bin/tcos-volume-manager
-
-	mv debian/tcosmonitor/usr/sbin/tcos-server-utils.py debian/tcosmonitor/usr/sbin/tcos-server-utils

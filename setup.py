@@ -6,15 +6,54 @@ import os
 import glob
 from distutils.core import setup
 from distutils.command.build import build
+from distutils.command.install_data import install_data as install_data
+
 
 data_files = []
 
 import sys
 
+def get_debian_version():
+    f=open('debian/changelog', 'r')
+    line=f.readline()
+    f.close()
+    version=line.split()[1].replace('(','').replace(')','')
+    return version
+
 class build_locales(build):
-    if not "clean" in sys.argv:
+    def run(self):
         os.system("sh fix-glade.sh")
         os.system("cd po && make")
+
+        # parse __VERSION__ in build_scripts
+        for pyfile in glob.glob( "%s/*.py" %self.build_scripts):
+            process_version(pyfile)
+        
+        libdir=self.build_lib + '/tcosmonitor'
+        for pyfile in glob.glob( "%s/*.py" %libdir):
+            process_version(pyfile)
+            
+        extdir=libdir+'/extensions'
+        for pyfile in glob.glob( "%s/*.py" %extdir):
+            process_version(pyfile)
+        
+        build.run(self)
+
+class tcosmonitor_install_data(install_data):
+    def run(self):
+        install_data.run(self)
+        
+        # rename scripts (delete .py extension)
+        for pyfile in glob.glob(self.install_dir + '/bin/*.py'):
+            new=pyfile.split('.py')[0]
+            print(" * Renaming %s => %s" %(pyfile, new ) )
+            os.rename( pyfile, new )
+        
+
+def process_version(pyfile):
+    version=get_debian_version()
+    print("sed -i -e 's/__VERSION__/%s/g' %s" %(version, pyfile) )
+    os.system("sed -i -e 's/__VERSION__/%s/g' %s" %(version, pyfile) )
 
 for (path, dirs, files) in os.walk("po"):
     if "tcosmonitor.mo" in files:
@@ -33,10 +72,11 @@ data_files.append(('share/tcosmonitor/images', get_files("images") ))
 data_files.append(('share/pixmaps', ['images/tcos-icon-32x32.png'] ))
 
 # Glade files
-data_files.append(('share/tcosmonitor', ['tcosmonitor.glade'] ))
-data_files.append(('share/tcosmonitor', ['tcospersonalize.glade'] ))
-data_files.append(('share/tcosmonitor', ['tcos-volume-manager.glade'] ))
-data_files.append(('share/tcosmonitor', ['tray.glade'] ))
+data_files.append(('share/tcosmonitor', ['tcosmonitor.glade', 
+                                         'tcospersonalize.glade',
+                                         'tcos-volume-manager.glade',
+                                         'tray.glade'] ))
+
 
 
 # config files and Xsession.d launcher
@@ -52,7 +92,7 @@ data_files.append( ('share/applications/', ['tcosmonitor.desktop',
 
 setup(name='TcosMonitor',
       description = 'Thin Client Manager for teachers',
-      version='__VERSION__',
+      version=get_debian_version(),
       author = 'Mario Izquierdo',
       author_email = 'mariodebian@gmail.com',
       url = 'http://www.tcosproject.org',
@@ -64,7 +104,7 @@ setup(name='TcosMonitor',
       scripts=['tcosmonitor.py', 'tcos-volume-manager.py', 'tcos-devices-ng.py', 
                 'tcospersonalize.py', 'dbus/tcos-dbus-client.py',
                 'server-utils/tcos-server-utils.py'],
-      cmdclass = {'build': build_locales},
+      cmdclass = {'build': build_locales, 'install_data' : tcosmonitor_install_data},
       data_files=data_files
       )
 

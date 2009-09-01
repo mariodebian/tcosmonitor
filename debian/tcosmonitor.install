@@ -11,43 +11,25 @@ debian/tmp/usr/share/tcosmonitor/tray.glade
 debian/tmp/usr/share/applications/tcosmonitor.desktop
 debian/tmp/usr/share/applications/tcospersonalize.desktop
 
-debian/tmp/usr/bin/tcosmonitor.py
-debian/tmp/usr/bin/tcospersonalize.py
-debian/tmp/usr/bin/tcos-volume-manager.py
-debian/tmp/usr/bin/tcos-devices-ng.py
-debian/tmp/usr/bin/tcos-server-utils.py    usr/sbin/
+debian/tmp/usr/bin/tcosmonitor
+debian/tmp/usr/bin/tcospersonalize
+debian/tmp/usr/bin/tcos-volume-manager
+debian/tmp/usr/bin/tcos-devices-ng
+debian/tmp/usr/bin/tcos-server-utils    usr/sbin/
 
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/htmltextview.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/Initialize.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosActions.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosClassView.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosExtensions.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosIconView.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosListView.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosMenus.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosPreferences.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosStaticHosts.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosTrayIcon.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosTrayIcon2.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/TcosXmlRpc.py
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/WakeOnLan.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/htmltextview.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/Initialize.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosActions.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosClassView.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosExtensions.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosIconView.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosListView.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosMenus.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosPreferences.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosStaticHosts.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosTrayIcon.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosTrayIcon2.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosXmlRpc.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/WakeOnLan.py
 
-debian/tmp/usr/lib/python*/site-packages/tcosmonitor/extensions/*.py
-
-
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/htmltextview.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/Initialize.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosActions.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosClassView.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosExtensions.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosIconView.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosListView.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosMenus.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosPreferences.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosStaticHosts.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosTrayIcon.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosTrayIcon2.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/TcosXmlRpc.py
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/WakeOnLan.py
-
-debian/tmp/usr/lib/python*/dist-packages/tcosmonitor/extensions/*.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/extensions/*.py
