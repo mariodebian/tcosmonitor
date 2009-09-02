@@ -1,3 +1,9 @@
+tcosmonitor (0.2.20+1) UNRELEASED; urgency=low
+
+  * Remove obsolete patch targets
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 02 Sep 2009 20:36:02 +0200
+
 tcosmonitor (0.2.20) unstable; urgency=low
 
   * Create setup.py to build and install package

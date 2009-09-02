@@ -129,51 +129,27 @@ patch_version:
 		sed -i 's/__VERSION__/$(VERSION)/g' $$f; \
 	done
 
-patch_dapper: patch_version
-	# PATCHING TcosMonitor in Ubuntu DAPPER
-	sed -i '/^Build/s/5.0.37.2/5.0.7ubuntu13/g' debian/control
-	sed -i '/python-support/s/0.3/0.1.1ubuntu1/g' debian/control
-	sed -i '/dh_pysupport/s/dh_pysupport/dh_python/g' debian/rules
 
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-volume-manager.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' server-utils/tcos-server-utils.py
+patch_unstable:
 
-patch_edgy: patch_version
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-volume-manager.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' server-utils/tcos-server-utils.py
+patch_lenny:
 
-patch_feisty: patch_version
+patch_testing:
 
-patch_gutsy: patch_version
 
-patch_max: patch_version
+patch_hardy:
+	echo 6 > debian/compat
+	sed -i 's/7\.0\.0/6\.0\.0/g' debian/control
+	sed -i 's/3\.8\.0/3\.7\.2/g' debian/control
 
-patch_etch: patch_version
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-devices-ng.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcosmonitor.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcospersonalize.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' tcos-volume-manager.py
-	sed -i '/\/usr\/bin\/env/s/python/python2.4/g' server-utils/tcos-server-utils.py
-
-patch_unstable: patch_version
-
-patch_lenny: patch_version
-
-patch_testing: patch_version
-
-patch_hardy: patch_version
-
-patch_max: patch_version
+patch_max:
 	sed -i '/show_donate/s/1/0/g' tcosmonitor/shared.py
 	
-patch_intrepid: patch_version
+patch_intrepid:
 
-patch_jaunty: patch_version
+patch_jaunty:
+
+
+
 
 .PHONY: fix-glade tcosxmlrpc dbus udev
