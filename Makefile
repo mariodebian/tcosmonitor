@@ -131,10 +131,13 @@ patch_version:
 
 
 patch_unstable:
+	# none
 
 patch_lenny:
+	# none
 
 patch_testing:
+	# none
 
 
 patch_hardy:
@@ -146,8 +149,13 @@ patch_max:
 	sed -i '/show_donate/s/1/0/g' tcosmonitor/shared.py
 	
 patch_intrepid:
+	# none
 
 patch_jaunty:
+	# none
+
+patch_karmic:
+	# none
 
 
 
