@@ -35,6 +35,7 @@ import pwd
 import sys
 from gettext import gettext as _
 import pynotify
+from time import sleep
 
 # needed for __escape__ function
 import xml.sax.saxutils
@@ -52,7 +53,7 @@ class TcosDBusServer:
         self.passwd=None
         self.error_msg=None
         print_debug ( "TcosDBusServer() __init__ as username=%s" %(self.username) )
-        print_debug ( "TcosDBusServer() admin=\"%s\" passwd=\"%s\""  %(self.admin, self.passwd) )
+        print_debug ( "TcosDBusServer() admin='%s' passwd='*****'"  %(self.admin) )
         
         self.__dic__= {
              '\"'    :    '&quot;',
@@ -63,6 +64,13 @@ class TcosDBusServer:
         import TcosCommon
         self.common=TcosCommon.TcosCommon(self)        
         self.host=self.common.get_display(ip_mode=True)
+        # in Ubuntu with NetworkManager probably don't have IP now, make a wait loop
+        if self.host is None:
+            while not self.host:
+                print "TcosDBusServer: No IP found (%s) waiting..."%(self.host)
+                sleep(3)
+                self.host=self.common.get_display(ip_mode=True)
+        # If here IP found get hostname
         self.hostname=self.common.get_display(ip_mode=False)
         
         self.bus = dbus.SystemBus()

@@ -131,16 +131,25 @@ class TcosCommon:
 
     def get_my_local_ip(self, last=True, force=False):
         print_debug("get_my_local_ip(), last=%s, force=%s" %(last,force))
-        if force == True or not "local_ip" in self.vars :
+        if force == True or not "local_ip" in self.vars or len(self.vars["local_ip"]) == 0:
             #print_debug("get_my_local_ip()")
             self.vars["local_ip"]=[]
             for dev in self.GetAllNetworkInterfaces():
                 ip=self.get_ip_address(dev)
                 if ip:
+                    print_debug("get_my_local_ip() dev loop, found ip=%s"%ip)
                     self.vars["local_ip"].append(ip)
-        if last:
+
+        print_debug("get_my_local_ip() self.vars=%s"%self.vars)
+
+        if len(self.vars["local_ip"]) == 0:
+            print_debug("get_my_local_ip() NO IP found returning None")
+            return None
+        elif last:
+            print_debug("get_my_local_ip() last=True, returning [0]=%s"%self.vars["local_ip"][0])
             return self.vars["local_ip"][0]
         else:
+            print_debug("get_my_local_ip() last=False, returning []=%s"%self.vars["local_ip"])
             return self.vars["local_ip"]
 
     def get_all_my_ips(self):
@@ -209,7 +218,9 @@ class TcosCommon:
         else:
             print_debug("get_display() running in local DISPLAY")
             self.vars["display_ip"]=self.get_my_local_ip()
-            self.vars["display_hostname"]=self.DNSgethostbyaddr(self.vars["display_ip"])
+            if self.vars["display_ip"]:
+                # only get hostname if IP != None
+                self.vars["display_hostname"]=self.DNSgethostbyaddr(self.vars["display_ip"])
 
 
         if ip_mode:

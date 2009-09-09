@@ -1,3 +1,11 @@
+tcosmonitor (0.2.21+1) UNRELEASED; urgency=low
+
+  * tcosmonitor/TcosDBus.py tcosmonitor/TcosCommon.py:
+    - in Ubuntu, with NetworkManager need to wait and rescan local IP address in a loop,
+      tcos-dbus-client starts before network is up.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 09 Sep 2009 16:10:44 +0200
+
 tcosmonitor (0.2.21) unstable; urgency=low
 
   * Remove obsolete patch targets
