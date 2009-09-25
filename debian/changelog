@@ -1,11 +1,12 @@
-tcosmonitor (0.2.22) UNRELEASED; urgency=low
+tcosmonitor (0.2.22) unstable; urgency=low
 
   * tcosmonitor/extensions/livevnc.py:
     - New extension to view all thin clients with python-gtk-vnc
   * tcosmonitor/extensions/vnc.py:
     - Change vncviewer external command with gtkvnc widget in a Window.
+  * python-gnome2-extras is deprecated, use: python-eggtrayicon | python-gnome2-extras
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 25 Sep 2009 18:15:31 +0200
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 25 Sep 2009 23:50:36 +0200
 
 tcosmonitor (0.2.21+1) UNRELEASED; urgency=low
 

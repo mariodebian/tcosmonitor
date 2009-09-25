@@ -13,7 +13,7 @@ Architecture: all
 Depends:  python, 
           tcosmonitor-common, 
           python-glade2, 
-          pyhton-gtk-vnc, 
+          python-gtk-vnc, 
           gksu | kdebase-bin, 
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.16~rc9)
@@ -32,7 +32,7 @@ Depends:  python,
           python-dns, 
           python-netifaces, 
           python-notify, 
-          python-gnome2-extras, 
+          python-eggtrayicon | python-gnome2-extras,
           zenity, 
           dbus, 
           x11vnc, 
