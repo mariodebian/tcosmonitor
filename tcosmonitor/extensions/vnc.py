@@ -37,6 +37,11 @@ import signal
 
 from tcosmonitor.ping import PingPort
 
+import gtkvnc
+import gtk
+import traceback
+import sys
+
 def print_debug(txt):
     if shared.debug:
         print "%s::%s" % ("extensions::vnc", txt)
@@ -50,7 +55,8 @@ class VNC(TcosExtension):
         self.main.menus.register_simple( _("Demo mode (from this host)") , "menu_tiza.png", 1, self.vnc_demo_simple, "demo")
         
         self.main.menus.register_all( _("Enter demo mode, all connected users see my screen") , "menu_tiza.png", 1, self.vnc_demo_all, "demo")
-        
+        self.vnc={}
+        self.vncwindow=None
 
     def vnc_demo_all(self, *args):
         if not self.get_all_clients():
@@ -188,16 +194,18 @@ class VNC(TcosExtension):
                 if wait > max_wait:
                     break
             if status == "OPEN":
-                cmd=("LC_ALL=C LC_MESSAGES=C vncviewer --version 2>&1| grep built |grep -c \"4.1\"")
-                output=self.main.common.exe_cmd(cmd)
-                if output == "1":
-                    cmd = ("vncviewer " + ip + " -UseLocalCursor=0 -passwd %s" %os.path.expanduser('~/.tcosvnc') )
-                else:
-                    cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
-                print_debug ( "start_process() threading \"%s\"" %(cmd) )
-                self.main.common.exe_cmd (cmd, verbose=0, background=True)
+                #cmd=("LC_ALL=C LC_MESSAGES=C vncviewer --version 2>&1| grep built |grep -c \"4.1\"")
+                #output=self.main.common.exe_cmd(cmd)
+                #if output == "1":
+                #    cmd = ("vncviewer " + ip + " -UseLocalCursor=0 -passwd %s" %os.path.expanduser('~/.tcosvnc') )
+                #else:
+                #    cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
+                #print_debug ( "start_process() threading \"%s\"" %(cmd) )
+                #self.main.common.exe_cmd (cmd, verbose=0, background=True)
+                self.vncviewer(ip, passwd)
         except Exception, err:
             print_debug("start_vnc() Exception, error=%s"%err)
+            traceback.print_exc(file=sys.stderr)
             self.main.common.threads_enter("TcosActions:start_vnc print x11vnc support msg")
             shared.error_msg ( _("Can't start VNC, please add X11VNC support") )
             self.main.common.threads_leave("TcosActions:start_vnc print x11vnc support msg")
@@ -206,6 +214,97 @@ class VNC(TcosExtension):
         self.main.common.threads_enter("TcosActions:start_vnc clean status msg")
         self.main.write_into_statusbar( "" )
         self.main.common.threads_leave("TcosActions:start_vnc clean status msg")
+
+    def vncviewer_destroy(self, window, ip):
+        try:
+            self.vncwindow.hide()
+            self.vncwindow.destroy()
+        except Exception, err:
+            print_debug("vncviewer_destroy() Cant hide/destroy vncviewer window, err=%s"%err)
+        print_debug("vncviewer_destroy() self.vnc=%s"%self.vnc)
+        if self.vnc.has_key(ip):
+            self.vnc[ip].close()
+            self.vnc.pop(ip)
+        self.vncwindow=None
+
+    def vncviewer_fullcontrol(self, button, ip):
+        image=gtk.Image()
+        
+        if self.vnc[ip].get_read_only():
+            self.vnc[ip].set_read_only(False)
+            button.set_label( _("Switch to view only") )
+            image.set_from_stock('gtk-find', gtk.ICON_SIZE_BUTTON)
+            button.set_image(image)
+        else:
+            self.vnc[ip].set_read_only(True)
+            button.set_label( _("Switch to full control") )
+            image.set_from_stock('gtk-find-and-replace', gtk.ICON_SIZE_BUTTON)
+            button.set_image(image)
+
+    def vncviewer_force_resize(self, vnc, size, ip):
+        w,h = vnc.get_size_request()
+        if w == -1 or h == -1:
+            print_debug("_force_resize() returning w=%s h=%s ip=%s"%(w, h, ip))
+            return
+        vnc.set_size_request(w/2, h/2)
+
+    def vncviewer(self, ip, passwd, stoptarget=None, stopargs=None):
+        self.vncwindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.vncwindow.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
+        self.vncwindow.set_title( _("VNC host %s") %(ip) )
+        self.vncwindow.connect("destroy", self.vncviewer_destroy, ip)
+        box1 = gtk.HBox(True, 10)
+        
+        button = gtk.Button( _("Switch to full control") )
+        button.connect("clicked", self.vncviewer_fullcontrol, ip)
+        image=gtk.Image()
+        image.set_from_stock('gtk-find-and-replace', gtk.ICON_SIZE_BUTTON)
+        button.set_image(image)
+        box1.pack_start(button, False, False, 0)
+        button.show_all()
+
+        if stoptarget:
+            sbutton = gtk.Button( _("Stop") )
+            sbutton.connect("clicked", stoptarget, stopargs, None)
+            image=gtk.Image()
+            image.set_from_stock('gtk-stop', gtk.ICON_SIZE_BUTTON)
+            sbutton.set_image(image)
+            box1.pack_start(sbutton, False, False, 0)
+            sbutton.show_all()
+
+        lastbutton = gtk.Button("Quit")
+        image=gtk.Image()
+        image.set_from_stock('gtk-quit', gtk.ICON_SIZE_BUTTON)
+        lastbutton.set_image(image)
+        lastbutton.connect("clicked", self.vncviewer_destroy, ip)
+        box1.pack_start(lastbutton, False, False, 0)
+        lastbutton.show_all()
+        
+        self.vnc[ip]=gtkvnc.Display()
+        self.vnc[ip].set_credential(gtkvnc.CREDENTIAL_PASSWORD, passwd)
+        self.vnc[ip].set_credential(gtkvnc.CREDENTIAL_CLIENTNAME, self.main.name)
+        
+        #self.vnc[ip].connect("vnc-auth-credential", self._vnc_auth_cred, ip)
+        self.vnc[ip].connect("size-request", self.vncviewer_force_resize, ip)
+        #self.vnc[ip].connect("vnc-connected", self._vnc_connected, ip)
+        self.vnc[ip].set_tooltip_text("%s"%ip)
+        
+        self.vnc[ip].open_host(ip, '5900')
+        self.vnc[ip].set_scaling(True)
+        self.vnc[ip].set_read_only(True)
+        self.vnc[ip].show()
+        
+        # Show the box
+        box1.show()
+        
+        box2 = gtk.VBox(False, 0)
+        box2.pack_start(box1, False, False, 0)
+        box2.pack_start(self.vnc[ip], True, True, 0)
+        
+        
+        # Show the window
+        self.vncwindow.add(box2)
+        self.vncwindow.show_all()
 
 
     def vnc_demo_simple(self, widget, ip):
@@ -300,12 +399,13 @@ class VNC(TcosExtension):
             self.main.xmlrpc.vnc("stopserver", ip )
         else:
             self.main.write_into_statusbar( _("Running in demo mode with %s clients.") %(total) )
-            cmd=("LC_ALL=C LC_MESSAGES=C vncviewer --version 2>&1| grep built |grep -c \"4.1\"")
-            output=self.main.common.exe_cmd(cmd)
-            if output == "1":
-                p=subprocess.Popen(["vncviewer", ip, "-UseLocalCursor=0", "-PasswordFile", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
-            else:
-                p=subprocess.Popen(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
+            #cmd=("LC_ALL=C LC_MESSAGES=C vncviewer --version 2>&1| grep built |grep -c \"4.1\"")
+            #output=self.main.common.exe_cmd(cmd)
+            #if output == "1":
+            #    p=subprocess.Popen(["vncviewer", ip, "-UseLocalCursor=0", "-PasswordFile", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
+            #else:
+            #    p=subprocess.Popen(["vncviewer", ip, "-passwd", "%s" %os.path.expanduser('~/.tcosvnc')], shell=False, bufsize=0, close_fds=True)
+            
             # new mode for stop button
             if len(self.vnc_count.keys()) != 0:
                 count=len(self.vnc_count.keys())-1
@@ -314,15 +414,34 @@ class VNC(TcosExtension):
             else:
                 nextkey=1
                 self.vnc_count[nextkey]=None
-            self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients, "key":nextkey}, _("Running in demo mode from user %(host)s. Demo Nº %(count)s") %{"host":client_simple, "count":nextkey} )
+            
+            stopargs={"target": "vnc", "ip": ip, "allclients":newallclients, "key":nextkey}
+            self.vncviewer(ip, passwd, stoptarget=self.on_progressbox_click, stopargs=stopargs)
+            #self.add_progressbox( {"target": "vnc", "pid":p.pid, "ip": ip, "allclients":newallclients, "key":nextkey}, _("Running in demo mode from user %(host)s. Demo Nº %(count)s") %{"host":client_simple, "count":nextkey} )
+            self.add_progressbox( stopargs, _("Running in demo mode from user %(host)s. Demo Nº %(count)s") %{"host":client_simple, "count":nextkey} )
 
     def on_progressbox_click(self, widget, args, box):
-        box.destroy()
+        if box:
+            box.destroy()
+        else:
+            for table in self.main.progressbox.get_children():
+                #[<gtk.Label>, <gtk.Button>]
+                # read key from label
+                tlabel=table.get_children()[0]
+                tbutton=table.get_children()[1]
+                key=int(tlabel.get_text().split('Nº ')[1])
+                if args['key'] == key:
+                    # we have found IP in label !!! destroy table
+                    table.destroy()
+                    widget=tbutton
         print_debug("on_progressbox_click() widget=%s, args=%s, box=%s" %(widget, args, box) )
         
         if not args['target']: return
 
-        self.main.stop_running_actions.remove(widget)
+        try:
+            self.main.stop_running_actions.remove(widget)
+        except Exception, err:
+            print_debug("on_progressbox_click() can't remove widget=%s err=%s"%(widget, err))
         
         if args['target'] == "vnc":
             del self.vnc_count[args['key']]
@@ -333,10 +452,13 @@ class VNC(TcosExtension):
                         self.main.xmlrpc.newhost(client)
                         self.main.xmlrpc.vnc("stopclient", client)
                 # kill only in server one vncviewer
-                if "pid" in args:
-                    os.kill(args['pid'], signal.SIGKILL)
-                else:
-                    self.main.common.exe_cmd("killall -s KILL vncviewer", verbose=0, background=True)
+                #if "pid" in args:
+                #    os.kill(args['pid'], signal.SIGKILL)
+                #else:
+                #    self.main.common.exe_cmd("killall -s KILL vncviewer", verbose=0, background=True)
+                
+                self.vncviewer_destroy(None, args['ip'])
+                
                 self.main.xmlrpc.newhost(args['ip'])
                 self.main.xmlrpc.vnc("stopserver", args['ip'] )
             else:

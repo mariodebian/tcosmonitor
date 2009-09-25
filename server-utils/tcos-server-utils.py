@@ -61,7 +61,7 @@ def usage():
     print "   tcos-server-utils --action=XXX  (action must be: %s ) "                %(", ".join(actions) )
     print "                                   (use --action=nothing to test with doing nothing!!!)" 
     print "   tcos-server-utils --text=\"foo\" (if action=message this text will be displayed "
-    print "                                     in all connected users with zenity)"
+    print "                                     in all connected users with notification-daemon)"
     print "                     --users=foo,bar (coma separated list of users we want to do action"
     print "                                      only valid for --action=message)"
     print "   tcos-server-utils -d [--debug]  (write debug data to stdout)"

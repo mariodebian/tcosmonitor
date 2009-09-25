@@ -90,6 +90,8 @@ class TcosMonitor(object):
         # if true auto-update is active, false only one update        
         self.updating=False
         self.name="TcosMonitor"
+        # register triggers
+        self.triggers={}
         self.mainloop = gobject.MainLoop()
         
         # FIXME change PATH

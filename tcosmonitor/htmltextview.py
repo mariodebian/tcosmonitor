@@ -566,7 +566,25 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
                     print "WARNING: not add widget, something wrong added"
             #########################  end add widget   ############################ 
             
-                
+        elif name == "livevnc":
+            #print "htmltextview: name=%s ip=%s objdict=%s"%(name, attrs['ip'], attrs['objdict'])
+            vnc=getattr(self.main, attrs['objdict'])[attrs['ip']]
+            # set tittle
+            label=gtk.Label(attrs['title'])
+            title_rotate=int(attrs['title_rotate'])
+            label.set_property("angle", title_rotate)
+            label.show()
+            anchor_widget = self.textbuf.create_child_anchor(self.iter)
+            try:
+                self.textview.add_child_at_anchor (label, anchor_widget)
+            except:
+                pass
+            # insert vnc widget
+            anchor_widget = self.textbuf.create_child_anchor(self.iter)
+            try:
+                self.textview.add_child_at_anchor(vnc, anchor_widget)
+            except Exception, err:
+                print "htmltextview Exception, error=%s"%err
         else:
             warnings.warn("Unhandled element '%s'" % name)
 
@@ -595,6 +613,8 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
         elif name == 'a':
             pass
         elif name == 'input':
+            pass
+        elif name == 'livevnc':
             pass
         else:
             warnings.warn("Unhandled element '%s'" % name)
@@ -692,6 +712,8 @@ class HtmlTextView(gtk.TextView):
         #gtk.gdk.threads_enter()
         buffer.set_text("")
         #gtk.gdk.threads_leave()
+        if self.main.triggers.has_key('clean.datatxt'):
+            self.main.triggers['clean.datatxt']()
         
         self.myhtml="\n<body xmlns='http://www.w3.org/1999/xhtml'>\n"
         
