@@ -1,3 +1,11 @@
+tcosmonitor (0.2.23) unstable; urgency=low
+
+  * add support for scaling VNC on client in LiveView, add stop and
+    fullscreen buttons
+  * Update translation and Spanish template
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 01 Oct 2009 01:27:14 +0200
+
 tcosmonitor (0.2.22) unstable; urgency=low
 
   * tcosmonitor/extensions/livevnc.py:

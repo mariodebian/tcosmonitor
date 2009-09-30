@@ -32,6 +32,7 @@
 ../tcosmonitor/extensions/tcospersonalize.py
 ../tcosmonitor/extensions/vnc.py
 ../tcosmonitor/extensions/wakeonlan.py
+../tcosmonitor/extensions/livevnc.py
 ../tcosmonitor/extensions/viewproc.py
 ../tcosmonitor/extensions/audiortp.py
 ../tcosmonitor/extensions/clean.py

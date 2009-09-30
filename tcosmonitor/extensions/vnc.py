@@ -57,6 +57,7 @@ class VNC(TcosExtension):
         self.main.menus.register_all( _("Enter demo mode, all connected users see my screen") , "menu_tiza.png", 1, self.vnc_demo_all, "demo")
         self.vnc={}
         self.vncwindow=None
+        self.is_fullscreen=False
 
     def vnc_demo_all(self, *args):
         if not self.get_all_clients():
@@ -248,6 +249,19 @@ class VNC(TcosExtension):
             return
         vnc.set_size_request(w/2, h/2)
 
+
+    def on_fullscreenbutton_click(self, button):
+        image=gtk.Image()
+        if self.is_fullscreen:
+            self.vncwindow.unfullscreen()
+            self.is_fullscreen=False
+            image.set_from_stock('gtk-fullscreen', gtk.ICON_SIZE_BUTTON)
+        else:
+            self.vncwindow.fullscreen()
+            self.is_fullscreen=True
+            image.set_from_stock('gtk-leave-fullscreen', gtk.ICON_SIZE_BUTTON)
+        button.set_image(image)
+
     def vncviewer(self, ip, passwd, stoptarget=None, stopargs=None):
         self.vncwindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.vncwindow.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
@@ -263,6 +277,14 @@ class VNC(TcosExtension):
         box1.pack_start(button, False, False, 0)
         button.show_all()
 
+        fbutton = gtk.Button( _("Switch to fullscreen") )
+        fbutton.connect("clicked", self.on_fullscreenbutton_click)
+        image=gtk.Image()
+        image.set_from_stock('gtk-fullscreen', gtk.ICON_SIZE_BUTTON)
+        fbutton.set_image(image)
+        box1.pack_start(fbutton, False, False, 0)
+        fbutton.show_all()
+
         if stoptarget:
             sbutton = gtk.Button( _("Stop") )
             sbutton.connect("clicked", stoptarget, stopargs, None)
@@ -272,7 +294,7 @@ class VNC(TcosExtension):
             box1.pack_start(sbutton, False, False, 0)
             sbutton.show_all()
 
-        lastbutton = gtk.Button("Quit")
+        lastbutton = gtk.Button( _("Quit") )
         image=gtk.Image()
         image.set_from_stock('gtk-quit', gtk.ICON_SIZE_BUTTON)
         lastbutton.set_image(image)
@@ -474,7 +496,8 @@ class VNC(TcosExtension):
                     self.main.common.exe_cmd("killall -s KILL x11vnc", verbose=0, background=True)
                 
             self.main.write_into_statusbar( _("Demo mode off.") )
-        
+
+
 
 
 
