@@ -53,6 +53,7 @@ class LiveVNC(TcosExtension):
         self.vncpasswd=""
         self.vncxres={}
         self.main.triggers['clean.datatxt']=self.__cleandatatxt
+        self.main.stop_liveview_button=None
 
     ###########  MULTIPLE HOSTS ###############
 
@@ -68,7 +69,12 @@ class LiveVNC(TcosExtension):
     def start_action(self, *args):
         print_debug("START_ACTION")
         self.main.datatxt.clean()
+        self.main.stop_liveview_button=gtk.Button(_("Stop") )
+        self.main.stop_liveview_button.connect("clicked", self.__cleandatatxt, 'force')
+        self.main.stop_liveview_button.show()
+        
         self.main.datatxt.insert_block( _("Live view of all hosts") )
+                    #"""<span> </span><input type='button' name="self.main.stop_liveview_button" />""" )
         self.main.datatxt.insert_html("<br/>")
 
     def real_action(self, ip, action):
@@ -82,7 +88,7 @@ class LiveVNC(TcosExtension):
         
         
         # start x11vnc
-        result=self.main.xmlrpc.vnc("startserver", ip)
+        result=self.main.xmlrpc.vnc("startscale", ip)
         print_debug("real_action() start remote x11vnc result=%s"%result)
         if result.find("error") != -1:
             return
@@ -105,13 +111,17 @@ class LiveVNC(TcosExtension):
         self.main.livevnc[ip].set_credential(gtkvnc.CREDENTIAL_CLIENTNAME, self.main.name)
         
         self.main.livevnc[ip].connect("vnc-auth-credential", self._vnc_auth_cred, ip)
-        self.main.livevnc[ip].connect("size-request", self._force_resize, ip)
+        #self.main.livevnc[ip].connect("size-request", self._force_resize, ip)
         self.main.livevnc[ip].connect("vnc-connected", self._vnc_connected, ip)
+        #self.main.livevnc[ip].connect("clicked", self._vnc_clicked, ip)
         self.main.livevnc[ip].set_tooltip_text("%s"%ip)
         
-        
+        #print dir(self.main.livevnc[ip])
         
         print_debug("real_action() vnc started!!! ")
+
+    def _vnc_clicked(self, vnc, ip):
+        print_debug("_vnc_clicked() vnc=%s ip=%s"%(vnc, ip))
 
 
     def _vnc_auth_cred(self, *args):
@@ -164,11 +174,22 @@ class LiveVNC(TcosExtension):
                  "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>"+
                  "")
             self.main.livevnc[ip].open_host(ip, '5900')
-            self.main.livevnc[ip].set_scaling(True)
+            #self.main.livevnc[ip].set_scaling(True)
             self.main.livevnc[ip].set_read_only(True)
             self.main.livevnc[ip].show()
         # draw widgets
         self.main.datatxt.display()
+        stopargs={"target": "livevnc"}
+        self.add_progressbox( stopargs, _("Running in LiveView mode") )
+
+    def on_progressbox_click(self, widget, args, box):
+        try:
+            box.destroy()
+        except:
+            pass
+        self.__cleandatatxt(None, 'force')
+
+
 
     def __cleandatatxt(self, *args):
         # stop all livevnc connections
@@ -178,6 +199,10 @@ class LiveVNC(TcosExtension):
             # stop server (don't wait)
             self.main.xmlrpc.vnc("stopserver", ip )
         self.main.livevnc={}
+        
+        if len(args) == 2 and args[1] == 'force':
+            self.main.datatxt.clean()
+            self.main.stop_liveview_button=None
 
 
 

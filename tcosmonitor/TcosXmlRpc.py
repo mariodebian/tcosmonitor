@@ -36,6 +36,8 @@ from tcosmonitor.ping import PingPort
 # needed for __escape__ function
 import xml.sax.saxutils
 
+import traceback
+
 if "DISPLAY" in os.environ:
     if os.environ["DISPLAY"] != "":
         import gtk
@@ -772,6 +774,12 @@ class TcosXmlRpc:
                 return self.tc.tcos.vnc("startserver", "/tmp/.tcosvnc", \
                                     self.main.config.GetVar("xmlrpc_username"), \
                                     self.main.config.GetVar("xmlrpc_password") )
+            elif action == "startscale":
+                size=int(self.main.config.GetVar("miniscrot_size"))
+                scale="%sx%s"%(size/100., size/100.)
+                return self.tc.tcos.vnc("startscale", "/tmp/.tcosvnc %s"%scale, \
+                                    self.main.config.GetVar("xmlrpc_username"), \
+                                    self.main.config.GetVar("xmlrpc_password") )
             elif action == "stopserver":
                 return self.tc.tcos.vnc("stopserver", "",\
                                     self.main.config.GetVar("xmlrpc_username"), \
@@ -787,6 +795,7 @@ class TcosXmlRpc:
                                     self.main.config.GetVar("xmlrpc_password") )
         except Exception, err:
             print_debug ("vnc() Exception, error: %s" %err)
+            traceback.print_exc(file=sys.stderr)
             self.CheckSSL(err)
             return False
             
