@@ -85,6 +85,7 @@ class TcosTrayIcon:
         #print_debug (" ##### InitMenu() ######")
         
         # clean devbox
+        self.devbox=self.ui.get_widget("devbox")
         self.devbox.foreach( lambda(widget): widget.destroy() )
         
         # sort items
@@ -241,7 +242,7 @@ class TcosTrayIcon:
 
     
     def update_status(self, device, actions, status):
-        print_debug ("update_status() of %s to %s" %(actions, status))
+        print_debug ("update_status() device=%s of %s to %s" %(device, actions, status))
         
         if self.items.has_key(device):
             if "_mount" in actions and status:
@@ -256,7 +257,8 @@ class TcosTrayIcon:
             #print "     STATUS of %s is %s" %(device, status)
         
             self.items["%s"%device][3]["%s"%actions][2]=status
-            self.InitMenu()
+            #self.InitMenu()
+            gobject.timeout_add(100, self.InitMenu)
         else:
             print_debug( " WW: no updating status of %s"%(actions) )
             
