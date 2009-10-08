@@ -164,17 +164,24 @@ class TcosIconView(object):
     def on_iconview_event(self, iv, event):
         """Deletes old tooltip and adds new one for new icon."""
         # On mouse move, old tooltip must dissapear.
-        self.icon_tooltips = gtk.Tooltips()
 
         # Adds tip if no buttons are pressed during the move.
         if not event.state:
+            #print_debug("on_iconview_event() iv=%s event=%s"%(iv, event))
+            if not hasattr(iv, 'set_tooltip_text'):
+                self.icon_tooltips = gtk.Tooltips() # deprecated
+
             pos = iv.get_path_at_pos(int(event.x), int(event.y))
             if pos:
                 mod = list(iv.get_model()[pos])
                 tip=self.generate_tooltip(mod[1])
             else:
                 tip=self.default_tip
-            self.icon_tooltips.set_tip(iv, tip)
+
+            if not hasattr(iv, 'set_tooltip_text'):
+                self.icon_tooltips.set_tip(iv, tip)
+            else:
+                iv.set_tooltip_text(tip)
 
 
     def on_iconview_click(self, iv, event):

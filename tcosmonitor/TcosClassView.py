@@ -230,7 +230,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         if data['image_blocked']:
             pixbuf2 = data['image_blocked']
-            print("generate_icon() compositing isblocked=True")
+            print_debug("generate_icon() compositing isblocked=True")
             pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         
         iconview.set_model(model)
@@ -241,7 +241,11 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         #if data['username'] == shared.NO_LOGIN_MSG:
         #    model.append([data['username'], data['ip'], pixbuf])
-        model.append([data['username'], data['ip'], pixbuf])
+        # show hostname instead of username in standalone
+        if data['standalone']:
+            model.append([data['hostname'].split('.')[0], data['ip'], pixbuf])
+        else:
+            model.append([data['username'], data['ip'], pixbuf])
         
         iconview.show()
         # in old versions of gtk we need to put explicity iconview size
@@ -405,8 +409,11 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
             else:
                 value=data[info[1]]
             txt+=" %s: %s \n" %(info[0], value)
-        self.icon_tooltips = gtk.Tooltips()
-        self.icon_tooltips.set_tip(button, txt)
+        if hasattr(button, 'set_tooltip_text'):
+            button.set_tooltip_text(txt)
+        else:
+            self.icon_tooltips = gtk.Tooltips() #deprecated
+            self.icon_tooltips.set_tip(button, txt)
 
     def get_multiple(self):
         return self.selected
@@ -441,8 +448,11 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
     def on_classview_event(self, widget, event):
         if not event.state:
             #print_debug("on_classview_event() tip")
-            self.icon_tooltips = gtk.Tooltips()
-            self.icon_tooltips.set_tip(widget, self.default_tip)
+            if hasattr(widget, 'set_tooltip_text'):
+                widget.set_tooltip_text(self.default_tip)
+            else:
+                self.icon_tooltips = gtk.Tooltips() # deprecated
+                self.icon_tooltips.set_tip(widget, self.default_tip)
 
 
     def change_lockscreen(self, ip, pixbuf2, status_screen, status_net):

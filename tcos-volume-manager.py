@@ -108,7 +108,7 @@ class TcosVolumeManager:
             image=gtk.Image()
             image.set_from_file (shared.IMG_DIR + "tcos-volume-32x32.png")
             eventbox.add(image)
-            tips = gtk.Tooltips()
+            tips = gtk.Tooltips() # deprecated
             
             tips.set_tip(icon, ( _("Tcos Sound levels on:\n%s") %(self.host) )[0:79])
             tips.enable()
