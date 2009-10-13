@@ -309,7 +309,8 @@ class VNC(TcosExtension):
         #self.vnc[ip].connect("vnc-auth-credential", self._vnc_auth_cred, ip)
         self.vnc[ip].connect("size-request", self.vncviewer_force_resize, ip)
         #self.vnc[ip].connect("vnc-connected", self._vnc_connected, ip)
-        self.vnc[ip].set_tooltip_text("%s"%ip)
+        # this freeze GUI, search another way
+        #self.vnc[ip].set_tooltip_text("%s"%ip)
         
         self.vnc[ip].open_host(ip, '5900')
         self.vnc[ip].set_scaling(True)
