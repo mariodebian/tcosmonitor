@@ -1,3 +1,11 @@
+tcosmonitor (0.2.25) unstable; urgency=low
+
+  * add support for new gtk.Tooltip() and show hostname in ClassView in
+    standalone
+  * disable set_tooltip_text, freeze the GUI
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 13 Oct 2009 11:59:16 +0200
+
 tcosmonitor (0.2.24) unstable; urgency=low
 
   * tcosmonitor/TcosTrayIcon2.py: Fix crash of tcos-devices-ng, generate
