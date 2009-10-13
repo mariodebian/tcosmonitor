@@ -114,7 +114,8 @@ class LiveVNC(TcosExtension):
         #self.main.livevnc[ip].connect("size-request", self._force_resize, ip)
         self.main.livevnc[ip].connect("vnc-connected", self._vnc_connected, ip)
         #self.main.livevnc[ip].connect("clicked", self._vnc_clicked, ip)
-        self.main.livevnc[ip].set_tooltip_text("%s"%ip)
+        # this freeze GUI
+        #self.main.livevnc[ip].set_tooltip_text("%s"%ip)
         
         #print dir(self.main.livevnc[ip])
         
