@@ -1741,7 +1741,7 @@ msgstr "Cambiar a sólo ver"
 
 #: ../tcosmonitor/extensions/vnc.py:241 ../tcosmonitor/extensions/vnc.py:272
 msgid "Switch to full control"
-msgstr "Cambiar a controllar"
+msgstr "Activar control remoto"
 
 #: ../tcosmonitor/extensions/vnc.py:268
 #, python-format
