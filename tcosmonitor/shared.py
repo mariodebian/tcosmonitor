@@ -136,6 +136,7 @@ DefaultConfig=[
 ["threadscontrol", 1, "int"], 
 ["tcosmonitorversion", version, "str"],
 ["blockactioninthishost", 1, "int"],
+["notshowwhentcosmonitor", 0, "int"],
 ["onlyshowtcos", 1, "int"],
 ["selectedhosts", 0, "int"],
 ["statichosts", "", "str"],

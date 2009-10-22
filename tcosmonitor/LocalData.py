@@ -243,6 +243,17 @@ class LocalData:
             # sort numeric
             self.allclients = self.sorted_copy(self.allclients)
             
+            # check for notshowwhentcosmonitor
+            if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
+                # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
+                try:
+                    if os.environ["DISPLAY"].split(':')[0] != '':
+                        # running tcosmonitor on thin client
+                        i=self.allclients.index(os.environ["DISPLAY"].split(':')[0])
+                        self.allclients.pop(i)
+                except Exception, err:
+                    print_debug("GetAllClients() can't read DISPLAY, %s"%err)
+            
             # onlys show host running tcosxmlrpc in 8998 or 8999 port
             if self.main.config.GetVar("onlyshowtcos") == 1:
                 if hasattr(self.main, "write_into_statusbar"):
@@ -260,6 +271,7 @@ class LocalData:
                         print_debug("GetAllClients() host=%s ports 8998 or 8999 CLOSED" %(host))
                         #hosts.append(host)
                 self.allclients=hosts
+            
             
             print_debug ( "GetAllClients() Host connected=%s" %(self.allclients) )
             crono(start, "GetAllClients()")
