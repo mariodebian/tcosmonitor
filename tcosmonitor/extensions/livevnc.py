@@ -114,6 +114,7 @@ class LiveVNC(TcosExtension):
         #self.main.livevnc[ip].connect("size-request", self._force_resize, ip)
         self.main.livevnc[ip].connect("vnc-connected", self._vnc_connected, ip)
         #self.main.livevnc[ip].connect("clicked", self._vnc_clicked, ip)
+        self.main.livevnc[ip].connect("button-press-event", self.on_iconview_click, ip)
         # this freeze GUI
         #self.main.livevnc[ip].set_tooltip_text("%s"%ip)
         
@@ -123,6 +124,14 @@ class LiveVNC(TcosExtension):
 
     def _vnc_clicked(self, vnc, ip):
         print_debug("_vnc_clicked() vnc=%s ip=%s"%(vnc, ip))
+
+
+    def on_iconview_click(self, widget, event, ip):
+        if event.button == 3:
+            # right click show menu
+            self.main.menus.RightClickMenuOne( None , None, ip)
+            self.main.menu.popup( None, None, None, event.button, event.time)
+            return True
 
 
     def _vnc_auth_cred(self, *args):
