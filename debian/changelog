@@ -1,3 +1,14 @@
+tcosmonitor (0.2.26) unstable; urgency=low
+
+  * fix typo in Spanish translation
+  * new checkbox in preferences ck_notshowwhentcosmonitor, don't show
+    thin client if tcosmonitor is running there
+  * add click support to livevnc, thanks to Fernando Lisón for asking
+    for it
+  * add actions menu when right clicking on screenshots
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 08 Nov 2009 14:52:11 +0100
+
 tcosmonitor (0.2.25) unstable; urgency=low
 
   * add support for new gtk.Tooltip() and show hostname in ClassView in
