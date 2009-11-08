@@ -102,6 +102,7 @@ class TcosPreferences:
         self.main.pref_threadscontrol = self.main.ui.get_widget('ck_threadscontrol')
         self.main.pref_enable_sslxmlrpc = self.main.ui.get_widget('ck_enable_sslxmlrpc')
         self.main.pref_blockactioninthishost = self.main.ui.get_widget('ck_blockactioninthishost')
+        self.main.pref_notshowwhentcosmonitor = self.main.ui.get_widget('ck_notshowwhentcosmonitor')
         self.main.pref_onlyshowtcos = self.main.ui.get_widget('ck_onlyshowtcos')
         self.main.pref_selectedhosts = self.main.ui.get_widget('ck_selectedhosts')
         
@@ -164,6 +165,7 @@ class TcosPreferences:
         self.read_checkbox(self.main.pref_threadscontrol, "threadscontrol")
         self.read_checkbox(self.main.pref_enable_sslxmlrpc, "enable_sslxmlrpc")
         self.read_checkbox(self.main.pref_blockactioninthishost, "blockactioninthishost")
+        self.read_checkbox(self.main.pref_notshowwhentcosmonitor, "notshowwhentcosmonitor")
         self.read_checkbox(self.main.pref_onlyshowtcos, "onlyshowtcos")
         self.read_checkbox(self.main.pref_selectedhosts, "selectedhosts")
             
@@ -342,6 +344,7 @@ class TcosPreferences:
         self.populate_checkboxes(self.main.pref_threadscontrol, "threadscontrol")
         self.populate_checkboxes(self.main.pref_enable_sslxmlrpc, "enable_sslxmlrpc")
         self.populate_checkboxes(self.main.pref_blockactioninthishost, "blockactioninthishost")
+        self.populate_checkboxes(self.main.pref_notshowwhentcosmonitor, "notshowwhentcosmonitor")
         self.populate_checkboxes(self.main.pref_onlyshowtcos, "onlyshowtcos")
         self.populate_checkboxes(self.main.pref_selectedhosts, "selectedhosts")
         

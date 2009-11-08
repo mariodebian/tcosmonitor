@@ -90,6 +90,7 @@ class TcosMonitor(object):
         # if true auto-update is active, false only one update        
         self.updating=False
         self.name="TcosMonitor"
+        self.force_selected_ip=None
         # register triggers
         self.triggers={}
         self.mainloop = gobject.MainLoop()

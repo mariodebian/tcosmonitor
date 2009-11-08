@@ -9,7 +9,7 @@
 # 
 
 
-#import os
+import os
 #import sys
 import re
 from threading import Thread
@@ -92,6 +92,16 @@ class Ping:
         for pingle in pinglist:
             pingle.join()
             if pingle.status == 2:
+                # check for notshowwhentcosmonitor
+                if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
+                    # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
+                    try:
+                        if os.environ["DISPLAY"].split(':')[0] != '':
+                            # running tcosmonitor on thin client
+                            continue
+                    except Exception, err:
+                        print_debug("ping_iprange() can't read DISPLAY, %s"%err)
+                
                 # only show in list hosts running tcosxmlrpc in 8998 or 8999 port
                 if self.main.config.GetVar("onlyshowtcos") == 1:
                     self.main.common.threads_enter("Ping:only show tcos")
