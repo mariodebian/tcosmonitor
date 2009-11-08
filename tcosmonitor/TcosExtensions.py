@@ -68,6 +68,10 @@ class TcosExtension(object):
             self.main.selected_ip=self.main.listview.get_selected()
             self.main.selected_host=self.main.listview.get_host(self.main.selected_ip)
         
+        if self.main.force_selected_ip != None:
+            self.main.selected_ip=self.main.force_selected_ip
+            self.main.force_selected_ip=None
+        
         if not self.main.selected_ip:
             # show a msg
             shared.error_msg ( _("Error: no IP!") )

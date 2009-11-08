@@ -128,6 +128,7 @@ class LiveVNC(TcosExtension):
 
     def on_iconview_click(self, widget, event, ip):
         if event.button == 3:
+            self.main.force_selected_ip=ip
             # right click show menu
             self.main.menus.RightClickMenuOne( None , None, ip)
             self.main.menu.popup( None, None, None, event.button, event.time)

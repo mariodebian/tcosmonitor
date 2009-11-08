@@ -128,6 +128,13 @@ class Screenshot(TcosExtension):
         return False
 
     def on_screenshot_click(self, eventbox, event, number, pixbuf):
+        if event.button == 3:
+            ip=self.__screenshot_data[number]['ip']
+            self.main.force_selected_ip=ip
+            # right click show menu
+            self.main.menus.RightClickMenuOne( None , None, ip)
+            self.main.menu.popup( None, None, None, event.button, event.time)
+            return True
         menu=gtk.Menu()
         save_scrot = gtk.ImageMenuItem(_("Save Screenshot"), True)
         icon = gtk.Image()
