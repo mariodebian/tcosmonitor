@@ -438,6 +438,7 @@ class TcosPreferences:
         for menu in shared.preferences_menus:
             pref_name=menu.replace('ck_menu_', '')
             widget=getattr(self.main, "pref_" + menu)
+            if not widget: continue
             if first_run:
                 # first run, set defaults
                 if shared.preferences_menus[menu][0] != False:

@@ -68,21 +68,25 @@ class TcosMenus(object):
         item_name="ck_menu_%s" %func_name
 
         if not item_name in shared.preferences_menus:
+            #print_debug("MustShowMenu() %s %s NOT FOUND return True item_name=%s" %(func_name, menutype, item_name) )
             return True
 
         if menutype == "menuone":
             for number in shared.preferences_menus[item_name][1]:
                 if number in shared.preferences_menus_always_show[menutype]:
+                    #print_debug("MustShowMenu() %s %s FOUND in MENUONE return True" %(func_name, menutype) )
                     return True 
        
         if menutype == "menuall":
             for number in shared.preferences_menus[item_name][2]:
                 if number in shared.preferences_menus_always_show[menutype]:
+                    #print_debug("MustShowMenu() %s %s found in MENUALL return True" %(func_name, menutype) )
                     return True
 
         if func_name in self.main.preferences.visible_menu_items["names"]:
             #print_debug("MustShow() number %s found at %s menutype %s"%(number, self.main.preferences.visible_menu_items[menutype], menutype))
             return True
+        #print_debug("MustShowMenu() %s %s return False item_name=%s" %(func_name, menutype, item_name) )
         return False
 
     def RightClickMenuOne(self, path=None, model=None, ip=None):
