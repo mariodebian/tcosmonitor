@@ -138,7 +138,7 @@ class ServerUtils:
                 print_debug ("Host %s connected" %(host) )
                 self.alltcosclients.append(host)
             else:
-                print_debug ("Host %s NOT connected" %(alhost) )
+                print_debug ("Host %s NOT connected" %(host) )
         
         
         print ("Doing action \"%s\" in %s" %(action, self.alltcosclients) )

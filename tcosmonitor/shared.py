@@ -310,7 +310,7 @@ onehost_menuitems=[
 ###
 allhost_mainmenus = [
     [ _("Terminal actions") , "active.png", [0,1,2,3,4,5,13,16,17] ],
-    [ _("User actions") , "logged.png", [6,7,8,14,15] ],
+    [ _("User actions") , "logged.png", [6,7,8,14,15,19] ],
     [ _("Audio, video and files"), "multimedia.png", [10,12,11,9,18]],
 ]
 
@@ -337,9 +337,10 @@ allhost_menuitems=[
  [ _("DPMS Power off monitors"), "menu_dpms_off.png" ] ,     #action=16
  [ _("DPMS Power on monitors"), "menu_dpms_on.png" ],     #action=17
  [ _("Chat audio conference"), "menu_rtp.png" ],     #action=18
+ [ _("Live view screens with VNC"), "menu_remote.png" ],     #action=19
  ]
 
-preferences_menus_always_show={"menuone":[0,1,11], "menuall":[4]}
+preferences_menus_always_show={"menuone":[0,1], "menuall":[4]}
 
 # format
 #glade_widget,  [default_enabled,   menuone , menuall]
@@ -362,6 +363,8 @@ preferences_menus={
 "ck_menu_conference":[  True,  [24],     [9,18] ],
 "ck_menu_net":[         True,  [20,21],[14,15] ],
 "ck_menu_dpms":[        True,  [22,23],[16,17] ],
+"ck_menu_personalize":[ False, [10],   [] ],
+"ck_menu_livevnc":[    True,  [],     [19] ],
 }
 
 button_preferences_menus={
