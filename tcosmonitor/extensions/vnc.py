@@ -56,8 +56,8 @@ class VNC(TcosExtension):
         
         self.main.menus.register_all( _("Enter demo mode, all connected users see my screen") , "menu_tiza.png", 1, self.vnc_demo_all, "demo")
         self.vnc={}
-        self.vncwindow=None
-        self.is_fullscreen=False
+        self.vncwindow={}
+        self.is_fullscreen={}
 
     def vnc_demo_all(self, *args):
         if not self.get_all_clients():
@@ -218,15 +218,16 @@ class VNC(TcosExtension):
 
     def vncviewer_destroy(self, window, ip):
         try:
-            self.vncwindow.hide()
-            self.vncwindow.destroy()
+            self.vncwindow[ip].hide()
+            self.vncwindow[ip].destroy()
         except Exception, err:
             print_debug("vncviewer_destroy() Cant hide/destroy vncviewer window, err=%s"%err)
         print_debug("vncviewer_destroy() self.vnc=%s"%self.vnc)
         if self.vnc.has_key(ip):
             self.vnc[ip].close()
             self.vnc.pop(ip)
-        self.vncwindow=None
+        if self.vncwindow.has_key(ip):
+            self.vncwindow.pop(ip)
 
     def vncviewer_fullcontrol(self, button, ip):
         image=gtk.Image()
@@ -250,23 +251,23 @@ class VNC(TcosExtension):
         vnc.set_size_request(w/2, h/2)
 
 
-    def on_fullscreenbutton_click(self, button):
+    def on_fullscreenbutton_click(self, button, ip):
         image=gtk.Image()
-        if self.is_fullscreen:
-            self.vncwindow.unfullscreen()
-            self.is_fullscreen=False
+        if self.is_fullscreen[ip]:
+            self.vncwindow[ip].unfullscreen()
+            self.is_fullscreen[ip]=False
             image.set_from_stock('gtk-fullscreen', gtk.ICON_SIZE_BUTTON)
         else:
-            self.vncwindow.fullscreen()
-            self.is_fullscreen=True
+            self.vncwindow[ip].fullscreen()
+            self.is_fullscreen[ip]=True
             image.set_from_stock('gtk-leave-fullscreen', gtk.ICON_SIZE_BUTTON)
         button.set_image(image)
 
     def vncviewer(self, ip, passwd, stoptarget=None, stopargs=None):
-        self.vncwindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.vncwindow.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
-        self.vncwindow.set_title( _("VNC host %s") %(ip) )
-        self.vncwindow.connect("destroy", self.vncviewer_destroy, ip)
+        self.vncwindow[ip] = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.vncwindow[ip].set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
+        self.vncwindow[ip].set_title( _("VNC host %s") %(ip) )
+        self.vncwindow[ip].connect("destroy", self.vncviewer_destroy, ip)
         box1 = gtk.HBox(True, 10)
         
         button = gtk.Button( _("Switch to full control") )
@@ -278,7 +279,7 @@ class VNC(TcosExtension):
         button.show_all()
 
         fbutton = gtk.Button( _("Switch to fullscreen") )
-        fbutton.connect("clicked", self.on_fullscreenbutton_click)
+        fbutton.connect("clicked", self.on_fullscreenbutton_click, ip)
         image=gtk.Image()
         image.set_from_stock('gtk-fullscreen', gtk.ICON_SIZE_BUTTON)
         fbutton.set_image(image)
@@ -326,8 +327,9 @@ class VNC(TcosExtension):
         
         
         # Show the window
-        self.vncwindow.add(box2)
-        self.vncwindow.show_all()
+        self.vncwindow[ip].add(box2)
+        self.vncwindow[ip].show_all()
+        self.is_fullscreen[ip]=False
 
 
     def vnc_demo_simple(self, widget, ip):
