@@ -282,6 +282,13 @@ class TcosDevicesNG:
         if not self.xmlrpc.connected:
             print _("Error connecting with TcosXmlRpc in %s.") %(self.host)
             sys.exit(1)
+        
+        # check for enabled devices
+        disable_usb=self.xmlrpc.IsEnabled("TCOS_DISABLE_USB")
+        disable_ide=self.xmlrpc.IsEnabled("TCOS_DISABLE_IDE")
+        if disable_usb or disable_ide:
+            print "tcos-devices-ng: TCOS_DISABLE_USB or TCOS_DISABLE_IDE enabled, exiting..."
+            sys.exit(0)
 
     def get_desktop_patch(self):
         desktop=self.common.exe_cmd("/usr/lib/tcos/rsync-controller", verbose=1, background=False, lines=0, cthreads=0)

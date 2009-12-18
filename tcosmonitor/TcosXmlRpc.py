@@ -410,6 +410,41 @@ class TcosXmlRpc:
     def __escape__(self, txt):
         return xml.sax.saxutils.escape(txt, self.__dic__)
     
+    
+    def IsEnabled(self, item):
+        if self.main.name in ["TcosVolumeManager", "TcosDevicesNG"]:
+            user=self.main.xauth.get_cookie()
+            passwd=self.main.xauth.get_hostname()
+            if user == None:
+                print_debug ( "IsEnabled() error loading cookie info" )
+                return False
+            print_debug ( "IsEnabled() cookie=%s hostname=%s" %(user, passwd) )
+        else:
+            user=self.main.config.GetVar("xmlrpc_username")
+            passwd=self.main.config.GetVar("xmlrpc_password")
+        
+        # connect to host
+        if not self.connected:
+            print_debug ( "IsEnabled() NO CONNECTION" )
+            return False
+            
+        try:
+            result=self.tc.tcos.config("--get", item, user, passwd )
+        except Exception, err:
+            print_debug("IsEnabled(--isenabled) Exception error: %s"%err)
+            self.CheckSSL(err)
+            return False
+        
+        if result.find('error') == 0:
+            print_debug ( "IsEnabled(): ERROR, result contains error string!!!\n%s" %(result))
+            return False
+        else:
+            print_debug ( "IsEnabled(): result='%s'" %(result))
+            if result == "-1" or result == "0":
+                return False
+            return True
+    
+    
     def DBus(self, action, data):
         username=self.GetStandalone("get_user")
         remote_user=self.main.config.GetVar("xmlrpc_username")
