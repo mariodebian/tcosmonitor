@@ -143,6 +143,12 @@ class TcosVolumeManager:
             shared.error_msg( _("Error connecting with TcosXmlRpc in %s.") %(self.host) )
             sys.exit(1)
         
+        # check for enabled sound
+        have_sound=self.xmlrpc.IsEnabled("TCOS_SOUND")
+        if not have_sound:
+            print "tcos-volume-manager: TCOS_SOUND is disabled"
+            sys.exit(0)
+
         self.allchannels=self.xmlrpc.GetSoundChannelsContents()
         print_debug ("__init__() %s" %( self.allchannels ) )
         

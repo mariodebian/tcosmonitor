@@ -12,12 +12,12 @@ TcosDbus.py class
 [1] http://people.ubuntu.com/~ogra/bzr-archive/student-control-panel-0.1/
 
 WakeOnLan.py
-   Copyright (C) 2002 by Micro Systems Marc Balmer
+   Copyright © 2002 by Micro Systems Marc Balmer
    Written by Marc Balmer, marc@msys.ch, http://www.msys.ch/
    This code is free software under the GPL
 
 htmltextview.py
-   Copyright (C) 2005 Gustavo J. A. M. Carneiro
+   Copyright © 2005 Gustavo J. A. M. Carneiro
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
