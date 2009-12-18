@@ -1,3 +1,17 @@
+tcosmonitor (0.2.27) unstable; urgency=low
+
+  * hide all menus with new pref checkboxes except info, and fix tcos-
+    server-utils.py tipo
+  * allow more than one VNC window
+  * debian/copyright: change (C) with ©
+  * Fix description of packages
+  * debian/tcosmonitor.dirs: remove empty dir
+  * tcos-devices-ng.py tcos-volume-manager.py tcosmonitor/TcosXmlRpc.py:
+    use new XMLRPC method => config to start or not if TCOS var is
+    enabled
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 18 Dec 2009 19:15:21 +0100
+
 tcosmonitor (0.2.26) unstable; urgency=low
 
   * fix typo in Spanish translation
