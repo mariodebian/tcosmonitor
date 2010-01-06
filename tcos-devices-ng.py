@@ -455,7 +455,7 @@ class TcosDevicesNG:
             data={}
             tmp=line.split('#')
             for i in tmp:
-                if i:
+                if '=' in i:
                     data[i.split("=")[0]]=i.split("=")[1]
             for event in self.udev_events:
                 action_found=False
