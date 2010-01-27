@@ -290,7 +290,7 @@ class TcosDevicesNG:
             print "tcos-devices-ng: TCOS_DISABLE_USB or TCOS_DISABLE_IDE enabled, exiting..."
             sys.exit(0)
 
-    def get_desktop_patch(self):
+    def get_desktop_path(self):
         desktop=self.common.exe_cmd("/usr/lib/tcos/rsync-controller", verbose=1, background=False, lines=0, cthreads=0)
         if not os.path.isdir(desktop):
             desktop=os.path.expanduser("~/Desktop")
@@ -607,7 +607,7 @@ class TcosDevicesNG:
             
 
     def get_local_mountpoint(self, data):
-        desktop=self.get_desktop_patch()
+        desktop=self.get_desktop_path()
         
         #fslabel=self.get_value(data, "ID_FS_LABEL")
         #fsvendor=self.get_value(data, "ID_VENDOR")
@@ -666,7 +666,7 @@ class TcosDevicesNG:
     def floppy(self, action):
         action=action[0]
         print_debug("floppy call %s" %action)
-        desktop=self.get_desktop_patch()
+        desktop=self.get_desktop_path()
         
         if self.mntconf.has_key("fd0"):
             local_mount_point=os.path.join(desktop, self.mntconf['fd0'] )
@@ -694,7 +694,7 @@ class TcosDevicesNG:
     def cdrom(self, *args):
         action=args[0][0]
         cdrom_device=args[0][1]
-        desktop=self.get_desktop_patch()
+        desktop=self.get_desktop_path()
         
         if self.mntconf.has_key(cdrom_device):
             local_mount_point=os.path.join(desktop, self.mntconf[cdrom_device] )
@@ -734,7 +734,7 @@ class TcosDevicesNG:
     def hdd(self, *args):
         action=args[0][0]
         hdd_device=args[0][1]
-        desktop=self.get_desktop_patch()
+        desktop=self.get_desktop_path()
         
         if self.mntconf.has_key(hdd_device):
             local_mount_point=os.path.join(desktop, self.mntconf[hdd_device] )
@@ -828,7 +828,7 @@ class TcosDevicesNG:
             ###############################################
             # We can have only a cdrom connected without cd inserted
             if fstype != "":
-                desktop=self.get_desktop_patch()
+                desktop=self.get_desktop_path()
         
                 if self.mntconf.has_key(devid):
                     local_mount_point=os.path.join(desktop, self.mntconf[devid] )
@@ -859,7 +859,7 @@ class TcosDevicesNG:
                 fstype=""
             else:
                 fstype=data['ID_FS_TYPE']
-            desktop=self.get_desktop_patch()
+            desktop=self.get_desktop_path()
     
             if self.mntconf.has_key(devid):
                 local_mount_point=os.path.join(desktop, self.mntconf[devid] )
