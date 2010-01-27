@@ -1354,7 +1354,7 @@ class TcosDevicesNG:
 
     def get_desktop(self):    
         is_gnome=self.common.exe_cmd("ps ux |grep gnome-panel  |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
-        is_kde = self.common.exe_cmd("ps ux |grep   startkde   |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
+        is_kde = self.common.exe_cmd("ps ux |grep -e startkde -e kwin |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
         is_xfce= self.common.exe_cmd("ps ux |grep xfce4-panel  |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
         if int(is_gnome) > 0:
             return "gnome"
@@ -1369,7 +1369,10 @@ class TcosDevicesNG:
         if self.desktop == "gnome":
             cmd="nautilus %s" %(path)
         elif self.desktop == "kde":
-            cmd="konqueror %s" %(path)
+            if os.path.isfile("/usr/bin/dolphin"):
+                cmd="dolphin %s" %(path)
+            else:
+                cmd="konqueror %s" %(path)
         elif self.desktop == "xfce4":
             cmd="Thunar %s" %(path)
         else:
