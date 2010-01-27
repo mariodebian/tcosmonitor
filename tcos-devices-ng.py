@@ -1436,6 +1436,9 @@ if __name__ == "__main__":
             app.udev_daemon()
             time.sleep(3)
         except KeyboardInterrupt:
+            print "Get KeyboardInterrupt (udev loop), existing..."
+            app.quitting=True
+            app.mainloop.quit()
             break
         
     # join gui thread    
