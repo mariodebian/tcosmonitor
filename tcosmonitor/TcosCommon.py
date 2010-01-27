@@ -74,7 +74,11 @@ class TcosCommon:
             pass
             
     def exe_cmd(self, cmd, verbose=1, background=False, lines=0, cthreads=1):
-        self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        try:
+            self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        except Exception, e:
+            print_debug("Exception in subprocess cmd(%s), error='%s'"%(cmd,e))
+            return None
         
         if self.main.config.GetVar("threadscontrol") == 1 and cthreads == 1:
             try:
@@ -96,7 +100,13 @@ class TcosCommon:
         stdout = self.p.stdout
         if lines == 1:
             return stdout
-        for line in stdout.readlines():
+        try:
+            result=stdout.readlines()
+        except Exception, e:
+            print_debug("Exception in subprocess::readlines() cmd(%s), error='%s'"%(cmd,e))
+            return None
+        
+        for line in result:
             if line != '\n':
                 line=line.replace('\n', '')
                 output.append(line)

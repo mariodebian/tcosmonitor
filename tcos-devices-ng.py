@@ -1356,13 +1356,15 @@ class TcosDevicesNG:
         is_gnome=self.common.exe_cmd("ps ux |grep gnome-panel  |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
         is_kde = self.common.exe_cmd("ps ux |grep -e startkde -e kwin |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
         is_xfce= self.common.exe_cmd("ps ux |grep xfce4-panel  |grep -c -v grep", verbose=1, background=False, lines=0, cthreads=0  )
-        if int(is_gnome) > 0:
-            return "gnome"
-        elif int(is_kde) > 0:
-            return "kde"
-        elif int(is_xfce) > 0:
-            return "xfce4"
-        else:
+        try:
+            if int(is_gnome) > 0:
+                return "gnome"
+            elif int(is_kde) > 0:
+                return "kde"
+            elif int(is_xfce) > 0:
+                return "xfce4"
+        except Exception, e:
+            print_debug("Can't read desktop type, error: %s"%e)
             return ""
 
     def launch_desktop_filemanager(self, path=""):
@@ -1416,7 +1418,7 @@ class TcosDevicesNG:
 
 
 
-    
+
 if __name__ == "__main__":
     
     # init app
