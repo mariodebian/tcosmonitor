@@ -1,3 +1,20 @@
+tcosmonitor (0.2.28) unstable; urgency=low
+
+  * tcos-devices-ng.py: fix udev_daemon loop
+  * tcos-devices-ng.py: fix typo get_desktop_patch => get_desktop_path
+  * tcos-devices-ng.py: detect kde if kwin is running and launch dolphin
+    if avalaible
+  * tcos-devices-ng.py TcosCommon.py: fix IOError and OSError in
+    python2.6
+  * tcos-devices-ng.py: stop app using Ctrl+C quiting mainloop
+  * change glade to gtkbuilder
+  * update translations
+  * install ui files instead of glade
+  * update standards to 3.8.4
+  * remove obsolete install target in Makefile
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 18 Mar 2010 16:01:05 +0100
+
 tcosmonitor (0.2.27) unstable; urgency=low
 
   * hide all menus with new pref checkboxes except info, and fix tcos-
