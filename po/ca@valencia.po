@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qcv\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 01:17+0200\n"
+"POT-Creation-Date: 2010-03-18 15:48+0100\n"
 "PO-Revision-Date: 2008-10-30 18:05+0100\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: Valencian <lliurex@gva.es>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../tcosmonitor.py:126
+#: ../tcosmonitor.py:129
 #, python-format
 msgid ""
 "The user \"%s\" must be member of the group \"tcos\" to exec tcosmonitor.\n"
@@ -30,12 +30,12 @@ msgstr ""
 "\n"
 "Si sou administrador del sistema, afegiu l'usuari al grup tcos."
 
-#: ../tcosmonitor.py:242
+#: ../tcosmonitor.py:247
 msgid "Send files disabled. rsync not configured."
 msgstr "L'enviament de fitxer està inhabilitat. No està configutat rsync."
 
-#: ../tcosmonitor.py:324 ../tcospersonalize.py:552
-#: ../tcos-volume-manager.py:374
+#: ../tcosmonitor.py:329 ../tcospersonalize.py:562
+#: ../tcos-volume-manager.py:378
 msgid "Exiting"
 msgstr "S'està eixint"
 
@@ -67,78 +67,78 @@ msgstr "Dimoni de dispositius TCOS"
 msgid "Error connecting with TcosXmlRpc in %s."
 msgstr "S'ha produït un error mentres es connectava amb tcosxmlrpc en %s"
 
-#: ../tcos-devices-ng.py:307
+#: ../tcos-devices-ng.py:314
 #, python-format
 msgid "Cdrom device %s"
 msgstr "Dispositiu cdrom %s"
 
-#: ../tcos-devices-ng.py:310
+#: ../tcos-devices-ng.py:317
 msgid "Mount Cdrom"
 msgstr "Munta el cdrom"
 
-#: ../tcos-devices-ng.py:311
+#: ../tcos-devices-ng.py:318
 msgid "Umount Cdrom"
 msgstr "Desmunta el cdrom"
 
-#: ../tcos-devices-ng.py:333
+#: ../tcos-devices-ng.py:340
 #, python-format
 msgid "Disk partition %s"
 msgstr "Partición del disc %s"
 
-#: ../tcos-devices-ng.py:336
+#: ../tcos-devices-ng.py:343
 msgid "Mount disk partition"
 msgstr "Munta la partició del disc"
 
-#: ../tcos-devices-ng.py:337
+#: ../tcos-devices-ng.py:344
 msgid "Umount disk partition"
 msgstr "Desmunta la partició del disc"
 
-#: ../tcos-devices-ng.py:349
+#: ../tcos-devices-ng.py:356
 msgid "No floppy detected"
 msgstr "No s'ha detectat cap disquet"
 
-#: ../tcos-devices-ng.py:361 ../tcos-devices-ng.py:667
-#: ../tcos-devices-ng.py:673 ../tcos-devices-ng.py:679
+#: ../tcos-devices-ng.py:368 ../tcos-devices-ng.py:674
+#: ../tcos-devices-ng.py:680 ../tcos-devices-ng.py:686
 msgid "Floppy"
 msgstr "Disquet"
 
-#: ../tcos-devices-ng.py:364
+#: ../tcos-devices-ng.py:371
 msgid "Mount Floppy"
 msgstr "Munta el disquet"
 
-#: ../tcos-devices-ng.py:365
+#: ../tcos-devices-ng.py:372
 msgid "Umount Floppy"
 msgstr "Desmunta el disquet"
 
-#: ../tcos-devices-ng.py:375
+#: ../tcos-devices-ng.py:382
 msgid "Floppy mounted. Ready for use."
 msgstr "Disquet muntat. Preparat per a usar."
 
-#: ../tcos-devices-ng.py:377
+#: ../tcos-devices-ng.py:384
 msgid "Floppy umounted. You can extract it."
 msgstr "Disquet desmuntat. Ara pot extraure'l."
 
-#: ../tcos-devices-ng.py:393
+#: ../tcos-devices-ng.py:400
 msgid "Hard disk partition mounted. Ready for use."
 msgstr "Partició muntada del disc dur. Preparat per a usar."
 
-#: ../tcos-devices-ng.py:396
+#: ../tcos-devices-ng.py:403
 msgid "Hard disk partition umounted."
 msgstr "Partició desmuntada del disc dur."
 
-#: ../tcos-devices-ng.py:418
+#: ../tcos-devices-ng.py:425
 msgid "Audio cdrom mounted., you can listen music opening wav files."
 msgstr "Cdrom d'àudio muntat., ara podeu obrir els fitxers de música wav."
 
-#: ../tcos-devices-ng.py:420
+#: ../tcos-devices-ng.py:427
 msgid "Cdrom mounted. Ready for use."
 msgstr "Cdrom muntat. Preparat per a usar."
 
-#: ../tcos-devices-ng.py:423
+#: ../tcos-devices-ng.py:430
 msgid "Cdrom umounted. You can extract it."
 msgstr "Cdrom desmuntat. Ara podeu extraure'l."
 
-#: ../tcos-devices-ng.py:522
+#: ../tcos-devices-ng.py:529
 #, python-format
 msgid ""
 "Mounting device %s\n"
@@ -147,13 +147,13 @@ msgstr ""
 "S'està muntant el dispositiu %s\n"
 "Per favor, espere..."
 
-#: ../tcos-devices-ng.py:571
+#: ../tcos-devices-ng.py:578
 msgid "Error mounting LTSPFS, check versions of LTSPFS packages"
 msgstr ""
 "S'ha produït un error mentres es muntava LTSPFS, comproveu les versions dels "
 "paquets LTSPFS"
 
-#: ../tcos-devices-ng.py:597
+#: ../tcos-devices-ng.py:604
 #, python-format
 msgid ""
 "Umounting device %s.\n"
@@ -162,53 +162,53 @@ msgstr ""
 "S'està desmuntant el dispositiu %s.\n"
 "Per favor, espere..."
 
-#: ../tcos-devices-ng.py:644
+#: ../tcos-devices-ng.py:651
 msgid "usbdisk"
 msgstr "disc-usb"
 
-#: ../tcos-devices-ng.py:646
+#: ../tcos-devices-ng.py:653
 msgid "firewiredisk"
 msgstr "disc-firewire"
 
-#: ../tcos-devices-ng.py:671
+#: ../tcos-devices-ng.py:678
 msgid "Can't mount floppy"
 msgstr "No es pot muntar el disquet"
 
-#: ../tcos-devices-ng.py:682
+#: ../tcos-devices-ng.py:689
 msgid "Can't umount floppy"
 msgstr "No es pot desmuntar el disquet"
 
-#: ../tcos-devices-ng.py:695 ../tcos-devices-ng.py:705
-#: ../tcos-devices-ng.py:716 ../tcos-devices-ng.py:829
-#: ../tcos-devices-ng.py:841 ../tcos-devices-ng.py:860
-#: ../tcos-devices-ng.py:872 ../tcos-devices-ng.py:904
+#: ../tcos-devices-ng.py:702 ../tcos-devices-ng.py:712
+#: ../tcos-devices-ng.py:723 ../tcos-devices-ng.py:836
+#: ../tcos-devices-ng.py:848 ../tcos-devices-ng.py:867
+#: ../tcos-devices-ng.py:879 ../tcos-devices-ng.py:911
 #, python-format
 msgid "Cdrom_%s"
 msgstr "Cdrom_%s"
 
-#: ../tcos-devices-ng.py:703
+#: ../tcos-devices-ng.py:710
 msgid "Can't mount cdrom"
 msgstr "No es pot muntar el cdrom"
 
-#: ../tcos-devices-ng.py:719
+#: ../tcos-devices-ng.py:726
 msgid "Can't umount cdrom"
 msgstr "No es pot desmuntar el cdrom"
 
-#: ../tcos-devices-ng.py:735 ../tcos-devices-ng.py:745
-#: ../tcos-devices-ng.py:756
+#: ../tcos-devices-ng.py:742 ../tcos-devices-ng.py:752
+#: ../tcos-devices-ng.py:763
 #, python-format
 msgid "Disk_%s"
 msgstr "Disc_%s"
 
-#: ../tcos-devices-ng.py:743
+#: ../tcos-devices-ng.py:750
 msgid "Can't mount hard disk partition"
 msgstr "No es pot muntar la partició del disc dur"
 
-#: ../tcos-devices-ng.py:759
+#: ../tcos-devices-ng.py:766
 msgid "Can't umount hard disk partition"
 msgstr "No es pot desmuntar la partició del disc dur"
 
-#: ../tcos-devices-ng.py:800
+#: ../tcos-devices-ng.py:807
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -219,30 +219,30 @@ msgstr ""
 "Dispositiu CDROM USB connectat %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: ../tcos-devices-ng.py:804
+#: ../tcos-devices-ng.py:811
 #, python-format
 msgid "CDROM USB device %s"
 msgstr "Dispositiu CDROM USB %s"
 
-#: ../tcos-devices-ng.py:807
+#: ../tcos-devices-ng.py:814
 #, python-format
 msgid "Mount CDROM USB device %s"
 msgstr "Munta el dispositiu CDROM USB %s"
 
-#: ../tcos-devices-ng.py:808
+#: ../tcos-devices-ng.py:815
 #, python-format
 msgid "Umount CDROM USB device %s"
 msgstr "Desmunta el dispositiu CDROM USB %s"
 
-#: ../tcos-devices-ng.py:833 ../tcos-devices-ng.py:864
-#: ../tcos-devices-ng.py:994 ../tcos-devices-ng.py:1005
-#: ../tcos-devices-ng.py:1051 ../tcos-devices-ng.py:1131
-#: ../tcos-devices-ng.py:1142 ../tcos-devices-ng.py:1188
+#: ../tcos-devices-ng.py:840 ../tcos-devices-ng.py:871
+#: ../tcos-devices-ng.py:1001 ../tcos-devices-ng.py:1012
+#: ../tcos-devices-ng.py:1058 ../tcos-devices-ng.py:1138
+#: ../tcos-devices-ng.py:1149 ../tcos-devices-ng.py:1195
 #, python-format
 msgid "Error, can't mount device %s"
 msgstr "S'ha produït un error, no es pot muntar el dispositiu %s"
 
-#: ../tcos-devices-ng.py:891
+#: ../tcos-devices-ng.py:898
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -253,12 +253,12 @@ msgstr ""
 "Dispositiu CDROM USB desconnectat %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: ../tcos-devices-ng.py:919
+#: ../tcos-devices-ng.py:926
 #, python-format
 msgid "Can't umount cdrom usb %s"
 msgstr "No es pot desmuntar el cdrom usb %s"
 
-#: ../tcos-devices-ng.py:944
+#: ../tcos-devices-ng.py:951
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -269,7 +269,7 @@ msgstr ""
 "Dispositiu USB connectat %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: ../tcos-devices-ng.py:947
+#: ../tcos-devices-ng.py:954
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -280,22 +280,22 @@ msgstr ""
 "Dispositiu USB desconnectat %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: ../tcos-devices-ng.py:975
+#: ../tcos-devices-ng.py:982
 #, python-format
 msgid "USB device %s"
 msgstr "Dispositiu USB %s"
 
-#: ../tcos-devices-ng.py:978
+#: ../tcos-devices-ng.py:985
 #, python-format
 msgid "Mount USB device %s"
 msgstr "Munta el dispositiu USB %s"
 
-#: ../tcos-devices-ng.py:979
+#: ../tcos-devices-ng.py:986
 #, python-format
 msgid "Umount USB device %s"
 msgstr "Desmunta el dispositiu USB %s"
 
-#: ../tcos-devices-ng.py:1081
+#: ../tcos-devices-ng.py:1088
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -306,7 +306,7 @@ msgstr ""
 "Dispositiu Firewire connectat %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: ../tcos-devices-ng.py:1084
+#: ../tcos-devices-ng.py:1091
 #, python-format
 msgid ""
 "From terminal %(host)s.\n"
@@ -317,159 +317,50 @@ msgstr ""
 "Dispositiu Firewire desconnectat %(device)s\n"
 "%(vendor)s %(model)s"
 
-#: ../tcos-devices-ng.py:1112
+#: ../tcos-devices-ng.py:1119
 #, python-format
 msgid "Firewire device %s"
 msgstr "Dispositiu Firewire %s"
 
-#: ../tcos-devices-ng.py:1115
+#: ../tcos-devices-ng.py:1122
 #, python-format
 msgid "Mount Firewire device %s"
 msgstr "Munta el dispositiu Firewire %s"
 
-#: ../tcos-devices-ng.py:1116
+#: ../tcos-devices-ng.py:1123
 #, python-format
 msgid "Umount Firewire device %s"
 msgstr "Desmunta el dispositiu Firewire %s"
 
-#: ../tcos-devices-ng.py:1199
+#: ../tcos-devices-ng.py:1206
 #, python-format
 msgid "CDROM USB device %s umounted. You can extract it."
 msgstr "Dispositiu CDROM USB %s desmuntat. Ara podeu extraure'l."
 
-#: ../tcos-devices-ng.py:1202
+#: ../tcos-devices-ng.py:1209
 #, python-format
 msgid "CDROM USB device %s mounted. Ready for use."
 msgstr "Dispositiu CDROM USB %s muntat. Preparat per a usar."
 
-#: ../tcos-devices-ng.py:1240
+#: ../tcos-devices-ng.py:1247
 #, python-format
 msgid "USB device %s umounted. You can extract it."
 msgstr "Dispositiu USB %s desmuntat. Ara podeu extraure'l."
 
-#: ../tcos-devices-ng.py:1243
+#: ../tcos-devices-ng.py:1250
 #, python-format
 msgid "USB device %s mounted. Ready for use."
 msgstr "Dispositiu USB %s muntat. Preparat per a usar."
 
-#: ../tcos-devices-ng.py:1279
+#: ../tcos-devices-ng.py:1286
 #, python-format
 msgid "Firewire device %s umounted. You can extract it."
 msgstr "Dispositiu Firewire %s desmuntat. Ara podeu extraure'l."
 
-#: ../tcos-devices-ng.py:1282
+#: ../tcos-devices-ng.py:1289
 #, python-format
 msgid "Firewire device %s mounted. Ready for use."
 msgstr "Dispositiu Firewire %s muntat. Preparat per a usar."
-
-#: ../tray.glade:38
-msgid "<big><b>TCOS devices</b></big>"
-msgstr ""
-
-#: ../tray.glade:105
-msgid "Hide"
-msgstr ""
-
-#: ../tcospersonalize.glade:8 ../tcosmonitor.glade:59
-#: ../tcosmonitor.glade:1326
-msgid "Preferences"
-msgstr "Preferències"
-
-#: ../tcospersonalize.glade:57
-msgid "<b>unknow host</b>"
-msgstr "<b>equip desconegut</b>"
-
-#: ../tcospersonalize.glade:103 ../tcosmonitor/extensions/info.py:365
-msgid "Enable mouse wheel"
-msgstr "Activa la roda del ratolí"
-
-#: ../tcospersonalize.glade:125
-msgid "Disable Ctrl + Alt + Backspace (for kill Xorg)"
-msgstr "Inhabilita Ctrl+Alt+Backspace (per a tancar l'Xorg)"
-
-#: ../tcospersonalize.glade:146 ../tcosmonitor/extensions/info.py:357
-msgid "Xorg Resolution"
-msgstr "Resolució de l'Xorg"
-
-#: ../tcospersonalize.glade:208 ../tcosmonitor/extensions/info.py:359
-msgid "Xorg Color depth"
-msgstr "Profunditat de color de l'Xorg"
-
-#: ../tcospersonalize.glade:253 ../tcosmonitor/extensions/info.py:353
-msgid "X Session Type"
-msgstr "Tipus de sessió X"
-
-#: ../tcospersonalize.glade:299 ../tcosmonitor/extensions/info.py:361
-msgid "DPMS energy monitor control"
-msgstr "Control d'energia del monitor DPMS"
-
-#: ../tcospersonalize.glade:326 ../tcosmonitor/extensions/info.py:355
-msgid "Xorg Driver"
-msgstr "Controlador d'Xorg"
-
-#: ../tcospersonalize.glade:352
-msgid "Get avalaible drivers"
-msgstr "Carrega els controladors disponibles"
-
-#: ../tcospersonalize.glade:383
-msgid "Display Settings"
-msgstr "Configuració de la pantalla"
-
-#: ../tcospersonalize.glade:426 ../tcosmonitor/extensions/info.py:375
-msgid "X Horiz sync"
-msgstr "Sincronització horitzontal X"
-
-#: ../tcospersonalize.glade:454 ../tcosmonitor/extensions/info.py:377
-msgid "X Vert sync"
-msgstr "Sincronització vertical X"
-
-#: ../tcospersonalize.glade:541 ../tcosmonitor.glade:2364
-msgid "Advanced"
-msgstr "Avançat"
-
-#: ../tcospersonalize.glade:573
-msgid "Default boot kernel"
-msgstr "Nucli d'arrancada per defecte"
-
-#: ../tcospersonalize.glade:617
-msgid "<b>PXE Boot options</b>"
-msgstr "<b>Opcions d'arrancada de PXE</b>"
-
-#: ../tcospersonalize.glade:645
-msgid "Default boot method"
-msgstr "Mètode d'arrancada per defecte"
-
-#: ../tcospersonalize.glade:690
-msgid "Command line"
-msgstr "Línia d'ordes"
-
-#: ../tcospersonalize.glade:801
-msgid "Boot options"
-msgstr "Opcions d'arrancada"
-
-#: ../tcospersonalize.glade:915
-msgid "Delete Config"
-msgstr "Elimina la configuració"
-
-#: ../tcos-volume-manager.glade:9 ../tcos-volume-manager.py:229
-msgid "Tcos Volume Manager"
-msgstr "Gestor de volum del TCOS"
-
-#: ../tcos-volume-manager.glade:67
-msgid "Restart sound"
-msgstr ""
-
-#: ../tcos-volume-manager.glade:90
-msgid "Sound levels"
-msgstr "Nivells de volum"
-
-#: ../tcos-volume-manager.glade:152
-msgid "Main Channels"
-msgstr "Canals principals"
-
-#: ../tcos-volume-manager.glade:194
-msgid "Secondary Channels"
-msgstr "Canals secundaris"
 
 #: ../tcospersonalize.py:115
 msgid ""
@@ -481,25 +372,25 @@ msgstr ""
 "Proveu a executar:\n"
 " tcospersonalize --host=XXX.XXX.XXX.XXX"
 
-#: ../tcospersonalize.py:180
+#: ../tcospersonalize.py:190
 msgid "host: "
 msgstr "equip: "
 
-#: ../tcospersonalize.py:444
+#: ../tcospersonalize.py:454
 msgid "Host down, can't connect to tcosxmlrpc."
 msgstr "L'equip és inaccessible, no es pot connectar a tcosxmlrpc."
 
-#: ../tcospersonalize.py:452
+#: ../tcospersonalize.py:462
 #, python-format
 msgid "New %d drivers loaded from terminal."
 msgstr "S'han carregat %d controladors des del terminal."
 
-#: ../tcospersonalize.py:511
+#: ../tcospersonalize.py:521
 #, python-format
 msgid "Really delete config of %s?"
 msgstr "Esteu segur que voleu eliminar la configuració de %s?"
 
-#: ../tcospersonalize.py:514
+#: ../tcospersonalize.py:524
 msgid "Deleted!"
 msgstr "Esborrat!"
 
@@ -517,53 +408,57 @@ msgstr ""
 msgid "ERROR: It appears that TcosXmlRpc is not running on %s."
 msgstr "ERROR: Sembla que el tcosxmlrpc no està en execució en %s"
 
-#: ../tcos-volume-manager.py:213
+#: ../tcos-volume-manager.py:217
 msgid "Loading channels info..."
 msgstr "S'està carregant la informació dels canals..."
 
-#: ../tcos-volume-manager.py:226
+#: ../tcos-volume-manager.py:230
 msgid "Error loading channels info (xauth error)"
 msgstr ""
 "S'ha produït un error en carregar la informació de canals (error de xauth)"
 
-#: ../tcos-volume-manager.py:230
+#: ../tcos-volume-manager.py:233 ../ui/tcos-volume-manager.ui:8
+msgid "Tcos Volume Manager"
+msgstr "Gestor de volum del TCOS"
+
+#: ../tcos-volume-manager.py:234
 #, python-format
 msgid "<span size='large'><b>Sound mixer of %s host</b></span>"
 msgstr "<span size='large'><b>Mesclador d'àudio de l'equip %s</b></span>"
 
-#: ../tcos-volume-manager.py:296 ../tcosmonitor/extensions/info.py:442
+#: ../tcos-volume-manager.py:300 ../tcosmonitor/extensions/info.py:442
 msgid "Mute"
 msgstr "Sense so"
 
-#: ../tcos-volume-manager.py:315
+#: ../tcos-volume-manager.py:319
 msgid "Main controls ready"
 msgstr "Els controls principals estan preparats"
 
-#: ../tcos-volume-manager.py:319
+#: ../tcos-volume-manager.py:323
 msgid "All remote controls loaded."
 msgstr "Tots els controls remots estan carregats."
 
-#: ../tcos-volume-manager.py:328 ../tcosmonitor/extensions/info.py:557
+#: ../tcos-volume-manager.py:332 ../tcosmonitor/extensions/info.py:557
 #, python-format
 msgid "Changing value of %(channel)s channel, to %(value)s%%..."
 msgstr "S'està canviant el valor del canal %(channel)s, a %(value)s%%..."
 
-#: ../tcos-volume-manager.py:335 ../tcosmonitor/extensions/info.py:564
+#: ../tcos-volume-manager.py:339 ../tcosmonitor/extensions/info.py:564
 #, python-format
 msgid "Changed value of %(channel)s channel, to %(value)s"
 msgstr "S'ha canviat el valor del canal %(channel)s, a %(value)s"
 
-#: ../tcos-volume-manager.py:342 ../tcosmonitor/extensions/info.py:571
+#: ../tcos-volume-manager.py:346 ../tcosmonitor/extensions/info.py:571
 #, python-format
 msgid "Unmuting %s channel..."
 msgstr "S'està eliminant l'emmudiment al canal %s..."
 
-#: ../tcos-volume-manager.py:347 ../tcosmonitor/extensions/info.py:576
+#: ../tcos-volume-manager.py:351 ../tcosmonitor/extensions/info.py:576
 #, python-format
 msgid "Muting %s channel..."
 msgstr "S'està emmudint el canal %s..."
 
-#: ../tcos-volume-manager.py:350 ../tcosmonitor/extensions/info.py:579
+#: ../tcos-volume-manager.py:354 ../tcosmonitor/extensions/info.py:579
 #, python-format
 msgid "Status of %(channel)s channel, is \"%(newvalue)s\""
 msgstr "L'estat del canal %(channel)s és \"%(newvalue)s\""
@@ -595,15 +490,16 @@ msgstr "Missatge de l'administrador"
 msgid "User not allowed to run this dbus call."
 msgstr "L'usuari no té permeses estes telefonades dbus."
 
-#: ../tcosmonitor/TcosStaticHosts.py:154 ../tcosmonitor/TcosListView.py:69
+#: ../tcosmonitor/TcosStaticHosts.py:163 ../tcosmonitor/TcosListView.py:70
 msgid "IP address"
 msgstr "Adreça IP"
 
-#: ../tcosmonitor/TcosStaticHosts.py:160 ../tcosmonitor.glade:4618
+#: ../tcosmonitor/TcosStaticHosts.py:169
+#: ../ui/tcosmonitor-staticwindownew.ui:68
 msgid "MAC address"
 msgstr "Adreça MAC"
 
-#: ../tcosmonitor/TcosStaticHosts.py:270
+#: ../tcosmonitor/TcosStaticHosts.py:279
 msgid "No hosts found, please click on Refresh button using another method."
 msgstr ""
 "No s'han trobat equips, per favor, premeu el botó Actualitza usant un altre "
@@ -625,245 +521,252 @@ msgstr "Simula una aula"
 msgid "Lists, icons and classroom with tabs"
 msgstr "Llistes, icones i aula amb pestanyes"
 
-#: ../tcosmonitor/shared.py:269 ../tcosmonitor/shared.py:311
+#: ../tcosmonitor/shared.py:270 ../tcosmonitor/shared.py:312
 #: ../tcosmonitor/TcosMenus.py:35
 msgid "Terminal actions"
 msgstr "Accions per al terminal"
 
-#: ../tcosmonitor/shared.py:270 ../tcosmonitor/shared.py:312
+#: ../tcosmonitor/shared.py:271 ../tcosmonitor/shared.py:313
 #: ../tcosmonitor/TcosMenus.py:36
 msgid "User actions"
 msgstr "Accions per a l'usuari"
 
-#: ../tcosmonitor/shared.py:271 ../tcosmonitor/shared.py:313
+#: ../tcosmonitor/shared.py:272 ../tcosmonitor/shared.py:314
 #: ../tcosmonitor/TcosMenus.py:37
 msgid "Audio, video and files"
 msgstr "Fitxers d'àudio i vídeo"
 
-#: ../tcosmonitor/shared.py:278 ../tcosmonitor/extensions/info.py:47
+#: ../tcosmonitor/shared.py:279 ../tcosmonitor/extensions/info.py:47
 msgid "Refresh terminal info"
 msgstr "Actualitza la informació del terminal"
 
-#: ../tcosmonitor/shared.py:279 ../tcosmonitor/extensions/clean.py:40
+#: ../tcosmonitor/shared.py:280 ../tcosmonitor/extensions/clean.py:40
 #: ../tcosmonitor/extensions/clean.py:41
 msgid "Clean info about terminal"
 msgstr "Neteja la informació del terminal"
 
-#: ../tcosmonitor/shared.py:280 ../tcosmonitor/TcosTrayIcon.py:54
+#: ../tcosmonitor/shared.py:281 ../tcosmonitor/TcosTrayIcon.py:54
 #: ../tcosmonitor/extensions/reboot.py:40 ../tcosmonitor/TcosTrayIcon2.py:58
 msgid "Reboot"
 msgstr "Reinicia"
 
-#: ../tcosmonitor/shared.py:281 ../tcosmonitor/TcosTrayIcon.py:55
+#: ../tcosmonitor/shared.py:282 ../tcosmonitor/TcosTrayIcon.py:55
 #: ../tcosmonitor/extensions/reboot.py:42 ../tcosmonitor/TcosTrayIcon2.py:59
 msgid "Poweroff"
 msgstr "Apaga"
 
-#: ../tcosmonitor/shared.py:282 ../tcosmonitor/extensions/lockscreen.py:40
+#: ../tcosmonitor/shared.py:283 ../tcosmonitor/extensions/lockscreen.py:40
 msgid "Lock screen"
 msgstr "Bloqueja la pantalla"
 
-#: ../tcosmonitor/shared.py:283 ../tcosmonitor/extensions/lockscreen.py:42
+#: ../tcosmonitor/shared.py:284 ../tcosmonitor/extensions/lockscreen.py:42
 msgid "Unlock screen"
 msgstr "Desbloqueja la pantalla"
 
-#: ../tcosmonitor/shared.py:284 ../tcosmonitor/extensions/italc.py:43
+#: ../tcosmonitor/shared.py:285 ../tcosmonitor/extensions/italc.py:43
 msgid "Connect to remote screen (iTALC)"
 msgstr "Connecta a la pantalla remota (iTALC)"
 
-#: ../tcosmonitor/shared.py:285 ../tcosmonitor/extensions/vnc.py:54
+#: ../tcosmonitor/shared.py:286 ../tcosmonitor/extensions/vnc.py:54
 msgid "Connect to remote screen (VNC)"
 msgstr "Connecta a la pantalla remota (VNC)"
 
-#: ../tcosmonitor/shared.py:286 ../tcosmonitor/extensions/screenshot.py:45
+#: ../tcosmonitor/shared.py:287 ../tcosmonitor/extensions/screenshot.py:45
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
-#: ../tcosmonitor/shared.py:287 ../tcosmonitor/extensions/remotessh.py:40
+#: ../tcosmonitor/shared.py:288 ../tcosmonitor/extensions/remotessh.py:40
 msgid "Give a remote xterm"
 msgstr "Executa un terminal xterm remot"
 
-#: ../tcosmonitor/shared.py:288
+#: ../tcosmonitor/shared.py:289
 #: ../tcosmonitor/extensions/tcospersonalize.py:40
+#: ../ui/tcosmonitor-prefwindow.ui:1324
 msgid "Configure this host"
 msgstr "Configura este equip"
 
-#: ../tcosmonitor/shared.py:289 ../tcosmonitor/extensions/logout.py:40
+#: ../tcosmonitor/shared.py:290 ../tcosmonitor/extensions/logout.py:40
 msgid "Logout client"
 msgstr "Desconnecta el client"
 
-#: ../tcosmonitor/shared.py:290 ../tcosmonitor/extensions/restartxorg.py:41
+#: ../tcosmonitor/shared.py:291 ../tcosmonitor/extensions/restartxorg.py:41
 msgid "Restart X session with new settings"
 msgstr "Reinicia la sessió X amb la nova configuració"
 
-#: ../tcosmonitor/shared.py:291 ../tcosmonitor/extensions/appsmsg.py:52
+#: ../tcosmonitor/shared.py:292 ../tcosmonitor/extensions/appsmsg.py:52
 msgid "Exec app on user display"
 msgstr "Executa l'aplicació en la pantalla d'usuari"
 
-#: ../tcosmonitor/shared.py:292 ../tcosmonitor/extensions/appsmsg.py:53
+#: ../tcosmonitor/shared.py:293 ../tcosmonitor/extensions/appsmsg.py:53
 msgid "Send a text message to user"
 msgstr "Envia un missatge de text a l'usuari"
 
-#: ../tcosmonitor/shared.py:293 ../tcosmonitor/extensions/viewproc.py:41
+#: ../tcosmonitor/shared.py:294 ../tcosmonitor/extensions/viewproc.py:41
 msgid "Show running apps of this client"
 msgstr "Mostra les aplicacions en execució d'este client"
 
-#: ../tcosmonitor/shared.py:294 ../tcosmonitor/shared.py:331
+#: ../tcosmonitor/shared.py:295 ../tcosmonitor/shared.py:332
 msgid "Audio/Video broadcast"
 msgstr "Difusió d'àudio/vídeo"
 
-#: ../tcosmonitor/shared.py:295 ../tcosmonitor/shared.py:332
+#: ../tcosmonitor/shared.py:296 ../tcosmonitor/shared.py:333
 #: ../tcosmonitor/extensions/sendfiles.py:49
-#: ../tcosmonitor/extensions/sendfiles.py:50 ../tcosmonitor.glade:625
-#: ../tcosmonitor.glade:3069 ../tcosmonitor.glade:3496
+#: ../tcosmonitor/extensions/sendfiles.py:50
+#: ../ui/tcosmonitor-prefwindow.ui:1134 ../ui/tcosmonitor-prefwindow.ui:1475
+#: ../ui/tcosmonitor-mainwindow.ui:387
 msgid "Send files"
 msgstr "Envia els fitxers"
 
-#: ../tcosmonitor/shared.py:296 ../tcosmonitor/extensions/vnc.py:55
+#: ../tcosmonitor/shared.py:297 ../tcosmonitor/extensions/vnc.py:55
 msgid "Demo mode (from this host)"
 msgstr "Mode de demostració (des d'este equip)"
 
-#: ../tcosmonitor/shared.py:297 ../tcosmonitor/extensions/wakeonlan.py:41
+#: ../tcosmonitor/shared.py:298 ../tcosmonitor/extensions/wakeonlan.py:41
 msgid "Boot client (WakeOnLan)"
 msgstr "Arranca el client (WakeOnLan)"
 
-#: ../tcosmonitor/shared.py:298
+#: ../tcosmonitor/shared.py:299
 #: ../tcosmonitor/extensions/tcosnetcontroller.py:38
 msgid "Lock internet"
 msgstr "Bloqueja Internet"
 
-#: ../tcosmonitor/shared.py:299
+#: ../tcosmonitor/shared.py:300
 #: ../tcosmonitor/extensions/tcosnetcontroller.py:39
 msgid "Unlock internet"
 msgstr "Desbloqueja Internet"
 
-#: ../tcosmonitor/shared.py:300 ../tcosmonitor/extensions/dpms.py:40
+#: ../tcosmonitor/shared.py:301 ../tcosmonitor/extensions/dpms.py:40
 msgid "DPMS Power off monitor"
 msgstr "Desactiva el DPMS per al monitor (control d'energia del monitor)"
 
-#: ../tcosmonitor/shared.py:301 ../tcosmonitor/extensions/dpms.py:42
+#: ../tcosmonitor/shared.py:302 ../tcosmonitor/extensions/dpms.py:42
 msgid "DPMS Power on monitor"
 msgstr "Activa el DPMS per al monitor (control d'energia del monitor)"
 
-#: ../tcosmonitor/shared.py:302
+#: ../tcosmonitor/shared.py:303
 msgid "Send MIC audio (from this host)"
 msgstr "Envia àudio MIC (des d'este equip)"
 
-#: ../tcosmonitor/shared.py:320 ../tcosmonitor/extensions/reboot.py:41
+#: ../tcosmonitor/shared.py:321 ../tcosmonitor/extensions/reboot.py:41
 msgid "Reboot all clients"
 msgstr "Reinicia tots els clients"
 
-#: ../tcosmonitor/shared.py:321 ../tcosmonitor/extensions/reboot.py:43
+#: ../tcosmonitor/shared.py:322 ../tcosmonitor/extensions/reboot.py:43
 msgid "Poweroff all clients"
 msgstr "Apaga tots els clients"
 
-#: ../tcosmonitor/shared.py:322 ../tcosmonitor/extensions/lockscreen.py:41
+#: ../tcosmonitor/shared.py:323 ../tcosmonitor/extensions/lockscreen.py:41
 msgid "Lock all screens"
 msgstr "Bloqueja totes les pantalles"
 
-#: ../tcosmonitor/shared.py:323 ../tcosmonitor/extensions/lockscreen.py:43
+#: ../tcosmonitor/shared.py:324 ../tcosmonitor/extensions/lockscreen.py:43
 msgid "Unlock all screens"
 msgstr "Desbloqueja totes les pantalles"
 
-#: ../tcosmonitor/shared.py:324 ../tcosmonitor/extensions/logout.py:41
+#: ../tcosmonitor/shared.py:325 ../tcosmonitor/extensions/logout.py:41
 msgid "Logout clients"
 msgstr "Desconnecta tots els clients"
 
-#: ../tcosmonitor/shared.py:325 ../tcosmonitor/extensions/restartxorg.py:42
+#: ../tcosmonitor/shared.py:326 ../tcosmonitor/extensions/restartxorg.py:42
 msgid "Restart X session of all clients"
 msgstr "Reinicia la sessió X de tots els clients"
 
-#: ../tcosmonitor/shared.py:326 ../tcosmonitor/extensions/appsmsg.py:55
+#: ../tcosmonitor/shared.py:327 ../tcosmonitor/extensions/appsmsg.py:55
 msgid "Exec same app in all connected users"
 msgstr "Executa la mateixa aplicació en tots els usuaris connectats"
 
-#: ../tcosmonitor/shared.py:327 ../tcosmonitor/extensions/appsmsg.py:56
+#: ../tcosmonitor/shared.py:328 ../tcosmonitor/extensions/appsmsg.py:56
 msgid "Send a text message to all connected users"
 msgstr "Envia un missatge de text a tots els usuaris connectats"
 
-#: ../tcosmonitor/shared.py:328 ../tcosmonitor/extensions/vnc.py:57
+#: ../tcosmonitor/shared.py:329 ../tcosmonitor/extensions/vnc.py:57
 msgid "Enter demo mode, all connected users see my screen"
 msgstr "Entra en mode de demostració, tots els usuaris veuen la meua pantalla"
 
-#: ../tcosmonitor/shared.py:329
+#: ../tcosmonitor/shared.py:330
 msgid "Enter conference mode, all connected users can hear me"
 msgstr "Entra en mode conferència, tots els usuaris poden escoltar-me"
 
-#: ../tcosmonitor/shared.py:330 ../tcosmonitor/extensions/screenshot.py:46
+#: ../tcosmonitor/shared.py:331 ../tcosmonitor/extensions/screenshot.py:46
 msgid "Capture All clients screens"
 msgstr "Captura totes les pantalles dels clients"
 
-#: ../tcosmonitor/shared.py:333 ../tcosmonitor/extensions/wakeonlan.py:42
+#: ../tcosmonitor/shared.py:334 ../tcosmonitor/extensions/wakeonlan.py:42
 msgid "Boot All clients (WakeOnLan)"
 msgstr "Arranca tots els clients (WakeOnLan)"
 
-#: ../tcosmonitor/shared.py:334
+#: ../tcosmonitor/shared.py:335
 #: ../tcosmonitor/extensions/tcosnetcontroller.py:41
 msgid "Lock internet in all connected users"
 msgstr "Bloqueja Internet a tots els usuaris connectats"
 
-#: ../tcosmonitor/shared.py:335
+#: ../tcosmonitor/shared.py:336
 #: ../tcosmonitor/extensions/tcosnetcontroller.py:42
 msgid "Unlock internet in all connected users"
 msgstr "Desbloqueja Internet a tots els usuaris connectats"
 
-#: ../tcosmonitor/shared.py:336 ../tcosmonitor/extensions/dpms.py:41
+#: ../tcosmonitor/shared.py:337 ../tcosmonitor/extensions/dpms.py:41
 msgid "DPMS Power off monitors"
 msgstr "Desactiva el DPMS per als monitors (control d'energia del monitor)"
 
-#: ../tcosmonitor/shared.py:337 ../tcosmonitor/extensions/dpms.py:43
+#: ../tcosmonitor/shared.py:338 ../tcosmonitor/extensions/dpms.py:43
 msgid "DPMS Power on monitors"
 msgstr "Activa el DPMS per als monitors (control d'energia del monitor)"
 
-#: ../tcosmonitor/shared.py:338
+#: ../tcosmonitor/shared.py:339
 msgid "Chat audio conference"
 msgstr "Audioconferència"
 
-#: ../tcosmonitor/shared.py:534
+#: ../tcosmonitor/shared.py:340 ../tcosmonitor/extensions/livevnc.py:51
+#: ../ui/tcosmonitor-prefwindow.ui:1342
+msgid "Live view screens with VNC"
+msgstr ""
+
+#: ../tcosmonitor/shared.py:538
 #, python-format
 msgid "QUESTION: %(txt)s, RESPONSE %(response)s"
 msgstr "PREGUNTA: %(txt)s, RESPOSTA %(response)s"
 
-#: ../tcosmonitor/shared.py:551 ../tcosmonitor/shared.py:562
+#: ../tcosmonitor/shared.py:555 ../tcosmonitor/shared.py:566
 #, python-format
 msgid "INFO: %s"
 msgstr "INFO: %s"
 
 #  FIXME: handleme
-#: ../tcosmonitor/shared.py:573
+#: ../tcosmonitor/shared.py:577
 #, python-format
 msgid "ERROR: %s"
 msgstr "ERROR: %s"
 
-#: ../tcosmonitor/TcosClassView.py:50 ../tcosmonitor/TcosIconView.py:46
+#: ../tcosmonitor/TcosClassView.py:50 ../tcosmonitor/TcosIconView.py:47
 msgid "IP"
 msgstr "IP"
 
-#: ../tcosmonitor/TcosClassView.py:51 ../tcosmonitor/TcosIconView.py:47
-#: ../tcosmonitor/TcosListView.py:63
+#: ../tcosmonitor/TcosClassView.py:51 ../tcosmonitor/TcosIconView.py:48
+#: ../tcosmonitor/TcosListView.py:64
 msgid "Hostname"
 msgstr "Nom de l'ordinador"
 
-#: ../tcosmonitor/TcosClassView.py:52 ../tcosmonitor/TcosIconView.py:48
-#: ../tcosmonitor/TcosListView.py:75
+#: ../tcosmonitor/TcosClassView.py:52 ../tcosmonitor/TcosIconView.py:49
+#: ../tcosmonitor/TcosListView.py:76
 msgid "Username"
 msgstr "Nom d'usuari"
 
-#: ../tcosmonitor/TcosClassView.py:53 ../tcosmonitor/TcosIconView.py:49
-#: ../tcosmonitor/TcosListView.py:86
+#: ../tcosmonitor/TcosClassView.py:53 ../tcosmonitor/TcosIconView.py:50
+#: ../tcosmonitor/TcosListView.py:87
 msgid "Logged"
 msgstr "Connectat"
 
-#: ../tcosmonitor/TcosClassView.py:54 ../tcosmonitor/TcosIconView.py:50
-#: ../tcosmonitor/TcosListView.py:102
+#: ../tcosmonitor/TcosClassView.py:54 ../tcosmonitor/TcosIconView.py:51
+#: ../tcosmonitor/TcosListView.py:103
 msgid "Time log in"
 msgstr "Temps de connexió"
 
-#: ../tcosmonitor/TcosClassView.py:55 ../tcosmonitor/TcosIconView.py:51
+#: ../tcosmonitor/TcosClassView.py:55 ../tcosmonitor/TcosIconView.py:52
 msgid "Screen locked"
 msgstr "Pantalla bloquejada"
 
-#: ../tcosmonitor/TcosClassView.py:56 ../tcosmonitor/TcosIconView.py:52
+#: ../tcosmonitor/TcosClassView.py:56 ../tcosmonitor/TcosIconView.py:53
 msgid "Network locked"
 msgstr "Xarxa bloquejada"
 
@@ -879,29 +782,29 @@ msgstr ""
 "Arrossegueu i deixeu anar els equips a les posicions i guardeu-les fent clic "
 "amb el botó dret."
 
-#: ../tcosmonitor/TcosClassView.py:176
+#: ../tcosmonitor/TcosClassView.py:179
 msgid "Positions reset to defaults."
 msgstr "Posicions reinicialitzades per defecte."
 
-#: ../tcosmonitor/TcosClassView.py:194
+#: ../tcosmonitor/TcosClassView.py:197
 msgid "Positions saved."
 msgstr "Posicions guardades."
 
-#: ../tcosmonitor/TcosClassView.py:316
+#: ../tcosmonitor/TcosClassView.py:323
 #, python-format
 msgid "%s is not a valid file to exe or send"
 msgstr "%s no és un fitxer vàlid per a executar-lo o enviar-lo"
 
-#: ../tcosmonitor/TcosClassView.py:402 ../tcosmonitor/TcosIconView.py:155
+#: ../tcosmonitor/TcosClassView.py:409 ../tcosmonitor/TcosIconView.py:156
 msgid "yes"
 msgstr "sí"
 
-#: ../tcosmonitor/TcosClassView.py:404 ../tcosmonitor/TcosIconView.py:157
+#: ../tcosmonitor/TcosClassView.py:411 ../tcosmonitor/TcosIconView.py:158
 msgid "no"
 msgstr "no"
 
-#: ../tcosmonitor/TcosTrayIcon.py:49 ../tcosmonitor/extensions/vnc.py:297
-#: ../tcosmonitor/TcosTrayIcon2.py:53 ../tcosmonitor.glade:42
+#: ../tcosmonitor/TcosTrayIcon.py:49 ../tcosmonitor/extensions/vnc.py:298
+#: ../tcosmonitor/TcosTrayIcon2.py:53 ../ui/tcosmonitor-mainwindow.ui:23
 msgid "Quit"
 msgstr "Ix"
 
@@ -914,15 +817,15 @@ msgstr "Dispositius TCOS"
 msgid "Tcos Devices"
 msgstr "Dispositius TCOS"
 
-#: ../tcosmonitor/TcosTrayIcon.py:232 ../tcosmonitor/TcosTrayIcon2.py:344
+#: ../tcosmonitor/TcosTrayIcon.py:232 ../tcosmonitor/TcosTrayIcon2.py:351
 msgid "Usb flash"
 msgstr "Memòria USB flash"
 
-#: ../tcosmonitor/TcosTrayIcon.py:234 ../tcosmonitor/TcosTrayIcon2.py:346
+#: ../tcosmonitor/TcosTrayIcon.py:234 ../tcosmonitor/TcosTrayIcon2.py:353
 msgid "Mount USB1"
 msgstr "Munta USB1"
 
-#: ../tcosmonitor/TcosTrayIcon.py:235 ../tcosmonitor/TcosTrayIcon2.py:347
+#: ../tcosmonitor/TcosTrayIcon.py:235 ../tcosmonitor/TcosTrayIcon2.py:354
 msgid "Umount USB1"
 msgstr "Desmunta USB1"
 
@@ -984,13 +887,13 @@ msgstr "%s no és una aplicació vàlida"
 msgid "Can't send message, user is not logged"
 msgstr "No es poden enviar missatges, l'usuari no està connectat"
 
-#: ../tcosmonitor/extensions/appsmsg.py:285
-#: ../tcosmonitor/extensions/appsmsg.py:294
+#: ../tcosmonitor/extensions/appsmsg.py:289
+#: ../tcosmonitor/extensions/appsmsg.py:298
 #, python-format
 msgid "%s is not application"
 msgstr "%s no és una aplicació"
 
-#: ../tcosmonitor/extensions/appsmsg.py:349
+#: ../tcosmonitor/extensions/appsmsg.py:353
 #, python-format
 msgid ""
 "Error while exec remote app:\n"
@@ -999,7 +902,7 @@ msgstr ""
 "S'ha produït un error quan s'executava aplicació remota:\n"
 "Raó: %s"
 
-#: ../tcosmonitor/extensions/appsmsg.py:356
+#: ../tcosmonitor/extensions/appsmsg.py:360
 #, python-format
 msgid ""
 "Error while send message:\n"
@@ -1046,32 +949,32 @@ msgstr "Captura de pantalla de <span style='font-style: italic'>%s</span>"
 msgid "Screenshot of %s, done."
 msgstr "La captura de pantalla de %s està feta."
 
-#: ../tcosmonitor/extensions/screenshot.py:132
+#: ../tcosmonitor/extensions/screenshot.py:139
 msgid "Save Screenshot"
 msgstr "Guarda la captura de pantalla"
 
-#: ../tcosmonitor/extensions/screenshot.py:144
+#: ../tcosmonitor/extensions/screenshot.py:151
 msgid "Select file to save screenshot..."
 msgstr "Seleccioneu el fitxer per a guardar la captura de pantalla..."
 
-#: ../tcosmonitor/extensions/screenshot.py:148
+#: ../tcosmonitor/extensions/screenshot.py:155
 #, python-format
 msgid "screenshot_of_%(hostname)s_date_%(date)s.png"
 msgstr "screenshot_of_%(hostname)s_date_%(date)s.png"
 
-#: ../tcosmonitor/extensions/screenshot.py:152
+#: ../tcosmonitor/extensions/screenshot.py:159
 msgid "Image Files ( *.png, *.jpg)"
 msgstr "Fitxers d'imatge (*.png, *.jpg)"
 
-#: ../tcosmonitor/extensions/screenshot.py:162
+#: ../tcosmonitor/extensions/screenshot.py:169
 msgid "File must be png or jpg."
 msgstr "El fitxer ha de ser png o jpg."
 
-#: ../tcosmonitor/extensions/screenshot.py:185
+#: ../tcosmonitor/extensions/screenshot.py:192
 msgid "Screenshots of all hosts"
 msgstr "Captura de pantalla de tots els equips"
 
-#: ../tcosmonitor/extensions/screenshot.py:201
+#: ../tcosmonitor/extensions/screenshot.py:208
 #, python-format
 msgid "Screenshot of %s"
 msgstr "Captura de pantalla de %s"
@@ -1175,12 +1078,12 @@ msgstr "Voleu obrir el fitxer(s) en el client?"
 #: ../tcosmonitor/extensions/tcosnetcontroller.py:155
 #: ../tcosmonitor/extensions/videolan.py:457
 #: ../tcosmonitor/extensions/vnc.py:68 ../tcosmonitor/extensions/vnc.py:112
-#: ../tcosmonitor/extensions/vnc.py:419
-#: ../tcosmonitor/extensions/audiortp.py:224
-#: ../tcosmonitor/extensions/audiortp.py:270
-#: ../tcosmonitor/extensions/audiortp.py:368
-#: ../tcosmonitor/extensions/audiortp.py:402
-#: ../tcosmonitor/extensions/audiortp.py:455
+#: ../tcosmonitor/extensions/vnc.py:422
+#: ../tcosmonitor/extensions/audiortp.py:229
+#: ../tcosmonitor/extensions/audiortp.py:275
+#: ../tcosmonitor/extensions/audiortp.py:373
+#: ../tcosmonitor/extensions/audiortp.py:407
+#: ../tcosmonitor/extensions/audiortp.py:460
 msgid "No users logged."
 msgstr "No hi ha usuaris connectats."
 
@@ -1210,9 +1113,9 @@ msgid "Unknow client info"
 msgstr "Informació de client desconegut"
 
 #: ../tcosmonitor/extensions/info.py:135 ../tcosmonitor/LocalData.py:43
-#: ../tcosmonitor/LocalData.py:62 ../tcosmonitor/TcosCommon.py:172
-#: ../tcosmonitor/TcosCommon.py:180 ../tcosmonitor/TcosCommon.py:196
-#: ../tcosmonitor/TcosCommon.py:199
+#: ../tcosmonitor/LocalData.py:62 ../tcosmonitor/TcosCommon.py:182
+#: ../tcosmonitor/TcosCommon.py:190 ../tcosmonitor/TcosCommon.py:206
+#: ../tcosmonitor/TcosCommon.py:209
 msgid "unknow"
 msgstr "desconegut"
 
@@ -1357,7 +1260,7 @@ msgstr "Dades rebudes(rx): "
 msgid "Data send(tx): "
 msgstr "Dades enviades(tx): "
 
-#: ../tcosmonitor/extensions/info.py:322 ../tcosmonitor.glade:2760
+#: ../tcosmonitor/extensions/info.py:322 ../ui/tcosmonitor-prefwindow.ui:911
 msgid "Xorg info"
 msgstr "Informació de l'Xorg"
 
@@ -1369,9 +1272,33 @@ msgstr "activat"
 msgid "disabled"
 msgstr "desactivat"
 
+#: ../tcosmonitor/extensions/info.py:353 ../ui/tcospersonalize.ui:159
+msgid "X Session Type"
+msgstr "Tipus de sessió X"
+
+#: ../tcosmonitor/extensions/info.py:355 ../ui/tcospersonalize.ui:201
+msgid "Xorg Driver"
+msgstr "Controlador d'Xorg"
+
+#: ../tcosmonitor/extensions/info.py:357 ../ui/tcospersonalize.ui:94
+msgid "Xorg Resolution"
+msgstr "Resolució de l'Xorg"
+
+#: ../tcosmonitor/extensions/info.py:359 ../ui/tcospersonalize.ui:133
+msgid "Xorg Color depth"
+msgstr "Profunditat de color de l'Xorg"
+
+#: ../tcosmonitor/extensions/info.py:361 ../ui/tcospersonalize.ui:179
+msgid "DPMS energy monitor control"
+msgstr "Control d'energia del monitor DPMS"
+
 #: ../tcosmonitor/extensions/info.py:363
 msgid "Disable kill X with Ctrl+Alt+Backspace"
 msgstr "Inhabilita matar l'X amb Ctrl+Alt+Backspace"
+
+#: ../tcosmonitor/extensions/info.py:365 ../ui/tcospersonalize.ui:57
+msgid "Enable mouse wheel"
+msgstr "Activa la roda del ratolí"
 
 #: ../tcosmonitor/extensions/info.py:367
 msgid "Refresh rate"
@@ -1388,6 +1315,14 @@ msgstr "Dispositiu del ratolí"
 #: ../tcosmonitor/extensions/info.py:373
 msgid "Mouse protocol"
 msgstr "Protocol del ratolí"
+
+#: ../tcosmonitor/extensions/info.py:375 ../ui/tcospersonalize.ui:273
+msgid "X Horiz sync"
+msgstr "Sincronització horitzontal X"
+
+#: ../tcosmonitor/extensions/info.py:377 ../ui/tcospersonalize.ui:284
+msgid "X Vert sync"
+msgstr "Sincronització vertical X"
 
 #: ../tcosmonitor/extensions/info.py:390
 msgid "PulseAudio Sound server is running"
@@ -1595,7 +1530,7 @@ msgstr "S'està esperant per a arrancar la transmissió de vídeo..."
 #: ../tcosmonitor/extensions/videolan.py:167
 #: ../tcosmonitor/extensions/videolan.py:367
 #: ../tcosmonitor/extensions/videolan.py:602
-#: ../tcosmonitor/extensions/vnc.py:98 ../tcosmonitor/extensions/vnc.py:404
+#: ../tcosmonitor/extensions/vnc.py:98 ../tcosmonitor/extensions/vnc.py:407
 msgid "Error while exec app"
 msgstr "S'ha produït un error quan s'executava l'aplicació"
 
@@ -1704,7 +1639,7 @@ msgstr "Voleu iniciar en mode demostració els següents usuaris: %s?"
 msgid "Waiting for start demo mode..."
 msgstr "S'està esperant l'arrancada del mode demostració..."
 
-#: ../tcosmonitor/extensions/vnc.py:116 ../tcosmonitor/extensions/vnc.py:423
+#: ../tcosmonitor/extensions/vnc.py:116 ../tcosmonitor/extensions/vnc.py:426
 #, python-format
 msgid "Running in demo mode with %s clients."
 msgstr "S'està executant en mode demostració amb %s equips."
@@ -1715,7 +1650,7 @@ msgid "Running in demo mode from server. Demo Nº %s"
 msgstr ""
 "S'està executant en mode demostració des del servidor. Demostració núm. %s"
 
-#: ../tcosmonitor/extensions/vnc.py:149 ../tcosmonitor/extensions/vnc.py:366
+#: ../tcosmonitor/extensions/vnc.py:149 ../tcosmonitor/extensions/vnc.py:369
 #, python-format
 msgid "Connecting with %s to start VNC support"
 msgstr "S'està connectant a %s per a arrancar el suport per a VNC"
@@ -1737,52 +1672,52 @@ msgstr "S'està esperant que comence el servidor VNC..."
 msgid "Can't start VNC, please add X11VNC support"
 msgstr "No es pot arrancar el VNC, per favor afegiu el suport per a X11VNC."
 
-#: ../tcosmonitor/extensions/vnc.py:236
+#: ../tcosmonitor/extensions/vnc.py:237
 msgid "Switch to view only"
 msgstr ""
 
-#: ../tcosmonitor/extensions/vnc.py:241 ../tcosmonitor/extensions/vnc.py:272
+#: ../tcosmonitor/extensions/vnc.py:242 ../tcosmonitor/extensions/vnc.py:273
 msgid "Switch to full control"
 msgstr ""
 
-#: ../tcosmonitor/extensions/vnc.py:268
+#: ../tcosmonitor/extensions/vnc.py:269
 #, python-format
 msgid "VNC host %s"
 msgstr ""
 
-#: ../tcosmonitor/extensions/vnc.py:280
+#: ../tcosmonitor/extensions/vnc.py:281
 msgid "Switch to fullscreen"
 msgstr ""
 
 # Netscape_4.7->Dialog Box Control:TEXTIMP.DLL
-#: ../tcosmonitor/extensions/vnc.py:289
+#: ../tcosmonitor/extensions/vnc.py:290
 #: ../tcosmonitor/extensions/livevnc.py:72
-#: ../tcosmonitor/TcosPreferences.py:533 ../tcosmonitor/TcosExtensions.py:334
+#: ../tcosmonitor/TcosPreferences.py:539 ../tcosmonitor/TcosExtensions.py:338
 msgid "Stop"
 msgstr "Para"
 
-#: ../tcosmonitor/extensions/vnc.py:339
+#: ../tcosmonitor/extensions/vnc.py:342
 msgid "Can't start demo mode, user is not logged"
 msgstr "No es pot arrancar el mode demostració, l'usuari no està connectat"
 
-#: ../tcosmonitor/extensions/vnc.py:342
+#: ../tcosmonitor/extensions/vnc.py:345
 #, python-format
 msgid "Do you want demo mode from user %s?"
 msgstr "Voleu iniciar el mode demostració des de l'usuari %s?"
 
-#: ../tcosmonitor/extensions/vnc.py:389
+#: ../tcosmonitor/extensions/vnc.py:392
 #, python-format
 msgid "Waiting for start demo mode from user %s..."
 msgstr "S'està esperant l'arrancada del mode demostració des de l'usuari %s..."
 
-#: ../tcosmonitor/extensions/vnc.py:443
+#: ../tcosmonitor/extensions/vnc.py:446
 #, python-format
 msgid "Running in demo mode from user %(host)s. Demo Nº %(count)s"
 msgstr ""
 "S'està executant en mode demostració des de l'usuari %(host)s. Demostració "
 "núm. %(count)s"
 
-#: ../tcosmonitor/extensions/vnc.py:498
+#: ../tcosmonitor/extensions/vnc.py:501
 msgid "Demo mode off."
 msgstr "El mode demostració està desactivat."
 
@@ -1820,16 +1755,12 @@ msgstr "L'adreça MAC no és vàlida: \"%s\""
 msgid "Do you want boot all clients?"
 msgstr "Voleu arrancar tots els clients?"
 
-#: ../tcosmonitor/extensions/livevnc.py:51
-msgid "Live view screens with VNC"
-msgstr ""
-
 #: ../tcosmonitor/extensions/livevnc.py:76
 #, fuzzy
 msgid "Live view of all hosts"
 msgstr "Captura de pantalla de tots els equips"
 
-#: ../tcosmonitor/extensions/livevnc.py:183
+#: ../tcosmonitor/extensions/livevnc.py:194
 msgid "Running in LiveView mode"
 msgstr ""
 
@@ -1880,15 +1811,18 @@ msgstr ""
 "S'ha produït un error quan es tancava l'aplicació:\n"
 "Raó: %s"
 
-#: ../tcosmonitor/extensions/audiortp.py:49 ../tcosmonitor.glade:253
+#: ../tcosmonitor/extensions/audiortp.py:49
+#: ../ui/tcosmonitor-mainwindow.ui:163
 msgid "Send audio conference"
 msgstr "Envia audioconferència"
 
-#: ../tcosmonitor/extensions/audiortp.py:50 ../tcosmonitor.glade:3540
+#: ../tcosmonitor/extensions/audiortp.py:50
+#: ../ui/tcosmonitor-prefwindow.ui:1507
 msgid "Audio chat conference"
 msgstr "Xat d'audioconferència"
 
-#: ../tcosmonitor/extensions/audiortp.py:51 ../tcosmonitor.glade:439
+#: ../tcosmonitor/extensions/audiortp.py:51
+#: ../ui/tcosmonitor-mainwindow.ui:275
 msgid "Audio chat list"
 msgstr "Llista de xats d'àudio"
 
@@ -1896,22 +1830,22 @@ msgstr "Llista de xats d'àudio"
 msgid "Send audio conference (from this host)"
 msgstr "Envia audioconferència (des d'este equip)"
 
-#: ../tcosmonitor/extensions/audiortp.py:68
+#: ../tcosmonitor/extensions/audiortp.py:73
 msgid "Emission"
 msgstr "Emissió"
 
-#: ../tcosmonitor/extensions/audiortp.py:74
+#: ../tcosmonitor/extensions/audiortp.py:79
 msgid "State"
 msgstr "Estat"
 
 # Winrar 2.9->Dialog Box Control:rarlng.dll
-#: ../tcosmonitor/extensions/audiortp.py:78
+#: ../tcosmonitor/extensions/audiortp.py:83
 msgid "Channel"
 msgstr "Canal"
 
-#: ../tcosmonitor/extensions/audiortp.py:230
-#: ../tcosmonitor/extensions/audiortp.py:317
-#: ../tcosmonitor/extensions/audiortp.py:408
+#: ../tcosmonitor/extensions/audiortp.py:235
+#: ../tcosmonitor/extensions/audiortp.py:322
+#: ../tcosmonitor/extensions/audiortp.py:413
 msgid ""
 "Your pulseaudio server is too old.\n"
 "Is required pulseaudio version >= 0.9.10"
@@ -1919,92 +1853,92 @@ msgstr ""
 "El vostre servidor de pulseaudio és molt antic.\n"
 "Es requerix una versió de pulseaudio >= 0.9.10"
 
-#: ../tcosmonitor/extensions/audiortp.py:233
+#: ../tcosmonitor/extensions/audiortp.py:238
 #, python-format
 msgid "Do you want to start audio conference to the following users: %s?"
 msgstr "Voleu iniciar el mode d'audioconferència als usuaris següents: %s?"
 
-#: ../tcosmonitor/extensions/audiortp.py:238
+#: ../tcosmonitor/extensions/audiortp.py:243
 msgid "You have entered in audio conference"
 msgstr "Heu entrat en audioconferència"
 
-#: ../tcosmonitor/extensions/audiortp.py:262
+#: ../tcosmonitor/extensions/audiortp.py:267
 msgid "Waiting for start audio conference..."
 msgstr "S'està esperant l'arrancada de l'audioconferència..."
 
-#: ../tcosmonitor/extensions/audiortp.py:290
-#: ../tcosmonitor/extensions/audiortp.py:385
+#: ../tcosmonitor/extensions/audiortp.py:295
+#: ../tcosmonitor/extensions/audiortp.py:390
 #, python-format
 msgid "Running in audio conference with %s clients."
 msgstr "S'està executant en mode audioconferència amb %s clients."
 
-#: ../tcosmonitor/extensions/audiortp.py:300
+#: ../tcosmonitor/extensions/audiortp.py:305
 #, python-format
 msgid "Running in audio conference from server. Conference Nº %s"
 msgstr ""
 "S'està executant en mode audioconferència des del servidor. Conferència núm. "
 "%s"
 
-#: ../tcosmonitor/extensions/audiortp.py:311
+#: ../tcosmonitor/extensions/audiortp.py:316
 msgid "Can't start conference mode, user is not logged"
 msgstr "No es pot arrancar el mode conferència, l'usuari no està connectat"
 
-#: ../tcosmonitor/extensions/audiortp.py:320
+#: ../tcosmonitor/extensions/audiortp.py:325
 #, python-format
 msgid "Do you want audio conference from user %s?"
 msgstr "Voleu iniciar el mode audioconferència des de l'usuari %s?"
 
-#: ../tcosmonitor/extensions/audiortp.py:326
+#: ../tcosmonitor/extensions/audiortp.py:331
 #, python-format
 msgid "You have entered in audio conference from user %s"
 msgstr "Heu entrat en l'audioconferència des de l'usuari %s"
 
-#: ../tcosmonitor/extensions/audiortp.py:354
+#: ../tcosmonitor/extensions/audiortp.py:359
 #, python-format
 msgid "Waiting for start audio conference from user %s..."
 msgstr ""
 "S'està esperant l'arrancada de l'audioconferència des de l'usuari %s..."
 
-#: ../tcosmonitor/extensions/audiortp.py:395
+#: ../tcosmonitor/extensions/audiortp.py:400
 #, python-format
 msgid "Running in audio conference from user %(host)s. Conference Nº %(count)s"
 msgstr ""
 "S'està executant en mode audioconferència des de l'usuari %(host)s. "
 "Conferència núm. %(count)s"
 
-#: ../tcosmonitor/extensions/audiortp.py:411
+#: ../tcosmonitor/extensions/audiortp.py:416
 #, python-format
 msgid "Do you want to start audio chat conference to the following users: %s?"
 msgstr "Voleu iniciar el mode xat d'audioconferència als usuaris següents: %s?"
 
-#: ../tcosmonitor/extensions/audiortp.py:416
+#: ../tcosmonitor/extensions/audiortp.py:421
 #, python-format
 msgid "You have entered in audio chat conference. Participants: %s"
 msgstr "Heu entrat en el xat d'audioconferència. Participants: %s"
 
-#: ../tcosmonitor/extensions/audiortp.py:438
+#: ../tcosmonitor/extensions/audiortp.py:443
 msgid "Waiting for start audio chat conference..."
 msgstr "S'està esperant l'arrancada del xat d'audioconferència..."
 
-#: ../tcosmonitor/extensions/audiortp.py:444
+#: ../tcosmonitor/extensions/audiortp.py:449
 msgid "Do you want to connect to this audio chat conference now?"
 msgstr "Voleu connectar-vos a este xat d'audioconferecia ara?"
 
-#: ../tcosmonitor/extensions/audiortp.py:478
+#: ../tcosmonitor/extensions/audiortp.py:483
 #, python-format
 msgid "Running in audio chat conference with %s clients."
 msgstr "S'està executant en mode xat d'audioconferència amb %s clients."
 
-#: ../tcosmonitor/extensions/audiortp.py:490
+#: ../tcosmonitor/extensions/audiortp.py:495
 #, python-format
 msgid "Running in audio chat conference. Conference Nº %s"
 msgstr "S'està executant en mode xat d'audioconferència. Conferència núm. %s"
 
-#: ../tcosmonitor/extensions/audiortp.py:516
+#: ../tcosmonitor/extensions/audiortp.py:521
 msgid "Conference mode off."
 msgstr "El mode conferència està desactivat."
 
-#: ../tcosmonitor/extensions/audiortp.py:535
+#: ../tcosmonitor/extensions/audiortp.py:540
 msgid "Audio chat conference off."
 msgstr "Xat d'audioconferència desactivat."
 
@@ -2016,60 +1950,60 @@ msgstr ""
 "L'usuari o la contrasenya estan buits,\n"
 "per favor, editeu el diàleg de preferències"
 
-#: ../tcosmonitor/TcosIconView.py:54
+#: ../tcosmonitor/TcosIconView.py:55
 msgid "Place mouse on any computer to see brief info about it."
 msgstr ""
 "Moveu el ratolí per damunt de cada equip per a obtindre una descripció més "
 "detallada."
 
-#: ../tcosmonitor/TcosListView.py:81
+#: ../tcosmonitor/TcosListView.py:82
 msgid "Active"
 msgstr "Actiu"
 
-#: ../tcosmonitor/TcosListView.py:91
+#: ../tcosmonitor/TcosListView.py:92
 msgid "Screen Blocked"
 msgstr "Pantalla bloquejada"
 
-#: ../tcosmonitor/TcosListView.py:96
+#: ../tcosmonitor/TcosListView.py:97
 msgid "Num of process"
 msgstr "Nombre de processos"
 
-#: ../tcosmonitor/TcosListView.py:111
+#: ../tcosmonitor/TcosListView.py:112
 msgid "Sel"
 msgstr "Selecciona"
 
-#: ../tcosmonitor/TcosListView.py:147
+#: ../tcosmonitor/TcosListView.py:148
 #, python-format
 msgid "Error connecting to tcosxmlrpc in %s"
 msgstr "S'ha produït un error en connectar a tcosxmlrpc en %s"
 
-#: ../tcosmonitor/TcosTrayIcon2.py:148
+#: ../tcosmonitor/TcosTrayIcon2.py:154
 #, fuzzy, python-format
 msgid "Floppy: %s"
 msgstr "Disquet"
 
 #  FIXME: handleme
-#: ../tcosmonitor/TcosTrayIcon2.py:150
+#: ../tcosmonitor/TcosTrayIcon2.py:156
 #, fuzzy, python-format
 msgid "CDROM: %s"
 msgstr "ERROR: %s"
 
-#: ../tcosmonitor/TcosTrayIcon2.py:152
+#: ../tcosmonitor/TcosTrayIcon2.py:158
 #, fuzzy, python-format
 msgid "USB: %s"
 msgstr "Dispositiu USB %s"
 
-#: ../tcosmonitor/TcosTrayIcon2.py:154
+#: ../tcosmonitor/TcosTrayIcon2.py:160
 #, fuzzy, python-format
 msgid "HDD partition: %s"
 msgstr "Partición del disc %s"
 
-#: ../tcosmonitor/TcosTrayIcon2.py:156
+#: ../tcosmonitor/TcosTrayIcon2.py:162
 #, fuzzy, python-format
 msgid "Unknow: %s"
 msgstr "desconegut"
 
-#: ../tcosmonitor/Initialize.py:212
+#: ../tcosmonitor/Initialize.py:217
 msgid "GPL-2 license file not found"
 msgstr "El fitxer de llicència GPL-2 no s'ha trobat"
 
@@ -2078,13 +2012,13 @@ msgstr "El fitxer de llicència GPL-2 no s'ha trobat"
 msgid "Selected network inteface (%s) don't have IP address"
 msgstr "La interfície de xarxa seleccionada (%s) no té adreça IP"
 
-#: ../tcosmonitor/LocalData.py:249 ../tcosmonitor/ping.py:98
-#: ../tcosmonitor/ping.py:161
+#: ../tcosmonitor/LocalData.py:260 ../tcosmonitor/ping.py:108
+#: ../tcosmonitor/ping.py:171
 msgid "Testing if found clients have 8998 or 8999 port open..."
 msgstr ""
 "S'està comprovant si els clients trobats tenen el port 8998 o 8999 obert..."
 
-#: ../tcosmonitor/LocalData.py:270
+#: ../tcosmonitor/LocalData.py:282
 msgid ""
 "Static list method configured but no hosts in list.\n"
 "\n"
@@ -2097,7 +2031,7 @@ msgstr ""
 "Per favor, obriu les preferències, feu clic en 'Obri la llista estàtica "
 "d'equips' i afegiu-ne alguns."
 
-#: ../tcosmonitor/TcosPreferences.py:260
+#: ../tcosmonitor/TcosPreferences.py:264
 msgid ""
 "You have select more than 5 button menus.\n"
 "Only allowed to select a maximum of 5 buttons."
@@ -2105,37 +2039,37 @@ msgstr ""
 "Heu seleccionat més de 5 botons de menús.\n"
 "Només està permés seleccionar un màxim de 5 botons."
 
-#: ../tcosmonitor/TcosPreferences.py:271
+#: ../tcosmonitor/TcosPreferences.py:275
 msgid "New settings saved."
 msgstr "Configuració nova guardada."
 
-#: ../tcosmonitor/TcosMenus.py:98 ../tcosmonitor/TcosMenus.py:110
+#: ../tcosmonitor/TcosMenus.py:102 ../tcosmonitor/TcosMenus.py:114
 #, python-format
 msgid "Actions for %s"
 msgstr "Accions per a %s"
 
-#: ../tcosmonitor/TcosMenus.py:103
+#: ../tcosmonitor/TcosMenus.py:107
 msgid "Actions for selected host"
 msgstr "Accions per a l'equip seleccionat"
 
-#: ../tcosmonitor/TcosMenus.py:164 ../tcosmonitor/TcosMenus.py:295
+#: ../tcosmonitor/TcosMenus.py:168 ../tcosmonitor/TcosMenus.py:299
 #, python-format
 msgid "%d hidden actions"
 msgstr "%d accions ocultes"
 
-#: ../tcosmonitor/TcosMenus.py:239 ../tcosmonitor/TcosMenus.py:241
+#: ../tcosmonitor/TcosMenus.py:243 ../tcosmonitor/TcosMenus.py:245
 msgid "Actions for selected hosts"
 msgstr "Accions per als equips seleccionats"
 
-#: ../tcosmonitor/TcosMenus.py:243
+#: ../tcosmonitor/TcosMenus.py:247
 msgid "Actions for all hosts"
 msgstr "Accions per a tots els equips"
 
-#: ../tcosmonitor/TcosMenus.py:300
+#: ../tcosmonitor/TcosMenus.py:304
 msgid "Save hosts positions"
 msgstr "Guarda les posicions dels equips"
 
-#: ../tcosmonitor/TcosMenus.py:308
+#: ../tcosmonitor/TcosMenus.py:312
 msgid "Reset hosts positions"
 msgstr "Reinicialitza les posicions dels equips"
 
@@ -2148,12 +2082,12 @@ msgstr "Ping a %s..."
 msgid "Waiting for pings..."
 msgstr "S'estan esperant els pings..."
 
-#: ../tcosmonitor/ping.py:117 ../tcosmonitor/ping.py:182
+#: ../tcosmonitor/ping.py:127 ../tcosmonitor/ping.py:192
 #: ../tcosmonitor/TcosActions.py:185 ../tcosmonitor/TcosActions.py:264
 msgid "Not connected hosts found."
 msgstr "No s'han trobat equips connectats."
 
-#: ../tcosmonitor/ping.py:124 ../tcosmonitor/ping.py:187
+#: ../tcosmonitor/ping.py:134 ../tcosmonitor/ping.py:197
 #: ../tcosmonitor/TcosActions.py:187 ../tcosmonitor/TcosActions.py:259
 #, python-format
 msgid "Found %d hosts"
@@ -2176,31 +2110,31 @@ msgstr "S'està connectant a %s..."
 msgid "Exception:"
 msgstr "Excepció:"
 
-#: ../tcosmonitor/TcosExtensions.py:73
+#: ../tcosmonitor/TcosExtensions.py:77
 msgid "Error: no IP!"
 msgstr "Error: No s'ha indicat cap adreça IP."
 
-#: ../tcosmonitor/TcosExtensions.py:150
+#: ../tcosmonitor/TcosExtensions.py:154
 msgid "No clients connected, press refresh button."
 msgstr "No hi ha clients connectats, premeu el botó d'actualitzar."
 
-#: ../tcosmonitor/TcosExtensions.py:247 ../tcosmonitor/TcosExtensions.py:249
+#: ../tcosmonitor/TcosExtensions.py:251 ../tcosmonitor/TcosExtensions.py:253
 #, python-format
 msgid "Can't exec this action at '%s' because you are connected at this host!"
 msgstr ""
 "No es pot executar esta acció a '%s' perquè esteu connectat a este equip."
 
-#: ../tcosmonitor/TcosExtensions.py:263
+#: ../tcosmonitor/TcosExtensions.py:267
 #, python-format
 msgid "Doing action \"%(action)s\" in %(ip)s..."
 msgstr "S'està realitzant l'acció \"%(action)s\" en l'equip %(ip)s..."
 
-#: ../tcosmonitor/TcosExtensions.py:281
+#: ../tcosmonitor/TcosExtensions.py:285
 #, python-format
 msgid "Done action \"%(action)s\" in %(ip)s"
 msgstr "L'acció \"%(action)s\" s'ha acabat en %(ip)s"
 
-#: ../tcosmonitor/TcosCommon.py:85
+#: ../tcosmonitor/TcosCommon.py:89
 #, python-format
 msgid ""
 "ThreadController: Found error executing %(cmd)s\n"
@@ -2215,84 +2149,20 @@ msgstr ""
 "en Preferències i informeu de l'error.\n"
 "Error=%(error)s"
 
-#: ../tcosmonitor.glade:9
-msgid "TcosMonitor"
-msgstr "TcosMonitor"
+#: ../ui/tcosmonitor-prefwindow.ui:35 ../ui/tcospersonalize.ui:7
+#: ../ui/tcosmonitor-mainwindow.ui:36
+msgid "Preferences"
+msgstr "Preferències"
 
-#: ../tcosmonitor.glade:41
-msgid "Exit TcosMonitor"
-msgstr "Ix del TcosMonitor"
-
-#: ../tcosmonitor.glade:58
-msgid "Open preferences dialog"
-msgstr "Obri el diàleg de preferències"
-
-#: ../tcosmonitor.glade:75
-msgid "Update host list"
-msgstr "Actualitza la llista d'equips"
-
-# Netscape_4.7->Menu:RESDLL.DLL
-#  3
-#: ../tcosmonitor.glade:76
-msgid "Refresh"
-msgstr "Refresca"
-
-#: ../tcosmonitor.glade:106
-msgid "All Hosts"
-msgstr "Tots els equips"
-
-# Winrar 2.9->Dialog Caption:rarlng.dll
-#: ../tcosmonitor.glade:150
-msgid "Find"
-msgstr "Busca"
-
-#: ../tcosmonitor.glade:166
-msgid "About this app"
-msgstr "Quant a esta aplicació"
-
-#: ../tcosmonitor.glade:346
-msgid "Start audio chat"
-msgstr "Inicia el xat d'àudio"
-
-#: ../tcosmonitor.glade:532
-msgid "Send audio/video"
-msgstr "Envia el fitxer d'àudio/vídeo"
-
-#: ../tcosmonitor.glade:718
-msgid "Exe app"
-msgstr "Executa l'aplicació"
-
-#: ../tcosmonitor.glade:811
-msgid "Send message"
-msgstr "Envia el missatge"
-
-#: ../tcosmonitor.glade:943
-msgid "List view"
-msgstr "Vista de llista"
-
-#: ../tcosmonitor.glade:1021
-msgid "Icon view"
-msgstr "Vista d'icones"
-
-#: ../tcosmonitor.glade:1118
-msgid "Simulate my classroom"
-msgstr "Simula la meua aula"
-
-# Winrar 2.9->Dialog Box Control:rarlng.dll
-#: ../tcosmonitor.glade:1242 ../tcosmonitor.glade:4371
-#: ../tcosmonitor.glade:4754
-msgid "Cancel"
-msgstr "Cancel·la"
-
-#: ../tcosmonitor.glade:1370
+#: ../ui/tcosmonitor-prefwindow.ui:62
 msgid "Show host list on startup"
 msgstr "Mostra la llista d'equips a l'arrancada"
 
-#: ../tcosmonitor.glade:1391
+#: ../ui/tcosmonitor-prefwindow.ui:80
 msgid "Scan network method"
 msgstr "Mètode d'escaneig de xarxa"
 
-#: ../tcosmonitor.glade:1419
+#: ../ui/tcosmonitor-prefwindow.ui:91
 msgid ""
 "Network interface\n"
 "(thin client)"
@@ -2300,57 +2170,63 @@ msgstr ""
 "Interfície de xarxa\n"
 "(clients lleugers)"
 
-#: ../tcosmonitor.glade:1507
+#: ../ui/tcosmonitor-prefwindow.ui:127
 msgid "Show system process"
 msgstr "Mostra els processos del sistema"
 
-#: ../tcosmonitor.glade:1529
+#: ../ui/tcosmonitor-prefwindow.ui:144
 #, fuzzy
 msgid "Don't do actions when running TcosMonitor in thin client"
 msgstr ""
 "No executes accions quan el Lliurex Lab s'execute des d'un client lleuger"
 
-#: ../tcosmonitor.glade:1550
+#: ../ui/tcosmonitor-prefwindow.ui:163
 msgid "List of hosts"
 msgstr "Llista d'equips"
 
-#: ../tcosmonitor.glade:1620
+#: ../ui/tcosmonitor-prefwindow.ui:200
 msgid "Open static host list"
 msgstr "Obri la llista d'equips estàtics"
 
-#: ../tcosmonitor.glade:1660
+#: ../ui/tcosmonitor-prefwindow.ui:225
 msgid "Only show hosts running tcosxmlrpc (8998 port)"
 msgstr "Mostra només els equips que executen amb tcosmxlrpc (port 8998)"
 
-#: ../tcosmonitor.glade:1682
+#: ../ui/tcosmonitor-prefwindow.ui:242
 #, fuzzy
 msgid "Only do all actions on selected hosts (requires restart TcosMonitor)"
 msgstr ""
 "Fes només les accions per a equips seleccionats (cal reiniciar el Lliurex "
 "Lab)"
 
-#: ../tcosmonitor.glade:1704
+#: ../ui/tcosmonitor-prefwindow.ui:259
 msgid "Enable SSL connections to XMLRPC clients"
 msgstr "Habilita les connexions SSL als clients XMLRPC"
 
-#: ../tcosmonitor.glade:1725
+#: ../ui/tcosmonitor-prefwindow.ui:278
 msgid "Host list mode"
 msgstr "Mode llista d'equips"
 
-#: ../tcosmonitor.glade:1783
+#: ../ui/tcosmonitor-prefwindow.ui:302
 msgid "Show right menu with groups (NEW)"
 msgstr "Mostra el menú de la dreta amb grups (NOU)"
 
+#: ../ui/tcosmonitor-prefwindow.ui:319
+#, fuzzy
+msgid "Don't show thin client if TcosMonitor is running there"
+msgstr ""
+"No executes accions quan el Lliurex Lab s'execute des d'un client lleuger"
+
 # Winrar 2.9->String:rarlng.dll
-#: ../tcosmonitor.glade:1833
+#: ../ui/tcosmonitor-prefwindow.ui:351
 msgid "Settings"
 msgstr "Paràmetres"
 
-#: ../tcosmonitor.glade:1873
+#: ../ui/tcosmonitor-prefwindow.ui:376
 msgid "Update host list every (seg)"
 msgstr "Actualitza la llista d'equips cada (seg)"
 
-#: ../tcosmonitor.glade:1902
+#: ../ui/tcosmonitor-prefwindow.ui:389
 msgid ""
 "Update host list every selected seconds.\n"
 "\n"
@@ -2360,11 +2236,11 @@ msgstr ""
 "de segons seleccionat.\n"
 "Valor=0 inhabilita l'actualització."
 
-#: ../tcosmonitor.glade:1926
+#: ../ui/tcosmonitor-prefwindow.ui:405
 msgid "Cache timeout (seg)"
 msgstr "Temps de vida de la memòria cau (seg)"
 
-#: ../tcosmonitor.glade:1954
+#: ../ui/tcosmonitor-prefwindow.ui:419
 msgid ""
 "Cache some data and connection status during selected seconds.\n"
 "\n"
@@ -2375,23 +2251,23 @@ msgstr ""
 "\n"
 "Valor=0 inhabilita la memòria cau."
 
-#: ../tcosmonitor.glade:1978
+#: ../ui/tcosmonitor-prefwindow.ui:437
 msgid "Screenshot size:"
 msgstr "Grandària de captura de pantalla:"
 
-#: ../tcosmonitor.glade:2006 ../tcosmonitor.glade:2056
+#: ../ui/tcosmonitor-prefwindow.ui:450 ../ui/tcosmonitor-prefwindow.ui:479
 msgid "% Size of screnshot."
 msgstr "%s de grandària de captura de pantalla."
 
-#: ../tcosmonitor.glade:2028
+#: ../ui/tcosmonitor-prefwindow.ui:466
 msgid "Mini screenshot size:"
 msgstr "Grandària de les minicaptures de pantalla:"
 
-#: ../tcosmonitor.glade:2078
+#: ../ui/tcosmonitor-prefwindow.ui:495
 msgid "Timeout actions (seg)"
 msgstr "Temps d'espera per a accions (seg)"
 
-#: ../tcosmonitor.glade:2106
+#: ../ui/tcosmonitor-prefwindow.ui:508
 msgid ""
 "Timeout in seg for actions\n"
 "\n"
@@ -2401,15 +2277,15 @@ msgstr ""
 "\n"
 "Valor=per defecte 0"
 
-#: ../tcosmonitor.glade:2130
+#: ../ui/tcosmonitor-prefwindow.ui:526
 msgid "SSH remote username"
 msgstr "Usuari remot SSH"
 
-#: ../tcosmonitor.glade:2179
+#: ../ui/tcosmonitor-prefwindow.ui:553
 msgid "VLC method to send"
 msgstr "VLC mètode d'enviament"
 
-#: ../tcosmonitor.glade:2235
+#: ../ui/tcosmonitor-prefwindow.ui:578
 msgid ""
 "<b>Experimental: Thread Controller</b>\n"
 "( if you have problems, disable it )"
@@ -2417,23 +2293,27 @@ msgstr ""
 "<b>Experimental: Control de fils</b>\n"
 "( Si teniu problemes, desactiveu-lo )"
 
-#: ../tcosmonitor.glade:2265
+#: ../ui/tcosmonitor-prefwindow.ui:591
 msgid "Actions controlled"
 msgstr "Accions controlades"
 
-#: ../tcosmonitor.glade:2286
+#: ../ui/tcosmonitor-prefwindow.ui:611
 msgid "Block ports: (80,8080... etc)"
 msgstr "Bloqueja els ports: (80,8080... etc)"
 
-#: ../tcosmonitor.glade:2404
+#: ../ui/tcosmonitor-prefwindow.ui:653 ../ui/tcospersonalize.ui:333
+msgid "Advanced"
+msgstr "Avançat"
+
+#: ../ui/tcosmonitor-prefwindow.ui:680
 msgid "TcosXmlRpc username"
 msgstr "Usuari del TcosXmlRpc"
 
-#: ../tcosmonitor.glade:2453
+#: ../ui/tcosmonitor-prefwindow.ui:706
 msgid "TcosXmlRpc password"
 msgstr "Contrasenya del TcosXmlRpc"
 
-#: ../tcosmonitor.glade:2502
+#: ../ui/tcosmonitor-prefwindow.ui:735
 msgid ""
 "<b>NOTE:</b>\n"
 "Default user is <b>root</b> and default password is <b>root</b>.\n"
@@ -2459,241 +2339,173 @@ msgstr ""
 "només el necessita el TCOS perquè el vostre compte de superusuari (root) "
 "estiga segur."
 
-#: ../tcosmonitor.glade:2564
+#: ../ui/tcosmonitor-prefwindow.ui:772
 msgid "Authentication "
 msgstr "Autenticació"
 
-#: ../tcosmonitor.glade:2601
+#: ../ui/tcosmonitor-prefwindow.ui:795
 msgid "<b>Info avalaible from tcosxmlrpc</b>"
 msgstr "<b>Informació disponible de tcosxmlrpc</b>"
 
-#: ../tcosmonitor.glade:2627
+#: ../ui/tcosmonitor-prefwindow.ui:806
 msgid "Tcos general info"
 msgstr "Informació general de Tcos"
 
-#: ../tcosmonitor.glade:2646
+#: ../ui/tcosmonitor-prefwindow.ui:821
 msgid "Cpu info"
 msgstr "Informació de la CPU"
 
-#: ../tcosmonitor.glade:2665
+#: ../ui/tcosmonitor-prefwindow.ui:836
 msgid "Kernel and modules info"
 msgstr "Informació del nucli i els mòduls"
 
-#: ../tcosmonitor.glade:2684
+#: ../ui/tcosmonitor-prefwindow.ui:851
 msgid "PCI bus info"
 msgstr "Informació del bus PCI"
 
-#: ../tcosmonitor.glade:2703
+#: ../ui/tcosmonitor-prefwindow.ui:866
 msgid "Ram and swap info"
 msgstr "Informació de la RAM i la SWAP"
 
-#: ../tcosmonitor.glade:2722
+#: ../ui/tcosmonitor-prefwindow.ui:881
 msgid "Process info"
 msgstr "Informació de processos"
 
-#: ../tcosmonitor.glade:2741
+#: ../ui/tcosmonitor-prefwindow.ui:896
 msgid "Network info"
 msgstr "Informació de la xarxa"
 
-#: ../tcosmonitor.glade:2779
+#: ../ui/tcosmonitor-prefwindow.ui:926
 msgid "Sound server info"
 msgstr "Informació del servidor de so"
 
-#: ../tcosmonitor.glade:2830
+#: ../ui/tcosmonitor-prefwindow.ui:962
 msgid "Avalaible info"
 msgstr "Informació disponible"
 
-#: ../tcosmonitor.glade:2867
+#: ../ui/tcosmonitor-prefwindow.ui:985
 msgid "<b>Show / hide menu items</b>"
 msgstr "<b>Mostra / oculta elements de menú</b>"
 
-#: ../tcosmonitor.glade:2902
+#: ../ui/tcosmonitor-prefwindow.ui:1003
 msgid "Lock and unlock screen"
 msgstr "Bloqueja i desbloqueja pantalles"
 
-#: ../tcosmonitor.glade:2924
+#: ../ui/tcosmonitor-prefwindow.ui:1019
 msgid "Remote SSH shell"
 msgstr "Intèrpret d'ordes SSH remot"
 
-#: ../tcosmonitor.glade:2946
+#: ../ui/tcosmonitor-prefwindow.ui:1037
 msgid "Configure Xorg settings"
 msgstr "Configura els paràmetres de l'Xorg"
 
-#: ../tcosmonitor.glade:2981 ../tcosmonitor.glade:3430
+#: ../ui/tcosmonitor-prefwindow.ui:1066 ../ui/tcosmonitor-prefwindow.ui:1427
 msgid "Exe app on user display"
 msgstr "Executa l'aplicació en la pantalla de l'usuari"
 
-#: ../tcosmonitor.glade:3003 ../tcosmonitor.glade:3452
+#: ../ui/tcosmonitor-prefwindow.ui:1082 ../ui/tcosmonitor-prefwindow.ui:1441
 msgid "Send a text message"
 msgstr "Envia un missatge de text"
 
-#: ../tcosmonitor.glade:3025
+#: ../ui/tcosmonitor-prefwindow.ui:1100
 msgid "Show running apps"
 msgstr "Mostra les aplicacions en execució"
 
-#: ../tcosmonitor.glade:3047 ../tcosmonitor.glade:3474
+#: ../ui/tcosmonitor-prefwindow.ui:1116 ../ui/tcosmonitor-prefwindow.ui:1457
 msgid "Send video broadcast"
 msgstr "Envia la difusió del vídeo"
 
-#: ../tcosmonitor.glade:3091
+#: ../ui/tcosmonitor-prefwindow.ui:1150
 msgid "Demo mode"
 msgstr "Mode demostració"
 
-#: ../tcosmonitor.glade:3126
+#: ../ui/tcosmonitor-prefwindow.ui:1179
 msgid "Wake on LAN"
 msgstr "Desperta per xarxa"
 
-#: ../tcosmonitor.glade:3148
+#: ../ui/tcosmonitor-prefwindow.ui:1195
 msgid "Audio conference mode"
 msgstr "Mode àudio conferència"
 
-#: ../tcosmonitor.glade:3170
+#: ../ui/tcosmonitor-prefwindow.ui:1213
 msgid "Screenshots"
 msgstr "Captures de pantalla"
 
-#: ../tcosmonitor.glade:3192
+#: ../ui/tcosmonitor-prefwindow.ui:1229
 msgid "Reboot and poweroff"
 msgstr "Apaga i reinicia"
 
-#: ../tcosmonitor.glade:3214
+#: ../ui/tcosmonitor-prefwindow.ui:1243
 msgid "Lock and unlock internet"
 msgstr "Bloqueja i desbloqueja Internet"
 
-#: ../tcosmonitor.glade:3236
+#: ../ui/tcosmonitor-prefwindow.ui:1259
 msgid "DPMS monitor on/off"
 msgstr "Control DPMS del monitor"
 
-#: ../tcosmonitor.glade:3258
+#: ../ui/tcosmonitor-prefwindow.ui:1277
 msgid "Connect using VNC"
 msgstr "Connecta usant el VNC"
 
-#: ../tcosmonitor.glade:3279
+#: ../ui/tcosmonitor-prefwindow.ui:1293
 msgid "Connect using iTALC"
 msgstr "Connecta usant l'iTALC"
 
-#: ../tcosmonitor.glade:3301
+#: ../ui/tcosmonitor-prefwindow.ui:1308
 msgid "Restart session with new settings"
 msgstr "Reinicia la sessió amb la nova configuració"
 
-#: ../tcosmonitor.glade:3358
+#: ../ui/tcosmonitor-prefwindow.ui:1385
 msgid "Menus"
 msgstr "Menús"
 
-#: ../tcosmonitor.glade:3395
+#: ../ui/tcosmonitor-prefwindow.ui:1408
 msgid "<b>Show / hide menu buttons</b>"
 msgstr "<b>Mostra / oculta els botons del menú</b>"
 
-#: ../tcosmonitor.glade:3518
+#: ../ui/tcosmonitor-prefwindow.ui:1491
 msgid "Audio conference"
 msgstr "Audioconferència"
 
-#: ../tcosmonitor.glade:3562
+#: ../ui/tcosmonitor-prefwindow.ui:1525
 msgid "Audio Chat control"
 msgstr "Control de xat d'àudio"
 
-#: ../tcosmonitor.glade:3619
+#: ../ui/tcosmonitor-prefwindow.ui:1569
 msgid "Menu buttons"
 msgstr "Botons de menú"
 
-#: ../tcosmonitor.glade:3707
-msgid "Question"
-msgstr "Pregunta"
-
-#: ../tcosmonitor.glade:3782
-msgid "You can drag and drop launcher file to this box"
-msgstr "Podeu arrossegar i deixar anar un llançador a esta caixa"
-
-#: ../tcosmonitor.glade:3807
-msgid "<b>Run app in unknow host</b>"
-msgstr "<b>Executa l'aplicació en un equip desconegut</b>"
-
-#: ../tcosmonitor.glade:3901
-msgid "Static hosts list"
-msgstr "Llista d'equips estàtics"
-
-#: ../tcosmonitor.glade:3924
-msgid "<span size=\"x-large\">Static Hosts list</span>"
-msgstr "<span size=\"x-large\">Llista d'equips estàtics</span>"
-
-# Winrar 2.9->Dialog Box Control:rarlng.dll
-#: ../tcosmonitor.glade:4033
-msgid "Add"
-msgstr "Afegix"
-
-# Projecte_Mandrake [tm-mandrake.po]
-#: ../tcosmonitor.glade:4111
-msgid "Modify"
-msgstr "Modifica"
-
-#: ../tcosmonitor.glade:4189
-msgid "Delete"
-msgstr "Esborra"
-
-#: ../tcosmonitor.glade:4268
-msgid "Get from connected"
-msgstr "Pren des dels connectats"
-
-#: ../tcosmonitor.glade:4449 ../tcosmonitor.glade:4832
-msgid "Save"
-msgstr "Guarda"
-
-#: ../tcosmonitor.glade:4495
-msgid "New or edit hosts"
-msgstr "Nou o edita la llista d'equips"
-
-#: ../tcosmonitor.glade:4549
-msgid ""
-"You can add a simple host, \n"
-"   example: <b>192.168.0.100</b>\n"
-"\n"
-"or range of hosts, \n"
-"  example: <b>192.168.0.100-120</b>\n"
-"\n"
-"MAC address is optional"
-msgstr ""
-"Podeu afegir un únic equip,\n"
-"   exemple: <b>192.168.0.100</b>\n"
-"\n"
-"o un rang d'equips, \n"
-"  exemple: <b>192.168.0.100-120</b>\n"
-"\n"
-"l'adreça MAC és opcional"
-
-#: ../tcosmonitor.glade:4590
-msgid "IP address *"
-msgstr "Adreça IP *"
-
-#: ../tcosmonitor.glade:4876
+#: ../ui/tcosmonitor-abouttcos.ui:6
 msgid "About TCOS"
 msgstr "Quant al TCOS"
 
-#: ../tcosmonitor.glade:4899
+#: ../ui/tcosmonitor-abouttcos.ui:19
 msgid "<span size=\"xx-large\">TcosMonitor</span>"
 msgstr "<span size=\"x-large\">TcosMonitor</span>"
 
-#: ../tcosmonitor.glade:4972
+#: ../ui/tcosmonitor-abouttcos.ui:62
 msgid "<b>Version:</b>"
 msgstr "<b>Versió:</b>"
 
-#: ../tcosmonitor.glade:5029
+#: ../ui/tcosmonitor-abouttcos.ui:90
 msgid ""
 "Thin client and standalone\n"
 "monitoring tool."
 msgstr ""
 
-#: ../tcosmonitor.glade:5097
+#: ../ui/tcosmonitor-abouttcos.ui:131
 msgid "Project web site"
 msgstr "Pàgina web del projecte"
 
-#: ../tcosmonitor.glade:5175
+#: ../ui/tcosmonitor-abouttcos.ui:178
 msgid "About"
 msgstr "Quant a"
 
-#: ../tcosmonitor.glade:5233
+#: ../ui/tcosmonitor-abouttcos.ui:212
 msgid "License"
 msgstr "Llicència"
 
-#: ../tcosmonitor.glade:5266
+#: ../ui/tcosmonitor-abouttcos.ui:230
 msgid ""
 "Main developers:\n"
 "  * Mario Izquierdo <mariodebian at gmail.com>\n"
@@ -2717,23 +2529,23 @@ msgstr ""
 "Molt especialment gràcies a:\n"
 "  Comunitat de Madrid, grup MaX (Espanya)"
 
-#: ../tcosmonitor.glade:5310
+#: ../ui/tcosmonitor-abouttcos.ui:259
 msgid "Authors"
 msgstr "Autors"
 
-#: ../tcosmonitor.glade:5339
+#: ../ui/tcosmonitor-abouttcos.ui:275
 msgid "Translated to your language by:"
 msgstr "Traduït al vostre idioma per:"
 
-#: ../tcosmonitor.glade:5364
+#: ../ui/tcosmonitor-abouttcos.ui:287
 msgid "Mario Izquierdo <mariodebian@gmail.com>"
 msgstr "Pilar Embid (Lliurex) <embid_mar@gva.es>"
 
-#: ../tcosmonitor.glade:5399
+#: ../ui/tcosmonitor-abouttcos.ui:307
 msgid "Translators"
 msgstr "Traductors"
 
-#: ../tcosmonitor.glade:5428
+#: ../ui/tcosmonitor-abouttcos.ui:324
 msgid ""
 "TCOS is a free software project that need a lot of work to be the best thin "
 "client plataform.\n"
@@ -2757,39 +2569,241 @@ msgstr ""
 "\n"
 "Feu clic en l'url següent per a obtindre més informació."
 
-#: ../tcosmonitor.glade:5500
+#: ../ui/tcosmonitor-abouttcos.ui:370
 msgid "<u>http://wiki.tcosproject.org/TcosProject:Site_support</u>"
 msgstr "<u>http://wiki.tcosproject.org/TcosProject:Site_support/es</u>"
 
-#: ../tcosmonitor.glade:5538
+#: ../ui/tcosmonitor-abouttcos.ui:392
 msgid "Don't show donations message on start."
 msgstr "No mostres este missatge de donacions a l'inici."
 
-#: ../tcosmonitor.glade:5562
+#: ../ui/tcosmonitor-abouttcos.ui:415
 msgid "Donate"
 msgstr "Donacions"
 
-#: ../tcosmonitor.glade:5599
+#: ../ui/tray.ui:20
+msgid "<big><b>TCOS devices</b></big>"
+msgstr ""
+
+#: ../ui/tray.ui:57
+msgid "Hide"
+msgstr ""
+
+#: ../ui/tcos-volume-manager.ui:39
+msgid "Restart sound"
+msgstr ""
+
+#: ../ui/tcos-volume-manager.ui:54
+msgid "Sound levels"
+msgstr "Nivells de volum"
+
+#: ../ui/tcos-volume-manager.ui:90
+msgid "Main Channels"
+msgstr "Canals principals"
+
+#: ../ui/tcos-volume-manager.ui:113
+msgid "Secondary Channels"
+msgstr "Canals secundaris"
+
+#: ../ui/tcosmonitor-chatwindow.ui:8
 msgid "Chat emission list"
 msgstr "Llista d'emissió de xat"
 
-#: ../tcosmonitor.glade:5622
+#: ../ui/tcosmonitor-chatwindow.ui:17
 msgid "<span size=\"x-large\">Chat emission list</span>"
 msgstr "<span size=\"x-large\">Emissió de xat</span>"
 
 #  Translators: Menu item Verb/Connect
-#: ../tcosmonitor.glade:5731
+#: ../ui/tcosmonitor-chatwindow.ui:80
 msgid "Connect"
 msgstr "Connecta"
 
 #  Translators: Menu item Verb/Branch/Separate/Separate/Disconnect
-#: ../tcosmonitor.glade:5809
+#: ../ui/tcosmonitor-chatwindow.ui:128
 msgid "Disconnect"
 msgstr "Desconnecta"
 
-#: ../tcosmonitor.glade:5887
+#: ../ui/tcosmonitor-chatwindow.ui:176
 msgid "Exit"
 msgstr "Ix"
+
+#: ../ui/tcosmonitor-staticwindow.ui:8
+msgid "Static hosts list"
+msgstr "Llista d'equips estàtics"
+
+#: ../ui/tcosmonitor-staticwindow.ui:17
+msgid "<span size=\"x-large\">Static Hosts list</span>"
+msgstr "<span size=\"x-large\">Llista d'equips estàtics</span>"
+
+# Winrar 2.9->Dialog Box Control:rarlng.dll
+#: ../ui/tcosmonitor-staticwindow.ui:80
+msgid "Add"
+msgstr "Afegix"
+
+# Projecte_Mandrake [tm-mandrake.po]
+#: ../ui/tcosmonitor-staticwindow.ui:128
+msgid "Modify"
+msgstr "Modifica"
+
+#: ../ui/tcosmonitor-staticwindow.ui:176
+msgid "Delete"
+msgstr "Esborra"
+
+#: ../ui/tcosmonitor-staticwindow.ui:225
+msgid "Get from connected"
+msgstr "Pren des dels connectats"
+
+# Winrar 2.9->Dialog Box Control:rarlng.dll
+#: ../ui/tcosmonitor-staticwindow.ui:292 ../ui/tcosmonitor-mainwindow.ui:771
+#: ../ui/tcosmonitor-staticwindownew.ui:150
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: ../ui/tcosmonitor-staticwindow.ui:340
+#: ../ui/tcosmonitor-staticwindownew.ui:198
+msgid "Save"
+msgstr "Guarda"
+
+#: ../ui/tcospersonalize.ui:34
+msgid "<b>unknow host</b>"
+msgstr "<b>equip desconegut</b>"
+
+#: ../ui/tcospersonalize.ui:74
+msgid "Disable Ctrl + Alt + Backspace (for kill Xorg)"
+msgstr "Inhabilita Ctrl+Alt+Backspace (per a tancar l'Xorg)"
+
+#: ../ui/tcospersonalize.ui:211
+msgid "Get avalaible drivers"
+msgstr "Carrega els controladors disponibles"
+
+#: ../ui/tcospersonalize.ui:248
+msgid "Display Settings"
+msgstr "Configuració de la pantalla"
+
+#: ../ui/tcospersonalize.ui:351
+msgid "Default boot kernel"
+msgstr "Nucli d'arrancada per defecte"
+
+#: ../ui/tcospersonalize.ui:376
+msgid "<b>PXE Boot options</b>"
+msgstr "<b>Opcions d'arrancada de PXE</b>"
+
+#: ../ui/tcospersonalize.ui:391
+msgid "Default boot method"
+msgstr "Mètode d'arrancada per defecte"
+
+#: ../ui/tcospersonalize.ui:419
+msgid "Command line"
+msgstr "Línia d'ordes"
+
+#: ../ui/tcospersonalize.ui:507
+msgid "Boot options"
+msgstr "Opcions d'arrancada"
+
+#: ../ui/tcospersonalize.ui:551
+msgid "Delete Config"
+msgstr "Elimina la configuració"
+
+#: ../ui/tcosmonitor-mainwindow.ui:8
+msgid "TcosMonitor"
+msgstr "TcosMonitor"
+
+#: ../ui/tcosmonitor-mainwindow.ui:22
+msgid "Exit TcosMonitor"
+msgstr "Ix del TcosMonitor"
+
+#: ../ui/tcosmonitor-mainwindow.ui:35
+msgid "Open preferences dialog"
+msgstr "Obri el diàleg de preferències"
+
+#: ../ui/tcosmonitor-mainwindow.ui:48
+msgid "Update host list"
+msgstr "Actualitza la llista d'equips"
+
+# Netscape_4.7->Menu:RESDLL.DLL
+#  3
+#: ../ui/tcosmonitor-mainwindow.ui:49
+msgid "Refresh"
+msgstr "Refresca"
+
+#: ../ui/tcosmonitor-mainwindow.ui:71
+msgid "All Hosts"
+msgstr "Tots els equips"
+
+# Winrar 2.9->Dialog Caption:rarlng.dll
+#: ../ui/tcosmonitor-mainwindow.ui:99
+msgid "Find"
+msgstr "Busca"
+
+#: ../ui/tcosmonitor-mainwindow.ui:111
+msgid "About this app"
+msgstr "Quant a esta aplicació"
+
+#: ../ui/tcosmonitor-mainwindow.ui:219
+msgid "Start audio chat"
+msgstr "Inicia el xat d'àudio"
+
+#: ../ui/tcosmonitor-mainwindow.ui:331
+msgid "Send audio/video"
+msgstr "Envia el fitxer d'àudio/vídeo"
+
+#: ../ui/tcosmonitor-mainwindow.ui:443
+msgid "Exe app"
+msgstr "Executa l'aplicació"
+
+#: ../ui/tcosmonitor-mainwindow.ui:499
+msgid "Send message"
+msgstr "Envia el missatge"
+
+#: ../ui/tcosmonitor-mainwindow.ui:581
+msgid "List view"
+msgstr "Vista de llista"
+
+#: ../ui/tcosmonitor-mainwindow.ui:629
+msgid "Icon view"
+msgstr "Vista d'icones"
+
+#: ../ui/tcosmonitor-mainwindow.ui:689
+msgid "Simulate my classroom"
+msgstr "Simula la meua aula"
+
+#: ../ui/tcosmonitor-staticwindownew.ui:8
+msgid "New or edit hosts"
+msgstr "Nou o edita la llista d'equips"
+
+#: ../ui/tcosmonitor-staticwindownew.ui:32
+msgid ""
+"You can add a simple host, \n"
+"   example: <b>192.168.0.100</b>\n"
+"\n"
+"or range of hosts, \n"
+"  example: <b>192.168.0.100-120</b>\n"
+"\n"
+"MAC address is optional"
+msgstr ""
+"Podeu afegir un únic equip,\n"
+"   exemple: <b>192.168.0.100</b>\n"
+"\n"
+"o un rang d'equips, \n"
+"  exemple: <b>192.168.0.100-120</b>\n"
+"\n"
+"l'adreça MAC és opcional"
+
+#: ../ui/tcosmonitor-staticwindownew.ui:57
+msgid "IP address *"
+msgstr "Adreça IP *"
+
+#: ../ui/tcosmonitor-askwindow.ui:8
+msgid "Question"
+msgstr "Pregunta"
+
+#: ../ui/tcosmonitor-askwindow.ui:50
+msgid "You can drag and drop launcher file to this box"
+msgstr "Podeu arrossegar i deixar anar un llançador a esta caixa"
+
+#: ../ui/tcosmonitor-askwindow.ui:61
+msgid "<b>Run app in unknow host</b>"
+msgstr "<b>Executa l'aplicació en un equip desconegut</b>"
 
 #~ msgid "Lliurex Lab"
 #~ msgstr "Lliurex Lab"

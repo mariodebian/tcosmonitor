@@ -12,10 +12,16 @@ clean:
 	done
 
 files:
-	find ../ -name "*.py" -o -name "*.glade" | grep -v WakeOnLan > FILES
+#	find ../ -name "*.ui" -o -name "*.py" | grep -v WakeOnLan > FILES
+
 pot:
+	find ../ -name "*.ui" | grep -v WakeOnLan > FILES.ui.txt
+	find ../ -name "*.py" | grep -v WakeOnLan > FILES.py.txt
 #	xgettext --add-comments -o tcosmonitor.pot --files-from=FILES
-	xgettext  -o tcosmonitor.pot --files-from=FILES
+	xgettext -o tcosmonitor.py.pot --files-from=FILES.py.txt --language=Python
+	xgettext -o tcosmonitor.ui.pot --files-from=FILES.ui.txt --language=Glade
+	msgcat -o tcosmonitor.pot tcosmonitor.py.pot tcosmonitor.ui.pot
+	rm -f tcosmonitor.py.pot tcosmonitor.ui.pot FILES.ui.txt FILES.py.txt
 
 po:
 	@for lang in $(LANGUAGES); do \
