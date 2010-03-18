@@ -40,12 +40,14 @@ class TcosPreferences:
 
     def __init__(self, main):
         self.main=main
-        self.ui=self.main.ui
-        
+        #self.ui=self.main.ui
         self.visible_menu_items=[]
+        self.ui=gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
         
         # init pref window and buttons
-        self.main.pref = self.main.ui.get_widget('prefwindow')            
+        self.ui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-prefwindow.ui')
+        self.main.pref = self.ui.get_object('prefwindow')
         self.main.pref.hide()
         self.main.pref.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
         # dont destroy window
@@ -53,77 +55,77 @@ class TcosPreferences:
         self.main.pref.connect('delete-event', self.prefwindow_close )
         
         # extensions table
-        self.main.extensions_table=self.ui.get_widget('extensions_table')
+        self.main.extensions_table=self.ui.get_object('extensions_table')
         
         # buttons
-        self.main.pref_ok = self.ui.get_widget('pref_ok_button')
+        self.main.pref_ok = self.ui.get_object('pref_ok_button')
         self.main.pref_ok.connect('clicked', self.on_pref_ok_button_click)
-        self.main.pref_cancel = self.ui.get_widget('pref_cancel_button')
+        self.main.pref_cancel = self.ui.get_object('pref_cancel_button')
         self.main.pref_cancel.connect('clicked', self.on_pref_cancel_button_click)
         
         # make pref widgets
-        self.main.pref_spin_update = self.main.ui.get_widget('spin_update')
-        self.main.pref_cache_timeout = self.main.ui.get_widget('spin_cache_timeout')
-        self.main.pref_actions_timeout = self.main.ui.get_widget('spin_actions_timeout')
-        self.main.pref_scrotsize = self.main.ui.get_widget('spin_scrotsize')
-        self.main.pref_miniscrotsize = self.main.ui.get_widget('spin_miniscrotsize')
-        self.main.pref_xmlrpc_username = self.main.ui.get_widget('xmlrpc_username')
-        self.main.pref_xmlrpc_password = self.main.ui.get_widget('xmlrpc_password')
+        self.main.pref_spin_update = self.ui.get_object('spin_update')
+        self.main.pref_cache_timeout = self.ui.get_object('spin_cache_timeout')
+        self.main.pref_actions_timeout = self.ui.get_object('spin_actions_timeout')
+        self.main.pref_scrotsize = self.ui.get_object('spin_scrotsize')
+        self.main.pref_miniscrotsize = self.ui.get_object('spin_miniscrotsize')
+        self.main.pref_xmlrpc_username = self.ui.get_object('xmlrpc_username')
+        self.main.pref_xmlrpc_password = self.ui.get_object('xmlrpc_password')
         
-        self.main.pref_ssh_remote_username = self.main.ui.get_widget('ssh_remote_username')
-        self.main.pref_ports_tnc = self.main.ui.get_widget('ports_net_controller')
-        self.main.pref_vlc_method_send = self.main.ui.get_widget('vlc_method_send')
+        self.main.pref_ssh_remote_username = self.ui.get_object('ssh_remote_username')
+        self.main.pref_ports_tnc = self.ui.get_object('ports_net_controller')
+        self.main.pref_vlc_method_send = self.ui.get_object('vlc_method_send')
         self.populate_select(self.main.pref_vlc_method_send, shared.vlc_methods_send )
         
         # populate selects (only on startup)
-        self.main.combo_network_interfaces = self.main.ui.get_widget('combo_networkinterface') 
+        self.main.combo_network_interfaces = self.ui.get_object('combo_networkinterface') 
         self.populate_select(self.main.combo_network_interfaces, self.main.common.GetAllNetworkInterfaces() )
         
         # scan method
-        self.main.pref_combo_scan_method = self.main.ui.get_widget('combo_scanmethod')
+        self.main.pref_combo_scan_method = self.ui.get_object('combo_scanmethod')
         self.populate_select(self.main.pref_combo_scan_method, shared.scan_methods )
         
         # static host list button
-        self.main.pref_open_static = self.main.ui.get_widget('button_open_static')
+        self.main.pref_open_static = self.ui.get_object('button_open_static')
         self.main.pref_open_static.connect('clicked', self.on_button_open_static)
         
         # add signal changed to scan_method to enable/disable button on the fly
         #self.main.pref_combo_scan_method.connect('changed', self.on_scan_method_change)
         
         # listmode method
-        self.main.pref_combo_listmode = self.main.ui.get_widget('combo_listmode')
+        self.main.pref_combo_listmode = self.ui.get_object('combo_listmode')
         self.populate_select(self.main.pref_combo_listmode, shared.list_modes )
         
         
         # checkboxes
-        self.main.pref_populatelistatstartup = self.main.ui.get_widget('ck_showliststartup')
-        #self.main.pref_cybermode = self.main.ui.get_widget('ck_cybermode')
-        self.main.pref_systemprocess = self.main.ui.get_widget('ck_systemprocess')
-        self.main.pref_threadscontrol = self.main.ui.get_widget('ck_threadscontrol')
-        self.main.pref_enable_sslxmlrpc = self.main.ui.get_widget('ck_enable_sslxmlrpc')
-        self.main.pref_blockactioninthishost = self.main.ui.get_widget('ck_blockactioninthishost')
-        self.main.pref_notshowwhentcosmonitor = self.main.ui.get_widget('ck_notshowwhentcosmonitor')
-        self.main.pref_onlyshowtcos = self.main.ui.get_widget('ck_onlyshowtcos')
-        self.main.pref_selectedhosts = self.main.ui.get_widget('ck_selectedhosts')
+        self.main.pref_populatelistatstartup = self.ui.get_object('ck_showliststartup')
+        #self.main.pref_cybermode = self.ui.get_object('ck_cybermode')
+        self.main.pref_systemprocess = self.ui.get_object('ck_systemprocess')
+        self.main.pref_threadscontrol = self.ui.get_object('ck_threadscontrol')
+        self.main.pref_enable_sslxmlrpc = self.ui.get_object('ck_enable_sslxmlrpc')
+        self.main.pref_blockactioninthishost = self.ui.get_object('ck_blockactioninthishost')
+        self.main.pref_notshowwhentcosmonitor = self.ui.get_object('ck_notshowwhentcosmonitor')
+        self.main.pref_onlyshowtcos = self.ui.get_object('ck_onlyshowtcos')
+        self.main.pref_selectedhosts = self.ui.get_object('ck_selectedhosts')
         
-        self.main.pref_tcosinfo = self.main.ui.get_widget('ck_tcosinfo')
-        self.main.pref_cpuinfo = self.main.ui.get_widget('ck_cpuinfo')
-        self.main.pref_kernelmodulesinfo = self.main.ui.get_widget('ck_kernelmodulesinfo')
-        self.main.pref_pcibusinfo = self.main.ui.get_widget('ck_pcibusinfo')
-        self.main.pref_ramswapinfo = self.main.ui.get_widget('ck_ramswapinfo')
-        self.main.pref_processinfo = self.main.ui.get_widget('ck_processinfo')
-        self.main.pref_networkinfo = self.main.ui.get_widget('ck_networkinfo')
-        self.main.pref_xorginfo = self.main.ui.get_widget('ck_xorginfo')
-        self.main.pref_soundserverinfo = self.main.ui.get_widget('ck_soundserverinfo')
+        self.main.pref_tcosinfo = self.ui.get_object('ck_tcosinfo')
+        self.main.pref_cpuinfo = self.ui.get_object('ck_cpuinfo')
+        self.main.pref_kernelmodulesinfo = self.ui.get_object('ck_kernelmodulesinfo')
+        self.main.pref_pcibusinfo = self.ui.get_object('ck_pcibusinfo')
+        self.main.pref_ramswapinfo = self.ui.get_object('ck_ramswapinfo')
+        self.main.pref_processinfo = self.ui.get_object('ck_processinfo')
+        self.main.pref_networkinfo = self.ui.get_object('ck_networkinfo')
+        self.main.pref_xorginfo = self.ui.get_object('ck_xorginfo')
+        self.main.pref_soundserverinfo = self.ui.get_object('ck_soundserverinfo')
         
-        self.main.pref_menugroups = self.main.ui.get_widget('ck_menugroups')
+        self.main.pref_menugroups = self.ui.get_object('ck_menugroups')
         
         # menus show hide
         for menu in shared.preferences_menus:
-            setattr(self.main, "pref_" + menu, self.main.ui.get_widget(menu) )
+            setattr(self.main, "pref_" + menu, self.ui.get_object(menu) )
             
         for menu in shared.button_preferences_menus:
-            setattr(self.main, "pref_" + menu, self.main.ui.get_widget(menu) )
+            setattr(self.main, "pref_" + menu, self.ui.get_object(menu) )
 
 
     def SaveSettings(self):

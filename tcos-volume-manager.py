@@ -152,32 +152,30 @@ class TcosVolumeManager:
         self.allchannels=self.xmlrpc.GetSoundChannelsContents()
         print_debug ("__init__() %s" %( self.allchannels ) )
         
-        
-        #import shared
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
         
         # Widgets
-        self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcos-volume-manager.glade')
-        self.mainwindow = self.ui.get_widget('mainwindow')
+        self.ui.add_from_file(shared.GLADE_DIR + 'tcos-volume-manager.ui')
+        self.mainwindow = self.ui.get_object('mainwindow')
         
         # close windows signals
         #self.mainwindow.connect('destroy', self.quitapp )
         self.mainwindow.connect('delete-event', self.mainwindow_close )
         
-        self.mainlabel=self.ui.get_widget('mainlabel')
+        self.mainlabel=self.ui.get_object('mainlabel')
         
-        self.scrolledwindow=self.ui.get_widget('scrolledwindow')
-        self.scrolledwindow2=self.ui.get_widget('scrolledwindow2')
+        self.scrolledwindow=self.ui.get_object('scrolledwindow')
+        self.scrolledwindow2=self.ui.get_object('scrolledwindow2')
         
-        self.quitbutton=self.ui.get_widget('quitbutton')
+        self.quitbutton=self.ui.get_object('quitbutton')
         self.quitbutton.connect('clicked', self.quitapp )
         
-        self.statusbar=self.ui.get_widget('statusbar')
-        self.refreshbutton=self.ui.get_widget('refreshbutton')
+        self.statusbar=self.ui.get_object('statusbar')
+        self.refreshbutton=self.ui.get_object('refreshbutton')
         self.refreshbutton.connect('clicked', self.on_refresh_button )
         
-        self.restartbutton=self.ui.get_widget('restartbutton')
+        self.restartbutton=self.ui.get_object('restartbutton')
         self.restartbutton.connect('clicked', self.on_restart_button )
         
         # only show if we found this file in $HOME dir

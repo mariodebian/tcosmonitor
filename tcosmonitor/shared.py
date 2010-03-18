@@ -60,14 +60,14 @@ tcos_config_file="./tcos.conf"
 # if exec from svn or sources dir
 if os.path.isdir('./debian') and os.path.isdir('./po'):
     LOCALE_DIR = "./po/"
-    GLADE_DIR = "./"
+    GLADE_DIR = "./ui/"
     IMG_DIR = "./images/"
     tcos_config_file="./tcos.conf"
     GLOBAL_CONF='./tcosmonitor.conf'
     #print "exec in sources dir"
 else:
     tcos_config_file="/etc/tcos/tcos.conf"
-    GLADE_DIR = "/usr/share/tcosmonitor/"
+    GLADE_DIR = "/usr/share/tcosmonitor/ui/"
     IMG_DIR = "/usr/share/tcosmonitor/images/"
     LOCALE_DIR = "/usr/share/locale"
     GLOBAL_CONF='/etc/tcos/tcosmonitor.conf'

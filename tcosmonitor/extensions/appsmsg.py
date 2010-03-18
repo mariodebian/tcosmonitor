@@ -188,16 +188,20 @@ class AppsAndMsgs(TcosExtension):
     def init_ask(self):
         self.main.ask_ip=None
         
-        self.main.ask = self.main.ui.get_widget('askwindow')
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-askwindow.ui')
+        
+        self.main.ask = self.ui.get_object('askwindow')
         self.main.ask.connect('delete-event', self.askwindow_close )
         self.main.ask.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
         
         
-        self.main.ask_label = self.main.ui.get_widget('txt_asklabel')
+        self.main.ask_label = self.ui.get_object('txt_asklabel')
         ## arrastrar y soltar
-        self.main.ask_fixed = self.main.ui.get_widget('ask_fixed')
-        self.main.ask_dragdrop = self.main.ui.get_widget('label99')
-        self.main.image_entry = self.main.ui.get_widget('image_askentry')
+        self.main.ask_fixed = self.ui.get_object('ask_fixed')
+        self.main.ask_dragdrop = self.ui.get_object('label99')
+        self.main.image_entry = self.ui.get_object('image_askentry')
         self.main.image_entry.drag_dest_set( gtk.DEST_DEFAULT_ALL, [( 'text/uri-list', 0, 2 ), ], gtk.gdk.ACTION_DEFAULT | gtk.gdk.ACTION_COPY)
         self.main.image_entry.connect( 'drag_data_received', self.on_drag_data_received)
         self.main.ask_fixed.hide()
@@ -208,7 +212,7 @@ class AppsAndMsgs(TcosExtension):
         for s in shared.appslist:
             self.liststore.append([s])
             
-        self.main.ask_entry = self.main.ui.get_widget('txt_askentry')
+        self.main.ask_entry = self.ui.get_object('txt_askentry')
         self.main.ask_completion = gtk.EntryCompletion()
         self.main.ask_completion.set_model(self.liststore)
         self.main.ask_entry.set_completion(self.main.ask_completion)
@@ -217,8 +221,8 @@ class AppsAndMsgs(TcosExtension):
         self.main.ask_completion.connect('match-selected', self.match_cb)
         self.main.ask_entry.connect('activate', self.activate_cb)
         
-        self.main.ask_cancel = self.main.ui.get_widget('ask_cancelbutton')
-        self.main.ask_exec = self.main.ui.get_widget('ask_exebutton')
+        self.main.ask_cancel = self.ui.get_object('ask_cancelbutton')
+        self.main.ask_exec = self.ui.get_object('ask_exebutton')
         
         # buttons signals
         self.main.ask_exec.connect('clicked', self.on_ask_exec_click)

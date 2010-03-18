@@ -62,8 +62,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         self.icon_tooltips = None
         
-        self.classview=self.ui.get_widget('classview')
-        self.classeventbox=self.ui.get_widget('classeventbox')
+        self.classview=self.ui.get_object('classview')
+        self.classeventbox=self.ui.get_object('classeventbox')
+        self.classeventbox1=self.ui.get_object('classeventbox1')
         self.classview.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                                   gtk.DEST_DEFAULT_HIGHLIGHT |
                                   gtk.DEST_DEFAULT_DROP,
@@ -83,7 +84,9 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         self.iconsize=[115,115]
         
         # gtk.Frame don't support changing background color (default gray) use glade eventbox
+        print_debug("setting white background")
         self.classeventbox.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("white"))
+        self.classeventbox1.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('white'))
         self.loadpos()
 
     def get_max_pos(self, *args):

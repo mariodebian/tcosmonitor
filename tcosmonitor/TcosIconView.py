@@ -41,6 +41,7 @@ class TcosIconView(object):
         self.main=main
         self.ui=self.main.ui
         
+        
         self.__selected_icon=None
         self.avalaible_info=[
                     [_("IP"), 'ip' ],
@@ -55,7 +56,7 @@ class TcosIconView(object):
         
         self.icon_tooltips = None
         self.hosts={}
-        self.iconview=self.ui.get_widget('iconview')
+        self.iconview=self.ui.get_object('iconview')
         self.model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
         self.iconview.set_model(self.model)
         self.iconview.set_text_column(0)

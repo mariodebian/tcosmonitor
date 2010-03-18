@@ -27,7 +27,7 @@ import os
 from gettext import gettext as _
 from time import time
 
-import gtk.glade
+#import gtk.glade
 import gobject
 
 import shared
@@ -42,7 +42,7 @@ def crono(start, txt):
     return
 
 
-class TcosTrayIcon:
+class TcosTrayIcon(object):
     def __init__(self, disable_quit=True, allow_reboot_poweroff=True):
         self.actions={}
         self.args={}
@@ -67,25 +67,30 @@ class TcosTrayIcon:
         self.statusIcon.set_tooltip( _("Tcos Devices") )
 
         # locale glade support
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
+        import gettext
+        gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+        gettext.textdomain(shared.PACKAGE)
 
-        self.ui = gtk.glade.XML( shared.GLADE_DIR  + "tray.glade")
-        self.window = self.ui.get_widget('popup')
-        self.hide_button = self.ui.get_widget("hide_button")
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.add_from_file(shared.GLADE_DIR + 'tray.ui')
+        
+        self.window = self.ui.get_object('popup')
+        self.hide_button = self.ui.get_object("hide_button")
 
         self.hide_button.connect("clicked", self.close_popup)
         self.statusIcon.connect('popup-menu', self.popup_window)
+        self.statusIcon.connect('activate', self.popup_window)
         
-        self.devbox=self.ui.get_widget("devbox")
-        self.window = self.ui.get_widget('popup')
+        self.devbox=self.ui.get_object("devbox")
+        self.window = self.ui.get_object('popup')
 
 
     def InitMenu(self):
         #print_debug (" ##### InitMenu() ######")
         
         # clean devbox
-        self.devbox=self.ui.get_widget("devbox")
+        self.devbox=self.ui.get_object("devbox")
         self.devbox.foreach( lambda(widget): widget.destroy() )
         
         # sort items

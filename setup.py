@@ -22,7 +22,7 @@ def get_debian_version():
 
 class build_locales(build):
     def run(self):
-        os.system("sh fix-glade.sh")
+        #os.system("sh fix-glade.sh")
         os.system("cd po && make")
 
         # parse __VERSION__ in build_scripts
@@ -72,11 +72,11 @@ data_files.append(('share/tcosmonitor/images', get_files("images") ))
 data_files.append(('share/pixmaps', ['images/tcos-icon-32x32.png'] ))
 
 # Glade files
-data_files.append(('share/tcosmonitor', ['tcosmonitor.glade', 
-                                         'tcospersonalize.glade',
-                                         'tcos-volume-manager.glade',
-                                         'tray.glade'] ))
-
+#data_files.append(('share/tcosmonitor', ['tcosmonitor.glade', 
+#                                         'tcospersonalize.glade',
+#                                         'tcos-volume-manager.glade',
+#                                         'tray.glade'] ))
+data_files.append(('share/tcosmonitor/ui', get_files("ui") ))
 
 
 # config files and Xsession.d launcher

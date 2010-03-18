@@ -48,6 +48,7 @@ class TcosListView(object):
         self.main=main
         self.ui=self.main.ui
         
+        
         self.main.updating=True
         self.searching=False  # boolean True thread running False not running
         
@@ -56,7 +57,7 @@ class TcosListView(object):
         
         self.model=gtk.ListStore(str, str, str, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, gtk.gdk.Pixbuf, str, str, bool,bool)
         
-        self.main.tabla = self.ui.get_widget('hostlist')
+        self.main.tabla = self.ui.get_object('hostlist')
         self.main.tabla.set_model (self.model)
 
         cell1 = gtk.CellRendererText ()
@@ -64,16 +65,16 @@ class TcosListView(object):
         column1.set_resizable (True)
         column1.set_sort_column_id(COL_HOST)
         self.main.tabla.append_column (column1)
-		
+        
         cell2 = gtk.CellRendererText ()
         column2 = gtk.TreeViewColumn (_("IP address"), cell2, text = COL_IP)
-        column2.set_resizable (True)	
+        column2.set_resizable (True)
         column2.set_sort_column_id(COL_IP)
         self.main.tabla.append_column (column2)
 
         cell3 = gtk.CellRendererText ()
         column3 = gtk.TreeViewColumn (_("Username"), cell3, text = COL_USERNAME)
-        column3.set_resizable (True)	
+        column3.set_resizable (True)
         column3.set_sort_column_id(COL_USERNAME)
         self.main.tabla.append_column (column3)
 
@@ -81,7 +82,7 @@ class TcosListView(object):
         column4 = gtk.TreeViewColumn (_("Active"), cell4, pixbuf = COL_ACTIVE)
         #column4.set_sort_column_id(COL_ACTIVE)
         self.main.tabla.append_column (column4)
-	
+
         cell5 = gtk.CellRendererPixbuf()
         column5 = gtk.TreeViewColumn (_("Logged"), cell5, pixbuf = COL_LOGGED)
         #column5.set_sort_column_id(COL_LOGGED)

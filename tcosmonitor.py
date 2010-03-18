@@ -33,7 +33,7 @@ import os
 import pygtk
 pygtk.require('2.0')
 import gtk
-import gtk.glade
+#import gtk.glade
 
 from time import time
 import getopt
@@ -48,7 +48,9 @@ from tcosmonitor import shared
 
 import grp, pwd
 
-
+import gettext
+gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+gettext.textdomain(shared.PACKAGE)
 
 
 def print_debug(txt):
@@ -129,13 +131,15 @@ class TcosMonitor(object):
  user to tcos group." %pwd.getpwuid(os.getuid())[0]))
                 sys.exit(1)
 
-        #import shared
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
         
         # Widgets
-        self.ui = gtk.glade.XML(shared.GLADE_DIR + 'tcosmonitor.glade')
-        self.mainwindow = self.ui.get_widget('mainwindow')
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
+        print_debug("Loading ui file...")
+        self.ui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-mainwindow.ui')
+        
+        
+        self.mainwindow = self.ui.get_object('mainwindow')
         self.mainwindow.set_icon_from_file(shared.IMG_DIR +\
                                      'tcos-icon-32x32.png')
         #self.pref = self.ui.get_widget('prefwindow')
@@ -160,7 +164,7 @@ class TcosMonitor(object):
         
         
         # FIXME
-        self.scrolledtextview = self.ui.get_widget('scrolledtextview')
+        self.scrolledtextview = self.ui.get_object('scrolledtextview')
         #import htmltextview
         #htmltextview.HtmlHandler().set_main(self)
         

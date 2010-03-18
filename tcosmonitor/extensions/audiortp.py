@@ -57,11 +57,16 @@ class AudioRTP(TcosExtension):
         self.selected_emission=None
         
         self.model=gtk.ListStore(str, gtk.gdk.Pixbuf, str, 'gboolean')
-        self.main.chatwindow=self.main.ui.get_widget('chatwindow')
+        
+        self.ui = gtk.Builder()
+        self.ui.set_translation_domain(shared.PACKAGE)
+        
+        self.ui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-chatwindow.ui')
+        
+        self.main.chatwindow=self.ui.get_object('chatwindow')
         self.main.chatwindow.connect('delete-event', self.chat_exit )
         
-        
-        self.main.chatlist = self.main.ui.get_widget('chatlist')
+        self.main.chatlist = self.ui.get_object('chatlist')
         self.main.chatlist.set_model (self.model)
 
         cell1 = gtk.CellRendererText ()
@@ -83,13 +88,13 @@ class AudioRTP(TcosExtension):
         self.table_file = self.main.chatlist.get_selection()
         self.table_file.connect("changed", self.on_chat_list_change)
         
-        self.main.chat_button_disconnect=self.main.ui.get_widget('button_chat_disconnect')
+        self.main.chat_button_disconnect=self.ui.get_object('button_chat_disconnect')
         self.main.chat_button_disconnect.connect('clicked', self.chat_disconnect)
         
-        self.main.chat_button_connect=self.main.ui.get_widget('button_chat_connect')
+        self.main.chat_button_connect=self.ui.get_object('button_chat_connect')
         self.main.chat_button_connect.connect('clicked', self.chat_connect)
         
-        self.main.chat_button_exit=self.main.ui.get_widget('button_exit')
+        self.main.chat_button_exit=self.ui.get_object('button_exit')
         self.main.chat_button_exit.connect('clicked', self.chat_exit)
 
         self.main.chat_button_disconnect.set_sensitive(False)
