@@ -23,11 +23,7 @@
 ###########################################################################
 
 import shared
-#import os, sys
 import os
-#from os.path import isdir, join
-#import ConfigParser
-#from time import time, sleep
 from time import time
 
 

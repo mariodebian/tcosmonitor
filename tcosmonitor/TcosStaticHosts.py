@@ -26,14 +26,6 @@ import gtk
 from gettext import gettext as _
 import shared
 from time import time
-#import urllib2
-#from os import remove, path
-#from threading import Thread
-#from subprocess import Popen, PIPE, STDOUT
-
-#from time import sleep, localtime
-#import gobject
-#import string
 
 COL_IP, COL_MAC= range(2)
 
@@ -146,12 +138,6 @@ class TcosStaticHosts:
     def staticwindownew_close(self, *args):
         self.main.staticwindownew.hide()
         return True
-    
-    """
-    def get_object(self, wname):
-        widgets = gtk.glade.XML( shared.GLADE_DIR + 'tcosmonitor.glade', wname )
-        return widgets.get_object( wname )
-    """
 
     def init_statichostlist(self):
         print_debug ( "init_statichostlist()" )
@@ -164,7 +150,7 @@ class TcosStaticHosts:
         column1.set_resizable (True)
         column1.set_sort_column_id(COL_IP)
         self.main.staticlist.append_column (column1)
-		
+        
         cell2 = gtk.CellRendererText ()
         column2 = gtk.TreeViewColumn (_("MAC address"), cell2, text = COL_MAC)
         column2.set_resizable (True)	

@@ -22,13 +22,9 @@
 # 02111-1307, USA.
 ###########################################################################
 
-#from time import time, sleep, localtime
 from time import time
-#import gobject
 import gtk
 from gettext import gettext as _
-#import os,subprocess
-#import string
 
 import shared
 

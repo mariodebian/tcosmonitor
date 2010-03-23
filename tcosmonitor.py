@@ -97,7 +97,6 @@ class TcosMonitor(object):
         self.triggers={}
         self.mainloop = gobject.MainLoop()
         
-        # FIXME change PATH
         self.groupconf=self.loadconf( os.path.abspath(shared.GLOBAL_CONF) )
         
         try:
@@ -142,17 +141,14 @@ class TcosMonitor(object):
         self.mainwindow = self.ui.get_object('mainwindow')
         self.mainwindow.set_icon_from_file(shared.IMG_DIR +\
                                      'tcos-icon-32x32.png')
-        #self.pref = self.ui.get_widget('prefwindow')
-        #self.main.fullscreen()
+        
         self.is_fullscreen=False
         
         # close windows signals
         self.mainwindow.connect('destroy', self.quitapp )
         self.mainwindow.connect("delete_event", self.quitapp)
-        #self.pref.connect('destroy', self.prefwindow_close )
-        #self.pref.hide()
 
-        # reduce mainwindow size if running in height < 768
+        # reduce mainwindow size if running in height < 1024x768
         #>>> gtk.gdk.screen_height()
         #>>> gtk.gdk.screen_width()
         if gtk.gdk.screen_height() < 768:
@@ -192,21 +188,14 @@ class TcosMonitor(object):
         self.iconview=tcosmonitor.TcosIconView.TcosIconView(self)
         self.classview=tcosmonitor.TcosClassView.TcosClassView(self)
         
-        
-        
         self.init=tcosmonitor.Initialize.Initialize(self)
-        
         
         self.static=tcosmonitor.TcosStaticHosts.TcosStaticHosts(self)
         
         
         #########  init some elements ###########
         self.init.init_progressbar()
-        #self.init.initabout()
-        #self.init.initask()
         self.init.initabouttcos()
-        #self.init.initpref()
-        #self.init.populate_pref()
         #########################################
         self.init.initbuttons()
         self.preferences.populate_pref()
@@ -217,9 +206,9 @@ class TcosMonitor(object):
         
         
         if not shared.dbus_disabled:
-            #from TcosDBus import TcosDBusAction
-            self.dbus_action=tcosmonitor.TcosDBus.TcosDBusAction(self, admin=self.config.GetVar("xmlrpc_username"),
-                                  passwd=self.config.GetVar("xmlrpc_password")  )
+            self.dbus_action=tcosmonitor.TcosDBus.TcosDBusAction(self, 
+                                  admin=self.config.GetVar("xmlrpc_username"),
+                                  passwd=self.config.GetVar("xmlrpc_password"))
         
         self.stop_running_actions=[]
         # generate host list if checked

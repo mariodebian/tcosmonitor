@@ -286,7 +286,7 @@ class TcosCommon:
 
     def threads_leave(self, fromtxt=None):
         import gtk
-        #print_debug("======> treads_leave() FROM %s"%fromtxt)
+        #print_debug("======> threads_leave() FROM %s"%fromtxt)
         gtk.gdk.threads_leave()
         self.thread_lock=False
 

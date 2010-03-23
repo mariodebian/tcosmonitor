@@ -304,26 +304,6 @@ class LocalData:
 
             self.main.worker=shared.Workers(self.main, ping.ping_iprange_static, [self.allclients], dog=False )
             self.main.worker.start()
-
-##            # try if client is connected
-##            if self.main.config.GetVar("onlyshowtcos") == 1:
-##                if hasattr(self.main, "write_into_statusbar"):
-##                    self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open..."))
-##                hosts=[]
-##                for host in self.allclients:
-##                    # view status of port 8998 or 8999
-##                    if self.main.xmlrpc.newhost(host):
-##                        if self.main.xmlrpc.GetVersion():
-##                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN" %(host))
-##                            hosts.append(host)
-##                        else:
-##                            print_debug("GetAllClients() host=%s ports 8998 or 8999 OPEN but not tcosxmlrpc" %(host))
-##                    else:
-##                        print_debug("GetAllClients() host=%s ports 8998 or 8999 CLOSED" %(host))
-##                        #hosts.append(host)
-##                self.allclients=hosts
-##                print_debug("GetAllClients() returning static list %s"%self.allclients)
-##            return self.allclients
             return []
 
     

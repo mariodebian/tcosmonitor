@@ -10,14 +10,10 @@
 
 
 import os
-#import sys
 import re
 from threading import Thread
 import socket
-#import fcntl
-#import struct
 from gettext import gettext as _
-#from time import sleep
 from subprocess import Popen, PIPE, STDOUT
 
 import netifaces
@@ -157,10 +153,6 @@ class Ping:
             current = pingip(ip)
             pinglist.append(current)
             current.start()
-        
-##        self.main.common.threads_enter("Ping:ping_iprange_static print waiting")
-##        self.main.actions.set_progressbar( _("Waiting for hosts...") , float(1) )
-##        self.main.common.threads_leave("Ping:ping_iprange_static print waiting")
      
         for pingle in pinglist:
             pingle.join()

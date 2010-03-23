@@ -24,9 +24,6 @@
 
 
 from subprocess import Popen, PIPE, STDOUT
-#import os
-#import sys
-#import socket
 
 
 from tcosmonitor import shared

@@ -27,7 +27,6 @@ import os
 from gettext import gettext as _
 from time import time
 
-#import gtk.glade
 import gobject
 
 import shared
