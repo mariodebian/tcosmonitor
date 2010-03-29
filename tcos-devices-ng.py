@@ -34,23 +34,22 @@ import socket
 CONF_FILE="~/.tcos-devices-ng.conf"
 ALL_CONF_FILE="/etc/tcos/tcos-devices-ng.conf"
 
-# check for local DISPLAY
-remotehost=display=""
-if "DISPLAY" in os.environ and os.environ['DISPLAY'] != '':
-    remotehost, display =  os.environ["DISPLAY"].split(':')
-
-action = ""
-
-if remotehost == "":
-    print "tcos-devices-ng: Not allowed to run in local DISPLAY"
-    sys.exit(0)
 
 import pygtk
 pygtk.require('2.0')
 import gtk
 
 from tcosmonitor import shared
+# check for local DISPLAY
+remotehost=display=""
+if "DISPLAY" in os.environ and os.environ['DISPLAY'] != '':
+    remotehost=shared.parseIPAddress(os.environ["DISPLAY"])
 
+action = ""
+
+if remotehost == "":
+    print "tcos-devices-ng: Not allowed to run in local DISPLAY"
+    sys.exit(0)
 
 # load conf file and exit if not active
 if not shared.test_start("tcos-devices-ng") :
