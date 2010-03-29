@@ -97,6 +97,7 @@ class ViewProc(TcosExtension):
             pid=proc.split()[0] # not convert to int DBUS need string
             name=" ".join(proc.split()[1:])
             name=name.replace('<','&lt;').replace('>','&gt;')
+            name=name.replace('&','&amp;')
             
             if int(self.main.config.GetVar("systemprocess")) == 0:
                 for hidden in shared.system_process:
@@ -116,7 +117,7 @@ class ViewProc(TcosExtension):
             <input type='button' name='self.main.kill_proc_buttons' index='%d' label='%s' /></span>
             <span style='color: red; margin-left: 140px; margin-right: 0px'> %6s</span>
             <span style='color: blue; margin-left: 350px; margin-right: 0px'> %s</span><br />
-            """ %(counter, blabel, pid, name) ) 
+            """ %(counter, blabel, pid, name) )
             counter+=1
         
         self.main.datatxt.display()
