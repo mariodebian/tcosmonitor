@@ -68,7 +68,7 @@ except getopt.error, msg:
     print "for command line options use tcosconfig --help"
     sys.exit(2)
 
-shared.remotehost, display =  os.environ["DISPLAY"].split(':')
+shared.remotehost=str(shared.parseIPAddress(os.environ["DISPLAY"]))
 
 # process options
 for o, a in opts:
@@ -77,7 +77,7 @@ for o, a in opts:
         shared.debug = True
     if o == "--host":
         #print "HOST %s" %(a)
-        shared.remotehost = a
+        shared.remotehost = str(shared.parseIPAddress(a))
     if o in ("-h", "--help"):
         usage()
         sys.exit()
