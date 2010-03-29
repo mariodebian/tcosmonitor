@@ -644,7 +644,7 @@ def parseIPAddress(ipstr, return_ipv4=True):
     try:
         ip=ipaddr.IPAddress(ipstr)
     except Exception, err:
-        print_debug("Exception, error=%s"%err)
+        print_debug("parseIPAddress() Exception, error=%s"%err)
         return None
     ipv4=ip
     if return_ipv4 and ip.version == 6:
