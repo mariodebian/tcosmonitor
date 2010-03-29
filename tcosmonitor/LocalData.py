@@ -471,7 +471,8 @@ class LocalData:
                         break
                     if b[0] == USER_PROCESS:
                         #print_debug("  => Searching for host \"%s:0\", hostname=%s found host=%s ut_line=%s"%(ip, hostname, b.ut_host,b.ut_line))
-                        if b.ut_host == "%s:0" % (ip) or b.ut_line == "%s:0" % (ip) or b.ut_host == "%s" % hostname :
+                        #if b.ut_host == "%s:0" % (ip) or b.ut_line == "%s:0" % (ip) or b.ut_host == "%s" % hostname :
+                        if shared.parseIPAddress(b.ut_host) == ip or shared.parseIPAddress(b.ut_host) == hostname:
                             if b.ut_line.startswith("pts/") and not os.path.isdir("/proc/%s"%b.ut_pid): continue
                             print_debug(" Ip \"%s:0\" => found host=%s hostname=%s ut_line=%s user=%s pid=%s"%(ip, hostname, b.ut_host,b.ut_line, b.ut_user, b.ut_pid))
                             last=b
