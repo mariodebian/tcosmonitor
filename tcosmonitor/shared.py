@@ -416,7 +416,17 @@ system_process=[
  "notification-daemon",
  "bash",
  "gvfsd",
- "gconf-helper"
+ "gconf-helper",
+ "gdu-notification-daemon",
+ "gvfs-gdu-volume",
+ "gvfs-afc-volume-monitor",
+ "gvfs-gphoto2-volume-monitor",
+ "indicator-messages-service",
+ "indicator-application-service",
+ "indicator-sound-service",
+ "notify-osd",
+ "polkit-gnome-authentication-agent-1",
+ "gvfs-fuse-daemon",
 ]
 
 
@@ -595,6 +605,51 @@ if have_display:
                         return False
                     else:
                         return True
+
+import binascii
+import IPy
+import ipaddr
+import re
+
+def parseHexIP(ipstr):
+    """
+    pass a bin hex IP and return string hex IP
+    """
+    newip=[]
+    for i in ipstr:
+        newip.append(binascii.hexlify(i))
+    new=IPy.parseAddress("0x" + "".join(newip) )[0]
+    return new
+
+def parseIPAddress(ipstr, return_ipv4=True):
+    """
+    pass an string or binary IP and return IPV4
+    """
+    if re.match("[a-z]|[A-Z]", ipstr):
+        print_debug( "NOT ip => %s"%ipstr )
+        return None
+    
+    if ipstr.endswith(':0.0'):
+        ipstr=ipstr.replace(':0.0', '')
+    
+    if ipstr.endswith(':0'):
+        ipstr=ipstr.replace(':0', '')
+    
+    if ipstr=='':
+        return ''
+    
+    if len(ipstr) == 4:
+        ipstr=parseHexIP(ipstr)
+    
+    try:
+        ip=ipaddr.IPAddress(ipstr)
+    except Exception, err:
+        print_debug("Exception, error=%s"%err)
+        return None
+    ipv4=ip
+    if return_ipv4 and ip.version == 6:
+        ipv4=ip.ipv4_mapped.exploded
+    return ipv4
 
 
 from threading import Thread
