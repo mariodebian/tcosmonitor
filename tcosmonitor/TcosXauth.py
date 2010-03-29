@@ -24,7 +24,8 @@
 
 
 from subprocess import Popen, PIPE, STDOUT
-
+import binascii
+from Xlib import xauth
 
 from tcosmonitor import shared
 def print_debug(txt):
@@ -60,24 +61,39 @@ class TcosXauth:
             # return last cookie (cookie in X session don't change)
             return self.cookie
         
-        print_debug ( "read_cookie() exec \"xauth list\"" )
-        p = Popen(["xauth", "-n", "list"], shell=False, bufsize=0, stdout=PIPE, stderr=STDOUT, close_fds=True)
-        readed=p.stdout.read()
-        readed=readed.split('\n')[0:-1]
-        print_debug ( "read_cookie() %s" %readed )
-        for line in readed:
-            if len(line.split()) != 3:
-                print_debug("read_cookie() INCORRECT XAUTH LINE '%s'" %line)
-                continue
-            host, ctype, cookie = line.split()
-            chost=host.split(':')[0]
-            print_debug("read_cookie() chost='%s' split LINE '%s' " %(chost, line))
-            if chost == self.display_host or chost == self.display_ip:
-                self.cookie=cookie
-                print_debug ( "read_cookie() chost=%s HAVE COOKIE => %s" %(chost, cookie) )
-                return cookie
-        return None
+        # use python-xlib for getting IPAddress and data (support IPV6)
+        for line in self.parseDisplay():
+            if line[0] == self.display_host or line[0] == self.display_ip:
+                self.cookie=line[1]
+                return self.cookie
         
+        return None
+
+    def parseDisplay(self):
+        """
+        read xauth and get IP addr using xlib python bindings
+        """
+        a=xauth.Xauthority()
+        entries=a.entries
+        lines=[]
+        for entry in entries:
+            ipv4=shared.parseIPAddress(entry[1], return_ipv4=True)
+            if ipv4 is None:
+                ipv4=entry[1]
+            cookie=self.parseCookie(entry[4])
+            print_debug("parseDisplay() ip=%s cookie=%s"%(ipv4, cookie))
+            lines.append([ipv4, cookie])
+        return lines
+
+    def parseCookie(self, cookiestr):
+        """
+        read bin cookie and return hex string
+        """
+        cookie=[]
+        for i in cookiestr:
+            cookie.append(binascii.hexlify(i))
+        return "".join(cookie)
+
     def get_cookie(self):
         return self.read_cookie()
         
