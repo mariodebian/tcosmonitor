@@ -51,7 +51,6 @@ class TcosCommon:
         self.extensions={}
         print_debug("__init__()")
         self.theme=None
-        pass
 
     def get_username(self):
         return pwd.getpwuid(os.getuid())[0]
@@ -216,7 +215,7 @@ class TcosCommon:
 
     def get_display(self, ip_mode=True):
         print_debug("get_display() ip_mode=%s"%(ip_mode) )
-        self.vars["display_host"]=os.environ["DISPLAY"].split(':')[0]
+        self.vars["display_host"]=shared.parseIPAddress(os.environ["DISPLAY"])
         self.vars["display_hostname"]=self.vars["display_host"]
         self.vars["display_ip"]=self.vars["display_host"]
 
