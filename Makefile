@@ -89,6 +89,7 @@ patch_hardy:
 
 patch_max:
 	sed -i '/show_donate/s/1/0/g' tcosmonitor/shared.py
+	sed -i '/show_about/s/1/0/g' tcosmonitor/shared.py
 	
 patch_intrepid:
 	# none

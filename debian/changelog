@@ -1,3 +1,22 @@
+tcosmonitor (0.2.29) unstable; urgency=low
+
+  * clean a lot of old code and fix aboutdialog i18n
+  * add more hidden process and new method parseIPAddress that supports
+    IPV6 strings
+  * dbus/tcos-dbus-client.py: use new shared.parseIPAddress
+  * tcos-devices-ng.py: use new shared.parseIPAddress
+  * tcos-volume-manager.py: use new shared.parseIPAddress
+  * tcosmonitor/LocalData.py: use shared.parseIPAddress
+  * tcosmonitor/TcosCommon.py: use shared.parseIPAddress
+  * tcosmonitor/extensions/viewproc.py: replace & => &amp;
+  * tcosmonitor/TcosXauth.py: use python-xlib and shared.parseIPAddress
+    to get xauth cookies and IPs
+  * debian/control: add new depends python-xlib python-ipaddr python-ipy
+  * tcosmonitor/shared.py: give better exception info
+  * dbus/81tcos-utils: use python to get DISPLAY
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 30 Mar 2010 17:45:42 +0200
+
 tcosmonitor (0.2.28) unstable; urgency=low
 
   * tcos-devices-ng.py: fix udev_daemon loop
