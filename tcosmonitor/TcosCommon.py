@@ -215,7 +215,7 @@ class TcosCommon:
 
     def get_display(self, ip_mode=True):
         print_debug("get_display() ip_mode=%s"%(ip_mode) )
-        self.vars["display_host"]=shared.parseIPAddress(os.environ["DISPLAY"])
+        self.vars["display_host"]=str(shared.parseIPAddress(os.environ["DISPLAY"]))
         self.vars["display_hostname"]=self.vars["display_host"]
         self.vars["display_ip"]=self.vars["display_host"]
 
