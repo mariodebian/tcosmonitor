@@ -1,3 +1,16 @@
+tcosmonitor (0.2.30) unstable; urgency=low
+
+  * tcosmonitor/shared.py: return hostname if ipstr is a string
+  * dbus/tcos-dbus-client.py convert IP to string
+  * tcos-devices-ng.py: convert IP to string
+  * tcosmonitor/LocalData.py: convert IP to string
+  * tcosmonitor/TcosCommon.py: convert IP to string
+  * tcosmonitor/TcosXauth.py: convert IP to string
+  * tcosmonitor/shared.py: parse IPV6 xauth in Debian lenny
+    [::ffff:x.x.x.x]:0
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 31 Mar 2010 15:59:34 +0200
+
 tcosmonitor (0.2.29) unstable; urgency=low
 
   * clean a lot of old code and fix aboutdialog i18n
