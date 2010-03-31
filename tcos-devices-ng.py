@@ -43,7 +43,7 @@ from tcosmonitor import shared
 # check for local DISPLAY
 remotehost=display=""
 if "DISPLAY" in os.environ and os.environ['DISPLAY'] != '':
-    remotehost=shared.parseIPAddress(os.environ["DISPLAY"])
+    remotehost=str(shared.parseIPAddress(os.environ["DISPLAY"]))
 
 action = ""
 
