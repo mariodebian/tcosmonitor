@@ -55,7 +55,7 @@ for o, a in opts:
         shared.allow_local_display=True
 
 
-host =  shared.parseIPAddress(os.environ["DISPLAY"])
+host =  str(shared.parseIPAddress(os.environ["DISPLAY"]))
 if host == "" and not shared.allow_local_display:
 	print "tcos-dbus-client: Not allowed to run in local DISPLAY"
 	sys.exit(0)
