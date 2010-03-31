@@ -639,6 +639,11 @@ def parseIPAddress(ipstr, return_ipv4=True):
         return ''
     
     if len(ipstr) == 4:
+        # 4 hexadecimal blocks ==> 192.168.0.x:0
+        ipstr=parseHexIP(ipstr)
+    elif len(ipstr) == 16:
+        # 16 hex blocks ==> [::ffff:192.168.0.x]:0
+        # lenny python-xlib use this
         ipstr=parseHexIP(ipstr)
     
     try:
