@@ -77,7 +77,7 @@ class TcosXauth:
         entries=a.entries
         lines=[]
         for entry in entries:
-            ipv4=shared.parseIPAddress(entry[1], return_ipv4=True)
+            ipv4=str(shared.parseIPAddress(entry[1], return_ipv4=True))
             if ipv4 is None:
                 ipv4=entry[1]
             cookie=self.parseCookie(entry[4])
