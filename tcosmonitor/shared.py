@@ -625,15 +625,15 @@ def parseIPAddress(ipstr, return_ipv4=True):
     """
     pass an string or binary IP and return IPV4
     """
-    if re.match("[a-z]|[A-Z]", ipstr):
-        print_debug( "NOT ip => %s"%ipstr )
-        return None
-    
     if ipstr.endswith(':0.0'):
         ipstr=ipstr.replace(':0.0', '')
     
     if ipstr.endswith(':0'):
         ipstr=ipstr.replace(':0', '')
+
+    if re.match("[a-z]|[A-Z]", ipstr):
+        print_debug( "parseIPAddress() NOT ip => %s"%ipstr )
+        return ipstr
     
     if ipstr=='':
         return ''
