@@ -650,9 +650,9 @@ def parseIPAddress(ipstr, return_ipv4=True):
         ip=ipaddr.IPAddress(ipstr)
     except Exception, err:
         print_debug("parseIPAddress() Exception, error=%s"%err)
-        return None
+        return ipstr
     ipv4=ip
-    if return_ipv4 and ip.version == 6:
+    if return_ipv4 and ip.version == 6 and ip.ipv4_mapped:
         ipv4=ip.ipv4_mapped.exploded
     return ipv4
 
