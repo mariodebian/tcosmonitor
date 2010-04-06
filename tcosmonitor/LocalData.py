@@ -247,9 +247,9 @@ class LocalData:
             if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
                 # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
                 try:
-                    if os.environ["DISPLAY"].split(':')[0] != '':
+                    if str(shared.parseIPAddress(os.environ["DISPLAY"])) != '':
                         # running tcosmonitor on thin client
-                        i=self.allclients.index(os.environ["DISPLAY"].split(':')[0])
+                        i=str(shared.parseIPAddress(os.environ["DISPLAY"]))
                         self.allclients.pop(i)
                 except Exception, err:
                     print_debug("GetAllClients() can't read DISPLAY, %s"%err)

@@ -97,7 +97,7 @@ class Ping:
                 if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
                     # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
                     try:
-                        if os.environ["DISPLAY"].split(':')[0] != '':
+                        if str(shared.parseIPAddress(os.environ["DISPLAY"])) != '':
                             # running tcosmonitor on thin client
                             continue
                     except Exception, err:

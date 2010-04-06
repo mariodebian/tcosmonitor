@@ -216,7 +216,7 @@ class TcosExtension(object):
         # return True if an exec action
         # return False if can not
         # get $DISPLAY
-        host, dnum =  os.environ["DISPLAY"].split(':')
+        host=str(shared.parseIPAddress(os.environ["DISPLAY"]))
         if host == "": return True
         print_debug("doaction_onthisclient() host=%s ip=%s action=%s filteraction=%s" %(host, ip, action, action.split(' ')[0]) )
         # convert to IP
