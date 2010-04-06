@@ -78,8 +78,13 @@ class Ping:
             self.main.common.threads_leave("Ping:ping_iprange show progress")
             ############
             current = pingip(ip)
-            pinglist.append(current)
-            current.start()
+            try:
+                # in some situations ( I can reproduce ) thread can't be started
+                # don't fail and only wait if thread start ok
+                current.start()
+                pinglist.append(current)
+            except Exception, err:
+                print_debug("ping thread Exception ip=%s err=%s"%(ip,err))
         
         self.main.common.threads_enter("Ping:ping_iprange print waiting")
         self.main.actions.set_progressbar( _("Waiting for pings...") , float(1) )
