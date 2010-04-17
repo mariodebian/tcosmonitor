@@ -1,3 +1,14 @@
+tcosmonitor (0.2.31) unstable; urgency=low
+
+  * tcosmonitor/shared.py: fix NoneType when looking at ipv4_mapped
+    object
+  * tcosmonitor/ping.py: don't fail if we can start ping thread
+  * tcosmonitor/LocalData.py tcosmonitor/TcosExtensions.py
+    tcosmonitor/ping.py: use parseIPAddress instead of spliting DISPLAY
+  * Release 0.2.31
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 17 Apr 2010 16:01:55 +0200
+
 tcosmonitor (0.2.30) unstable; urgency=low
 
   * tcosmonitor/shared.py: return hostname if ipstr is a string
