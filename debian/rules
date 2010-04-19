@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 DEB_PYTHON_SYSTEM=pysupport
-DEB_PACKAGES = tcosmonitor
+DEB_PACKAGES = tcosmonitor  tcosmonitor-common
 DEB_ALL_PACKAGES= tcosmonitor tcosmonitor-common
 
 include /usr/share/cdbs/1/rules/debhelper.mk
