@@ -611,51 +611,80 @@ import IPy
 import ipaddr
 import re
 
-def parseHexIP(ipstr):
-    """
-    pass a bin hex IP and return string hex IP
-    """
-    newip=[]
-    for i in ipstr:
-        newip.append(binascii.hexlify(i))
-    new=IPy.parseAddress("0x" + "".join(newip) )[0]
-    return new
+
+def is_bin(txt):
+    if txt in ['3a', '2e', '61', '62', '63', '64', '65', '66']:
+        # txt is ':' or '.' or a letter between a-f
+        return False
+    try:
+        txt=int(txt)
+    except ValueError:
+        # can't convert txt to int, txt is hexadecimal aka binary
+        return True
+    
+    if txt >= 30 and txt <= 39:
+        # txt is between 0(0x30) and 9(0x39)
+        return False
+    # return binary by default
+    return True
 
 def parseIPAddress(ipstr, return_ipv4=True):
     """
     pass an string or binary IP and return IPV4
     """
+    newip=[]
+    isBin=False
+
     if ipstr.endswith(':0.0'):
         ipstr=ipstr.replace(':0.0', '')
     
     if ipstr.endswith(':0'):
         ipstr=ipstr.replace(':0', '')
 
-    if re.match("[a-z]|[A-Z]", ipstr):
-        print_debug( "parseIPAddress() NOT ip => %s"%ipstr )
+    # hostname must start with letter and contain letters numbers and '-' or '.'
+    if re.match(r'^[a-zA-Z][a-zA-Z0-9.-]+$', ipstr):
+        # ipstr is a hostname
         return ipstr
+
+    for it in ipstr:
+        eol=is_bin(binascii.hexlify(it))
+        if eol:
+            isBin=True
+        print_debug("%s => %s string=%s"%(it, binascii.hexlify(it), eol) )
+        newip.append(binascii.hexlify(it))
     
-    if ipstr=='':
-        return ''
+    if isBin:
+        ip=ipaddr.IPAddress(IPy.parseAddress("0x" + "".join(newip) )[0])
+    else:
+        try:
+            ip=ipaddr.IPAddress(ipstr)
+        except Exception, err:
+            print_debug("parseIPAddress() Exception, error=%s"%err)
+            return ipstr
     
-    if len(ipstr) == 4:
-        # 4 hexadecimal blocks ==> 192.168.0.x:0
-        ipstr=parseHexIP(ipstr)
-    elif len(ipstr) == 16:
-        # 16 hex blocks ==> [::ffff:192.168.0.x]:0
-        # lenny python-xlib use this
-        ipstr=parseHexIP(ipstr)
-    
-    try:
-        ip=ipaddr.IPAddress(ipstr)
-    except Exception, err:
-        print_debug("parseIPAddress() Exception, error=%s"%err)
-        return ipstr
     ipv4=ip
     if return_ipv4 and ip.version == 6 and ip.ipv4_mapped:
         ipv4=ip.ipv4_mapped.exploded
+    
     return ipv4
 
+if __name__ == "__main__":
+    # test IPV6
+    print "IPV6        '::ffff:10.0.2.22' => ", parseIPAddress('::ffff:10.0.2.22')
+
+    # test binary IP
+    import Xlib.xauth
+    a=Xlib.xauth.Xauthority().entries[-1][1]
+    print "Xlib        '%s' => "%a, parseIPAddress(a)
+
+    # try with $DISPLAY
+    print "DISPLAY     '192.168.0.10:0.0' => ", parseIPAddress('192.168.0.10:0.0')
+
+    # try with hostname
+    print "NAME        'tcos10:0.0' => ", parseIPAddress('tcos10:0.0')
+
+    # try with Xephyr hostname
+    print "XEPHYR NAME ':20.0' => ", parseIPAddress(':20.0')
 
 from threading import Thread
 
