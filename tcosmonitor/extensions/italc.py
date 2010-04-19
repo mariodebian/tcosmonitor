@@ -25,8 +25,7 @@
 
 from gettext import gettext as _
 from time import sleep
-#import string
-#import subprocess
+import sys
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -34,8 +33,8 @@ from tcosmonitor.TcosExtensions import TcosExtension
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::italc", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class iTalc(TcosExtension):

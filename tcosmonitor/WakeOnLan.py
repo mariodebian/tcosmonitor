@@ -5,12 +5,14 @@
 # This code is free software under the GPL
 
 import struct, socket
-import shared
+import tcosmonitor.shared
+import sys
 
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 def WakeOnLan(ethernet_address):
     errortxt=None

@@ -23,9 +23,10 @@
 ###########################################################################
 
 import os
+import sys
 import socket
 import pwd
-import shared
+import tcosmonitor.shared
 import threading
 from subprocess import Popen, PIPE, STDOUT
 from gettext import gettext as _
@@ -33,14 +34,13 @@ from gettext import gettext as _
 import netifaces
 
 import DNS
-import string
 
 from time import sleep
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % ("TcosCommon", txt)
-    return
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class TcosCommon:
 
@@ -61,7 +61,8 @@ class TcosCommon:
     def user_in_group(self, group):
         groups=self.exe_cmd("id")
         if group != "":
-            if group in groups: return True
+            if group in groups:
+                return True
             else: return False
         return False
     
@@ -76,7 +77,7 @@ class TcosCommon:
         try:
             self.p = Popen(cmd, shell=True, bufsize=0, stdout=PIPE, stderr=STDOUT, close_fds=True)
         except Exception, e:
-            print_debug("Exception in subprocess cmd(%s), error='%s'"%(cmd,e))
+            print_debug("Exception in subprocess cmd(%s), error='%s'"%(cmd, e))
             return None
         
         if self.main.config.GetVar("threadscontrol") == 1 and cthreads == 1:
@@ -88,12 +89,13 @@ class TcosCommon:
                 msg= _("ThreadController: Found error executing %(cmd)s\n\nIf problem persist, disable Thread Controller\nin Preferences and report bug.\nError=%(error)s" %{'cmd':cmd, 'error':err})
                 print_debug(msg)
                 self.threads_enter("TcosCommon:exe_cmd ThreadController error")
-                shared.error_msg(msg)
+                tcosmonitor.shared.error_msg(msg)
                 self.threads_leave("TcosCommon:exe_cmd ThreadController error")
             
             print_debug("Threads count: %s" %threading.activeCount())
         
-        if background: return
+        if background:
+            return
         
         output=[]
         stdout = self.p.stdout
@@ -102,7 +104,7 @@ class TcosCommon:
         try:
             result=stdout.readlines()
         except Exception, e:
-            print_debug("Exception in subprocess::readlines() cmd(%s), error='%s'"%(cmd,e))
+            print_debug("Exception in subprocess::readlines() cmd(%s), error='%s'"%(cmd, e))
             return None
         
         for line in result:
@@ -132,14 +134,14 @@ class TcosCommon:
     def GetAllNetworkInterfaces(self):
         self.vars["allnetworkinterfaces"]=[]
         for dev in netifaces.interfaces():
-            if not dev in shared.hidden_network_ifaces:
+            if not dev in tcosmonitor.shared.hidden_network_ifaces:
                 self.vars["allnetworkinterfaces"].append(dev)
                 ip=netifaces.ifaddresses(dev)
         print_debug ( "GetAllNetworkInterfaces() %s" %( self.vars["allnetworkinterfaces"] ) )
         return self.vars["allnetworkinterfaces"]
 
     def get_my_local_ip(self, last=True, force=False):
-        print_debug("get_my_local_ip(), last=%s, force=%s" %(last,force))
+        print_debug("get_my_local_ip(), last=%s, force=%s" %(last, force))
         if force == True or not "local_ip" in self.vars or len(self.vars["local_ip"]) == 0:
             #print_debug("get_my_local_ip()")
             self.vars["local_ip"]=[]
@@ -173,10 +175,11 @@ class TcosCommon:
         convenience routine for doing a reverse lookup of an address"""
         print_debug("revlookup name=%s"%(name) )
         
-        if DNS.Base.defaults['server'] == []: DNS.Base.DiscoverNameServers()
-        a = string.split(name, '.')
+        if DNS.Base.defaults['server'] == []: 
+            DNS.Base.DiscoverNameServers()
+        a = name.split('.')
         a.reverse()
-        b = string.join(a, '.')+'.in-addr.arpa'
+        b = ".".join(a)+'.in-addr.arpa'
         # this will only return one of any records returned.
         response=_("unknow")
         try:
@@ -208,14 +211,14 @@ class TcosCommon:
         if hostname == _("unknow"):
             try:
                 hostname=socket.gethostbyaddr(ip)[2][0]
-            except Exception,err:
+            except Exception, err:
                 print_debug("DNSgethostbyaddr Exception socket.gethostbyaddr, error=%s"%err)
         return hostname
 
 
     def get_display(self, ip_mode=True):
         print_debug("get_display() ip_mode=%s"%(ip_mode) )
-        self.vars["display_host"]=str(shared.parseIPAddress(os.environ["DISPLAY"]))
+        self.vars["display_host"]=str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"]))
         self.vars["display_hostname"]=self.vars["display_host"]
         self.vars["display_ip"]=self.vars["display_host"]
 
@@ -245,7 +248,8 @@ class TcosCommon:
         if "extensions" in self.vars:
             return self.vars["extensions"]
         self.vars["extensions"]=[]
-        for ext in os.listdir(shared.EXTENSIONS):
+        #FIXME tcosmonitor.shared.EXTENSIONS what is this???
+        for ext in os.listdir(tcosmonitor.shared.EXTENSIONS):
             if ext.endswith('.py') and ext != "__init__.py" and ext != "template.py":
                 #print_debug("get_extensions() extension=%s" %ext)
                 self.vars["extensions"].append( ext.split(".py")[0] )
@@ -294,15 +298,18 @@ class TcosCommon:
         wait (max 4 sec) for self.lock == True
         """
         print_debug("\n\nwait() CALLED\n\n")
-        if not self.thread_lock: return
+        if not self.thread_lock:
+            return
         i=0
         for i in range(40):
             print_debug("wait() ************* i=%s  ***************"%i)
-            if not self.thread_lock: return
+            if not self.thread_lock:
+                return
             sleep(0.1)
 
     def get_icon_theme(self):
-        if self.theme: return self.theme
+        if self.theme:
+            return self.theme
         try:
             import gconf
         except Exception, err:
@@ -314,7 +321,7 @@ class TcosCommon:
         return self.theme
 
 if __name__ == '__main__':
-    shared.debug=True
+    tcosmonitor.shared.debug=True
     #import sys
     app=TcosCommon(TcosCommon)
     #print app.get_my_local_ip(last=True)

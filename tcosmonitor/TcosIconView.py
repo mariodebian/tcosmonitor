@@ -22,17 +22,17 @@
 # 02111-1307, USA.
 ###########################################################################
 
-#import gobject
+import sys
 import gtk
 from gettext import gettext as _
-#import os, subprocess
-#import string
 
-import shared
+
+import tcosmonitor.shared
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class TcosIconView(object):
 
@@ -127,10 +127,10 @@ class TcosIconView(object):
     def generate_icon(self, data):
         print_debug("generate_icon() data=%s"%data)
         
-        if data['username'] == shared.NO_LOGIN_MSG:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
+        if data['username'] == tcosmonitor.shared.NO_LOGIN_MSG:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_no_logged)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_thin)
         
         if not data['active']:
             pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
@@ -139,7 +139,7 @@ class TcosIconView(object):
             pixbuf2 = data['image_blocked']
             pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         
-        if data['username'] == shared.NO_LOGIN_MSG:
+        if data['username'] == tcosmonitor.shared.NO_LOGIN_MSG:
             self.model.append([data['hostname'].replace('.aula',''), data['ip'], pixbuf])
         else:
             self.model.append([data['username'], data['ip'], pixbuf])
@@ -213,10 +213,10 @@ class TcosIconView(object):
         self.hosts[ip]['blocked_screen']=status_screen
         self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
-        if data['username'] == shared.NO_LOGIN_MSG:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
+        if data['username'] == tcosmonitor.shared.NO_LOGIN_MSG:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_no_logged)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_thin)
         pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         for m in self.model:
             if m[1] == ip:

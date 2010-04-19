@@ -27,6 +27,7 @@ from gettext import gettext as _
 from time import time
 import gtk
 import os
+import sys
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -38,8 +39,8 @@ def crono(start, txt):
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::info", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class Info(TcosExtension):
@@ -230,7 +231,7 @@ class Info(TcosExtension):
             except Exception, err:
                 print_debug("info() Exception pci error %s"%err)
                 self.main.xmlrpc.CheckSSL(err)
-                pass
+                
             for pci_id in allpci:
                 if pci_id != "":
                     try:
@@ -239,7 +240,6 @@ class Info(TcosExtension):
                     except Exception, err:
                         print_debug("info() Exception pci error %s"%err)
                         self.main.xmlrpc.CheckSSL(err)
-                        pass
             
             self.datatxt.insert_list( pcilist )
         
@@ -329,7 +329,6 @@ class Info(TcosExtension):
             except Exception, err:
                 print_debug("info() Exception networking error %s"%err)
                 self.main.xmlrpc.CheckSSL(err)
-                pass
                 
             print_debug ( "populate_datatxt() %s" %( " ".join(alldata) ) )
             if alldata[0].find("error") == 0:
@@ -357,7 +356,7 @@ class Info(TcosExtension):
                         key=_("Xorg Resolution")
                     elif key == "xdepth":
                         key=_("Xorg Color depth")
-                    elif key =="xdpms":
+                    elif key == "xdpms":
                         key=_("DPMS energy monitor control")
                     elif key == "xdontzap":
                         key=_("Disable kill X with Ctrl+Alt+Backspace")

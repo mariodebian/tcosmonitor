@@ -25,6 +25,7 @@
 
 from gettext import gettext as _
 import gtk
+import sys
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -32,8 +33,8 @@ COL_N, COL_ACTIVE,COL_B,COL_BOOL= range(4)
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::audiortp", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class AudioRTP(TcosExtension):
@@ -323,7 +324,8 @@ class AudioRTP(TcosExtension):
             return
             
         msg=_( _("Do you want audio conference from user %s?" ) %(client_simple) )
-        if not shared.ask_msg ( msg ): return
+        if not shared.ask_msg ( msg ):
+            return
 
         
         # Allow one client    

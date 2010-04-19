@@ -25,12 +25,9 @@
 import xmlrpclib
 from time import time, sleep
 import sys
-import os
-import re
-import shared
+import tcosmonitor.shared
 from gettext import gettext as _
 import socket
-from subprocess import Popen, PIPE, STDOUT
 
 from tcosmonitor.ping import PingPort
 # needed for __escape__ function
@@ -38,14 +35,11 @@ import xml.sax.saxutils
 
 import traceback
 
-if "DISPLAY" in os.environ:
-    if os.environ["DISPLAY"] != "":
-        import gtk
-
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" %(__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 def howmany(start, txt):
@@ -82,7 +76,7 @@ class TcosXmlRpc:
                 # warn empty username and password 
                 if self.main.name == "TcosMonitor":
                     self.main.common.threads_enter("TcosXmlRpc:__init__ no user or password")
-                    shared.error_msg( _("Username or password are empty,\nplease edit in preferences dialog!") )
+                    tcosmonitor.shared.error_msg( _("Username or password are empty,\nplease edit in preferences dialog!") )
                     self.main.common.threads_leave("TcosXmlRpc:__init__ no user or password")
         else:
             print_debug ( "running outside tcosmonitor" )
@@ -99,27 +93,31 @@ class TcosXmlRpc:
         wait (max 4 sec) for self.lock == True
         """
         print_debug("##############  wait() lock=%s  #################"%self.lock)
-        if not self.lock: return
+        if not self.lock:
+            return
         i=0
         for i in range(40):
             print_debug("##############  wait() i=%s  ##############"%i)
-            if not self.lock: return
+            if not self.lock:
+                return
             sleep(0.1)
 
-    def isPortListening(self, ip, port,force=False):
+    def isPortListening(self, ip, port, force=False):
         """
         check if ip and port is live and running something (using sockets)
         
         """
-        if not ip:   return False
-        if not port: return False
+        if not ip:
+            return False
+        if not port:
+            return False
         
         # this avoid to scan same ip a lot of times, but can give errors FIXME
         if not force and self.lasthost == ip and self.lastport == port and self.aliveStatus == "OPEN":
-            print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s OPEN" %(ip,port))
+            print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s OPEN" %(ip, port))
             return True
         elif not force and self.lasthost == ip and self.lastport == port and self.aliveStatus == "CLOSED":
-            print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s CLOSED" %(ip,port))
+            print_debug("isPortListening() not scanning again, using lastip=%s lastport=%s CLOSED" %(ip, port))
             return False
         
         
@@ -127,10 +125,10 @@ class TcosXmlRpc:
         self.lastport=port
         #print_debug ( "isPortListening() PING PORT DONE status=%s" %(self.aliveStatus) )
         if self.aliveStatus == "OPEN":
-            print_debug ( "isPortListening(%s:%s) PinPort => OPEN" %(ip,port))
+            print_debug ( "isPortListening(%s:%s) PinPort => OPEN" %(ip, port))
             return True
         else:
-            print_debug ( "isPortListening(%s:%s) PinPort => CLOSED" %(ip,port) )
+            print_debug ( "isPortListening(%s:%s) PinPort => CLOSED" %(ip, port) )
             return False
         
                 
@@ -140,7 +138,7 @@ class TcosXmlRpc:
             print_debug("\n\n##########################################\n\n")
             print_debug("newhost() ip is None")
             print_debug("\n\n##########################################\n\n")
-            if shared.debug:
+            if tcosmonitor.shared.debug:
                 sys.exit(1)
             else:
                 return
@@ -163,35 +161,35 @@ class TcosXmlRpc:
         # reset SSL status too
         self.sslconnection=False
         self.connected=False
-        self.lastport=shared.xmlremote_port
+        self.lastport=tcosmonitor.shared.xmlremote_port
         
         #print_debug("newhost() enable_sslxmlrpc='%s'" %(self.main.config.GetVar("enable_sslxmlrpc")) )
         
         if self.main.config.GetVar("enable_sslxmlrpc") == 1 and nossl == False:
-            print_debug("newhost() SSL enabled, trying to ping %s port" %(shared.xmlremote_sslport))
+            print_debug("newhost() SSL enabled, trying to ping %s port" %(tcosmonitor.shared.xmlremote_sslport))
             force=True
-            if self.isPortListening(ip, shared.xmlremote_sslport):
+            if self.isPortListening(ip, tcosmonitor.shared.xmlremote_sslport):
                 print_debug("newhost() SSL enabled **********")
                 self.sslconnection=True
         
         if not self.sslconnection:
-            if not self.isPortListening(ip, shared.xmlremote_port,force):
-                print_debug("newhost() SSL disabled, trying to ping %s port" %(shared.xmlremote_port))
+            if not self.isPortListening(ip, tcosmonitor.shared.xmlremote_port, force):
+                print_debug("newhost() SSL disabled, trying to ping %s port" %(tcosmonitor.shared.xmlremote_port))
                 self.connected=False
                 self.sslconnection=False
                 return False
         
         if self.main.config.GetVar("enable_sslxmlrpc") == 1 and self.sslconnection:
-            self.url = 'https://%s:%d/RPC2' %(self.ip, shared.xmlremote_sslport)
+            self.url = 'https://%s:%d/RPC2' % (self.ip, tcosmonitor.shared.xmlremote_sslport)
         else:
-            self.url = 'http://%s:%d/RPC2' %(self.ip, shared.xmlremote_port)
+            self.url = 'http://%s:%d/RPC2' % (self.ip, tcosmonitor.shared.xmlremote_port)
         try:
             # set min socket timeout to 2 secs
             socket.setdefaulttimeout(2)
-            self.tc = xmlrpclib.ServerProxy(self.url,verbose=False)
+            self.tc = xmlrpclib.ServerProxy(self.url, verbose=False)
             self.connected=True
             # save socket default timeout
-            socket.setdefaulttimeout(shared.socket_default_timeout)
+            socket.setdefaulttimeout(tcosmonitor.shared.socket_default_timeout)
             print_debug ( "newhost() tcosxmlrpc running on %s" %(self.url) )
             print_debug( {'conected':self.connected, 'ssl':self.sslconnection, 'ip':self.lasthost, 'port':self.lastport} )
             return True
@@ -238,13 +236,12 @@ class TcosXmlRpc:
            %(self.main.config.GetVar("xmlrpc_username") ) )
         
         try:
-            self.tc.tcos.exe(cmd,\
-              self.main.config.GetVar("xmlrpc_username"),\
+            self.tc.tcos.exe(cmd, \
+              self.main.config.GetVar("xmlrpc_username"), \
               self.main.config.GetVar("xmlrpc_password"))
         except Exception, err:
             print_debug("Exe() Exception error %s"%err)
             self.CheckSSL(err)
-            pass
         
     def Kill(self, app):
         """
@@ -256,13 +253,12 @@ class TcosXmlRpc:
             return None
         
         try:
-            self.tc.tcos.kill(app,\
+            self.tc.tcos.kill(app, \
               self.main.config.GetVar("xmlrpc_username"), \
               self.main.config.GetVar("xmlrpc_password"))
         except Exception, err:
             print_debug("Kill() Exception error %s"%err)
             self.CheckSSL(err)
-            pass
     
     def GetStatus(self, cmd):
         """
@@ -310,7 +306,7 @@ class TcosXmlRpc:
         try:
             result=self.tc.tcos.info(string)
         except Exception, err:
-            print_debug ( "ReadInfo(%s): ERROR, can't connect to XMLRPC server!!! error %s" %(string,err) )
+            print_debug ( "ReadInfo(%s): ERROR, can't connect to XMLRPC server!!! error %s" %(string, err) )
             self.CheckSSL(err)
             return ""
         if result.find('error') == 0:
@@ -349,18 +345,18 @@ class TcosXmlRpc:
         if item == "get_user":
             if not self.connected:
                 print_debug ( "GetStandalone() NO CONNECTION" )
-                return shared.NO_LOGIN_MSG
+                return tcosmonitor.shared.NO_LOGIN_MSG
             try:
                 result=self.tc.tcos.standalone("get_user", "")
             except Exception, err:
                 print_debug("GetStandalone(get_user) Exception error: %s"%err)
                 self.CheckSSL(err)
-                return shared.NO_LOGIN_MSG
+                return tcosmonitor.shared.NO_LOGIN_MSG
             
             if result.find('error') == 0:
-                return shared.NO_LOGIN_MSG
+                return tcosmonitor.shared.NO_LOGIN_MSG
             elif result == "":
-                return shared.NO_LOGIN_MSG
+                return tcosmonitor.shared.NO_LOGIN_MSG
             else:
                 return result
                 
@@ -682,7 +678,8 @@ class TcosXmlRpc:
             return ""
 
     def lockscreen(self, ip=None):
-        if ip: self.newhost(ip)
+        if ip: 
+            self.newhost(ip)
         if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.lockscreen( \
@@ -692,11 +689,11 @@ class TcosXmlRpc:
             except Exception, err:
                 print_debug ("lockscreen() Exception, error: %s" %err)
                 self.CheckSSL(err)
-                pass
         return False
         
     def unlockscreen(self, ip=None):
-        if ip: self.newhost(ip)
+        if ip:
+            self.newhost(ip)
         if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.unlockscreen(\
@@ -706,11 +703,11 @@ class TcosXmlRpc:
             except Exception, err:
                 print_debug ("unlockscreen() Exception, error: %s" %err)
                 self.CheckSSL(err)
-                pass
         return False
     
     def lockcontroller(self, action, ip=None):
-        if ip: self.newhost(ip)
+        if ip:
+            self.newhost(ip)
         if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.lockcontroller("%s" %action, \
@@ -720,11 +717,11 @@ class TcosXmlRpc:
             except Exception, err:
                 print_debug ("lockcontroller() Exception, error: %s" %err)
                 self.CheckSSL(err)
-                pass
         return False
         
     def unlockcontroller(self, action, ip=None):
-        if ip: self.newhost(ip)
+        if ip:
+            self.newhost(ip)
         if self.isPortListening(self.ip, self.lastport):
             try:
                 self.tc.tcos.unlockcontroller("%s" %action, \
@@ -734,11 +731,11 @@ class TcosXmlRpc:
             except Exception, err:
                 print_debug ("unlockcontroller() Exception, error: %s" %err)
                 self.CheckSSL(err)
-                pass
         return False
 
     def status_lockscreen(self, ip=None):
-        if ip: self.newhost(ip)
+        if ip:
+            self.newhost(ip)
         if self.isPortListening(self.ip, self.lastport):
             #self.login ()
             result=self._ParseResult(self.GetStatus("lockscreen"))
@@ -747,19 +744,20 @@ class TcosXmlRpc:
         return False
     
     def tnc(self, action, username, ports=None, ip=None):
-        print_debug("tnc() action=%s username=%s ports=%s ip=%s only-ports=%s"%(action, username, ports, ip, shared.tnc_only_ports))
-        if ip: self.newhost(ip)
+        print_debug("tnc() action=%s username=%s ports=%s ip=%s only-ports=%s"%(action, username, ports, ip, tcosmonitor.shared.tnc_only_ports))
+        if ip:
+            self.newhost(ip)
         try:
             if action == "status":
                 return self.tc.tcos.tnc("%s" %action, "", "", "%s" %username, \
                             self.main.config.GetVar("xmlrpc_username"), \
                             self.main.config.GetVar("xmlrpc_password") )
             elif action == "enable-internet":
-                return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "", "%s" %username, \
+                return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %tcosmonitor.shared.tnc_only_ports, "", "%s" %username, \
                             self.main.config.GetVar("xmlrpc_username"), \
                             self.main.config.GetVar("xmlrpc_password"))
             elif action == "disable-internet":
-                return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %shared.tnc_only_ports, "%s" %ports, "%s" %username, \
+                return self.tc.tcos.tnc("%s" %action, "--only-ports=%s" %tcosmonitor.shared.tnc_only_ports, "%s" %ports, "%s" %username, \
                             self.main.config.GetVar("xmlrpc_username"), \
                             self.main.config.GetVar("xmlrpc_password"))
         except Exception, err:
@@ -816,7 +814,7 @@ class TcosXmlRpc:
                                     self.main.config.GetVar("xmlrpc_username"), \
                                     self.main.config.GetVar("xmlrpc_password") )
             elif action == "stopserver":
-                return self.tc.tcos.vnc("stopserver", "",\
+                return self.tc.tcos.vnc("stopserver", "", \
                                     self.main.config.GetVar("xmlrpc_username"), \
                                     self.main.config.GetVar("xmlrpc_password") )
             elif action == "startclient":
@@ -879,7 +877,8 @@ class TcosXmlRpc:
     
     def dpms(self, action, ip=None):
         print_debug("dpms() action=%s ip=%s"%(action, ip))
-        if ip: self.newhost(ip)
+        if ip: 
+            self.newhost(ip)
         if not self.connected:
             return False
         if action == "on" or action == "off" or action == "status":
@@ -890,11 +889,10 @@ class TcosXmlRpc:
             except Exception, err:
                 print_debug ("dpms() Exception, error: %s" %err)
                 self.CheckSSL(err)
-                pass
         return False
     
 if __name__ == '__main__':
-    shared.debug = True
+    tcosmonitor.shared.debug = True
     app=TcosXmlRpc (None)
     
     

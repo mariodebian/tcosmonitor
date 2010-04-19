@@ -24,21 +24,11 @@
 
 import gtk
 from gettext import gettext as _
-import shared
 from time import time
 import os
-#import urllib2
-#from os import remove, path
-#from threading import Thread
-#from subprocess import Popen, PIPE, STDOUT
+import sys
 
-#from time import sleep, localtime
-#import gobject
-#import string
-
-#COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED,\
-# COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
-
+import tcosmonitor.shared
 
 # constant to font sizes
 PANGO_SCALE=1024
@@ -46,8 +36,10 @@ PANGO_SCALE=1024
 
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
+
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -167,26 +159,26 @@ class Initialize(object):
                        'button_list', 'button_video', 
                        'button_send', 'button_exe', 'button_text']:
             
-            if os.path.isfile(shared.IMG_DIR + "/%s.png" %(button)):
+            if os.path.isfile(tcosmonitor.shared.IMG_DIR + "/%s.png" %(button)):
                 img=self.ui.get_object( button.replace("button", "image") )
                 if img:
-                    img.set_from_file(shared.IMG_DIR + "/%s.png" %(button) )
+                    img.set_from_file(tcosmonitor.shared.IMG_DIR + "/%s.png" %(button) )
                 else:
                     print_debug("WARNING: Error loading button image %s"%button)
             else:
                 print_debug("WARNING: Image file '%s' don't exists" 
-                            %(shared.IMG_DIR + "/%s.png" %(button)) )
+                            %(tcosmonitor.shared.IMG_DIR + "/%s.png" %(button)) )
 
 
     def initabouttcos(self):
         self.aboutui = gtk.Builder()
         
-        self.aboutui.set_translation_domain(shared.PACKAGE)
-        self.aboutui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-abouttcos.ui')
+        self.aboutui.set_translation_domain(tcosmonitor.shared.PACKAGE)
+        self.aboutui.add_from_file(tcosmonitor.shared.GLADE_DIR + 'tcosmonitor-abouttcos.ui')
         
         self.main.abouttcos = self.aboutui.get_object('abouttcos')
         self.main.abouttcos.hide()
-        self.main.abouttcos.set_icon_from_file(shared.IMG_DIR +'tcos-icon-32x32.png')
+        self.main.abouttcos.set_icon_from_file(tcosmonitor.shared.IMG_DIR +'tcos-icon-32x32.png')
         
         self.main.abouttabs = self.aboutui.get_object('abouttabs')
         
@@ -194,7 +186,7 @@ class Initialize(object):
         self.main.abouttcos.connect("delete_event", self.main.actions.on_abouttcos_close)
         
         self.main.abouttcos_version=self.aboutui.get_object('abouttcos_version')
-        self.main.abouttcos_version.set_text(shared.version)
+        self.main.abouttcos_version.set_text(tcosmonitor.shared.version)
         
         self.main.donateurllabel = self.aboutui.get_object('donateurllabel')
         
@@ -204,8 +196,8 @@ class Initialize(object):
         # LOAD LICENSE_FILE in TextView
         self.main.abouttcos_license = self.aboutui.get_object('abouttcos_license')
         textbuffer = self.main.abouttcos_license.get_buffer()
-        if os.path.isfile(shared.LICENSE_FILE):
-            fd1=open(shared.LICENSE_FILE, "r")
+        if os.path.isfile(tcosmonitor.shared.LICENSE_FILE):
+            fd1=open(tcosmonitor.shared.LICENSE_FILE, "r")
             data=fd1.read()
             fd1.close()
             textbuffer.set_text(data)
@@ -213,7 +205,7 @@ class Initialize(object):
             textbuffer.set_text( _("GPL-2 license file not found") )
         
         self.main.abouttcos_logo = self.aboutui.get_object('abouttcos_logo')
-        self.main.abouttcos_logo.set_from_file(shared.IMG_DIR +'tcos-logo.png')
+        self.main.abouttcos_logo.set_from_file(tcosmonitor.shared.IMG_DIR +'tcos-logo.png')
         
         self.main.abouttcos_webbutton = self.aboutui.get_object('abouttcos_webbutton')
         self.main.abouttcos_webbutton.connect('clicked', self.main.actions.on_weburl_click)

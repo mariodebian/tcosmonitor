@@ -44,8 +44,8 @@ import sys
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::vnc", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class VNC(TcosExtension):
@@ -244,7 +244,7 @@ class VNC(TcosExtension):
             button.set_image(image)
 
     def vncviewer_force_resize(self, vnc, size, ip):
-        w,h = vnc.get_size_request()
+        w, h = vnc.get_size_request()
         if w == -1 or h == -1:
             print_debug("_force_resize() returning w=%s h=%s ip=%s"%(w, h, ip))
             return
@@ -343,7 +343,8 @@ class VNC(TcosExtension):
             return
             
         msg=_( _("Do you want demo mode from user %s?" ) %(client_simple) )
-        if not shared.ask_msg ( msg ): return
+        if not shared.ask_msg ( msg ):
+            return
         
         if self.main.iconview.ismultiple():
             self.allclients=self.main.iconview.get_multiple()
@@ -461,7 +462,8 @@ class VNC(TcosExtension):
                     widget=tbutton
         print_debug("on_progressbox_click() widget=%s, args=%s, box=%s" %(widget, args, box) )
         
-        if not args['target']: return
+        if not args['target']:
+            return
 
         try:
             self.main.stop_running_actions.remove(widget)

@@ -55,7 +55,8 @@ gettext.textdomain(shared.PACKAGE)
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("tcosmonitor", txt)
+        print >>sys.stderr, "%s::%s" % ("tcosmonitor", txt)
+        #print("%s::%s" % ("tcosmonitor", txt), file=sys.stderr)
     return
 
 def crono(start, txt):
@@ -63,23 +64,23 @@ def crono(start, txt):
     return
 
 def usage():
-    print "TcosMonitor help:"
-    print ""
-    print "   tcosmonitor -d [--debug]  (write debug data to stdout)"
-    print "   tcosmonitor -h [--help]   (this help)"
+    print ("TcosMonitor help:")
+    print ("")
+    print ("   tcosmonitor -d [--debug]  (write debug data to stdout)")
+    print ("   tcosmonitor -h [--help]   (this help)")
 
 
 try:
     OPTS, ARGS = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug"])
 except getopt.error, msg:
-    print msg
-    print "for command line options use tcosconfig --help"
+    print (msg)
+    print ("for command line options use tcosconfig --help")
     sys.exit(2)
 
 # process options
 for o, a in OPTS:
     if o in ("-d", "--debug"):
-        print "DEBUG ACTIVE"
+        print ("DEBUG ACTIVE")
         shared.debug = True
     if o in ("-h", "--help"):
         usage()
@@ -291,7 +292,6 @@ class TcosMonitor(object):
         if txt == "":
             allclients=self.localdata.GetAllClients( self.config.GetVar("scan_network_method") )
             Thread( target=self.actions.populate_hostlist, args=([allclients]) ).start()
-        #print txt
         model=self.tabla.get_model()
         notvalid=[]
         model.foreach(self.delete_not_searched, (notvalid))

@@ -22,14 +22,15 @@
 # 02111-1307, USA.
 ###########################################################################
 
-import shared
 import os
+import sys
 from time import time
-
+import tcosmonitor.shared
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - float(start))) )
@@ -72,11 +73,11 @@ class TcosConf:
         conf=None
         conf=[]
         print_debug("open_file() reading data from \"%s\"..." \
-                            %(shared.config_file) )
+                            %(tcosmonitor.shared.config_file) )
         try:
-            fd=file(shared.config_file, 'r')
+            fd=file(tcosmonitor.shared.config_file, 'r')
         except Exception, err:
-            print("Error Opening %s file, error=%s"%(shared.config_file, err) )
+            print("Error Opening %s file, error=%s"%(tcosmonitor.shared.config_file, err) )
             return
         self.data=fd.readlines()
         fd.close()
@@ -93,12 +94,13 @@ class TcosConf:
                 (var, value)=conf[i].split("=", 1)
                 self.vars.append([var, value])
                 
-        if os.path.isfile(shared.config_file_secrets):
-            if self.main.ingroup_tcos == False and os.getuid() != 0: return
+        if os.path.isfile(tcosmonitor.shared.config_file_secrets):
+            if self.main.ingroup_tcos == False and os.getuid() != 0:
+                return
             try:
-                fd=file(shared.config_file_secrets, 'r')
+                fd=file(tcosmonitor.shared.config_file_secrets, 'r')
             except Exception, err:
-                print("Error saving %s file, error=%s"%(shared.config_file_secrets, err) )
+                print("Error saving %s file, error=%s"%(tcosmonitor.shared.config_file_secrets, err) )
                 return
             self.data=fd.readline()
             fd.close()
@@ -111,15 +113,15 @@ class TcosConf:
     def CheckConfFile(self):
         conf=None
         conf=[]
-        if not os.path.isfile(shared.config_file):
-            print_debug ( "CheckConfFile() %s not exists" %(shared.config_file) )
+        if not os.path.isfile(tcosmonitor.shared.config_file):
+            print_debug ( "CheckConfFile() %s not exists" %(tcosmonitor.shared.config_file) )
             self.CreateConfFile()
             return
         
         try:
-            fd=file(shared.config_file, 'r')
+            fd=file(tcosmonitor.shared.config_file, 'r')
         except Exception, err:
-            print("Error Opening %s file, error=%s"%(shared.config_file, err) )
+            print("Error Opening %s file, error=%s"%(tcosmonitor.shared.config_file, err) )
             return
         self.data=fd.readlines()
         fd.close()
@@ -135,15 +137,15 @@ class TcosConf:
     def CreateConfFile(self):
         print_debug ( "CreateConfFile()" )
         # save this into file
-        fd=file(shared.config_file, 'w')
-        for item in shared.DefaultConfig:
+        fd=file(tcosmonitor.shared.config_file, 'w')
+        for item in tcosmonitor.shared.DefaultConfig:
             key=item[0]
             value=item[1]
             print_debug ("key=%s value=%s" %(key, value))
             fd.write("%s=%s\n" %(key, value) )
         fd.close()
         # make chmod 600
-        os.chmod(shared.config_file, 0600)
+        os.chmod(tcosmonitor.shared.config_file, 0600)
         self.FirstRunning=True
         
     def SetVar(self, varname, value):
@@ -165,11 +167,11 @@ class TcosConf:
             print_debug ( "SaveToFile() self.vars is empty" )
             return
         
-        fd=file(shared.config_file, 'w')
+        fd=file(tcosmonitor.shared.config_file, 'w')
         for i in range(len(self.vars)):
             fd.write("%s=%s\n" %(self.vars[i][0], self.vars[i][1]))
         fd.close
-        os.chmod(shared.config_file, 0600)
+        os.chmod(tcosmonitor.shared.config_file, 0600)
         print_debug ( "SaveToFile() new settings SAVED!!!")   
         return
     
@@ -185,7 +187,7 @@ class TcosConf:
                     return 1
                 return self.vars[i][1]
         # search for new var
-        for _var in shared.DefaultConfig:
+        for _var in tcosmonitor.shared.DefaultConfig:
             if _var[0] == varname:
                 print_debug ( "GetVar() NEW VAR FOUND, %s, adding to list \"\""\
                                                  %(varname) )

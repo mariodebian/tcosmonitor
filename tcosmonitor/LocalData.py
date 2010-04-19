@@ -22,9 +22,10 @@
 # 02111-1307, USA.
 ###########################################################################
 
-import shared
 
+import tcosmonitor.shared
 import os
+import sys
 from gettext import gettext as _
 from time import time
 from tcosmonitor.ping import Ping
@@ -34,7 +35,6 @@ from UTMPCONST import WTMP_FILE, USER_PROCESS
 
 import pwd, grp
 import socket
-import DNS
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 
@@ -44,8 +44,9 @@ unknow=_("unknow")
 
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
         
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -174,7 +175,8 @@ class LocalData:
         #
         index = []
         def _append(fragment, alist=index):
-            if fragment.isdigit(): fragment = int(fragment)
+            if fragment.isdigit():
+                fragment = int(fragment)
             alist.append(fragment)
 
         # initialize loop
@@ -212,7 +214,7 @@ class LocalData:
             _("Selected network inteface (%s) don't have IP address" ) %(interface) )
                 return []
             print_debug ( "GetAllClients() method=ping starting worker without dog iface=%s ip=%s" %(interface, ss) )
-            self.main.worker=shared.Workers(self.main, ping.ping_iprange, [ss], dog=False )
+            self.main.worker=tcosmonitor.shared.Workers(self.main, ping.ping_iprange, [ss], dog=False )
             self.main.worker.start()
             
             return []
@@ -247,9 +249,9 @@ class LocalData:
             if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
                 # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
                 try:
-                    if str(shared.parseIPAddress(os.environ["DISPLAY"])) != '':
+                    if str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"])) != '':
                         # running tcosmonitor on thin client
-                        i=str(shared.parseIPAddress(os.environ["DISPLAY"]))
+                        i=str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"]))
                         self.allclients.pop(i)
                 except Exception, err:
                     print_debug("GetAllClients() can't read DISPLAY, %s"%err)
@@ -279,7 +281,7 @@ class LocalData:
         else:
             self.allclients=[]
             if len(self.main.static.data) < 1:
-                shared.error_msg( _("Static list method configured but no hosts in list.\n\nPlease, open preferences, click on 'Open Static Host list' and add some hosts.") )
+                tcosmonitor.shared.error_msg( _("Static list method configured but no hosts in list.\n\nPlease, open preferences, click on 'Open Static Host list' and add some hosts.") )
                 return self.allclients
             
             ping=Ping(self.main)
@@ -302,7 +304,7 @@ class LocalData:
                 else:
                     self.allclients.append(ip)
 
-            self.main.worker=shared.Workers(self.main, ping.ping_iprange_static, [self.allclients], dog=False )
+            self.main.worker=tcosmonitor.shared.Workers(self.main, ping.ping_iprange_static, [self.allclients], dog=False )
             self.main.worker.start()
             return []
 
@@ -368,7 +370,6 @@ class LocalData:
         except Exception, err:
             print_debug("GetHostname() Exception, error=%s"%err)
             socket.setdefaulttimeout(old_timeout)
-            pass
         
         #read hostname from /etc/hosts
         fd=file("/etc/hosts", 'r')
@@ -439,7 +440,7 @@ class LocalData:
 
     def GetUsernameAndHost(self, ip):
         print_debug("GetUsernameAndHost() => get username and host")
-        if self.username != None and self.username != shared.NO_LOGIN_MSG:
+        if self.username != None and self.username != tcosmonitor.shared.NO_LOGIN_MSG:
             username=self.username
         else:
             username=self.GetUsername(ip)
@@ -470,14 +471,17 @@ class LocalData:
                     if not b:
                         break
                     if b[0] == USER_PROCESS:
-                        #print_debug("  => Searching for host \"%s:0\", hostname=%s found host=%s ut_line=%s"%(ip, hostname, b.ut_host,b.ut_line))
-                        #if b.ut_host == "%s:0" % (ip) or b.ut_line == "%s:0" % (ip) or b.ut_host == "%s" % hostname :
-                        if str(shared.parseIPAddress(b.ut_host)) == ip or str(shared.parseIPAddress(b.ut_host)) == hostname:
-                            if b.ut_line.startswith("pts/") and not os.path.isdir("/proc/%s"%b.ut_pid): continue
-                            print_debug(" Ip \"%s:0\" => found host=%s hostname=%s ut_line=%s user=%s pid=%s"%(ip, hostname, b.ut_host,b.ut_line, b.ut_user, b.ut_pid))
+                        if str(tcosmonitor.shared.parseIPAddress(b.ut_host)) == ip or \
+                            str(tcosmonitor.shared.parseIPAddress(b.ut_host)) == hostname:
+                            if b.ut_line.startswith("pts/") and not \
+                                os.path.isdir("/proc/%s"%b.ut_pid):
+                                continue
+                            print_debug(" Ip \"%s:0\" => found host=%s hostname=%s ut_line=%s user=%s pid=%s" % \
+                                (ip, hostname, b.ut_host, b.ut_line, b.ut_user, b.ut_pid))
                             last=b
                 a.endutent()
-                if last and os.path.isdir("/proc/%s"%last.ut_pid): break
+                if last and os.path.isdir("/proc/%s"%last.ut_pid):
+                    break
         
         if last and os.path.isdir("/proc/%s"%last.ut_pid):
             # take diff between now and login time
@@ -533,7 +537,7 @@ class LocalData:
         #if self.username != None:
         #    return self.username
         
-        self.username=shared.NO_LOGIN_MSG
+        self.username=tcosmonitor.shared.NO_LOGIN_MSG
         
         if self.main.xmlrpc.IsStandalone(ip=ip):
             print_debug("GetUsername(%s) standalone" %ip)
@@ -544,21 +548,14 @@ class LocalData:
         
         if not self.IsActive(ip):
             print_debug ( "GetUsername(%s) not active, returning NO_LOGIN_MSG" %(ip) )
-            return shared.NO_LOGIN_MSG
+            return tcosmonitor.shared.NO_LOGIN_MSG
         
         output=self.GetLast(ip)
         if output and output['user']:
             self.username=output['user']
             self.add_to_cache( ip, 2 , self.username )
             return self.username
-        """
-        cmd="LC_ALL=C LC_MESSAGES=C last| grep -e \"%s:0.*still\" -e \"%s:0.*still\" 2>/dev/null | head -1| awk '{print $1}'" %(ip, self.GetHostname(ip))
-        output=self.main.common.exe_cmd(cmd)
-        if output != []:
-            self.username=output
-            self.add_to_cache( ip, 2 , self.username )
-            return self.username
-        """
+        
         print_debug ( "GetUsername() fail to search username, return unknow" )
         self.add_to_cache( ip, 2 , self.username )
         return self.username
@@ -587,9 +584,9 @@ class LocalData:
         if self.username == None:
             self.GetUsername(host)
 
-        if self.username == shared.NO_LOGIN_MSG or self.username == None:
+        if self.username == tcosmonitor.shared.NO_LOGIN_MSG or self.username == None:
             return False
-        elif self.username != None and self.username != shared.NO_LOGIN_MSG:
+        elif self.username != None and self.username != tcosmonitor.shared.NO_LOGIN_MSG:
             return True
             
             
@@ -610,7 +607,7 @@ class LocalData:
         
         self.main.xmlrpc.newhost(host)
 
-        if username != None and username != shared.NO_LOGIN_MSG:
+        if username != None and username != tcosmonitor.shared.NO_LOGIN_MSG:
             username=username
         elif self.IsLogged(host):
             username=self.username
@@ -636,23 +633,28 @@ class LocalData:
         return False
     
     def BlockNet(self, action, username, ports=None, iface=None):
-        print_debug("BlockNet() action=%s username=%s ports=%s iface=%s only-ports=%s"%(action, username, ports, iface, shared.tnc_only_ports))
-        if ports == None: ports=""
-        if iface == None: iface=""
-        cmd="/usr/lib/tcos/tnc %s --only-ports=%s %s %s %s"%(action, shared.tnc_only_ports, ports, iface, username)
+        print_debug("BlockNet() action=%s username=%s ports=%s iface=%s only-ports=%s" % \
+            (action, username, ports, iface, tcosmonitor.shared.tnc_only_ports))
+        if ports == None:
+            ports=""
+        if iface == None:
+            iface=""
+        cmd="/usr/lib/tcos/tnc %s --only-ports=%s %s %s %s" % \
+            (action, tcosmonitor.shared.tnc_only_ports, ports, iface, username)
         output=self.main.common.exe_cmd(cmd)
         print_debug("output=%s"%output)
         return output
 
     def Route(self, action, ip, netmask, iface):
-        print_debug("Route() action=%s multicast=%s netmask=%s iface=%s"%(action, ip, netmask, iface))
+        print_debug("Route() action=%s multicast=%s netmask=%s iface=%s" % \
+            (action, ip, netmask, iface))
         cmd="/usr/lib/tcos/tnc %s %s %s %s"%(action, ip, netmask, iface)
         output=self.main.common.exe_cmd(cmd)
         print_debug("output=%s"%output)
         return output
         
     def isExclude(self, host, ingroup=None):
-        if self.username == None or self.username == shared.NO_LOGIN_MSG:
+        if self.username == None or self.username == tcosmonitor.shared.NO_LOGIN_MSG:
             return False
         
         output=self.GetLast(host, ingroup)
@@ -675,7 +677,7 @@ class LocalData:
         self.main.xmlrpc.newhost(host)
         
         #self.username=self.GetUsername(host)
-        if self.username == None or self.username == shared.NO_LOGIN_MSG:
+        if self.username == None or self.username == tcosmonitor.shared.NO_LOGIN_MSG:
             return "---"
         
         if self.main.xmlrpc.IsStandalone(host):
@@ -694,7 +696,7 @@ class LocalData:
     def GetTimeLogged(self, host):
         self.main.xmlrpc.newhost(host)
         
-        if self.username == shared.NO_LOGIN_MSG or self.username == None:
+        if self.username == tcosmonitor.shared.NO_LOGIN_MSG or self.username == None:
             return "---"
         
         output=self.GetLast(host)
@@ -712,7 +714,8 @@ class LocalData:
         names=['IP address', 'HW type', 'Flags', 'HW address', 'Mask', 'Device']
         f=open("/proc/net/arp", 'r')
         for l in f.readlines():
-            if l.startswith("IP address"): continue
+            if l.startswith("IP address"):
+                continue
             tmp=l.strip().split()
             data.append({'ip':tmp[0], 'mac':tmp[3], 'iface':tmp[5]})
         f.close()
@@ -720,7 +723,7 @@ class LocalData:
         return data
 
 if __name__ == '__main__':
-    shared.debug=True
+    tcosmonitor.shared.debug=True
     local=LocalData (None)
     #import sys
     #print local.GetLast(sys.argv[1])

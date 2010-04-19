@@ -48,12 +48,12 @@ if "DISPLAY" in os.environ and os.environ['DISPLAY'] != '':
 action = ""
 
 if remotehost == "":
-    print "tcos-devices-ng: Not allowed to run in local DISPLAY"
+    print ("tcos-devices-ng: Not allowed to run in local DISPLAY")
     sys.exit(0)
 
 # load conf file and exit if not active
 if not shared.test_start("tcos-devices-ng") :
-    print "tcos-devices-ng disabled at %s" % (shared.module_conf_file)
+    print ("tcos-devices-ng disabled at %s" % (shared.module_conf_file))
     sys.exit(1)
 
 
@@ -71,16 +71,16 @@ gtk.gdk.threads_init()
 
 
 def usage():
-    print "tcos-devices-ng help:"
-    print ""
-    print "   tcos-devices-ng -d [--debug]  (write debug data to stdout)"
-    print "   tcos-devices-ng -h [--help]   (this help)"
+    print ("tcos-devices-ng help:")
+    print ("")
+    print ("   tcos-devices-ng -d [--debug]  (write debug data to stdout)")
+    print ("   tcos-devices-ng -h [--help]   (this help)")
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug" ])
 except getopt.error, msg:
-    print msg
-    print "for command line options use tcos-devices-ng --help"
+    print (msg)
+    print ("for command line options use tcos-devices-ng --help")
     sys.exit(2)
 
 
@@ -102,7 +102,9 @@ def log( message ):
     
 def print_debug(txt):
     if shared.debug:
-        print "%d %s::%s" % (os.getpid(), "tcos-devices-ng", txt)
+        print >>sys.stderr, "%d %s::%s" % (os.getpid(), "tcos-devices-ng", txt)
+        #print("%d %s::%s" % (os.getpid(), "tcos-devices-ng", txt), file=sys.stderr)
+
 
 
 
@@ -269,24 +271,24 @@ class TcosDevicesNG:
         print_debug("initremote() username=%s host=%s hostname=%s"%(self.username, self.host, self.hostname))
         
         if not self.common.user_in_group("fuse"):
-            print "tcos-devices-ng: ERROR: User not in group fuse"
+            print ("tcos-devices-ng: ERROR: User not in group fuse")
             sys.exit(1)
         nossl=True
         # make a test and exit if no cookie match
         if not self.xauth.test_auth(nossl):
-            print "tcos-devices-ng: ERROR: Xauth cookie don't match"
+            print ("tcos-devices-ng: ERROR: Xauth cookie don't match")
             sys.exit(1)
             
         self.xmlrpc.newhost(self.host, nossl)
         if not self.xmlrpc.connected:
-            print _("Error connecting with TcosXmlRpc in %s.") %(self.host)
+            print ( _("Error connecting with TcosXmlRpc in %s.") %(self.host) )
             sys.exit(1)
         
         # check for enabled devices
         disable_usb=self.xmlrpc.IsEnabled("TCOS_DISABLE_USB")
         disable_ide=self.xmlrpc.IsEnabled("TCOS_DISABLE_IDE")
         if disable_usb or disable_ide:
-            print "tcos-devices-ng: TCOS_DISABLE_USB or TCOS_DISABLE_IDE enabled, exiting..."
+            print ("tcos-devices-ng: TCOS_DISABLE_USB or TCOS_DISABLE_IDE enabled, exiting...")
             sys.exit(0)
 
     def get_desktop_path(self):
@@ -1435,7 +1437,7 @@ if __name__ == "__main__":
             app.udev_daemon()
             time.sleep(3)
         except KeyboardInterrupt:
-            print "Get KeyboardInterrupt (udev loop), existing..."
+            print ("Get KeyboardInterrupt (udev loop), existing...")
             app.quitting=True
             app.mainloop.quit()
             break

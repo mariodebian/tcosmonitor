@@ -24,6 +24,7 @@
 """ template extension """
 
 from gettext import gettext as _
+import sys
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -31,8 +32,8 @@ from tcosmonitor.TcosExtensions import TcosExtension
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::reboot", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class RebootPoweroff(TcosExtension):

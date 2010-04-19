@@ -22,23 +22,22 @@
 # 02111-1307, USA.
 ###########################################################################
 
-
-from subprocess import Popen, PIPE, STDOUT
+import sys
 import binascii
 from Xlib import xauth
 
 from tcosmonitor import shared
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("TcosXauth", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 import tcosmonitor.TcosCommon
 import tcosmonitor.TcosConf
 import tcosmonitor.TcosXmlRpc
 
-class TcosXauth:
+class TcosXauth(object):
     def __init__(self, main):
         self.main=main
         self.cookie=None
@@ -116,7 +115,8 @@ class TcosXauth:
             print_debug("test_auth() Exception error: %s"%err)
             returned = "error"
         
-        if "OK" in returned: return True
+        if "OK" in returned:
+            return True
         else: return False
 
 

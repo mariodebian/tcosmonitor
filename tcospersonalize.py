@@ -70,7 +70,9 @@ PXELINUX_CMDLINE="quiet splash"
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % (debug_name, txt)
+        print >> sys.stderr "%s::%s" % (debug_name, txt)
+        #print("%s::%s" % (debug_name, txt), file=sys.stderr)
+
     return
 
 def crono(start, txt):
@@ -78,27 +80,27 @@ def crono(start, txt):
     return
 
 def usage():
-    print "TcosPersonalize help:"
-    print ""
-    print "   tcospersonalize [--host=XXX.XXX.XXX.XXX]   (host to personalize)"
-    print "   tcospersonalize -d [--debug]  (write debug data to stdout)"
-    print "   tcospersonalize -h [--help]   (this help)"
+    print ("TcosPersonalize help:")
+    print ("")
+    print ("   tcospersonalize [--host=XXX.XXX.XXX.XXX]   (host to personalize)")
+    print ("   tcospersonalize -d [--debug]  (write debug data to stdout)")
+    print ("   tcospersonalize -h [--help]   (this help)")
 
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug", "host="])
 except getopt.error, msg:
-    print msg
-    print "for command line options use tcosconfig --help"
+    print (msg)
+    print ("for command line options use tcosconfig --help")
     sys.exit(2)
 
 # process options
 for o, a in opts:
     if o in ("-d", "--debug"):
-        print "DEBUG ACTIVE"
+        print ("DEBUG ACTIVE")
         shared.debug = True
     if o == "--host":
-        print "HOST %s" % a
+        print ("HOST %s" % a)
         shared.remotehost = a
     if o in ("-h", "--help"):
         usage()
@@ -386,7 +388,7 @@ class TcosPersonalize:
     def set_active_in_select(self, widget, default):
         model=widget.get_model()
         for i in range(len(model)):
-            #print model[i][0] + default
+            #print (model[i][0] + default)
             if "\"%s\"" % (model[i][0]) == default or model[i][0] == default:
                 print_debug ("set_active_in_select(%s) default is %s, index %d"\
                                      %(widget.name, model[i][0] , i ) )
@@ -433,7 +435,6 @@ class TcosPersonalize:
             self.SetVar(varname, 0)
             
     def read_textbox(self, widget, varname):
-        print widget.get_text()
         if widget.get_text():
             print_debug ( "read_textbox(%s) value=%s" %(widget.name, widget.get_text() ) )
             return widget.get_text()

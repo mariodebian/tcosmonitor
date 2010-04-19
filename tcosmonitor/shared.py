@@ -26,6 +26,7 @@
 
 
 import os
+import sys
 from gettext import gettext as _
 from gettext import bindtextdomain, textdomain
 from locale import setlocale, LC_ALL
@@ -64,7 +65,6 @@ if os.path.isdir('./debian') and os.path.isdir('./po'):
     IMG_DIR = "./images/"
     tcos_config_file="./tcos.conf"
     GLOBAL_CONF='./tcosmonitor.conf'
-    #print "exec in sources dir"
 else:
     tcos_config_file="/etc/tcos/tcos.conf"
     GLADE_DIR = "/usr/share/tcosmonitor/ui/"
@@ -527,8 +527,8 @@ PersonalizeConfig=[
 
 def print_debug(txt):
     if debug:
-        print "%s::%s" % (__name__, txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 if have_display:
@@ -596,8 +596,10 @@ if have_display:
         f.close()
         
         for line in conf:
-            if line == '\n': continue
-            if line.find('#') == 0: continue
+            if line == '\n':
+                continue
+            if line.find('#') == 0:
+                continue
             line=line.replace('\n', '')
             if "=" in line:
                 if line.split('=')[0] == module:
@@ -650,7 +652,7 @@ def parseIPAddress(ipstr, return_ipv4=True):
         eol=is_bin(binascii.hexlify(it))
         if eol:
             isBin=True
-        print_debug("%s => %s string=%s"%(it, binascii.hexlify(it), eol) )
+        #print_debug("%s => %s string=%s"%(it, binascii.hexlify(it), eol) )
         newip.append(binascii.hexlify(it))
     
     if isBin:
@@ -658,8 +660,9 @@ def parseIPAddress(ipstr, return_ipv4=True):
     else:
         try:
             ip=ipaddr.IPAddress(ipstr)
-        except Exception, err:
-            print_debug("parseIPAddress() Exception, error=%s"%err)
+        except Exception:
+            #except Exception, err:
+            #print_debug("parseIPAddress() Exception, error=%s"%err)
             return ipstr
     
     ipv4=ip
@@ -675,7 +678,7 @@ if __name__ == "__main__":
     # test binary IP
     import Xlib.xauth
     a=Xlib.xauth.Xauthority().entries[-1][1]
-    print "Xlib        '%s' => "%a, parseIPAddress(a)
+    print "Xlib        '%s' => " % a, parseIPAddress(a)
 
     # try with $DISPLAY
     print "DISPLAY     '192.168.0.10:0.0' => ", parseIPAddress('192.168.0.10:0.0')

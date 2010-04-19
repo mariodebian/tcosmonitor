@@ -31,12 +31,13 @@ from tcosmonitor.TcosExtensions import TcosExtension
 import gtk
 from time import time
 import os
+import sys
 import glob
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::appsmsg", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )

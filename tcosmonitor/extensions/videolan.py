@@ -24,6 +24,7 @@
 """ template extension """
 
 from gettext import gettext as _
+import sys
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -35,8 +36,8 @@ import signal
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::videolan", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class VideoOne(TcosExtension):
@@ -407,7 +408,8 @@ class VideoOne(TcosExtension):
         box.destroy()
         print_debug("on_progressbox_click() widget=%s, args=%s, box=%s" %(widget, args, box) )
         
-        if not args['target']: return
+        if not args['target']:
+            return
 
         self.main.stop_running_actions.remove(widget)
         
@@ -421,7 +423,8 @@ class VideoOne(TcosExtension):
             for client in args['allclients']:
                 self.main.localdata.newhost(client)
                 if self.main.localdata.IsLogged(client):
-                    if args['lock'] == "enable": self.main.xmlrpc.unlockcontroller("lockvlc", client)
+                    if args['lock'] == "enable":
+                        self.main.xmlrpc.unlockcontroller("lockvlc", client)
                     connected_users.append(self.main.localdata.GetUsernameAndHost(client))
             
             newusernames=[]

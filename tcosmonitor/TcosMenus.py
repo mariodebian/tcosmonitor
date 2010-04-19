@@ -25,8 +25,9 @@
 import gtk
 from gettext import gettext as _
 import os
+import sys
 
-import shared
+import tcosmonitor.shared
 
 menus_group = [
     [ 0, _("Terminal actions") , "active.png"],
@@ -35,8 +36,9 @@ menus_group = [
 ]
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class TcosMenus(object):
     def __init__(self, main):
@@ -64,19 +66,19 @@ class TcosMenus(object):
     def MustShowMenu(self, func_name, menutype):
         item_name="ck_menu_%s" %func_name
 
-        if not item_name in shared.preferences_menus:
+        if not item_name in tcosmonitor.shared.preferences_menus:
             #print_debug("MustShowMenu() %s %s NOT FOUND return True item_name=%s" %(func_name, menutype, item_name) )
             return True
 
         if menutype == "menuone":
-            for number in shared.preferences_menus[item_name][1]:
-                if number in shared.preferences_menus_always_show[menutype]:
+            for number in tcosmonitor.shared.preferences_menus[item_name][1]:
+                if number in tcosmonitor.shared.preferences_menus_always_show[menutype]:
                     #print_debug("MustShowMenu() %s %s FOUND in MENUONE return True" %(func_name, menutype) )
                     return True 
        
         if menutype == "menuall":
-            for number in shared.preferences_menus[item_name][2]:
-                if number in shared.preferences_menus_always_show[menutype]:
+            for number in tcosmonitor.shared.preferences_menus[item_name][2]:
+                if number in tcosmonitor.shared.preferences_menus_always_show[menutype]:
                     #print_debug("MustShowMenu() %s %s found in MENUALL return True" %(func_name, menutype) )
                     return True
 
@@ -115,10 +117,10 @@ class TcosMenus(object):
             menu_items.show()
         
         for mainmenu in menus_group:
-            if mainmenu[2] != None and os.path.isfile(shared.IMG_DIR + mainmenu[2]):
+            if mainmenu[2] != None and os.path.isfile(tcosmonitor.shared.IMG_DIR + mainmenu[2]):
                 menu_item = gtk.ImageMenuItem(mainmenu[1], True)
                 icon = gtk.Image()
-                icon.set_from_file(shared.IMG_DIR + mainmenu[2])
+                icon.set_from_file(tcosmonitor.shared.IMG_DIR + mainmenu[2])
                 menu_item.set_image(icon)
             else:
                 menu_item=gtk.MenuItem(mainmenu[1])
@@ -129,10 +131,10 @@ class TcosMenus(object):
             for _s in self.simplemenus:
                 if _s[2] != mainmenu[0]:
                     continue
-                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
+                if _s[1] != None and os.path.isfile(tcosmonitor.shared.IMG_DIR + _s[1]):
                     sub = gtk.ImageMenuItem(_s[0], True)
                     icon = gtk.Image()
-                    icon.set_from_file(shared.IMG_DIR + _s[1])
+                    icon.set_from_file(tcosmonitor.shared.IMG_DIR + _s[1])
                     sub.set_image(icon)
                 else:
                     sub=gtk.MenuItem(_s[0])
@@ -186,10 +188,10 @@ class TcosMenus(object):
         
         
         for mainmenu in menus_group:
-            if mainmenu[2] != None and os.path.isfile(shared.IMG_DIR + mainmenu[2]):
+            if mainmenu[2] != None and os.path.isfile(tcosmonitor.shared.IMG_DIR + mainmenu[2]):
                 menu_item = gtk.ImageMenuItem(mainmenu[1], True)
                 icon = gtk.Image()
-                icon.set_from_file(shared.IMG_DIR + mainmenu[2])
+                icon.set_from_file(tcosmonitor.shared.IMG_DIR + mainmenu[2])
                 menu_item.set_image(icon)
             else:
                 menu_item=gtk.MenuItem(mainmenu[1])
@@ -200,10 +202,10 @@ class TcosMenus(object):
             for _s in self.allmenus:
                 if _s[2] != mainmenu[0]:
                     continue
-                if _s[1] != None and os.path.isfile(shared.IMG_DIR + _s[1]):
+                if _s[1] != None and os.path.isfile(tcosmonitor.shared.IMG_DIR + _s[1]):
                     sub = gtk.ImageMenuItem(_s[0], True)
                     icon = gtk.Image()
-                    icon.set_from_file(shared.IMG_DIR + _s[1])
+                    icon.set_from_file(tcosmonitor.shared.IMG_DIR + _s[1])
                     sub.set_image(icon)
                 else:
                     sub=gtk.MenuItem(_s[0])
@@ -255,11 +257,11 @@ class TcosMenus(object):
 
     def on_rightclickmenuone_click(self, menu, number):
         print_debug ( "on_rightclickmenuone_click() => onehost_menuitems[%d]=%s" \
-                        % (number, shared.onehost_menuitems[number][0]) )
+                        % (number, tcosmonitor.shared.onehost_menuitems[number][0]) )
         self.main.actions.menu_event_one(number)
 
     def on_rightclickmenuall_click(self, menu, number):
         print_debug ( "on_rightclickmenuall_click() => allhost_menuitems[%d]=%s" \
-                        % (number, shared.allhost_menuitems[number][0]) )
+                        % (number, tcosmonitor.shared.allhost_menuitems[number][0]) )
         self.main.actions.menu_event_all(number)
 

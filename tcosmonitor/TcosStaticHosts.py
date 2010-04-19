@@ -22,9 +22,10 @@
 # 02111-1307, USA.
 ###########################################################################
 
+import sys
 import gtk
 from gettext import gettext as _
-import shared
+import tcosmonitor.shared
 from time import time
 
 COL_IP, COL_MAC= range(2)
@@ -33,8 +34,9 @@ COL_IP, COL_MAC= range(2)
 PANGO_SCALE=1024
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -53,15 +55,15 @@ class TcosStaticHosts:
         self.model=gtk.ListStore(str, str)
         
         self.ui = gtk.Builder()
-        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.set_translation_domain(tcosmonitor.shared.PACKAGE)
         
-        self.ui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-staticwindow.ui')
+        self.ui.add_from_file(tcosmonitor.shared.GLADE_DIR + 'tcosmonitor-staticwindow.ui')
         
         self.main.staticwindow=self.ui.get_object('staticwindow')
         self.main.staticwindow.connect('delete-event', self.staticwindow_close )
         
-        self.ui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-staticwindownew.ui')
-        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.add_from_file(tcosmonitor.shared.GLADE_DIR + 'tcosmonitor-staticwindownew.ui')
+        self.ui.set_translation_domain(tcosmonitor.shared.PACKAGE)
         self.main.staticwindownew=self.ui.get_object('staticwindownew')
         self.main.staticwindownew.connect('delete-event', self.staticwindownew_close )
         
@@ -102,7 +104,8 @@ class TcosStaticHosts:
         
 
     def init_data(self, txt):
-        if txt == "": return
+        if txt == "": 
+            return
         tmp=txt.split("#")
         for host in tmp:
             self.data.append(host.split("|"))
@@ -262,7 +265,7 @@ class TcosStaticHosts:
         print_debug ("static_get()")
         if len(self.main.localdata.allclients) < 1:
             # exit if no hosts
-            shared.error_msg ( _("No hosts found, please click on Refresh button using another method.") )
+            tcosmonitor.shared.error_msg ( _("No hosts found, please click on Refresh button using another method.") )
             return
         
         print_debug ("static_get() allclients=%s"%self.main.localdata.allclients)
@@ -271,7 +274,8 @@ class TcosStaticHosts:
         for host in self.main.localdata.allclients:
             self.main.xmlrpc.newhost(host)
             mac=self.main.xmlrpc.ReadInfo("network_mac")
-            if not mac: mac = ""
+            if not mac: 
+                mac = ""
             self.data.append([host, mac])
             
         print_debug("static_get() data=%s"%self.data)

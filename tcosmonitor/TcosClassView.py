@@ -22,18 +22,19 @@
 # 02111-1307, USA.
 ###########################################################################
 
-
+import sys
 import gtk
 from gettext import gettext as _
 
 
 
-import shared
+import tcosmonitor.shared
 import os
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class TcosClassView(object):
     def __init__(self, main):
@@ -199,11 +200,13 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
     def loadpos(self):
         print_debug("loadpos()")
         txt=self.main.config.GetVar("positions")
-        if txt == "": return
+        if txt == "":
+            return
         self.oldpos={}
         a=txt.split(',')
         for host in a:
-            if len(host) < 1: continue
+            if len(host) < 1:
+                continue
             h=host.split(':')
             self.oldpos[h[0]]=[int(h[1]),int(h[2])]
         print_debug("loadpos() self.oldpos=%s"%self.oldpos)
@@ -221,12 +224,12 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         iconview=gtk.IconView()
         model = gtk.ListStore(str, str, gtk.gdk.Pixbuf)
-        if data['username'] == shared.NO_LOGIN_MSG and not data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
+        if data['username'] == tcosmonitor.shared.NO_LOGIN_MSG and not data['standalone']:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_no_logged)
         elif data['standalone']:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_standalone)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_standalone)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_thin)
         
         if not data['active']:
             pixbuf.saturate_and_pixelate(pixbuf, 0.6, True)
@@ -242,7 +245,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         if hasattr(iconview.props, 'has_tooltip'):
             iconview.props.has_tooltip = True
         
-        #if data['username'] == shared.NO_LOGIN_MSG:
+        #if data['username'] == tcosmonitor.shared.NO_LOGIN_MSG:
         #    model.append([data['username'], data['ip'], pixbuf])
         # show hostname instead of username in standalone
         if data['standalone']:
@@ -252,7 +255,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         
         iconview.show()
         # in old versions of gtk we need to put explicity iconview size
-	if gtk.gtk_version < (2,10,0):
+        if gtk.gtk_version < (2, 10, 0):
             iconview.set_size_request(pixbuf.props.width+14, pixbuf.props.height+28)
         
         # connect drag and drop signal with external data
@@ -270,7 +273,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         if data['active']:
             button.connect("button_press_event", self.on_iconview_click, data['ip'])
         button.connect("enter", self.on_button_enter, data['ip'])
-        button.set_size_request(111,113)
+        button.set_size_request(111, 113)
         button.show_all()
         
         if self.oldpos.has_key(data['ip']):
@@ -290,7 +293,8 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
     def on_external_drag_data_received( self, widget, context, x, y, selection, targetType, dtime, ip_recv):
         ip=None
         if not self.ismultiple():
-            if not ip_recv: return
+            if not ip_recv:
+                return
             ip=ip_recv
             self.set_selected(ip)
         print_debug("get_selected()=%s get_multiple()=%s" %(self.get_selected(), self.get_multiple()))
@@ -320,7 +324,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
                 self.class_external_send(filenames)
                 print_debug("get_selected() ip=%s file=%s" %(self.get_selected(), filenames))
         else:
-            shared.error_msg( _("%s is not a valid file to exe or send") %(os.path.basename(filenames[0][7:])) )
+            tcosmonitor.shared.error_msg( _("%s is not a valid file to exe or send") %(os.path.basename(filenames[0][7:])) )
         return True
 
     def on_drag_data_received(self, widget, context, x, y, dtime):
@@ -337,8 +341,10 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         newx=x-(width/2)
         newy=y-(height/2)
         maxpos=self.get_max_pos()
-        if newx < 0: newx=10
-        if newy < 0: newy=10
+        if newx < 0:
+            newx=10
+        if newy < 0:
+            newy=10
         print_debug("on_drag_data_received() newx=%s newy=%s maxpos[0]=%s maxpos[1]=%s"%(newx, newy, maxpos[0], maxpos[1]))
         if newx > maxpos[0]:
             print_debug("on_drag_data_received() newx=%s > maxpos[0]=%s or negative"%(newx, maxpos[0]))
@@ -463,10 +469,10 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         self.hosts[ip]['blocked_screen']=status_screen
         self.hosts[ip]['blocked_net']=status_net
         data=self.hosts[ip]
-        if data['username'] == shared.NO_LOGIN_MSG:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_no_logged)
+        if data['username'] == tcosmonitor.shared.NO_LOGIN_MSG:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_no_logged)
         else:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + shared.icon_image_thin)
+            pixbuf = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + tcosmonitor.shared.icon_image_thin)
         pixbuf2.composite(pixbuf, 0, 0, pixbuf.props.width, pixbuf.props.height, 0, 0, 1.0, 1.0, gtk.gdk.INTERP_HYPER, 255)
         for w in self.classview.get_children():
             for c in w.get_children():
@@ -476,7 +482,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
                     c.set_model(model2)
                     c.set_text_column(0)
                     c.set_pixbuf_column(2)
-                    if data['username'] == shared.NO_LOGIN_MSG:
+                    if data['username'] == tcosmonitor.shared.NO_LOGIN_MSG:
                         model2.append([data['hostname'].replace('.aula',''), data['ip'], pixbuf])
                     else:
                         model2.append([data['username'], data['ip'], pixbuf])

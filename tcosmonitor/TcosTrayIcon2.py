@@ -24,17 +24,18 @@
 
 import gtk
 import os
+import sys
 from gettext import gettext as _
 from time import time
 
 import gobject
 
-import shared
+import tcosmonitor.shared
 
 def print_debug(txt):
-    if shared.debug:
-        print "[%d] %s::%s" % (os.getpid(), __name__, txt)
-
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "[%d] %s::%s" % (os.getpid(), __name__, txt)
+        #print("[%d] %s::%s" % (os.getpid(), __name__, txt), file=sys.stderr)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -62,17 +63,17 @@ class TcosTrayIcon(object):
         
 
     def InitStatusIcon(self):
-        self.statusIcon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-devices-32x32.png")
+        self.statusIcon = gtk.status_icon_new_from_file(tcosmonitor.shared.IMG_DIR + "tcos-devices-32x32.png")
         self.statusIcon.set_tooltip( _("Tcos Devices") )
 
         # locale glade support
         import gettext
-        gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gettext.textdomain(shared.PACKAGE)
+        gettext.bindtextdomain(tcosmonitor.shared.PACKAGE, tcosmonitor.shared.LOCALE_DIR)
+        gettext.textdomain(tcosmonitor.shared.PACKAGE)
 
         self.ui = gtk.Builder()
-        self.ui.set_translation_domain(shared.PACKAGE)
-        self.ui.add_from_file(shared.GLADE_DIR + 'tray.ui')
+        self.ui.set_translation_domain(tcosmonitor.shared.PACKAGE)
+        self.ui.add_from_file(tcosmonitor.shared.GLADE_DIR + 'tray.ui')
         
         self.window = self.ui.get_object('popup')
         self.hide_button = self.ui.get_object("hide_button")
@@ -129,7 +130,7 @@ class TcosTrayIcon(object):
         icon = gtk.Image()
         if item[1] != None: 
             icon_file_found=True
-            icon_file=shared.IMG_DIR + item[1]
+            icon_file=tcosmonitor.shared.IMG_DIR + item[1]
             if not os.path.isfile(icon_file):
                 icon_file_found=False
         if title not in ['reboot', 'poweroff', 'quit'] and icon_file_found:
@@ -164,7 +165,7 @@ class TcosTrayIcon(object):
                 devdesc=item[6]
             else:
                 devdesc=item[0]
-            label.set_markup( "<b>%s</b>\n<small>%s</small>" %(devtype,devdesc) )
+            label.set_markup( "<b>%s</b>\n<small>%s</small>" %(devtype, devdesc) )
             label.set_sensitive(status)
         else:
             label.set_markup("<b>%s</b>"%item[0])
@@ -181,7 +182,7 @@ class TcosTrayIcon(object):
             button_image.set_from_file(icon_file)
             #button.set_sensitive(True)
         else:
-            button_image.set_from_file(shared.IMG_DIR + "eject.png")
+            button_image.set_from_file(tcosmonitor.shared.IMG_DIR + "eject.png")
             #button.set_sensitive(False)
         
         button.set_image(button_image)
@@ -206,14 +207,14 @@ class TcosTrayIcon(object):
         #print_debug("popup_window() args=%s" %str(args))
         
         # get popup size
-        winx,winy = self.window.size_request()
+        winx, winy = self.window.size_request()
         
         # get window size
         width=gtk.gdk.screen_width()
         height=gtk.gdk.screen_height()
         
         # get trayicon position
-        a,rect,c = self.statusIcon.get_geometry()
+        a, rect, c = self.statusIcon.get_geometry()
         
         # new pos
         if rect.x + winx > width:
@@ -327,7 +328,7 @@ if __name__ == "__main__":
     def myprint(*args):
         print "MYPRINT %s" % args
     
-    shared.debug=True
+    tcosmonitor.shared.debug=True
     
     def change(*args):
         systray.status = not systray.status
@@ -355,7 +356,7 @@ if __name__ == "__main__":
         )
     
     def usb(action):
-        print "ACTION usb, action=%s"%action
+        print "ACTION usb, action=%s" % action
         if action == "umount":
             print "desmontando....."
             systray.update_status("usb1", "usb1_mount", True)

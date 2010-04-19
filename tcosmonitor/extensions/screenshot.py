@@ -29,6 +29,7 @@ from gettext import gettext as _
 from time import localtime
 import gtk
 import os
+import sys
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -36,8 +37,8 @@ from tcosmonitor.TcosExtensions import TcosExtension
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::screenshot", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class Screenshot(TcosExtension):
@@ -170,8 +171,8 @@ class Screenshot(TcosExtension):
                 dialog.destroy()
                 return
             params={}
-            if fext == "jpeg":
-                {"quality":"100"}
+#            if fext == "jpeg":
+#                {"quality":"100"}
             pixbuf.save(filename, fext, params)
         dialog.destroy()
 

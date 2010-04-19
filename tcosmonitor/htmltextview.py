@@ -584,7 +584,7 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
             try:
                 self.textview.add_child_at_anchor(vnc, anchor_widget)
             except Exception, err:
-                print "htmltextview Exception, error=%s"%err
+                print "htmltextview Exception, error=%s" % err
         else:
             warnings.warn("Unhandled element '%s'" % name)
 
@@ -768,7 +768,8 @@ class HtmlTextView(gtk.TextView):
                 continue
             data=line.split()
             #print "data=%s len=%s"%(data, len(data) )
-            if len(data) < 2: continue
+            if len(data) < 2:
+                continue
             PID = data[0]
             Uid = data[1]
             #VmSize = data[2]

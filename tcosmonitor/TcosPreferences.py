@@ -22,15 +22,17 @@
 # 02111-1307, USA.
 ###########################################################################
 
+import sys
 from time import time
 import gtk
 from gettext import gettext as _
 
-import shared
+import tcosmonitor.shared
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class TcosPreferences:
 
@@ -39,13 +41,13 @@ class TcosPreferences:
         #self.ui=self.main.ui
         self.visible_menu_items=[]
         self.ui=gtk.Builder()
-        self.ui.set_translation_domain(shared.PACKAGE)
+        self.ui.set_translation_domain(tcosmonitor.shared.PACKAGE)
         
         # init pref window and buttons
-        self.ui.add_from_file(shared.GLADE_DIR + 'tcosmonitor-prefwindow.ui')
+        self.ui.add_from_file(tcosmonitor.shared.GLADE_DIR + 'tcosmonitor-prefwindow.ui')
         self.main.pref = self.ui.get_object('prefwindow')
         self.main.pref.hide()
-        self.main.pref.set_icon_from_file(shared.IMG_DIR + 'tcos-icon-32x32.png')
+        self.main.pref.set_icon_from_file(tcosmonitor.shared.IMG_DIR + 'tcos-icon-32x32.png')
         # dont destroy window
         # http://www.async.com.br/faq/pygtk/index.py?req=show&file=faq10.006.htp
         self.main.pref.connect('delete-event', self.prefwindow_close )
@@ -71,7 +73,7 @@ class TcosPreferences:
         self.main.pref_ssh_remote_username = self.ui.get_object('ssh_remote_username')
         self.main.pref_ports_tnc = self.ui.get_object('ports_net_controller')
         self.main.pref_vlc_method_send = self.ui.get_object('vlc_method_send')
-        self.populate_select(self.main.pref_vlc_method_send, shared.vlc_methods_send )
+        self.populate_select(self.main.pref_vlc_method_send, tcosmonitor.shared.vlc_methods_send )
         
         # populate selects (only on startup)
         self.main.combo_network_interfaces = self.ui.get_object('combo_networkinterface') 
@@ -79,7 +81,7 @@ class TcosPreferences:
         
         # scan method
         self.main.pref_combo_scan_method = self.ui.get_object('combo_scanmethod')
-        self.populate_select(self.main.pref_combo_scan_method, shared.scan_methods )
+        self.populate_select(self.main.pref_combo_scan_method, tcosmonitor.shared.scan_methods )
         
         # static host list button
         self.main.pref_open_static = self.ui.get_object('button_open_static')
@@ -90,7 +92,7 @@ class TcosPreferences:
         
         # listmode method
         self.main.pref_combo_listmode = self.ui.get_object('combo_listmode')
-        self.populate_select(self.main.pref_combo_listmode, shared.list_modes )
+        self.populate_select(self.main.pref_combo_listmode, tcosmonitor.shared.list_modes )
         
         
         # checkboxes
@@ -117,10 +119,10 @@ class TcosPreferences:
         self.main.pref_menugroups = self.ui.get_object('ck_menugroups')
         
         # menus show hide
-        for menu in shared.preferences_menus:
+        for menu in tcosmonitor.shared.preferences_menus:
             setattr(self.main, "pref_" + menu, self.ui.get_object(menu) )
             
-        for menu in shared.button_preferences_menus:
+        for menu in tcosmonitor.shared.button_preferences_menus:
             setattr(self.main, "pref_" + menu, self.ui.get_object(menu) )
 
 
@@ -155,7 +157,7 @@ class TcosPreferences:
         self.main.config.SetVar("cache_timeout", float(self.main.pref_cache_timeout.get_value()) )
         self.main.config.SetVar("actions_timeout", int(self.main.pref_actions_timeout.get_value()) )
         
-        self.main.config.SetVar("tcosmonitorversion", shared.version )
+        self.main.config.SetVar("tcosmonitorversion", tcosmonitor.shared.version )
         
         self.read_checkbox(self.main.pref_populatelistatstartup, "populate_list_at_startup")
         #self.read_checkbox(self.main.pref_cybermode, "work_as_cyber_mode")
@@ -175,7 +177,7 @@ class TcosPreferences:
             self.main.config.SetVar("scan_network_method", "static")
         
         active=self.main.pref_combo_listmode.get_active()
-        self.main.config.SetVar("listmode", shared.list_modes[active][0])
+        self.main.config.SetVar("listmode", tcosmonitor.shared.list_modes[active][0])
         
         self.main.config.SetVar("statichosts", self.main.static.get_static_conf() )
         
@@ -197,7 +199,7 @@ class TcosPreferences:
                 self.read_select_value(self.main.combo_network_interfaces, "network_interface") )
         
         visible_menus=[]
-        for menu in shared.preferences_menus:
+        for menu in tcosmonitor.shared.preferences_menus:
             pref_name=menu.replace('ck_menu_', '')
             widget=getattr(self.main, "pref_" + menu)
             if widget.get_active():
@@ -208,7 +210,7 @@ class TcosPreferences:
         self.main.config.SetVar("visible_menus", ",".join(visible_menus) )
         
         visible_buttons_menus=[]
-        for menu in shared.button_preferences_menus:
+        for menu in tcosmonitor.shared.button_preferences_menus:
             pref_name=menu.replace('ck_button_menu_', '')
             widget=getattr(self.main, "pref_" + menu)
             if widget.get_active():
@@ -251,13 +253,13 @@ class TcosPreferences:
 
     def check_button_pref_menus(self):
         total=0
-        for menu in shared.button_preferences_menus:
+        for menu in tcosmonitor.shared.button_preferences_menus:
             pref_name=menu.replace('ck_button_menu_', '')
             widget_pref=getattr(self.main, "pref_" + menu)
             if widget_pref.get_active():
                 total+=1
         if total > 5:
-            shared.info_msg(_("You have select more than 5 button menus.\nOnly allowed to select a maximum of 5 buttons."))
+            tcosmonitor.shared.info_msg(_("You have select more than 5 button menus.\nOnly allowed to select a maximum of 5 buttons."))
             return True
         return False
 
@@ -275,7 +277,7 @@ class TcosPreferences:
         print_debug ( "on_pref_cancel_button_click()" )
         # refresh pref widgets
         self.populate_pref()
-        self.main.pref.hide()            
+        self.main.pref.hide()
 
     def on_button_open_static(self, widget):
         print_debug("on_button_open_static()")
@@ -380,13 +382,13 @@ class TcosPreferences:
             print_debug("visible_buttons_menus is empty first_run=%s"%first_run)
 
         self.main.toolbar2.show()
-        for menu in shared.button_preferences_menus:
+        for menu in tcosmonitor.shared.button_preferences_menus:
             pref_name=menu.replace('ck_button_menu_', '')
             widget_button=getattr(self.main, "handlebox_" + pref_name)
             widget_pref=getattr(self.main, "pref_" + menu)
             if first_run:
                 # first run, set defaults
-                if shared.button_preferences_menus[menu][0] != False:
+                if tcosmonitor.shared.button_preferences_menus[menu][0] != False:
                     #widget.set_active(shared.preferences_menus[menu][0])
                     #visible_menu_items.append(menu)
                     #continue
@@ -401,7 +403,8 @@ class TcosPreferences:
                 elif visible_buttons_menu_keys[pref_name] == "0":
                     widget_button.hide()
                     widget_pref.set_active(0)
-            elif pref_name not in visible_buttons_menu_keys.keys() and shared.button_preferences_menus[menu][0] != False:
+            elif pref_name not in visible_buttons_menu_keys.keys() and \
+                tcosmonitor.shared.button_preferences_menus[menu][0] != False:
                 widget_button.show()
                 widget_pref.set_active(1)
                 total+=1
@@ -433,13 +436,14 @@ class TcosPreferences:
             print_debug("visible_menus is empty first_run=%s"%first_run)
         
         self.visible_menu_items={"menuone":[], "menuall":[], "names":[]}
-        for menu in shared.preferences_menus:
+        for menu in tcosmonitor.shared.preferences_menus:
             pref_name=menu.replace('ck_menu_', '')
             widget=getattr(self.main, "pref_" + menu)
-            if not widget: continue
+            if not widget:
+                continue
             if first_run:
                 # first run, set defaults
-                if shared.preferences_menus[menu][0] != False:
+                if tcosmonitor.shared.preferences_menus[menu][0] != False:
                     #widget.set_active(shared.preferences_menus[menu][0])
                     #visible_menu_items.append(menu)
                     #continue
@@ -453,7 +457,8 @@ class TcosPreferences:
                     self.visible_menu_items["names"].append(pref_name)
                 elif visible_menu_keys[pref_name] == "0":
                     widget.set_active(0)
-            elif pref_name not in visible_menu_keys.keys() and shared.preferences_menus[menu][0] != False:
+            elif pref_name not in visible_menu_keys.keys() and \
+                tcosmonitor.shared.preferences_menus[menu][0] != False:
                 widget.set_active(1)
                 visible_menu_items.append(menu)
                 self.visible_menu_items["names"].append(pref_name)
@@ -461,8 +466,8 @@ class TcosPreferences:
                 widget.set_active(0)
         
         for item in visible_menu_items:
-            self.visible_menu_items["menuone"]+=shared.preferences_menus[item][1]
-            self.visible_menu_items["menuall"]+=shared.preferences_menus[item][2]
+            self.visible_menu_items["menuone"]+=tcosmonitor.shared.preferences_menus[item][1]
+            self.visible_menu_items["menuall"]+=tcosmonitor.shared.preferences_menus[item][2]
             
         print_debug("visible_menu_items() %s"%self.visible_menu_items)
         # make menus

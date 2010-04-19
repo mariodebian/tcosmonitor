@@ -38,7 +38,8 @@ from tcosmonitor import shared
 
 # load conf file and exit if not active
 if not shared.test_start("tcos-volume-manager") :
-    print "tcos-volume-manager disabled at %s" % (shared.module_conf_file)
+    print >> sys.stderr, "tcos-volume-manager disabled at %s" % (shared.module_conf_file)
+    #print("tcos-volume-manager disabled at %s" % (shared.module_conf_file), file=sys.stderr)
     sys.exit(1)
 
 
@@ -46,26 +47,27 @@ import pwd
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("tcos-volume-manager", txt)
+        print >> sys.stderr, "%s::%s" % ("tcos-volume-manager", txt)
+        #print("%s::%s" % ("tcos-volume-manager", txt), file=sys.stderr)
 
 def get_username():
     return pwd.getpwuid(os.getuid())[0]
 
 
 def usage():
-    print "tcos-volume-manager help:"
-    print ""
-    print "   tcos-volume-manager [--host=XXX.XXX.XXX.XXX] "
-    print "                 (force host to connect to change volumes, default is DISPLAY)"
-    print "   tcos-volume-manager -d [--debug]  (write debug data to stdout)"
-    print "   tcos-volume-manager -h [--help]   (this help)"
+    print ("tcos-volume-manager help:")
+    print ("")
+    print ("   tcos-volume-manager [--host=XXX.XXX.XXX.XXX] ")
+    print ("                 (force host to connect to change volumes, default is DISPLAY)")
+    print ("   tcos-volume-manager -d [--debug]  (write debug data to stdout)")
+    print ("   tcos-volume-manager -h [--help]   (this help)")
 
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], ":hd", ["help", "debug", "host="])
 except getopt.error, msg:
-    print msg
-    print "for command line options use tcosconfig --help"
+    print (msg)
+    print ("for command line options use tcosconfig --help")
     sys.exit(2)
 
 shared.remotehost=str(shared.parseIPAddress(os.environ["DISPLAY"]))
@@ -73,17 +75,16 @@ shared.remotehost=str(shared.parseIPAddress(os.environ["DISPLAY"]))
 # process options
 for o, a in opts:
     if o in ("-d", "--debug"):
-        print "DEBUG ACTIVE"
+        print ("DEBUG ACTIVE")
         shared.debug = True
     if o == "--host":
-        #print "HOST %s" %(a)
         shared.remotehost = str(shared.parseIPAddress(a))
     if o in ("-h", "--help"):
         usage()
         sys.exit()
 
 if shared.remotehost == "":
-    print "tcos-volume-manager: Not allowed to run in local DISPLAY"
+    print ("tcos-volume-manager: Not allowed to run in local DISPLAY")
     #shared.error_msg ( _("tcos-volume-manager isn't allowed to run in local DISPLAY\nForce with --host=xx.xx.xx.xx") )
     sys.exit(0)
 
@@ -135,7 +136,7 @@ class TcosVolumeManager:
         nossl=True
         # make a test and exit if no cookie match
         if not self.xauth.test_auth(nossl):
-            print "tcos-volume-manager: ERROR: Xauth cookie don't match"
+            print ("tcos-volume-manager: ERROR: Xauth cookie don't match")
             #sys.exit(1)
         
         self.xmlrpc.newhost(self.host,nossl)
@@ -146,7 +147,7 @@ class TcosVolumeManager:
         # check for enabled sound
         have_sound=self.xmlrpc.IsEnabled("TCOS_SOUND")
         if not have_sound:
-            print "tcos-volume-manager: TCOS_SOUND is disabled"
+            print ("tcos-volume-manager: TCOS_SOUND is disabled")
             sys.exit(0)
 
         self.allchannels=self.xmlrpc.GetSoundChannelsContents()

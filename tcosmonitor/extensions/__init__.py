@@ -45,7 +45,7 @@ def __load__():
             else:
                 __import__('tcosmonitor.extensions.' + _ext_name, fromlist = ['extensions'] ) 
         except Exception, err:
-            print "Exception importing extension='%s', err='%s'"%(_ext_name, err)
+            print ("Exception importing extension='%s', err='%s'"%(_ext_name, err))
     return _ext
 
 __all__=__load__()

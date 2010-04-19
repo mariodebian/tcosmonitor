@@ -26,10 +26,10 @@ from gettext import gettext as _
 
 
 import gtk
-import os
+import sys
 
 # needed for get_screenshot
-from time import localtime, sleep
+from time import sleep
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -41,8 +41,8 @@ import string
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::livevnc", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 
@@ -142,7 +142,7 @@ class LiveVNC(TcosExtension):
 
     def _force_resize(self, src, size, ip):
         #print_debug("_force_resize() src=%s size=%s ip=%s"%(src, size, ip))
-        w,h = src.get_size_request()
+        w, h = src.get_size_request()
         #print "_force_resize() w=%s h=%s"%(w, h)
         if w == -1 or h == -1:
             print_debug("_force_resize() returning w=%s h=%s ip=%s"%(w, h, ip))

@@ -32,13 +32,12 @@ from tcosmonitor.TcosExtensions import TcosExtension
 from shutil import copy
 import os
 import gtk
-#import subprocess
-#import signal
+import sys
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::sendfiles", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class SendFiles(TcosExtension):

@@ -25,6 +25,7 @@
 
 from gettext import gettext as _
 import gtk
+import sys
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
@@ -32,8 +33,8 @@ from tcosmonitor.TcosExtensions import TcosExtension
 
 def print_debug(txt):
     if shared.debug:
-        print "%s::%s" % ("extensions::restartxorg", txt)
-    return
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class RestartXorg(TcosExtension):
@@ -58,7 +59,7 @@ class RestartXorg(TcosExtension):
                 except Exception, err:
                     print_debug("restartx() Exception error %s"%err)
                     self.main.xmlrpc.CheckSSL(err)
-                    pass
+                
                 self.refresh_client_info(ip)
         else:
             shared.info_msg( _("%s is not supported to restart Xorg!") %(self.client_type) )

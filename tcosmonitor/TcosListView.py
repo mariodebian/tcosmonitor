@@ -22,13 +22,12 @@
 # 02111-1307, USA.
 ###########################################################################
 
-#import gobject
+import sys
 import gtk
 from gettext import gettext as _
-#import os,subprocess
-#import string
 
-import shared
+
+import tcosmonitor.shared
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME, COL_SEL, COL_SEL_ST = range(10)
 
@@ -38,8 +37,9 @@ PANGO_SCALE=1024
 
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class TcosListView(object):
 
@@ -154,7 +154,7 @@ class TcosListView(object):
         print_debug ( "on_hostlist_click() callig worker to populate in Thread" )
         
         
-        self.main.worker=shared.Workers( self.main,\
+        self.main.worker=tcosmonitor.shared.Workers( self.main,\
                      target=self.populate_datatxt, args=([self.main.selected_ip]) ).start()
         
         return

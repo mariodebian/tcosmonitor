@@ -8,7 +8,7 @@
 #
 # 
 
-
+import sys
 import os
 import re
 from threading import Thread
@@ -17,11 +17,12 @@ from gettext import gettext as _
 from subprocess import Popen, PIPE, STDOUT
 
 import netifaces
-import shared
+import tcosmonitor.shared
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class pingip(Thread):
     def __init__ (self, ip):
@@ -40,7 +41,8 @@ class pingip(Thread):
         pingaling = pingalingout.stdout
         while 1:
             line = pingaling.readline()
-            if not line: break
+            if not line:
+                break
             igot = re.findall(self.lifeline, line)
             if igot:
                 self.status = int(igot[0])
@@ -84,7 +86,7 @@ class Ping:
                 current.start()
                 pinglist.append(current)
             except Exception, err:
-                print_debug("ping thread Exception ip=%s err=%s"%(ip,err))
+                print_debug("ping thread Exception ip=%s err=%s"%(ip, err))
         
         self.main.common.threads_enter("Ping:ping_iprange print waiting")
         self.main.actions.set_progressbar( _("Waiting for pings...") , float(1) )
@@ -97,7 +99,7 @@ class Ping:
                 if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
                     # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
                     try:
-                        if str(shared.parseIPAddress(os.environ["DISPLAY"])) != '':
+                        if str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"])) != '':
                             # running tcosmonitor on thin client
                             continue
                     except Exception, err:
@@ -137,8 +139,9 @@ class Ping:
             
             self.main.localdata.allclients=reachip
             
-            self.main.worker=shared.Workers( self.main,\
-                     target=self.main.actions.populate_hostlist, args=([reachip]) )
+            self.main.worker=tcosmonitor.shared.Workers( self.main,\
+                     target=self.main.actions.populate_hostlist, \
+                     args=([reachip]) )
             self.main.worker.start()
             
         return reachip
@@ -194,8 +197,9 @@ class Ping:
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(reachip) )
             self.main.common.threads_leave("Ping:ping_iprange_static print num hosts")
                         
-            self.main.worker=shared.Workers( self.main,\
-                     target=self.main.actions.populate_hostlist, args=([reachip]) )
+            self.main.worker=tcosmonitor.shared.Workers( self.main,\
+                     target=self.main.actions.populate_hostlist, \
+                     args=([reachip]) )
             self.main.worker.start()
             
         return reachip
@@ -213,7 +217,7 @@ class Ping:
     def get_server_ips(self):
         IPS=[]
         for dev in netifaces.interfaces():
-            if not dev in shared.hidden_network_ifaces:
+            if not dev in tcosmonitor.shared.hidden_network_ifaces:
                 print_debug("get_server_ips() add interface %s"%dev)
                 ip=netifaces.ifaddresses(dev)
                 if ip.has_key(netifaces.AF_INET):
@@ -232,7 +236,7 @@ class Ping:
                     data.append(self.__hex2dec__(tmp[2]))
         f.close()
         if len(data) < 1:
-            print "WARNING: no gateway"
+            #print ("WARNING: no gateway")
             return None
         else:
             return data[0]
@@ -240,7 +244,7 @@ class Ping:
     def __hex2dec__(self, s):
         out=[]
         for i in range(len(s)/2):
-            out.append( str(int(s[i*2:(i*2)+2],16)) )
+            out.append( str(int(s[i*2:(i*2)+2], 16)) )
         # data in /proc/net/route is reversed
         out.reverse()
         return ".".join(out)
@@ -292,8 +296,7 @@ class PingPort:
         else:
             self.status = "OPEN"
             self.sd.close()
-
-        #import shared
+        
         socket.setdefaulttimeout(timeout)
 
     def get_status(self):
@@ -301,20 +304,19 @@ class PingPort:
             values: OPEN CLOSED
         """
         print_debug ( "%s:%s port is \"%s\"" %(self.host, self.port, self.status) )
-        import shared
-        socket.setdefaulttimeout(shared.socket_default_timeout)
+        socket.setdefaulttimeout(tcosmonitor.shared.socket_default_timeout)
         return self.status
 
 
 if __name__ == '__main__':
-    shared.debug=True
+    tcosmonitor.shared.debug=True
     #for i in range(20):
     #    PingPort("192.168.0.3", i+100).get_status()
     #PingPort("192.168.0.5", 6000, 0.5).get_status()
     #PingPort("192.168.0.1", 6000, 0.5).get_status()
     #PingPort(sys.argv[1], sys.argv[2], 0.5).get_status()
     app=Ping(None)
-    print app.get_server_ips()
-    print app.get_ip_address('eth0')
-    print app.get_ip_address('br0')
+    print ( app.get_server_ips() )
+    print ( app.get_ip_address('eth0') )
+    print ( app.get_ip_address('br0') )
     

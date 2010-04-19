@@ -53,9 +53,17 @@ load-plugins=
 #enable-msg=
 
 # Disable the message(s) with the given id(s).
-disable-msg=C0322,C0111,C0103,C0301
+disable-msg=C0322,C0111,C0103,C0301,W0703,W0613,W0612,W0201,R0201,W0622,R0902,R0913,R0904
 #C0301,C0302
-
+#W0703: Catch "Exception"
+#W0613:Unused argument 'data'
+#W0612: Unused variable 'spass'
+#W0201:Attribute 'ask_mode' defined outside __init__
+#R0201:Method could be a function
+#W0622:Redefining built-in 'iter'
+#R0902:Too many instance attributes
+#R0913:Too many arguments
+#R0904:Too many public methods
 
 [REPORTS]
 

@@ -26,16 +26,15 @@ from time import time
 import gobject
 import gtk
 from gettext import gettext as _
-import os
-import socket
+import sys
 
 
-import shared
-from threading import Thread
+import tcosmonitor.shared
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
@@ -119,13 +118,16 @@ class TcosActions:
                 return
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
             # populate_list in a thread
-            self.main.worker=shared.Workers(self.main, self.populate_hostlist, [allclients] )
+            self.main.worker=tcosmonitor.shared.Workers(self.main, \
+                        self.populate_hostlist, 
+                        [allclients] )
             self.main.worker.start()
             return
     
         
     def on_searchbutton_click(self, widget):
-        if self.main.config.GetVar("xmlrpc_username") == "" or self.main.config.GetVar("xmlrpc_password") == "":
+        if self.main.config.GetVar("xmlrpc_username") == "" or \
+            self.main.config.GetVar("xmlrpc_password") == "":
             return
         print_debug ( "on_searchbutton_click()" )
         self.main.search_host(widget)
@@ -143,10 +145,14 @@ class TcosActions:
     
     def on_donateurl_click(self, *args):
         url=self.main.donateurllabel.get_text()
-        self.main.common.exe_cmd("x-www-browser %s"%url, verbose=0, background=True)
+        self.main.common.exe_cmd("x-www-browser %s"%url, \
+                                                verbose=0, \
+                                                background=True)
     
     def on_weburl_click(self, *args):
-        self.main.common.exe_cmd("x-www-browser %s"%shared.website, verbose=0, background=True)
+        self.main.common.exe_cmd("x-www-browser %s" % tcosmonitor.shared.website, \
+                                                verbose=0, \
+                                                background=True)
 
     def on_abouttcos_close(self, *args):
         self.main.abouttcos.hide()
@@ -173,7 +179,8 @@ class TcosActions:
 
         self.main.write_into_statusbar ( _("Searching for connected hosts...") )
         
-        if self.main.config.GetVar("scan_network_method") == "ping" or self.main.config.GetVar("scan_network_method") == "static":
+        if self.main.config.GetVar("scan_network_method") == "ping" or \
+            self.main.config.GetVar("scan_network_method") == "static":
             # clean icons and files
             self.main.listview.clear()
             self.main.iconview.clear()
@@ -191,7 +198,7 @@ class TcosActions:
             if len(allclients) != 0:
                 self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
                 # populate_list in a thread
-                self.main.worker=shared.Workers(self.main, self.populate_hostlist, [allclients] )
+                self.main.worker=tcosmonitor.shared.Workers(self.main, self.populate_hostlist, [allclients] )
                 self.main.worker.start()
                 return False
             self.main.write_into_statusbar ( _("Not connected hosts found.") )
@@ -225,7 +232,7 @@ class TcosActions:
         
         self.main.common.threads_enter("TcosActions:populate_hostlist show progressbar")
         
-        if shared.disable_textview_on_update and self.main.iconview.isactive():
+        if tcosmonitor.shared.disable_textview_on_update and self.main.iconview.isactive():
             self.main.tabla.set_sensitive(True)
 
         #disable refresh button
@@ -245,19 +252,19 @@ class TcosActions:
             self.main.classview.clear()
         self.main.common.threads_leave("TcosActions:populate_hostlist show progressbar")
         
-        inactive_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'inactive.png')
-        active_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active.png')
-        active_ssl_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'active_ssl.png')
+        inactive_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'inactive.png')
+        active_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'active.png')
+        active_ssl_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'active_ssl.png')
         
-        logged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'logged.png')
-        unlogged_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlogged.png')
+        logged_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'logged.png')
+        unlogged_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'unlogged.png')
         
-        locked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
-        locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
-        locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
-        unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
-        dpms_off_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_off.png')
-        dpms_on_image  = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_on.png')
+        locked_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'locked.png')
+        locked_net_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'locked_net.png')
+        locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'locked_net_screen.png')
+        unlocked_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'unlocked.png')
+        dpms_off_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'menu_dpms_off.png')
+        dpms_on_image  = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'menu_dpms_on.png')
         
         i=0
         for host in clients:
@@ -286,11 +293,13 @@ class TcosActions:
             print_debug("populate_hostlist() => get username")
             data['username']=self.main.localdata.GetUsername(data['ip'])
             
-            if shared.dont_show_users_in_group != None:
+            if tcosmonitor.shared.dont_show_users_in_group != None:
                 if self.main.xmlrpc.IsStandalone(data['ip']):
-                    groupexclude=self.main.xmlrpc.GetStandalone("get_exclude", shared.dont_show_users_in_group)
+                    groupexclude=self.main.xmlrpc.GetStandalone("get_exclude", \
+                        tcosmonitor.shared.dont_show_users_in_group)
                 else:
-                    groupexclude=self.main.localdata.isExclude(data['ip'], shared.dont_show_users_in_group)
+                    groupexclude=self.main.localdata.isExclude(data['ip'], \
+                        tcosmonitor.shared.dont_show_users_in_group)
             
                 if groupexclude: 
                     print_debug("Host %s excluded, blacklisted by group" %data['ip'])
@@ -399,7 +408,8 @@ class TcosActions:
         self.main.refreshbutton.set_sensitive(True)
         self.main.progressbutton.set_sensitive(True)
         
-        if shared.disable_textview_on_update and self.main.iconview.isactive():
+        if tcosmonitor.shared.disable_textview_on_update and \
+            self.main.iconview.isactive():
             self.main.tabla.set_sensitive(True)
         
         self.main.common.threads_leave("TcosActions:populate_hostlist END")
@@ -408,7 +418,6 @@ class TcosActions:
             self.main.worker.set_finished()
         except Exception, err:
             print_debug("populate_hostlist() Exception setting worker status, err=%s" %err)
-            pass
         crono(start1, "populate_host_list(ALL)" )
         return
 

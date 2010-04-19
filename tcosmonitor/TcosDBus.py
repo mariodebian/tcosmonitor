@@ -40,10 +40,11 @@ from time import sleep
 # needed for __escape__ function
 import xml.sax.saxutils
 
-import shared
+import tcosmonitor.shared
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 
 class TcosDBusServer:
@@ -61,13 +62,13 @@ class TcosDBusServer:
                       }
 
         
-        import TcosCommon
-        self.common=TcosCommon.TcosCommon(self)        
+        import tcosmonitor.TcosCommon
+        self.common=tcosmonitor.TcosCommon.TcosCommon(self)
         self.host=self.common.get_display(ip_mode=True)
         # in Ubuntu with NetworkManager probably don't have IP now, make a wait loop
         if self.host is None:
             while not self.host:
-                print "TcosDBusServer: No IP found (%s) waiting..."%(self.host)
+                print "TcosDBusServer: No IP found (%s) waiting..." % (self.host)
                 sleep(3)
                 self.host=self.common.get_display(ip_mode=True)
         # If here IP found get hostname
@@ -81,23 +82,14 @@ class TcosDBusServer:
             print_debug ( "Need admin and passwd data to do this action" )
             return False
         
-        #self.common=TcosCommon.TcosCommon(self)        
-        #self.host=self.common.get_display(ip_mode=True)
-        #self.hostname=self.common.get_display(ip_mode=False)
-        
-        # get DISPLAY env var
-        #self.host, display=os.environ["DISPLAY"].split(':')
-        #self.display = ":%s" %(display)
-        #print_debug( "host=\"%s\" display=\"%s\"" %(self.host, self.display) )
-        
-        if self.host == "" and not shared.allow_local_display:
+        if self.host == "" and not tcosmonitor.shared.allow_local_display:
             self.error_msg=_("TcosDBus not allowed in local display")
             print_debug ( "auth() not allowed in local display" )
             return False
 
         import tcosmonitor.ping
         # for standalone use local ip as self.host
-        if shared.allow_local_display:
+        if tcosmonitor.shared.allow_local_display:
             p=tcosmonitor.ping.Ping(None)
             ips=p.get_server_ips()
             if len(ips) < 1:
@@ -114,7 +106,7 @@ class TcosDBusServer:
             
         
         # check if tcosxmlrpc is running
-        status=tcosmonitor.ping.PingPort(self.host, shared.xmlremote_port).get_status()
+        status=tcosmonitor.ping.PingPort(self.host, tcosmonitor.shared.xmlremote_port).get_status()
         print_debug ( "isPortListening() status=%s" %(status) )
         
         if status == "CLOSED" or status == "ERROR":
@@ -133,7 +125,7 @@ class TcosDBusServer:
         return True
 
     def connect_tcosxmlrpc(self, host):
-        self.url = 'http://%s:%d/RPC2' % (host, shared.xmlremote_port)
+        self.url = 'http://%s:%d/RPC2' % (host, tcosmonitor.shared.xmlremote_port)
         print_debug ( "connect_tcosxmlrpc() url=%s" %(self.url) )
         try:
             import xmlrpclib
@@ -151,7 +143,7 @@ class TcosDBusServer:
             result=self.tc.tcos.exe(cmd, self.admin, self.passwd)
         except Exception, err:
             print_debug("connect_tcosxmlrpc() cmd error=%s"%err)
-            pass
+            
         if result == cmd:
             print_debug ( "connect_tcosxmlrpc() cmd run OK." )
             return True
@@ -205,7 +197,6 @@ class TcosDBusServer:
             os.waitpid(proc.pid, os.WCONTINUED)
         except os.error, err:
             print_debug("OSError exception: %s" %err)
-            pass
     
     def user_kill(self, pid):
         print_debug ( "user_kill() %s" %(pid) )
@@ -226,7 +217,6 @@ class TcosDBusServer:
             print_debug("Threads count: %s" %threading.activeCount())
         except Exception, err:
             print_debug ( "user_killall() error, error=%s" %(err) )
-            pass
         return
         
     def user_exec(self, cmd):
@@ -239,7 +229,6 @@ class TcosDBusServer:
             print_debug("Threads count: %s" %threading.activeCount())
         except Exception, err:
             print_debug ( "user_exec() error, error=%s" %(err) )
-            pass
         return
 
     def __escape__(self, txt):
@@ -267,7 +256,6 @@ class TcosDBusServer:
             image_uri="file://usr/share/pixmaps/tcos-icon-32x32-custom.png"
         else:
             image_uri="file://usr/share/pixmaps/tcos-icon-32x32.png"
-        #image_uri="file://" + os.path.abspath(shared.IMG_DIR) + "/tcos-icon-32x32.png"
         n = pynotify.Notification( title , msg, image_uri )
         n.set_urgency(urgency)
         n.set_category("TcosDBus")
@@ -397,7 +385,7 @@ class TcosDBusAction:
 
 
 if __name__ == "__main__":
-    shared.debug=True
+    tcosmonitor.shared.debug=True
     if len(sys.argv) < 2:
         print ( "Need --server or --client param " )
         sys.exit(1)
@@ -408,8 +396,8 @@ if __name__ == "__main__":
         
     if sys.argv[1] == "--client":
         action=TcosDBusAction(admin="root", passwd="root")
-        result = action.do_message( ["mario"] , "Test message from dbus interface")
-        if not result:
+        result2 = action.do_message( ["mario"] , "Test message from dbus interface")
+        if not result2:
             print action.get_error_msg()
             
         #result = action.do_exec( ["prueba"] , "xterm")

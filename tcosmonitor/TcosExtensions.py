@@ -22,7 +22,7 @@
 # 02111-1307, USA.
 ###########################################################################
 
-import shared
+import tcosmonitor.shared
 import os
 import sys
 import exceptions
@@ -31,14 +31,15 @@ import gtk
 import socket
 
 def print_debug(txt):
-    if shared.debug:
-        print "%s::%s" % (__name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "%s::%s" % (__name__, txt)
+        #print("%s::%s" % (__name__, txt), file=sys.stderr)
 
 class Error(exceptions.Exception):
     def __init__(self, msg):
         self.msg = msg
     def __str__(self):
-        shared.error_msg( _("Exception:") + "\n" + "="*40 + "\n\nError:\n" + self.msg )
+        tcosmonitor.shared.error_msg( _("Exception:") + "\n" + "="*40 + "\n\nError:\n" + self.msg )
         return "<Error : %s>" % self.msg
     __repr__ = __str__
     def __call__(self):
@@ -74,7 +75,7 @@ class TcosExtension(object):
         
         if not self.main.selected_ip:
             # show a msg
-            shared.error_msg ( _("Error: no IP!") )
+            tcosmonitor.shared.error_msg ( _("Error: no IP!") )
             return False
         
         self.connected_users=[]
@@ -118,17 +119,21 @@ class TcosExtension(object):
                 self.connected_users_txt_all+="\n"
             counter_all=int(counter_all+1)
 
-        if self.connected_users_txt[-2:] == "\n": self.connected_users_txt=self.connected_users_txt[:-2]
-        if self.connected_users_txt[-2:] == ", ": self.connected_users_txt=self.connected_users_txt[:-2]
+        if self.connected_users_txt[-2:] == "\n":
+            self.connected_users_txt=self.connected_users_txt[:-2]
+        if self.connected_users_txt[-2:] == ", ":
+            self.connected_users_txt=self.connected_users_txt[:-2]
 
-        if self.connected_users_txt_all[-2:] == "\n": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
-        if self.connected_users_txt_all[-2:] == ", ": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
+        if self.connected_users_txt_all[-2:] == "\n":
+            self.connected_users_txt_all=self.connected_users_txt_all[:-2]
+        if self.connected_users_txt_all[-2:] == ", ":
+            self.connected_users_txt_all=self.connected_users_txt_all[:-2]
         
         print_debug("get_clients() self.main.selected_ip=%s self.main.selected_host=%s"%(self.main.selected_ip, self.main.selected_host) )
         return True
         #if not self.doaction_onthisclient(action, self.main.selected_ip):
         #    # show a msg
-        #    shared.info_msg ( _("Can't exec this action because you are connected at this host!") )
+        #    tcosmonitor.shared.info_msg ( _("Can't exec this action because you are connected at this host!") )
         #    return
 
 ########################################################################################
@@ -151,7 +156,7 @@ class TcosExtension(object):
             allclients=self.main.localdata.allclients
 
         if len(allclients) == 0:
-            shared.info_msg ( _("No clients connected, press refresh button.") )
+            tcosmonitor.shared.info_msg ( _("No clients connected, press refresh button.") )
             return False
         
         self.allclients=allclients
@@ -202,11 +207,15 @@ class TcosExtension(object):
                     self.connected_users_txt_all+="\n"
                 counter_all=int(counter_all+1)
 
-        if self.connected_users_txt[-2:] == "\n": self.connected_users_txt=self.connected_users_txt[:-2]
-        if self.connected_users_txt[-2:] == ", ": self.connected_users_txt=self.connected_users_txt[:-2]
+        if self.connected_users_txt[-2:] == "\n":
+            self.connected_users_txt=self.connected_users_txt[:-2]
+        if self.connected_users_txt[-2:] == ", ":
+            self.connected_users_txt=self.connected_users_txt[:-2]
         
-        if self.connected_users_txt_all[-2:] == "\n": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
-        if self.connected_users_txt_all[-2:] == ", ": self.connected_users_txt_all=self.connected_users_txt_all[:-2]
+        if self.connected_users_txt_all[-2:] == "\n":
+            self.connected_users_txt_all=self.connected_users_txt_all[:-2]
+        if self.connected_users_txt_all[-2:] == ", ":
+            self.connected_users_txt_all=self.connected_users_txt_all[:-2]
         return True
 
 ########################################################################################
@@ -216,13 +225,17 @@ class TcosExtension(object):
         # return True if an exec action
         # return False if can not
         # get $DISPLAY
-        host=str(shared.parseIPAddress(os.environ["DISPLAY"]))
-        if host == "": return True
-        print_debug("doaction_onthisclient() host=%s ip=%s action=%s filteraction=%s" %(host, ip, action, action.split(' ')[0]) )
+        host=str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"]))
+        if host == "": 
+            return True
+        print_debug("doaction_onthisclient() host=%s ip=%s action=%s filteraction=%s" % \
+            (host, ip, action, action.split(' ')[0]) )
         # convert to IP
         host=socket.gethostbyname(host)
-        print_debug("doaction_onthisclient() comparing %s <=> %s"%(host, socket.gethostbyname(host) ) )
-        if int(self.main.config.GetVar("blockactioninthishost")) == 1 and host == socket.gethostbyname(ip):
+        print_debug("doaction_onthisclient() comparing %s <=> %s" % \
+            (host, socket.gethostbyname(host) ) )
+        if int(self.main.config.GetVar("blockactioninthishost")) == 1 and \
+            host == socket.gethostbyname(ip):
             print_debug("doaction_onthisclient() ALERT !!! searching for dangerous actions")
             # dangerous actions
             if action.split(' ')[0] in ["poweroff", "reboot", "lockscreen", "restartx", "down-controller"]:
@@ -279,12 +292,11 @@ class TcosExtension(object):
                 ########################################
             except Exception, err:
                 print_debug ( "action_for_clients() error while exec '%s' in %s error: %s" %(action, ip, err) )
-                pass
         
             self.main.common.threads_enter("TcosActions::action_for_clients END client")
             self.main.actions.set_progressbar( _("Done action \"%(action)s\" in %(ip)s") %mydict , 1 )
             self.main.common.threads_leave("TcosActions::action_for_clients END")
-            #sleep(shared.wait_between_many_host)
+            #sleep(tcosmonitor.shared.wait_between_many_host)
         
         self.main.common.threads_enter("TcosActions::action_for_clients END all")
         self.finish_action()
@@ -304,12 +316,12 @@ class TcosExtension(object):
         status_dpms=self.main.xmlrpc.dpms('status', ip)
         print_debug ( "change_lockscreen(%s)=(LOCK)%s,(NET)%s,(DPMS)%s" %(ip, status_screen, status_net, status_dpms) )
         
-        locked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked.png')
-        locked_net_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net.png')
-        locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'locked_net_screen.png')
-        unlocked_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'unlocked.png')
-        dpms_off_image = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_off.png')
-        dpms_on_image  = gtk.gdk.pixbuf_new_from_file(shared.IMG_DIR + 'menu_dpms_on.png')
+        locked_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'locked.png')
+        locked_net_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'locked_net.png')
+        locked_net_screen_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'locked_net_screen.png')
+        unlocked_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'unlocked.png')
+        dpms_off_image = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'menu_dpms_off.png')
+        dpms_on_image  = gtk.gdk.pixbuf_new_from_file(tcosmonitor.shared.IMG_DIR + 'menu_dpms_on.png')
         
         if status_dpms == 'Off':
             image=dpms_off_image
@@ -360,11 +372,9 @@ class TcosExtension(object):
 
     def start_action(self, *args):
         print_debug("start_action() not defined")
-        pass
 
     def finish_action(self, *args):
         print_debug("finish_action() not defined")
-        pass
 
 
 class TcosExtLoader(object):
@@ -390,5 +400,5 @@ class TcosExtLoader(object):
 
 
 if __name__ == '__main__':
-    shared.debug=True
+    tcosmonitor.shared.debug=True
     app=TcosExtLoader(None)

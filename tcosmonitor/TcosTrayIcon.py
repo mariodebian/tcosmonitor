@@ -24,14 +24,16 @@
 
 import gtk
 import os
+import sys
 from gettext import gettext as _
 from time import time
 
-import shared
+import tcosmonitor.shared
 
 def print_debug(txt):
-    if shared.debug:
-        print "%d %s::%s" % (os.getpid(), __name__, txt)
+    if tcosmonitor.shared.debug:
+        print >> sys.stderr, "[%d] %s::%s" % (os.getpid(), __name__, txt)
+        #print("[%d] %s::%s" % (os.getpid(), __name__, txt), file=sys.stderr)
 
 
 def crono(start, txt):
@@ -117,7 +119,7 @@ class TcosTrayIcon:
         icon_file_found=False
         if item[1] != None: 
             icon_file_found=True
-            icon_file=shared.IMG_DIR + item[1]
+            icon_file=tcosmonitor.shared.IMG_DIR + item[1]
             if not os.path.isfile(icon_file):
                 icon_file_found=False
 
@@ -168,7 +170,7 @@ class TcosTrayIcon:
     def InitStatusIcon(self):
         if hasattr(gtk, 'status_icon_new_from_file'):
             # use gtk.status_icon
-            self.statusIcon = gtk.status_icon_new_from_file(shared.IMG_DIR + "tcos-devices-32x32.png")
+            self.statusIcon = gtk.status_icon_new_from_file(tcosmonitor.shared.IMG_DIR + "tcos-devices-32x32.png")
             self.statusIcon.set_tooltip( _("Tcos Devices") )
             self.statusIcon.connect('popup-menu', self.popup_menu)
         else:
@@ -179,7 +181,7 @@ class TcosTrayIcon:
             icon.add(eventbox)
             #tcos-icon-32x32.png
             image=gtk.Image()
-            image.set_from_file (shared.IMG_DIR + "tcos-devices-32x32.png")
+            image.set_from_file (tcosmonitor.shared.IMG_DIR + "tcos-devices-32x32.png")
             eventbox.add(image)
             tips = gtk.Tooltips()
             
@@ -209,7 +211,7 @@ if __name__ == "__main__":
     def myprint(*args):
         print "MYPRINT %s" % args
     
-    shared.debug=True
+    tcosmonitor.shared.debug=True
     
     def change(*args):
         systray.status = not systray.status
