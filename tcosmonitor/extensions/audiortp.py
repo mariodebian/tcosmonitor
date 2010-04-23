@@ -179,7 +179,7 @@ class AudioRTP(TcosExtension):
             self.control_buttons(False)
             return
         self.selected_channel=model.get_value(iter, 2)
-        output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send format=ulaw channels=1 rate=22050 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %self.selected_channel)
+        output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send format=s16be channels=2 rate=44100 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %self.selected_channel)
         output_recv = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %self.selected_channel)
         if output_send != "" or output_recv != "":
             self.rtp_control_count[self.selected_channel]=[output_send, output_recv]
@@ -263,7 +263,7 @@ class AudioRTP(TcosExtension):
             print_debug("Add multicast-ip route failed")
             return
         self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh start-server")
-        output = self.main.common.exe_cmd("pactl load-module module-rtp-send format=ulaw channels=1 rate=22050 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %ip_broadcast)
+        output = self.main.common.exe_cmd("pactl load-module module-rtp-send format=s16be channels=2 rate=44100 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %ip_broadcast)
                     
         self.main.write_into_statusbar( _("Waiting for start audio conference...") )
                     
@@ -306,7 +306,7 @@ class AudioRTP(TcosExtension):
             self.add_progressbox( {"target": "rtp", "pid":output, "allclients":self.newallclients, "ip":"", "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in audio conference from server. Conference Nº %s") %(nextkey) )
 
 
-    def rtp_simple(self, widget, ip):
+    def rtp_simple(self, widget, ip_simple):
         if not self.get_client():
             return
 
@@ -357,7 +357,7 @@ class AudioRTP(TcosExtension):
             return
 
         #self.main.xmlrpc.newhost(ip)
-        self.main.xmlrpc.rtp("startrtp-send", ip, ip_broadcast )
+        self.main.xmlrpc.rtp("startrtp-send", ip_simple, ip_broadcast )
         self.main.write_into_statusbar( _("Waiting for start audio conference from user %s...") %(client_simple) )
             
         output = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %ip_broadcast)
@@ -366,7 +366,7 @@ class AudioRTP(TcosExtension):
         total=1
         for client in self.newallclients:
             self.main.localdata.newhost(client)
-            if client != ip:
+            if client != ip_simple:
                 self.main.xmlrpc.rtp("startrtp-recv", client, ip_broadcast )
                 total+=1
                 newallclients2.append(client)
@@ -374,7 +374,7 @@ class AudioRTP(TcosExtension):
         if total < 1:
             self.main.write_into_statusbar( _("No users logged.") )
             self.main.common.exe_cmd("pactl unload-module %s" %output)
-            self.main.xmlrpc.rtp("stoprtp-send", ip )
+            self.main.xmlrpc.rtp("stoprtp-send", ip_simple )
             result = self.main.localdata.Route("route-del", ip_broadcast, "255.255.255.255", eth)
             if result == "error":
                 print_debug("Del multicast-ip route failed")
@@ -399,7 +399,7 @@ class AudioRTP(TcosExtension):
                 nextkey=1
                 self.rtp_count[nextkey]=ip_broadcast
             #self.main.menus.broadcast_count[ip_broadcast]=None
-            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":newallclients2, "ip":ip, "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in audio conference from user %(host)s. Conference Nº %(count)s") %{"host":client_simple, "count":nextkey} )
+            self.add_progressbox( {"target": "rtp", "pid":output, "allclients":newallclients2, "ip":ip_simple, "ip_broadcast":ip_broadcast, "iface":eth, "key":nextkey}, _("Running in audio conference from user %(host)s. Conference Nº %(count)s") %{"host":client_simple, "count":nextkey} )
 
     def rtp_chat(self, *args):
         if not self.get_all_clients():
@@ -450,7 +450,7 @@ class AudioRTP(TcosExtension):
         self.main.common.exe_cmd("/usr/lib/tcos/pactl-controller.sh start-server")
         msg=_( "Do you want to connect to this audio chat conference now?" )
         if shared.ask_msg ( msg ):
-            output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send format=ulaw channels=1 rate=22050 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %ip_broadcast)
+            output_send = self.main.common.exe_cmd("pactl load-module module-rtp-send format=s16be channels=2 rate=44100 source=@DEFAULT_SOURCE@ loop=0 destination=%s" %ip_broadcast)
             output_recv = self.main.common.exe_cmd("pactl load-module module-rtp-recv sap_address=%s" %ip_broadcast)
             self.rtp_control_count[ip_broadcast]=[output_send, output_recv]
         total=0
