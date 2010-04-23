@@ -86,7 +86,7 @@ config_file_secrets=('/etc/tcos/secrets/tcosmonitor-secret')
 scan_methods=[
 "netstat", 
 "ping",
-"nmap"
+"nmap",
 "static"
 ]
 
