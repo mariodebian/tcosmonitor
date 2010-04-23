@@ -86,6 +86,7 @@ config_file_secrets=('/etc/tcos/secrets/tcosmonitor-secret')
 scan_methods=[
 "netstat", 
 "ping",
+"nmap"
 "static"
 ]
 
@@ -210,7 +211,7 @@ sound_only_channels=["Front", "Master", "Master Front", "PCM", "Line", "CD",
                     "vol", "pcm", "line", "cd", "mic",
                     "Mix", "PCM2", "Capture"]
 
-hidden_network_ifaces=["lo", "sit0", "pan0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2"]
+hidden_network_ifaces=["lo", "sit0", "pan0", "wmaster0", "vmnet0", "vmnet1", "vmnet8", "vbox0", "vbox1", "vbox2", "vboxnet0", "vboxnet1"]
 
 # for enable exclude users, change to "tcosmonitor-exclude"
 dont_show_users_in_group="tcosmonitor-exclude"
