@@ -1,3 +1,39 @@
+tcosmonitor (0.2.32) unstable; urgency=low
+
+  [ Mario Izquierdo (mariodebian) ]
+  * tcosmonitor/shared.py: refactorize parseIPAddress, detect hostnames
+    in binary format
+  * remove glade files
+  * include all packages in DEB_PACKAGES, fix dh_pysupport call in
+    tcosmonitor-common
+  * refactorize some code, and use pylint to fix some warnings
+
+  [ Ignacio Vidal ]
+  * tcos-volume-manager.py tcospersonalize.py: delete gtk.glade import
+  * tcosmonitor/shared.py: add nmap to scan_methods and vboxnet as
+    hidden ifaces
+  * tcosmonitor.py if uid is 0 set user in group to True
+  * install nmap-tcos in op.d dir with 0600 perms
+  * debian/control: add nmap and op to tcosmonitor-common deps
+  * debian/rules: exclude op.d/nmap-tcos.conf in fixperms
+  * debian/tcosmonitor-common.install: install /etc/op/op.d/nmap-
+    tcos.conf
+  * debian/tcosmonitor.install: remove glade files
+  * tcosmonitor/shared.py: add forgoten coma
+  * tcosmonitor/ping.py: Add new nmap functions
+  * tcosmonitor/extensions/audiortp.py: fix this extension with
+    format=s16be and rename var ip=ip_simple
+  * tcosmonitor/TcosPreferences.py: add nmap method after ping
+  * tcosmonitor/TcosActions.py: Add nmap method and create 2 new vars,
+    lenclients and excludes
+  * tcosmonitor/LocalData.py: replace in_group_tcos function and split
+    uthost in half to compare it
+
+  [ Mario Izquierdo (mariodebian) ]
+  * Release 0.2.32
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 23 Apr 2010 17:59:22 +0200
+
 tcosmonitor (0.2.31) unstable; urgency=low
 
   * tcosmonitor/shared.py: fix NoneType when looking at ipv4_mapped
