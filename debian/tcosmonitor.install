@@ -3,10 +3,6 @@ debian/tmp/etc/tcos/tcos-devices-ng.conf
 
 debian/tmp/usr/share/tcosmonitor/images/*
 
-#debian/tmp/usr/share/tcosmonitor/tcos-volume-manager.glade
-#debian/tmp/usr/share/tcosmonitor/tcosmonitor.glade
-#debian/tmp/usr/share/tcosmonitor/tcospersonalize.glade
-#debian/tmp/usr/share/tcosmonitor/tray.glade
 debian/tmp/usr/share/tcosmonitor/ui/*
 
 debian/tmp/usr/share/applications/tcosmonitor.desktop
