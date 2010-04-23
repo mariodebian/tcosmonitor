@@ -124,7 +124,8 @@ class TcosMonitor(object):
             for group in os.getgroups():
                 if grp.getgrgid(group)[0] == "tcos":
                     self.ingroup_tcos=True
-
+            if os.getuid() == 0:
+                self.ingroup_tcos=True
             if self.ingroup_tcos == False and os.getuid() != 0:
                 shared.error_msg( _("The user \"%s\" must be member of the group \"tcos\"\
  to exec tcosmonitor.\n\nIf you are system administrator, add your\
