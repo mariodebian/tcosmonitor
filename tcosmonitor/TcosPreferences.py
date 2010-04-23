@@ -173,6 +173,8 @@ class TcosPreferences:
             self.main.config.SetVar("scan_network_method", "netstat")
         elif self.main.pref_combo_scan_method.get_active() == 1:
             self.main.config.SetVar("scan_network_method", "ping")
+        elif self.main.pref_combo_scan_method.get_active() == 2:
+            self.main.config.SetVar("scan_network_method", "nmap")
         else:
             self.main.config.SetVar("scan_network_method", "static")
         
