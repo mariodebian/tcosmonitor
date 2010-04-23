@@ -1,4 +1,5 @@
 debian/tmp/etc/X11/Xsession.d/81tcos-utils
+debian/tmp/etc/op/op.d/nmap-tcos.conf
 debian/tmp/usr/bin/tcos-dbus-client
 
 debian/tmp/usr/share/locale/*
