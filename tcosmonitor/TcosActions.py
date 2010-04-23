@@ -53,6 +53,8 @@ class TcosActions:
         self.button_action_send=None
         self.button_action_exe=None
         self.button_action_text=None
+        self.excludes=0
+        self.lenclients=0
         #self.model=self.main.init.model
         #self.main.progressstop_args={}
 
@@ -98,8 +100,12 @@ class TcosActions:
         self.datatxt = self.main.datatxt
         # clear datatxt if len allclients is 0
         self.datatxt.clean()
+        self.lenclients=0
+        self.excludes=0
         
-        if self.main.config.GetVar("scan_network_method") == "ping" or self.main.config.GetVar("scan_network_method") == "static":
+        if self.main.config.GetVar("scan_network_method") == "ping" or \
+            self.main.config.GetVar("scan_network_method") == "static" or \
+            self.main.config.GetVar("scan_network_method") == "nmap":
             # clean icons and files
             self.main.listview.clear()
             self.main.iconview.clear()
@@ -117,6 +123,7 @@ class TcosActions:
                 self.main.write_into_statusbar ( _("Not connected hosts found.") )
                 return
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
+            self.lenclients=len(allclients)
             # populate_list in a thread
             self.main.worker=tcosmonitor.shared.Workers(self.main, \
                         self.populate_hostlist, 
@@ -176,11 +183,13 @@ class TcosActions:
         self.datatxt = self.main.datatxt
         # clear datatxt if len allclients is 0
         self.datatxt.clean()
-
+        self.lenclients=0
+        self.excludes=0
         self.main.write_into_statusbar ( _("Searching for connected hosts...") )
         
         if self.main.config.GetVar("scan_network_method") == "ping" or \
-            self.main.config.GetVar("scan_network_method") == "static":
+            self.main.config.GetVar("scan_network_method") == "static" or \
+            self.main.config.GetVar("scan_network_method") == "nmap":
             # clean icons and files
             self.main.listview.clear()
             self.main.iconview.clear()
@@ -198,6 +207,7 @@ class TcosActions:
             if len(allclients) != 0:
                 self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
                 # populate_list in a thread
+                self.lenclients=len(allclients)
                 self.main.worker=tcosmonitor.shared.Workers(self.main, self.populate_hostlist, [allclients] )
                 self.main.worker.start()
                 return False
@@ -293,7 +303,10 @@ class TcosActions:
             print_debug("populate_hostlist() => get username")
             data['username']=self.main.localdata.GetUsername(data['ip'])
             
-            if tcosmonitor.shared.dont_show_users_in_group != None:
+            if data['username'].startswith('error: tcos-last'):
+                data['username']="---"
+            
+            if tcosmonitor.shared.dont_show_users_in_group != None and data['username'] != "---" and data['username'] != None:
                 if self.main.xmlrpc.IsStandalone(data['ip']):
                     groupexclude=self.main.xmlrpc.GetStandalone("get_exclude", \
                         tcosmonitor.shared.dont_show_users_in_group)
@@ -303,13 +316,12 @@ class TcosActions:
             
                 if groupexclude: 
                     print_debug("Host %s excluded, blacklisted by group" %data['ip'])
+                    self.excludes+=1
+                    self.main.write_into_statusbar ( _("Found %(len)d hosts, %(ex)d hosts excluded" ) %{"len":self.lenclients, "ex":self.excludes} )
                     continue
             
             print_debug("populate_hostlist() => get hostname")
             data['hostname']=self.main.localdata.GetHostname(data['ip'])
-            
-            if data['username'].startswith('error: tcos-last'):
-                data['username']="---"
             
             try:
                 print_debug("populate_hostlist() => get num process")
