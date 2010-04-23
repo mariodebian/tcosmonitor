@@ -17,6 +17,7 @@ from gettext import gettext as _
 from subprocess import Popen, PIPE, STDOUT
 
 import netifaces
+import IPy
 import tcosmonitor.shared
 
 def print_debug(txt):
@@ -53,6 +54,112 @@ class Ping:
         self.main=main
         self.reachip=[]
 
+    def ping_iprange_nmap(self, selfip):
+        print_debug("ping_iprange_nmap() ip=%s"%selfip)
+        pinglist=[]
+        reachip=[]
+        
+        server_ips=self.get_server_ips()
+        self.main.common.threads_enter("Nmap:only show tcos")
+        self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open..."))
+        self.main.common.threads_leave("Nmap:only show tcos")
+        
+        if self.main.config.GetVar("onlyshowtcos") == 1:
+            if self.main.config.GetVar("enable_sslxmlrpc") == 1:
+                print_debug("cmd='op nmap-tcos -sS -p8999 -n --open %s'"%selfip)
+                output=self.main.common.exe_cmd("op nmap-tcos -sS -p8999 -n --open %s" %selfip)
+            else:
+                print_debug("cmd='op nmap-tcos -sS -p8998 -n --open %s'"%selfip)
+                output=self.main.common.exe_cmd("op nmap-tcos -sS -p8998 -n --open %s" %selfip)
+        else:
+            print_debug("cmd='op nmap-tcos -sP -n --open %s'"%selfip)
+            output=self.main.common.exe_cmd("op nmap-tcos -sP -n %s" %selfip)
+            
+        for line in output:
+            print_debug("------onlyshowtcos=%s----------- line=%s"%(self.main.config.GetVar("onlyshowtcos"),line))
+            if self.main.config.GetVar("onlyshowtcos") == '1':
+                if line.startswith('Interesting'):
+                    pinglist.append(line.split(" ")[3][:-1])
+            else:
+                if line.startswith('Host') and "is up" in line:
+                    pinglist.append(line.split()[1])
+        print_debug(pinglist)
+        
+        try:
+            inhosttcos=str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"]))
+                # running tcosmonitor on thin client ?
+        except Exception, err:
+            print_debug("ping_iprange_nmap() can't read DISPLAY, %s"%err)
+            
+        i=0
+        for ipnmap in pinglist:
+            i=i+1
+            if ipnmap in server_ips:
+                print_debug("Nmap:: ip (%s) is in server_ips(%s)" % (ipnmap, server_ips) )
+                continue
+            #print "ping to %s" %(ip)
+            if self.main.worker.is_stoped():
+                print_debug("ping_iprange_nmap() WORKER is stoped")
+                # this is a stop thread var
+                break
+            ##########
+            self.main.common.threads_enter("Ping:ping_iprange_nmap show progress")
+            self.main.progressbar.show()
+            self.main.progressbutton.show()
+            self.main.actions.set_progressbar( _("Checking %s...")%(ipnmap), float(i)/len(pinglist) )
+            #print_debug("ping_iprange() ip=%s"%(ip))
+            self.main.common.threads_leave("Ping:ping_iprange_nmap show progress")
+            ############
+
+                # check for notshowwhentcosmonitor
+            if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
+                # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
+                if inhosttcos == ipnmap:
+                        # running tcosmonitor on thin client
+                        continue
+                
+            # only show in list hosts running tcosxmlrpc in 8998 or 8999 port
+            if self.main.config.GetVar("onlyshowtcos") == 1:
+                self.main.common.threads_enter("Ping:only show tcos")
+                self.main.write_into_statusbar( _("Testing if found clients have 8998 or 8999 port open..."))
+                self.main.common.threads_leave("Ping:only show tcos")
+                # view status of port 8998 or 8999
+                if self.main.xmlrpc.newhost(ipnmap):
+                    if self.main.xmlrpc.GetVersion():
+                        print_debug("ping_iprange() host=%s ports 8998 or 8999 OPEN" %(ipnmap))
+                        reachip.append(ipnmap)
+                    else:
+                        print_debug("ping_iprange() host=%s ports 8998 or 8999 OPEN but not tcosxmlrpc" %(ipnmap))
+                else:
+                    print_debug("ping_iprange() host=%s ports 8998 or 8999 closed" %(ipnmap))
+            else:
+                reachip.append(ipnmap)
+        
+        print_debug("ping_iprange_nmap() discovered host finished" )
+        self.main.worker.set_finished()
+        
+        if len(reachip) == 0:
+            self.main.common.threads_enter("Ping:ping_iprange_nmap print no hosts")
+            self.main.write_into_statusbar ( _("Not connected hosts found.") )
+            self.main.progressbar.hide()
+            self.main.progressbutton.hide()
+            self.main.common.threads_leave("Ping:ping_iprange_nmap print no hosts")
+        
+        if len(reachip) > 0:
+            self.main.common.threads_enter("Ping:ping_iprange_nmap print num hosts")
+            self.main.actions.lenclients=len(reachip)
+            self.main.write_into_statusbar ( _("Found %d hosts" ) %len(reachip) )
+            self.main.common.threads_leave("Ping:ping_iprange_nmap print num hosts")
+            
+            self.main.localdata.allclients=reachip
+            
+            self.main.worker=tcosmonitor.shared.Workers( self.main,\
+                     target=self.main.actions.populate_hostlist, \
+                     args=([reachip]) )
+            self.main.worker.start()
+            
+        return reachip
+        
     def ping_iprange(self, selfip):
         print_debug("ping_iprange() ip=%s"%selfip)
         pinglist=[]
@@ -92,18 +199,21 @@ class Ping:
         self.main.actions.set_progressbar( _("Waiting for pings...") , float(1) )
         self.main.common.threads_leave("Ping:ping_iprange print waiting")
      
+        try:
+            inhosttcos=str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"]))
+                # running tcosmonitor on thin client ?
+        except Exception, err:
+            print_debug("ping_iprange_nmap() can't read DISPLAY, %s"%err)
+            
         for pingle in pinglist:
             pingle.join()
             if pingle.status == 2:
                 # check for notshowwhentcosmonitor
                 if self.main.config.GetVar("notshowwhentcosmonitor") == 1:
                     # if $DISPLAY = xx.xx.xx.xx:0 remove from allclients
-                    try:
-                        if str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"])) != '':
-                            # running tcosmonitor on thin client
-                            continue
-                    except Exception, err:
-                        print_debug("ping_iprange() can't read DISPLAY, %s"%err)
+                    if inhosttcos == pingle.ip:
+                        # running tcosmonitor on thin client
+                        continue
                 
                 # only show in list hosts running tcosxmlrpc in 8998 or 8999 port
                 if self.main.config.GetVar("onlyshowtcos") == 1:
@@ -134,6 +244,7 @@ class Ping:
         
         if len(reachip) > 0:
             self.main.common.threads_enter("Ping:ping_iprange print num hosts")
+            self.main.actions.lenclients=len(reachip)
             self.main.write_into_statusbar ( _("Found %d hosts" ) %len(reachip) )
             self.main.common.threads_leave("Ping:ping_iprange print num hosts")
             
@@ -213,7 +324,19 @@ class Ping:
             return ip[netifaces.AF_INET][0]['addr']
         return None
 
-
+    def get_net_address(self, ifname):
+        print_debug("get_net_address() ifname=%s" %(ifname) )
+        if not ifname in netifaces.interfaces():
+            return None
+        ip=netifaces.ifaddresses(ifname)
+        if ip.has_key(netifaces.AF_INET):
+            address="%s" %ip[netifaces.AF_INET][0]['addr']
+            mask="%s" %ip[netifaces.AF_INET][0]['netmask']
+            net="%s" %IPy.IP(address).make_net(mask)
+            print_debug("net=%s" %net)
+            return net
+        return None
+        
     def get_server_ips(self):
         IPS=[]
         for dev in netifaces.interfaces():
