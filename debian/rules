@@ -3,6 +3,7 @@
 DEB_PYTHON_SYSTEM=pysupport
 DEB_PACKAGES = tcosmonitor  tcosmonitor-common
 DEB_ALL_PACKAGES= tcosmonitor tcosmonitor-common
+DEB_FIXPERMS_EXCLUDE=/etc/op/op.d/nmap-tcos.conf
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
