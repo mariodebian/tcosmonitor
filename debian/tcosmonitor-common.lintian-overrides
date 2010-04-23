@@ -1,0 +1,3 @@
+# op package needs files with 600 perms
+# this conf file allow to run nmap as root if user is in group tcos
+tcosmonitor-common: non-standard-file-perm etc/op/op.d/nmap-tcos.conf 0600 != 0644

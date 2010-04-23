@@ -48,6 +48,9 @@ class tcosmonitor_install_data(install_data):
             new=pyfile.split('.py')[0]
             print(" * Renaming %s => %s" %(pyfile, new ) )
             os.rename( pyfile, new )
+
+        print(" * chmod 600 %s" %(self.root + '/etc/op/op.d/nmap-tcos.conf') )
+        os.chmod(self.root + '/etc/op/op.d/nmap-tcos.conf', 0600)
         
 
 def process_version(pyfile):
@@ -83,6 +86,9 @@ data_files.append(('share/tcosmonitor/ui', get_files("ui") ))
 data_files.append( ('/etc/tcos', ['tcosmonitor.conf']) )
 data_files.append( ('/etc/tcos', ['tcos-devices-ng.conf']) )
 data_files.append( ('/etc/X11/Xsession.d', ['dbus/81tcos-utils']) )
+
+data_files.append( ('/etc/op/op.d/', ['op.d/nmap-tcos.conf']) )
+
 
 # Desktop files
 data_files.append( ('share/applications/', ['tcosmonitor.desktop', 
