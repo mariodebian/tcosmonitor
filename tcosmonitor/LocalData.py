@@ -145,16 +145,18 @@ class LocalData:
 
     def user_in_group(self, user=None, group=None):
         #tcos.libs.conf.debug_enabled=True
-        if not user:
-            user=self.get_username()
-        sgroups=grp.getgrall()
-        if user == "root":
-            return True
-        for (sgroup, spass, sid, susers) in sgroups:
-            if sgroup == group and user in susers:
-                print_debug("user %s is in group %s"%(user, sgroup))
-                return True
-        return False
+##        if not user:
+##            user=self.get_username()
+##        sgroups=grp.getgrall()
+##        if user == "root":
+##            return True
+##        for (sgroup, spass, sid, susers) in sgroups:
+##            if sgroup == group and user in susers:
+##                print_debug("user %s is in group %s"%(user, sgroup))
+##                return True
+##        return False
+        print_debug("in group tcos: %s"%(self.main.ingroup_tcos))
+        return self.main.ingroup_tcos
     
     def sorted_copy(self, alist):
         # inspired by Alex Martelli
@@ -202,7 +204,24 @@ class LocalData:
         read netstat -putan|grep 6000|awk '{print $5}'| awk -F ":" '{print $2}| sort|uniq'
         """
             
-        if method == "ping":
+        if method == "nmap":
+            self.allclients=[]
+            interface=self.main.config.GetVar("network_interface")
+            print_debug ( "GetAllClients() using method \"nmap\" in interface %s" %(interface) )
+            
+            ping=Ping(self.main)
+            ss=ping.get_net_address(interface)
+            if ss == None:
+                self.main.write_into_statusbar( \
+            _("Selected network inteface (%s) don't have IP address" ) %(interface) )
+                return []
+            print_debug ( "GetAllClients() method=nmap starting worker without dog iface=%s ip=%s" %(interface, ss) )
+            self.main.worker=tcosmonitor.shared.Workers(self.main, ping.ping_iprange_nmap, [ss], dog=False )
+            self.main.worker.start()
+            
+            return []
+            
+        elif method == "ping":
             self.allclients=[]
             interface=self.main.config.GetVar("network_interface")
             print_debug ( "GetAllClients() using method \"ping\" in interface %s" %(interface) )
@@ -471,9 +490,18 @@ class LocalData:
                     if not b:
                         break
                     if b[0] == USER_PROCESS:
+                        uthost=str(tcosmonitor.shared.parseIPAddress(b.ut_host))
+                        utline=str(tcosmonitor.shared.parseIPAddress(b.ut_line))
+                        half1="%s" %(uthost[:(len(uthost)/2)])
+                        half2="%s" %(uthost[(len(uthost)/2):])
+                        if half1 == half2 and str(tcosmonitor.shared.parseIPAddress(half1)) == utline:
+                            b.ut_host = mitad1
+                        else:
+                            b.ut_host = uthost
+                        print_debug(" ==> '%s' != '%s' ut_line=%s" %(str(tcosmonitor.shared.parseIPAddress(b.ut_host)), ip, b.ut_line) )
                         if str(tcosmonitor.shared.parseIPAddress(b.ut_host)) == ip or \
                             str(tcosmonitor.shared.parseIPAddress(b.ut_host)) == hostname:
-                            if b.ut_line.startswith("pts/") and not \
+                            if b.ut_line.startswith("pts/") or not \
                                 os.path.isdir("/proc/%s"%b.ut_pid):
                                 continue
                             print_debug(" Ip \"%s:0\" => found host=%s hostname=%s ut_line=%s user=%s pid=%s" % \
@@ -510,12 +538,15 @@ class LocalData:
             exclude="noexclude"
             if ingroup != None:
                 try:
-                    usersingroup=grp.getgrnam(ingroup)[3]
+                    cmd="groups %s 2>/dev/null" %last.ut_user
+                    usersingroup=[]
+                    usersingroup=self.main.common.exe_cmd(cmd).split()
+                    #usersingroup=grp.getgrnam(ingroup)[3]
                 except Exception, err:
                     usersingroup=[]
-                
-                for user in usersingroup:
-                    if last.ut_user == user:
+                print_debug("usersingroup: %s" %usersingroup)
+                for group in usersingroup:
+                    if ingroup == group:
                         exclude="exclude"
             
             data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged, "exclude":exclude}
