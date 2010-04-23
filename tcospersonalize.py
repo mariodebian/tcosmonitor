@@ -30,7 +30,6 @@ import glob
 import pygtk
 pygtk.require('2.0')
 import gtk
-import gtk.glade
 
 from tcosmonitor import shared
 

@@ -33,7 +33,6 @@ from gettext import gettext as _
 import pygtk
 pygtk.require('2.0')
 import gtk
-import gtk.glade
 from tcosmonitor import shared
 
 # load conf file and exit if not active
