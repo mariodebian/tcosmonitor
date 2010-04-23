@@ -43,6 +43,7 @@ Depends:  python,
           notification-daemon | xfce4-notifyd, 
           libnotify-bin, 
           tcos-core ( >= 0.89.44), 
+          nmap, op,
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.16~rc9)
 Description: Thin client monitor for TCOS (common files)
