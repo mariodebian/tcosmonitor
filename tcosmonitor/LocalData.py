@@ -495,7 +495,7 @@ class LocalData:
                         half1="%s" %(uthost[:(len(uthost)/2)])
                         half2="%s" %(uthost[(len(uthost)/2):])
                         if half1 == half2 and str(tcosmonitor.shared.parseIPAddress(half1)) == utline:
-                            b.ut_host = mitad1
+                            b.ut_host = half1
                         else:
                             b.ut_host = uthost
                         print_debug(" ==> '%s' != '%s' ut_line=%s" %(str(tcosmonitor.shared.parseIPAddress(b.ut_host)), ip, b.ut_line) )
