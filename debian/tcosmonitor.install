@@ -1,5 +1,6 @@
 debian/tmp/etc/tcos/tcosmonitor.conf
 debian/tmp/etc/tcos/tcos-devices-ng.conf
+debian/tmp/etc/op/op.d/nmap-tcos.conf
 
 debian/tmp/usr/share/tcosmonitor/images/*
 
@@ -28,5 +29,7 @@ debian/tmp/usr/lib/python*/*/tcosmonitor/TcosTrayIcon.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosTrayIcon2.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosXmlRpc.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/WakeOnLan.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/counter.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/ftps_server.py
 
 debian/tmp/usr/lib/python*/*/tcosmonitor/extensions/*.py
