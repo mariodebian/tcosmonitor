@@ -99,7 +99,9 @@ class Screenshot(TcosExtension):
         datetxt="%02d/%02d/%4d %02d:%02d:%02d" %(day, month, year, hour, minute, seconds)
         print_debug ( "get_screenshot() date=%s" %(datetxt) )
         
-        hostname=self.main.localdata.GetHostname(ip)
+        hostname=self.main.localdata.GetUsername(ip)
+        if hostname == shared.NO_LOGIN_MSG:
+            hostname=self.main.localdata.GetHostname(ip)
         block_txt=_("Screenshot of <span style='font-style: italic'>%s</span>")%(hostname)
         block_txt+="<span style='font-size: medium'> %s </span>" %(datetxt)
         block_txt+="<span> </span><input type='button' name='self.main.another_screenshot_button' label='%s' />" %( slabel )
@@ -199,7 +201,9 @@ class Screenshot(TcosExtension):
         scrot=self.main.xmlrpc.getscreenshot(self.main.config.GetVar("miniscrot_size"))
         if scrot and scrot[0] == "ok":
             self.__screenshot_counter+=1
-            hostname=self.main.localdata.GetHostname(ip)
+            hostname=self.main.localdata.GetUsername(ip)
+            if hostname == shared.NO_LOGIN_MSG:
+                hostname=self.main.localdata.GetHostname(ip)
             self.main.common.threads_enter("extensions/screenshot::real_action screenshot")
             year, month, day, hour, minute, seconds ,wdy, yday, isdst= localtime()
             savedatetxt="%02d-%02d-%4d_%02d-%02d" %(day, month, year, hour, minute)
