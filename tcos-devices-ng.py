@@ -272,6 +272,7 @@ class TcosDevicesNG:
         
         if not self.common.user_in_group("fuse"):
             print ("tcos-devices-ng: ERROR: User not in group fuse")
+            shared.error_msg(_("TCOS_DEVICES: Your user is not in group fuse and you can not use USB devices. Please contact with your administrator."))
             sys.exit(1)
         nossl=True
         # make a test and exit if no cookie match
@@ -292,7 +293,7 @@ class TcosDevicesNG:
             sys.exit(0)
 
     def get_desktop_path(self):
-        desktop=self.common.exe_cmd("/usr/lib/tcos/rsync-controller", verbose=1, background=False, lines=0, cthreads=0)
+        desktop=self.common.exe_cmd("/usr/lib/tcos/get-xdg-desktop", verbose=1, background=False, lines=0, cthreads=0)
         if not os.path.isdir(desktop):
             desktop=os.path.expanduser("~/Desktop")
         return desktop
