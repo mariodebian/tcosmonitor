@@ -179,9 +179,12 @@ class LiveVNC(TcosExtension):
     def finish_action(self, *args):
         for ip in self.main.livevnc:
             #self.main.livevnc[ip]
+            hostname=self.main.localdata.GetUsername(ip)
+            if hostname == shared.NO_LOGIN_MSG:
+                hostname=self.main.localdata.GetHostname(ip)
             self.main.datatxt.insert_html( 
                  "<span style='background-color:#f3d160'>" +
-                 "\n\t<livevnc ip='%s' objdict='livevnc' title='%s' title_rotate='90'/> " %(ip, ip) +
+                 "\n\t<livevnc ip='%s' objdict='livevnc' title='%s' title_rotate='90'/> " %(ip, hostname) +
                  "<span style='background-color:#f3d160; color:#f3d160'>__</span>\n</span>"+
                  "")
             self.main.livevnc[ip].open_host(ip, '5900')
