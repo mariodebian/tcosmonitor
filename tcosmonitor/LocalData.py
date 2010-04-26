@@ -597,7 +597,8 @@ class LocalData:
         use xmlrpc echo
         """
         #print_debug ( "IsActive(%s) = %s " %(host, self.main.xmlrpc.GetVersion()) )
-        self.main.xmlrpc.newhost(host)
+        if not self.main.xmlrpc.newhost(host):
+            return False
         if self.main.xmlrpc.GetVersion() != None:
             print_debug ( "IsActive(%s)=True" %(host) )
             return True
@@ -609,7 +610,8 @@ class LocalData:
         """
         return True if is logged
         """
-        self.main.xmlrpc.newhost(host)
+        if not self.main.xmlrpc.newhost(host):
+            return False
         print_debug("IsLogged() => Username=%s" %self.username)
         
         if self.username == None:
@@ -625,7 +627,8 @@ class LocalData:
         """
         return if lockscreen is exec
         """
-        self.main.xmlrpc.newhost(host)
+        if not self.main.xmlrpc.newhost(host):
+            return False
         status=self.main.xmlrpc.status_lockscreen()
         if status == 1:
             print_debug("IsBlocked(ip=%s) TRUE status=%s"%(host, status))
@@ -635,8 +638,8 @@ class LocalData:
             return False
     
     def IsBlockedNet(self, host, username=None):
-        
-        self.main.xmlrpc.newhost(host)
+        if not self.main.xmlrpc.newhost(host):
+            return False
 
         if username != None and username != tcosmonitor.shared.NO_LOGIN_MSG:
             username=username
@@ -705,7 +708,8 @@ class LocalData:
         """
         return number of process
         """
-        self.main.xmlrpc.newhost(host)
+        if not self.main.xmlrpc.newhost(host):
+            return False
         
         #self.username=self.GetUsername(host)
         if self.username == None or self.username == tcosmonitor.shared.NO_LOGIN_MSG:
@@ -725,7 +729,8 @@ class LocalData:
     
         
     def GetTimeLogged(self, host):
-        self.main.xmlrpc.newhost(host)
+        if not self.main.xmlrpc.newhost(host):
+            return False
         
         if self.username == tcosmonitor.shared.NO_LOGIN_MSG or self.username == None:
             return "---"
