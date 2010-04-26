@@ -49,6 +49,41 @@ from tcosmonitor import shared
 import grp, pwd
 
 import gettext
+
+# Medusa 
+import asyncore
+from medusa import default_handler
+from medusa import filesys
+from medusa import ftp_server
+from medusa import status_handler
+
+# M2Crypto
+from tcosmonitor import ftps_server
+from threading import Thread
+import M2Crypto
+
+class TCOSFTPSERVER (Thread):
+    def __init__(self):
+         self.FTP_PORT = 8997
+         M2Crypto.Rand.load_file('/tmp/randpooltcos.dat', -1) 
+         self.ssl_ctx=M2Crypto.SSL.Context('sslv23')
+         self.ssl_ctx.load_cert('/etc/tcos/ssl/tcos_server.pem')
+         self.ssl_ctx.load_client_CA('/etc/tcos/ssl/tcos_ca.crt')
+         self.ssl_ctx.set_verify(M2Crypto.SSL.verify_none, 10)
+         self.ssl_ctx.set_session_id_ctx('127.0.0.1:9443')
+         self.ssl_ctx.set_tmp_dh('/etc/tcos/ssl/tcos_dh1024.pem')
+         self.ssl_ctx.set_info_callback()
+         Thread.__init__(self)
+    def run(self):
+         if not os.path.isdir("/tmp/tcos_share"): os.mkdir("/tmp/tcos_share")
+         self.fauthz = ftp_server.anon_authorizer('/tmp/tcos_share')
+         self.ftps = ftps_server.ftp_tls_server(self.fauthz, self.ssl_ctx, port=self.FTP_PORT)
+         self.ftps.status()
+         self.sh=status_handler.status_extension([self.ftps])
+         M2Crypto.Rand.save_file('/tmp/randpooltcos.dat')
+         asyncore.loop()
+         
+         
 gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
 gettext.textdomain(shared.PACKAGE)
 
@@ -217,25 +252,12 @@ class TcosMonitor(object):
         if self.config.GetVar("populate_list_at_startup") == "1":
             self.populate_host_list()
         self.actions.update_hostlist()
-        # create tmp dir
+            
         try:
-            fd1=open("/etc/default/rsync", 'r')
-            fd2=open("/etc/rsyncd.conf", 'r')
-            output1 = fd1.readlines()
-            output2 = fd2.readlines()
-            fd1.close()
-            fd2.close()
-            for line1 in output1:
-                if line1.upper().find("RSYNC_ENABLE=TRUE") != -1:
-                    for line2 in output2:
-                        if line2.find("/tmp/tcos_share") != -1:
-                            os.mkdir("/tmp/tcos_share")
-                            #os.chmod("/tmp/tcos_share", 0644)
-                            break
-                    break
+            self.ftp_thread = TCOSFTPSERVER() 
+            self.ftp_thread.setDaemon(1)
+            self.ftp_thread.start()
         except Exception, err:
-            print_debug("__init__() Exception creating rsync share, error=%s"%err)
-            self.write_into_statusbar( _("Send files disabled. rsync not configured.") )
             pass
 
     def loadconf(self, conffile):
