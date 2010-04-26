@@ -20,6 +20,8 @@ import netifaces
 import IPy
 import tcosmonitor.shared
 
+import xml.dom.minidom
+
 def print_debug(txt):
     if tcosmonitor.shared.debug:
         print >> sys.stderr, "%s::%s" % (__name__, txt)
@@ -65,26 +67,48 @@ class Ping:
         self.main.common.threads_leave("Nmap:only show tcos")
         
         if self.main.config.GetVar("onlyshowtcos") == 1:
-            if self.main.config.GetVar("enable_sslxmlrpc") == 1:
-                print_debug("cmd='op nmap-tcos -sS -p8999 -n --open %s'"%selfip)
-                output=self.main.common.exe_cmd("op nmap-tcos -sS -p8999 -n --open %s" %selfip)
-            else:
-                print_debug("cmd='op nmap-tcos -sS -p8998 -n --open %s'"%selfip)
-                output=self.main.common.exe_cmd("op nmap-tcos -sS -p8998 -n --open %s" %selfip)
+            print_debug("cmd='op nmap-tcos -sS -p%s -n --open -oX - %s'"%(tcosmonitor.shared.xmlremote_port, selfip))
+            cmd="op nmap-tcos -sS -p%s -n --open -oX - %s" %(tcosmonitor.shared.xmlremote_port, selfip)
         else:
-            print_debug("cmd='op nmap-tcos -sP -n --open %s'"%selfip)
-            output=self.main.common.exe_cmd("op nmap-tcos -sP -n %s" %selfip)
+            print_debug("cmd='op nmap-tcos -sP -n -oX - %s'"%selfip)
+            cmd="op nmap-tcos -sP -n -oX - %s" %selfip
             
-        for line in output:
-            print_debug("------onlyshowtcos=%s----------- line=%s"%(self.main.config.GetVar("onlyshowtcos"),line))
-            if self.main.config.GetVar("onlyshowtcos") == '1':
-                if line.startswith('Interesting'):
-                    pinglist.append(line.split(" ")[3][:-1])
-            else:
-                if line.startswith('Host') and "is up" in line:
-                    pinglist.append(line.split()[1])
-        print_debug(pinglist)
+        try:
+            p = Popen(cmd, shell=True, bufsize=100000, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
+        except Exception, e:
+            print_debug("Exception in subprocess cmd(%s), error='%s'"%(cmd, e))
+            return None
+            
+        # Use dom to parse output, idea taken from python-nmap source   
+        # wait until finished
+        # get output
+        (nmap_last_output, nmap_err) = p.communicate()
+        # If there was something on stderr, there was a problem so abort...
+        if len(nmap_err) > 0:
+            print_debug("Error in nmap cmd(%s), error='%s'"%(cmd, nmap_err))
+            return []
+            
+        dom = xml.dom.minidom.parseString(nmap_last_output)
         
+        for dhost in  dom.getElementsByTagName('host'):
+            ipnmap = dhost.getElementsByTagName('address')[0].getAttributeNode('addr').value
+            for dstatus in dhost.getElementsByTagName('status'):
+                # is up?
+                up = dstatus.getAttributeNode('state').value
+                reason = dstatus.getAttributeNode('reason').value
+            if up != "up" or reason != "arp-response":
+                continue
+            if self.main.config.GetVar("onlyshowtcos") == 1:
+                for dport in dhost.getElementsByTagName('port'):
+                    proto = dport.getAttributeNode('protocol').value
+                    port =  int(dport.getAttributeNode('portid').value)
+                    state = dport.getElementsByTagName('state')[0].getAttributeNode('state').value
+                    if port == tcosmonitor.shared.xmlremote_port and state == "open":
+                        pinglist.append(ipnmap)
+            else:
+                pinglist.append(ipnmap)
+                
+        print_debug(pinglist)
         try:
             inhosttcos=str(tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"]))
                 # running tcosmonitor on thin client ?
