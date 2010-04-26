@@ -156,7 +156,7 @@ class TcosStaticHosts:
         
         cell2 = gtk.CellRendererText ()
         column2 = gtk.TreeViewColumn (_("MAC address"), cell2, text = COL_MAC)
-        column2.set_resizable (True)	
+        column2.set_resizable (True)
         column2.set_sort_column_id(COL_MAC)
         self.main.staticlist.append_column (column2)
         
@@ -272,7 +272,8 @@ class TcosStaticHosts:
         self.data=[]
         # scan hosts and get MAC address
         for host in self.main.localdata.allclients:
-            self.main.xmlrpc.newhost(host)
+            if not self.main.xmlrpc.newhost(host):
+                continue
             mac=self.main.xmlrpc.ReadInfo("network_mac")
             if not mac: 
                 mac = ""
