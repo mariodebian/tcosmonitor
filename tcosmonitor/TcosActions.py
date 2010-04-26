@@ -293,7 +293,10 @@ class TcosActions:
             
             
             self.main.localdata.newhost(host)
-            self.main.xmlrpc.newhost (host)
+            # Avoid frezee tcosmonitor trying to connect always
+            if not self.main.xmlrpc.newhost(host): 
+                print_debug("Host %s is not tcosxmlrpc, continue with populate_hostlist..." %host)
+                continue
             
             data={}
             data['host']=host
