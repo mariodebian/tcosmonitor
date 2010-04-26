@@ -28,6 +28,7 @@ from gettext import gettext as _
 
 from tcosmonitor import shared
 from tcosmonitor.TcosExtensions import TcosExtension
+import netifaces
 
 from shutil import copy
 import os
@@ -47,6 +48,15 @@ class SendFiles(TcosExtension):
         
         self.main.menus.register_simple( _("Send files") , "menu_send.png", 2, self.send_one, "send")
         self.main.menus.register_all( _("Send files") , "menu_send.png", 2, self.send_all, "send")
+    
+    def get_ip_address(self, ifname):
+        print_debug("get_ip_address() ifname=%s" %(ifname) )
+        if not ifname in netifaces.interfaces():
+            return None
+        ip=netifaces.ifaddresses(ifname)
+        if ip.has_key(netifaces.AF_INET):
+            return ip[netifaces.AF_INET][0]['addr']
+        return None
 
     def send_external(self, filenames):
         if self.main.classview.ismultiple():
@@ -62,24 +72,19 @@ class SendFiles(TcosExtension):
             return
         
         if not os.path.isdir("/tmp/tcos_share"):
-            shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
+            shared.info_msg( _("TcosMonitor: FTP+TLS server is not running.") )
             return
         
         for filename in os.listdir("/tmp/tcos_share/"):
             if os.path.isfile("/tmp/tcos_share/%s" %filename):
                 os.remove("/tmp/tcos_share/%s" %filename)
-                    
-                                    
-        fd=file("/tmp/tcos_share/.FILE", 'w')
-        open="True"
+                
+        open="True"                                
         basenames = ""
         for filename in filenames:
-            fd.write("%s\n" %(os.path.basename(filename[7:])) )
             basenames += "%s\n" % ( os.path.basename(filename[7:]) )
             copy(filename[7:], "/tmp/tcos_share/")
             os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename[7:]), 0644)
-        fd.close()
-        os.chmod("/tmp/tcos_share/.FILE", 0644)
         self.main.write_into_statusbar( _("Waiting for send files...") )
                             
         newusernames=[]
@@ -89,15 +94,15 @@ class SendFiles(TcosExtension):
                 usern, ip=user.split(":")
                 self.main.xmlrpc.newhost(ip)
                 server=self.main.xmlrpc.GetStandalone("get_server")
-                standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), server, open )
-                self.main.xmlrpc.DBus("exec", standalone_cmd )
-                self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+                self.main.xmlrpc.DBus("sendfiles", _("Teacher"), server, open )
+                self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames})
             else:
                 newusernames.append(user)
-            
-        thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), "localhost", open )
-            
-        result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
+                
+        interface=self.main.config.GetVar("network_interface")
+        # maybe we the x remote display is other than tcosmonitor server
+        server=self.get_ip_address(interface)
+        result = self.main.dbus_action.do_sendfiles( newusernames , _("Teacher"), server, open)
             
         if not result:
             shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -138,7 +143,7 @@ class SendFiles(TcosExtension):
         
         
         if not os.path.isdir("/tmp/tcos_share"):
-            shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
+            shared.info_msg( _("TcosMonitor: FTP+TLS server is not running.") )
             return
         
         for filename in os.listdir("/tmp/tcos_share/"):
@@ -151,27 +156,12 @@ class SendFiles(TcosExtension):
                             
             filenames = dialog.get_filenames()
             
-            fd=file("/tmp/tcos_share/.FILE", 'w')
             open="False"
             basenames = ""
             for filename in filenames:
-                #if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
-                #    dialog.destroy()
-                #    msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                #    shared.info_msg( msg )
-                #    return
-                #basename_scape=os.path.basename(filename)
-                #abspath_scape=filename
-                #for scape in str_scapes:
-                #    basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
-                #    abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
-                fd.write("%s\n" %(os.path.basename(filename)) )
                 basenames += "%s\n" % ( os.path.basename(filename) )
                 copy(filename, "/tmp/tcos_share/")
                 os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
-                
-            fd.close()
-            os.chmod("/tmp/tcos_share/.FILE", 0644)
             self.main.write_into_statusbar( _("Waiting for send files...") )
             
             msg=_( "Do you want open file(s) on client?" )
@@ -185,15 +175,15 @@ class SendFiles(TcosExtension):
                     #usern, ip=user.split(":")
                     #self.main.xmlrpc.newhost(ip)
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), server, open )
-                    self.main.xmlrpc.DBus("exec", standalone_cmd )
-                    self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+                    self.main.xmlrpc.DBus("sendfiles", _("Teacher"), server, open )
+                    self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames})
                 else:
                     newusernames.append(user)
-            
-            thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), "localhost", open )
-            
-            result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
+                        
+            interface=self.main.config.GetVar("network_interface")
+            # maybe we the x remote display is other than tcosmonitor server
+            server=self.get_ip_address(interface)
+            result = self.main.dbus_action.do_sendfiles( newusernames , _("Teacher"), server, open)
             
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
@@ -233,7 +223,7 @@ class SendFiles(TcosExtension):
         
         
         if not os.path.isdir("/tmp/tcos_share"):
-            shared.info_msg( _("TcosMonitor need special configuration for rsync daemon to send files.\n\nPlease read configuration requeriments in:\n/usr/share/doc/tcosmonitor/README.rsync") )
+            shared.info_msg( _("TcosMonitor: FTP+TLS server is not running.") )
             return
         
         for filename in os.listdir("/tmp/tcos_share/"):
@@ -246,26 +236,12 @@ class SendFiles(TcosExtension):
             
             filenames = dialog.get_filenames()
             
-            fd=file("/tmp/tcos_share/.FILE", 'w')
             open="False"
             basenames = ""
             for filename in filenames:
-                #if filename.find("\\") != -1 or filename.find("'") != -1 or filename.find("&") != -1:
-                #    dialog.destroy()
-                #    msg=_("Special characters used in \"%s\".\nPlease rename it." %os.path.basename(filename) )
-                #    shared.info_msg( msg )
-                #    return
-                #basename_scape=os.path.basename(filename)
-                #abspath_scape=filename
-                #for scape in str_scapes:
-                #    basename_scape=basename_scape.replace("%s" %scape, "\%s" %scape)
-                #    abspath_scape=abspath_scape.replace("%s" %scape, "\%s" %scape)
-                fd.write("%s\n" %(os.path.basename(filename)) )
                 basenames += "%s\n" % ( os.path.basename(filename) )
                 copy(filename, "/tmp/tcos_share/")
                 os.chmod("/tmp/tcos_share/%s" %os.path.basename(filename), 0644)
-            fd.close()
-            os.chmod("/tmp/tcos_share/.FILE", 0644)
             self.main.write_into_statusbar( _("Waiting for send files...") )
             
             msg=_( "Do you want open file(s) on client?" )
@@ -279,15 +255,15 @@ class SendFiles(TcosExtension):
                     usern, ip=user.split(":")
                     self.main.xmlrpc.newhost(ip)
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    standalone_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), server, open )
-                    self.main.xmlrpc.DBus("exec", standalone_cmd )
-                    self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames} )
+                    self.main.xmlrpc.DBus("sendfiles", _("Teacher"), server, open )
+                    self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames})
                 else:
                     newusernames.append(user)
-            
-            thin_cmd = "/usr/lib/tcos/rsync-controller %s %s %s" % ( _("Teacher"), "localhost", open )
-            
-            result = self.main.dbus_action.do_exec( newusernames , thin_cmd )
+                        
+            interface=self.main.config.GetVar("network_interface")
+            # maybe we the x remote display is other than tcosmonitor server
+            server=self.get_ip_address(interface)
+            result = self.main.dbus_action.do_sendfiles( newusernames , _("Teacher"), server, open)
             
             if not result:
                 shared.error_msg ( _("Error while exec remote app:\nReason:%s") %( self.main.dbus_action.get_error_msg() ) )
