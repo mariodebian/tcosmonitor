@@ -161,7 +161,28 @@ class TcosDBusServer:
         if isinstance(data, dbus.String):
             return str(data)
         return(data)
-            
+    
+    def get_desktop_path(self):
+        print_debug ( "get_desktop_path()")
+        cmd="/usr/lib/tcos/get-xdg-desktop"
+        try:
+            p = subprocess.Popen(cmd, shell=True, bufsize=0, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+        except Exception, e:
+            print_debug("Exception in subprocess cmd(%s), error='%s'"%(cmd, e))
+            return None
+        desktop=None
+        try:
+            result=p.stdout.readlines()
+            for line in result:
+                if line != '\n':
+                    desktop=line.replace('\n', '')
+        except Exception, e:
+            print_debug("Exception in subprocess::readlines() cmd(%s), error='%s'"%(cmd, e))
+            return None
+        if not os.path.isdir(desktop):
+            desktop=os.path.expanduser("~/Desktop")
+        return desktop
+         
     def new_message(self, message):
         print_debug ( "new_message() %s" %(message) )
 
@@ -175,9 +196,15 @@ class TcosDBusServer:
             print_debug ("new_message() loop users => user=%s" %(user) )
             if user == self.username:
                 msg_type=self.parse_dbus_str(message[2][0])
-                msg_args=self.parse_dbus_str(message[3][0])
                 print_debug ( "new_message() Ummm one message for me!!" )
-                print_debug ( "new_message() type=%s args=%s" %(msg_type, msg_args) )
+                if msg_type == "sendfiles": 
+                    msg_arg_1=self.parse_dbus_str(message[3][0])
+                    msg_arg_2=self.parse_dbus_str(message[3][1])
+                    msg_arg_3=self.parse_dbus_str(message[3][2])
+                    print_debug ( "new_message() type=%s arg_1=%s arg_2=%s arg_3=%s" %(msg_type, msg_arg_1, msg_arg_2, msg_arg_3) )
+                else:
+                    msg_args=self.parse_dbus_str(message[3][0])
+                    print_debug ( "new_message() type=%s args=%s" %(msg_type, msg_args) )
                 
                 if msg_type == "kill":
                     pid=int(msg_args)
@@ -188,6 +215,8 @@ class TcosDBusServer:
                     self.user_exec(msg_args)
                 elif msg_type == "mess":
                     self.user_msg(msg_args)
+                elif msg_type == "sendfiles":
+                    self.user_sendfiles(msg_arg_1, msg_arg_2, msg_arg_3)  
                 else:
                     print_debug ( "new_message() ERROR, unknow type of message=\"%s\"" %(msg_type) )
                 print_debug ( "new_message() finish !!!" )
@@ -229,6 +258,24 @@ class TcosDBusServer:
             print_debug("Threads count: %s" %threading.activeCount())
         except Exception, err:
             print_debug ( "user_exec() error, error=%s" %(err) )
+            #pass
+        return
+        
+    def user_sendfiles(self, dir, server, open):
+        print_debug ( "user_sendfiles() dir=%s server=%s open=%s" %(dir, server, open))
+        desktop=self.get_desktop_path()
+        local_dir=os.path.join(desktop, dir)
+        cmd="/usr/lib/tcos/tcos-ftpclient --dir=%s --server=%s --open=%s" %(local_dir, server, open)
+        print_debug("user_sendfiles() cmd=%s" %cmd)
+        p = subprocess.Popen(cmd, shell=True, close_fds=True)
+        try:
+            th=threading.Thread(target=self.cleanproc, args=(p,) )
+            #th.setDaemon(1)
+            th.start()
+            print_debug("Threads count: %s" %threading.activeCount())
+        except Exception, err:
+            print_debug ( "user_sendfiles() error, error=%s" %(err) )
+            #pass
         return
 
     def __escape__(self, txt):
@@ -314,6 +361,22 @@ class TcosDBusAction:
 
     def get_error_msg(self):
         return self.error
+        
+    def do_sendfiles(self, users, dir, server, open):
+        print_debug ( "do_sendfiles() users=%s dir=%s server=%s open=%s" %(users, dir, server, open) )
+        
+        if not self.connection:
+            print_debug ( self.error )
+            return False
+        try:
+            self.dbus_iface.GotSignal( [ [self.admin, self.passwd], users , ["sendfiles"] , [dir, server, open] ])
+            self.done = True
+            
+        except Exception, err:
+            self.error = _("User not allowed to run this dbus call.")
+            print_debug ( "User not allowed to use dbus, error=%s"%err )
+            
+        return self.done
         
     def do_exec(self, users, app):
         print_debug ( "do_exec() users=%s app=%s" %(users, app) )
