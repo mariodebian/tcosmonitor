@@ -1,3 +1,35 @@
+tcosmonitor (0.2.33) unstable; urgency=low
+
+  [ Mario Izquierdo (mariodebian) ]
+  * tcosmonitor/LocalData.py: fix typo mitad1 => half1
+
+  [ Ignacio Vidal ]
+  * debian/control: add python-m2crypto python-medusa to Depends and
+    move op from one package to other
+  * debian/tcosmonitor-common.install debian/tcosmonitor.install:
+    install new files and move nmap-tcos.conf op
+  * rename lintian file
+  * tcos-devices-ng.py: add a error message if user is not in fuse group
+    and use get-xdg-desktop instead of rsync-controller
+  * tcosmonitor/ping.py: parse XML output of nmap
+  * tcosmonitor/LocalData.py: return if newhost fail
+  * tcosmonitor/extensions/tcosnetcontroller.py: Add space in message
+  * tcosmonitor/extensions/screenshot.py: Set hostname if NO_LOGIN_MSG
+  * tcosmonitor/extensions/livevnc.py: Set hostname if NO_LOGIN_MSG
+  * tcosmonitor/TcosActions.py: continue if newhost fail
+  * tcosmonitor/TcosDBus.py: Add new method to sendfiles
+  * tcosmonitor/TcosStaticHosts.py: continue if newhost fail
+  * tcosmonitor/extensions/sendfiles.py: Change rsync with FTP+SSL
+  * tcosmonitor.py: Start FTP+SSL server
+  * tcosmonitor/counter.py: Counter of hosts
+  * tcosmonitor/ftps_server.py: FTP+SSL server with medusa and python-
+    M2Crypto
+
+  [ Mario Izquierdo (mariodebian) ]
+  * Release 0.2.33
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 30 Apr 2010 15:54:01 +0200
+
 tcosmonitor (0.2.32) unstable; urgency=low
 
   [ Mario Izquierdo (mariodebian) ]
