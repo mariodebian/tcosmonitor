@@ -33,7 +33,6 @@ import os
 import pygtk
 pygtk.require('2.0')
 import gtk
-#import gtk.glade
 
 from time import time
 import getopt
@@ -189,10 +188,10 @@ class TcosMonitor(object):
         #>>> gtk.gdk.screen_height()
         #>>> gtk.gdk.screen_width()
         if gtk.gdk.screen_height() < 768:
-            print_debug("set lower size of glade mainwindow")
+            print_debug("set lower size of mainwindow")
             self.mainwindow.set_size_request(760,520)
 
-        # glade file (mainwindow) visible=False, show now
+        # ui file (mainwindow) visible=False, show now
         self.mainwindow.show()
         
         

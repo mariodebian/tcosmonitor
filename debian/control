@@ -12,7 +12,6 @@ Package: tcosmonitor
 Architecture: all
 Depends:  python, 
           tcosmonitor-common, 
-          python-glade2, 
           python-gtk-vnc, 
           python-xlib,
           python-ipaddr,

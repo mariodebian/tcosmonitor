@@ -1,4 +1,4 @@
-all: fix-glade dbus
+all: dbus
 
 include common.mk
 
@@ -18,21 +18,14 @@ dist-clean:
 
 clean:
 	rm -rf tmp build
-	rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup *gladep
+	rm -f *~ *.pyc *.orig *.bak *-stamp
 	python setup.py clean
-	cd tcosmonitor && rm -f *~ *.pyc *.orig *.bak *-stamp *.glade.backup
+	cd tcosmonitor && rm -f *~ *.pyc *.orig *.bak *-stamp
 	find -name "*~" | xargs rm -f
 	cd po && make clean
 	cd dbus && $(MAKE) clean
 	cd tcosmonitor/extensions && $(MAKE) clean
 
-
-glade:
-	glade-2 $(PACKAGE).glade
-	$(MAKE) fix-glade
-
-fix-glade:
-	bash fix-glade.sh
 
 exec:
 	python $(PACKAGE).py --debug
@@ -103,4 +96,4 @@ patch_karmic:
 
 
 
-.PHONY: fix-glade tcosxmlrpc dbus udev
+.PHONY: dbus

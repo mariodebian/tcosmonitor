@@ -127,9 +127,6 @@ class TcosPersonalize:
         
         self.remotehost_config = os.path.join ("/var/lib/tcos/tftp/conf/", shared.remotehost + ".conf" )
         
-        #gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        #gtk.glade.textdomain(shared.PACKAGE)
-        
         # Widgets
         import gettext
         gettext.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)

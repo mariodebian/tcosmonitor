@@ -60,7 +60,6 @@ if not shared.test_start("tcos-devices-ng") :
 from tcosmonitor.TcosTrayIcon2 import TcosTrayIcon
 import threading
 
-import gtk.glade
 import pynotify
 import pwd
 

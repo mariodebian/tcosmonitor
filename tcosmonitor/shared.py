@@ -344,7 +344,7 @@ allhost_menuitems=[
 preferences_menus_always_show={"menuone":[0,1], "menuall":[4]}
 
 # format
-#glade_widget,  [default_enabled,   menuone , menuall]
+#ui_widget,  [default_enabled,   menuone , menuall]
 preferences_menus={
 "ck_menu_lock":[        True,  [4,5],  [2,3] ],
 "ck_menu_italc":[       False, [6],    [] ],

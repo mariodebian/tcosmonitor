@@ -66,7 +66,7 @@ class TcosTrayIcon(object):
         self.statusIcon = gtk.status_icon_new_from_file(tcosmonitor.shared.IMG_DIR + "tcos-devices-32x32.png")
         self.statusIcon.set_tooltip( _("Tcos Devices") )
 
-        # locale glade support
+        # locale support
         import gettext
         gettext.bindtextdomain(tcosmonitor.shared.PACKAGE, tcosmonitor.shared.LOCALE_DIR)
         gettext.textdomain(tcosmonitor.shared.PACKAGE)

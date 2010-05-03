@@ -84,7 +84,7 @@ Drag and drop hosts to positions and save clicking on right mouse button.")
         self.position=[10,10]
         self.iconsize=[115,115]
         
-        # gtk.Frame don't support changing background color (default gray) use glade eventbox
+        # gtk.Frame don't support changing background color (default gray) use gtk eventbox
         print_debug("setting white background")
         self.classeventbox.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("white"))
         self.classeventbox1.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('white'))
