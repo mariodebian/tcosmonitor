@@ -69,7 +69,7 @@ PXELINUX_CMDLINE="quiet splash"
 
 def print_debug(txt):
     if shared.debug:
-        print >> sys.stderr "%s::%s" % (debug_name, txt)
+        print >> sys.stderr, "%s::%s" % (debug_name, txt)
         #print("%s::%s" % (debug_name, txt), file=sys.stderr)
 
     return
@@ -127,8 +127,8 @@ class TcosPersonalize:
         
         self.remotehost_config = os.path.join ("/var/lib/tcos/tftp/conf/", shared.remotehost + ".conf" )
         
-        gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
-        gtk.glade.textdomain(shared.PACKAGE)
+        #gtk.glade.bindtextdomain(shared.PACKAGE, shared.LOCALE_DIR)
+        #gtk.glade.textdomain(shared.PACKAGE)
         
         # Widgets
         import gettext
