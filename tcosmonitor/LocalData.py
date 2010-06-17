@@ -144,19 +144,19 @@ class LocalData:
         return os.getuid()
 
     def user_in_group(self, user=None, group=None):
-        #tcos.libs.conf.debug_enabled=True
-##        if not user:
-##            user=self.get_username()
-##        sgroups=grp.getgrall()
-##        if user == "root":
-##            return True
-##        for (sgroup, spass, sid, susers) in sgroups:
-##            if sgroup == group and user in susers:
-##                print_debug("user %s is in group %s"%(user, sgroup))
-##                return True
-##        return False
         print_debug("in group tcos: %s"%(self.main.ingroup_tcos))
-        return self.main.ingroup_tcos
+        if self.main.ingroup_tcos:
+            return self.main.ingroup_tcos
+        if not user:
+            user=self.get_username()
+        sgroups=grp.getgrall()
+        if user == "root":
+            return True
+        for (sgroup, spass, sid, susers) in sgroups:
+            if sgroup == group and user in susers:
+                print_debug("user %s is in group %s"%(user, sgroup))
+                return True
+        return False
     
     def sorted_copy(self, alist):
         # inspired by Alex Martelli
