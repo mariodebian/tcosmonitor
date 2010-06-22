@@ -168,7 +168,8 @@ class TcosDevicesNG:
         "mount-cdrom":    {"DEVPATH": "/block/hd*",   "ACTION":"mount"},
         "umount-cdrom":   {"DEVPATH": "/block/hd*",   "ACTION":"umount"}, 
         "mount-flash":    {"DEVPATH": "/block/sd*",   "ACTION":"mount"},
-        "umount-flash":   {"DEVPATH": "/block/sd*",   "ACTION":"umount"}
+        "umount-flash":   {"DEVPATH": "/block/sd*",   "ACTION":"umount"},
+        "newcdrom":       {"ID_FS_TYPE":"iso9660",    "ACTION":"add"}
         }
 
     def menu_remote_reboot_poweroff(self, *args):
@@ -494,6 +495,10 @@ class TcosDevicesNG:
     def do_udev_event(self, *args):
         data=args[0]
         #print_debug ("do_udev_event() data=%s" %data)
+        if data.has_key("ID_FS_TYPE") and data['ID_FS_TYPE'] == "iso9660":
+            # newcdrom ADD (mount it)
+            self.cdrom( (('mount',data["DEVPATH"].split("/")[2]),) )
+        
         if data.has_key("ID_BUS") and data["ID_BUS"] == "usb":
             if data.has_key("DEVPATH") and "/block/sr" in data["DEVPATH"]:
                 self.cdrom_usb(data)
