@@ -638,11 +638,28 @@ def parseIPAddress(ipstr, return_ipv4=True):
     newip=[]
     isBin=False
 
-    if ipstr.endswith(':0.0'):
-        ipstr=ipstr.replace(':0.0', '')
-    
-    if ipstr.endswith(':0'):
-        ipstr=ipstr.replace(':0', '')
+    if ipstr == "::1":
+        # localhost in IPV6
+        return "127.0.0.1"
+
+    # GDM when change username use a $DISPLAY like this "::12"
+    if re.match("::([0-9]{1,9})$", ipstr):
+        return ""
+
+    # XEPHYR NAME ':20.0'
+    if re.match(":([0-9]{1,9}|[0-9]{1,9}.[0-9]{1,9})$", ipstr):
+        return ""
+
+    # match x.x.x.x:0 or x.x.x.x:0.0
+    if re.match(".*:([0-9]{1,9}|[0-9{1-9}].[0-9{1-9}])$", ipstr):
+        #print_debug("delete display from IP\n\n")
+        ipstr=ipstr.rsplit(":", 1)[0]
+
+    #if ipstr.endswith(':0.0'):
+    #    ipstr=ipstr.replace(':0.0', '')
+    #
+    #if ipstr.endswith(':0'):
+    #    ipstr=ipstr.replace(':0', '')
 
     # hostname must start with letter and contain letters numbers and '-' or '.'
     if re.match(r'^[a-zA-Z][a-zA-Z0-9.-]+$', ipstr):
@@ -657,38 +674,57 @@ def parseIPAddress(ipstr, return_ipv4=True):
         newip.append(binascii.hexlify(it))
     
     if isBin:
-        ip=ipaddr.IPAddress(IPy.parseAddress("0x" + "".join(newip) )[0])
+        try:
+            ip=ipaddr.IPAddress(IPy.parseAddress("0x" + "".join(newip) )[0])
+        except:
+            return ipstr
     else:
         try:
             ip=ipaddr.IPAddress(ipstr)
-        except Exception:
-            #except Exception, err:
-            #print_debug("parseIPAddress() Exception, error=%s"%err)
+        #except Exception:
+        except Exception, err:
+            print_debug("      parseIPAddress() Exception, error=%s"%err)
             return ipstr
     
     ipv4=ip
     if return_ipv4 and ip.version == 6 and ip.ipv4_mapped:
+        #print_debug("  IPV6 found  %s"%ip)
         ipv4=ip.ipv4_mapped.exploded
     
     return ipv4
 
 if __name__ == "__main__":
+    debug=True
     # test IPV6
-    print "IPV6        '::ffff:10.0.2.22' => ", parseIPAddress('::ffff:10.0.2.22')
+    print "   IPV6        '::ffff:10.0.2.22'           => ", parseIPAddress('::ffff:10.0.2.22')
 
     # test binary IP
     import Xlib.xauth
     a=Xlib.xauth.Xauthority().entries[-1][1]
-    print "Xlib        '%s' => " % a, parseIPAddress(a)
+    #print Xlib.xauth.Xauthority().entries
+    print "   Xlib        '%s'                         => '%s'" %(a, parseIPAddress(a))
 
     # try with $DISPLAY
-    print "DISPLAY     '192.168.0.10:0.0' => ", parseIPAddress('192.168.0.10:0.0')
+    print "   DISPLAY     '192.168.0.10:0.0'           => '%s'" %parseIPAddress('192.168.0.10:0.0')
+    print "   DISPLAY     'thinkpad:0.0'               => '%s'" %parseIPAddress('thinkpad:0.0')
 
     # try with hostname
-    print "NAME        'tcos10:0.0' => ", parseIPAddress('tcos10:0.0')
+    print "   NAME        'tcos10:0.0'                 => '%s'" %parseIPAddress('tcos10:0.0')
 
     # try with Xephyr hostname
-    print "XEPHYR NAME ':20.0' => ", parseIPAddress(':20.0')
+    print "   XEPHYR NAME ':20.0'                      => '%s'" %parseIPAddress(':20.0')
+
+    print "   GDM change username '::2'                => '%s'" %parseIPAddress('::2')
+
+
+    print "   Hostname 'tcos-01:0'                     => '%s'" %parseIPAddress('tcos-01:0')
+    print "   Hostname 'tcos.01:0'                     => '%s'" %parseIPAddress('tcos.01:0')
+
+
+    # try with IPV6 $DISPLAY
+    print "   IPV6 DISPLAY '::ffff:192.168.0.1:0.0'    => '%s'" %parseIPAddress('::ffff:192.168.0.1:0.0')
+    print "   IPV6 DISPLAY '::ffff:192.168.0.1:12'     => '%s'" %parseIPAddress('::ffff:192.168.0.1:12')
+    print "   IPV6 DISPLAY '::ffff:172.16.10.200:12'   => '%s'" %parseIPAddress('::ffff:172.16.10.200:12')
 
 from threading import Thread
 
