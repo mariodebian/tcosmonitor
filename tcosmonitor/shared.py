@@ -661,8 +661,13 @@ def parseIPAddress(ipstr, return_ipv4=True):
     #if ipstr.endswith(':0'):
     #    ipstr=ipstr.replace(':0', '')
 
+    # match "localhost:10"
+    if re.match("[a-zA-Z].*:([0-9]{1,9})", ipstr):
+        ipstr=ipstr.rsplit(":", 1)[0]
+        return ipstr
+
     # hostname must start with letter and contain letters numbers and '-' or '.'
-    if re.match(r'^[a-zA-Z][a-zA-Z0-9.-]+$', ipstr):
+    if re.match("^[a-zA-Z][a-zA-Z0-9.-]+$", ipstr):
         # ipstr is a hostname
         return ipstr
 
@@ -695,6 +700,11 @@ def parseIPAddress(ipstr, return_ipv4=True):
 
 if __name__ == "__main__":
     debug=True
+
+    if len(sys.argv) > 1:
+        print "sys.argv[1]=%s                  => '%s'"%(sys.argv[1],parseIPAddress(sys.argv[1]))
+        sys.exit(0)
+
     # test IPV6
     print "   IPV6        '::ffff:10.0.2.22'           => ", parseIPAddress('::ffff:10.0.2.22')
 
@@ -719,6 +729,7 @@ if __name__ == "__main__":
 
     print "   Hostname 'tcos-01:0'                     => '%s'" %parseIPAddress('tcos-01:0')
     print "   Hostname 'tcos.01:0'                     => '%s'" %parseIPAddress('tcos.01:0')
+    print "   Hostname 'localhost:10.0'                => '%s'" %parseIPAddress('localhost:10.0')
 
 
     # try with IPV6 $DISPLAY
