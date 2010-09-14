@@ -655,12 +655,6 @@ def parseIPAddress(ipstr, return_ipv4=True):
         #print_debug("delete display from IP\n\n")
         ipstr=ipstr.rsplit(":", 1)[0]
 
-    #if ipstr.endswith(':0.0'):
-    #    ipstr=ipstr.replace(':0.0', '')
-    #
-    #if ipstr.endswith(':0'):
-    #    ipstr=ipstr.replace(':0', '')
-
     # match "localhost:10"
     if re.match("[a-zA-Z].*:([0-9]{1,9})", ipstr):
         ipstr=ipstr.rsplit(":", 1)[0]
@@ -677,6 +671,9 @@ def parseIPAddress(ipstr, return_ipv4=True):
             isBin=True
         #print_debug("%s => %s string=%s"%(it, binascii.hexlify(it), eol) )
         newip.append(binascii.hexlify(it))
+    
+    if ipstr == '':
+        return ''
     
     if isBin:
         try:
