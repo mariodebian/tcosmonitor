@@ -469,6 +469,23 @@ class LocalData:
         else:
             return username
 
+    def isLastExclude(self, username, ingroup=None):
+        print_debug("isExclude() username=%s ingroup=%s "%(username, ingroup) )
+        exclude="noexclude"
+        if ingroup != None:
+            try:
+                cmd="groups %s 2>/dev/null" %username
+                usersingroup=[]
+                usersingroup=self.main.common.exe_cmd(cmd).split()
+                #usersingroup=grp.getgrnam(ingroup)[3]
+            except Exception, err:
+                usersingroup=[]
+            print_debug("usersingroup: %s" %usersingroup)
+            for group in usersingroup:
+                if ingroup == group:
+                    exclude="exclude"
+        return exclude
+
     def GetLast(self, ip, ingroup=None):
         start=time()
         last=None
@@ -477,6 +494,28 @@ class LocalData:
             ip=self.GetIpAddress(ip)
         hostname=self.GetHostname(ip)
         print_debug("GetLast() ip=%s hostname=%s "%(ip, hostname) )
+        
+        # try to connect with GDM througth dbus to read all 
+        # sessions & display info, better than read wtmp
+        import tcosmonitor.Sessions
+        try:
+            app=tcosmonitor.Sessions.Sessions()
+            for session in app.sessions:
+                if session.remote_host_name == ip:
+                    print_debug("GetLast() session=%s"%session)
+                    crono(start, "GetLast()")
+                    data= {"pid":0, 
+                            "user":session.user, 
+                            "host":tcosmonitor.shared.parseIPAddress(session.remote_host_name),
+                            "time":session.since, 
+                            "timelogged":session.diff,
+                            "exclude":self.isLastExclude(session.user, ingroup)}
+                    return data
+        except Exception, err:
+            print_debug("GetLast() Exception, no DBUS Session support, old GDM, err='%s'"%err)
+            #import traceback
+            #traceback.print_exc(file=sys.stderr)
+        
         
         for i in range(10):
             last_file=WTMP_FILE
@@ -535,22 +574,10 @@ class LocalData:
             else:
                 timelogged="%dd %02dh:%02dm"%(days,hours,minutes)
                 
-            exclude="noexclude"
-            if ingroup != None:
-                try:
-                    cmd="groups %s 2>/dev/null" %last.ut_user
-                    usersingroup=[]
-                    usersingroup=self.main.common.exe_cmd(cmd).split()
-                    #usersingroup=grp.getgrnam(ingroup)[3]
-                except Exception, err:
-                    usersingroup=[]
-                print_debug("usersingroup: %s" %usersingroup)
-                for group in usersingroup:
-                    if ingroup == group:
-                        exclude="exclude"
+            exclude=self.isLastExclude(last.ut_user, ingroup)
             
             data={"pid":last.ut_pid, "user":last.ut_user, "host":last.ut_host.split(":")[0], "time":last.ut_tv[0], "timelogged":timelogged, "exclude":exclude}
-            print_debug("IsLast() data=%s"%data)
+            print_debug("GetLast() data=%s"%data)
         crono(start, "GetLast()")
         return data
     

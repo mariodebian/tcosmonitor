@@ -7,6 +7,7 @@ debian/tmp/usr/lib/python*/*/tcosmonitor/TcosConf.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosDBus.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/ping.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/shared.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/Sessions.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosCommon.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/LocalData.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosXauth.py
