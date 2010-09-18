@@ -497,7 +497,14 @@ class TcosDevicesNG:
         #print_debug ("do_udev_event() data=%s" %data)
         if data.has_key("ID_FS_TYPE") and data['ID_FS_TYPE'] == "iso9660":
             # newcdrom ADD (mount it)
-            self.cdrom( (('mount',data["DEVPATH"].split("/")[2]),) )
+            if data['ACTION'] == "add":
+                self.cdrom( ('mount', data["DEVPATH"].split("/")[2]), )
+            else:
+                if data['ACTION'] == "mount":
+                    # check if CDROM is automonted before
+                    if self.xmlrpc.GetDevicesInfo(device=data["DEVPATH"], mode="--getstatus") == "1":
+                        return
+                self.cdrom( (data['ACTION'], data["DEVPATH"].split("/")[2]), )
         
         if data.has_key("ID_BUS") and data["ID_BUS"] == "usb":
             if data.has_key("DEVPATH") and "/block/sr" in data["DEVPATH"]:
@@ -734,6 +741,8 @@ class TcosDevicesNG:
             
             # change status
             self.update_cdrom(cdrom_device)
+            # eject CDROM
+            self.xmlrpc.GetDevicesInfo(device=cdrom_device, mode="--eject")
             return
 
 
