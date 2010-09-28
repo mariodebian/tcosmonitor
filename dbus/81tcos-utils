@@ -2,9 +2,13 @@
 # Startup script for tcos utils
 #
 
-DISPLAY_HOST=$(python -c 'import os; import tcosmonitor.shared; print tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"])')
+if [ -f /usr/share/pyshared/tcosmonitor/shared.py ]; then
+  DISPLAY_HOST=$(python /usr/share/pyshared/tcosmonitor/shared.py "$DISPLAY" 2>/dev/null)
+else
+  DISPLAY_HOST=$(python -c 'import os; import tcosmonitor.shared; print tcosmonitor.shared.parseIPAddress(os.environ["DISPLAY"])')
+fi
 
-if [ ! -z ${DISPLAY_HOST} ]; then
+if [ ! -z "${DISPLAY_HOST}" ]; then
 
   # launch tcos-dbus-client
   tcos-dbus-client &
