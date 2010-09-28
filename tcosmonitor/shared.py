@@ -699,7 +699,9 @@ if __name__ == "__main__":
     debug=True
 
     if len(sys.argv) > 1:
-        print "sys.argv[1]=%s                  => '%s'"%(sys.argv[1],parseIPAddress(sys.argv[1]))
+        value=parseIPAddress(sys.argv[1])
+        print >> sys.stderr, "shared.py sys.argv[1]='%s' => '%s'"%(sys.argv[1],value)
+        print value
         sys.exit(0)
 
     # test IPV6
