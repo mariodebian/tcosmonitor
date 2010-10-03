@@ -1,3 +1,15 @@
+tcosmonitor (0.2.36) unstable; urgency=low
+
+  * tcosmonitor/shared.py: don't run if ipstr is empty and clean old
+    code
+  * tcosmonitor/LocalData.py tcosmonitor/Sessions.py: use GDM and
+    ConsoleKit dbus to read users and time (instead of wtmp)
+  * tcos-devices-ng.py: fix newcdrom call, and eject when umounting
+  * Allow to call shared.py to parse IP's, redirect debug to stderr
+  * dbus/81tcos-utils: call shared.py instead of importing modules
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 03 Oct 2010 17:11:34 +0200
+
 tcosmonitor (0.2.35) unstable; urgency=low
 
   * tcosmonitor/shared.py: fix some :0.0 values in parseIPAddress()
