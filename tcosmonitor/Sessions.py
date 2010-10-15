@@ -110,7 +110,7 @@ class ConsoleKitHistory(object):
         # sort array by diffint
         self.data=sorted(self.data, key=lambda data: data.diffint)
 
-        if last:
+        if last and len(self.data)>0:
             newdata=[self.data[0]]
             self.data=newdata
 
@@ -213,20 +213,71 @@ class Sessions(object):
             session = dbus.Interface (display_obj, 'org.gnome.DisplayManager.Display')
             self.sessions.append( Display(session) )
 
+class Connections(object):
+    def __init__(self):
+        self.connections=[]
+        self.__get_all__()
+        pass
+    
+    def __get_all__(self):
+        bus = dbus.SystemBus()
+        manager_obj = bus.get_object ('org.freedesktop.ConsoleKit', '/org/freedesktop/ConsoleKit/Manager')
+        manager = dbus.Interface (manager_obj, 'org.freedesktop.ConsoleKit.Manager')
 
+        for sessionid in manager.GetSessions():
+            session_obj = bus.get_object ('org.freedesktop.ConsoleKit', sessionid)
+            session = dbus.Interface (session_obj, 'org.freedesktop.ConsoleKit.Session')
+            
+            userid=int(session.GetUnixUser())
+            usernametxt=None
+            active=False
+            diff=None
+            if str(session.GetSessionType()) != 'LoginWindow':#FIXME userid > 900: better???
+                usernametxt=username(userid)
+                active=True
+                diff=self.diffnow(str(session.GetCreationTime()))
+            
+            con={'unix_user':userid,
+                 'user':usernametxt,
+                 'since':str(session.GetCreationTime()),
+                 'active':active,
+                 'diff':diff,
+                 #'id':str(session.GetId()),
+                 'is_local':bool(session.IsLocal()),
+                 'remote_host_name':str(session.GetRemoteHostName()),
+                 'x11_display':str(session.GetX11Display())
+                }
+            self.connections.append(con)
+
+    def diffnow(self, date):
+        diff=datetime.timedelta(0, time.mktime(time.gmtime()) - time.mktime(dateutil.parser.parse(date).timetuple()))
+        """
+        if days == 0:
+                timelogged="%02dh:%02dm"%(hours,minutes)
+            else:
+                timelogged="%dd %02dh:%02dm"%(days,hours,minutes)
+        """
+        if diff.days > 0:
+            return "%dd %s"%(diff.days, datetime.timedelta(0, diff.seconds))
+        else:
+            return "%s"%datetime.timedelta(0, diff.seconds)
 
 if __name__ == "__main__":
-    # search for last connection of user prueba
+#    # search for last connection of user prueba
 #    app=ConsoleKitHistory('prueba', last=True)
 #    for con in app.data:
 #        print con
 #        print "\n"
 
 
-    print "\n------------------------------\n"
+#    print "\n------------------------------\n"
 
-    # list all connections
-    app=Sessions()
-    for session in app.sessions:
-        print(session)
-        print "\n"
+#    # list all connections
+#    app=Sessions()
+#    for session in app.sessions:
+#        print(session)
+#        print "\n"
+
+    app=Connections()
+    for con in app.connections:
+        print con

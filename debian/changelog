@@ -1,3 +1,16 @@
+tcosmonitor (0.2.37) unstable; urgency=low
+
+  * debian/control: add consolekit as Depends
+  * tcosmonitor/LocalData.py:
+    - Add Sessions.Connections() [consolekit] to search thin clients
+    - Check for dbus gdm.conf instead of dbus exception
+  * tcosmonitor/TcosPreferences.py:
+    - Use a better method to save scan_network_method var
+  * tcosmonitor/extensions/vnc.py:
+    - Use threads lock when starting VNC window.
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 15 Oct 2010 16:47:31 +0200
+
 tcosmonitor (0.2.36) unstable; urgency=low
 
   * tcosmonitor/shared.py: don't run if ipstr is empty and clean old

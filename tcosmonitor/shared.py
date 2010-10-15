@@ -87,7 +87,8 @@ scan_methods=[
 "netstat", 
 "ping",
 "nmap",
-"static"
+"static",
+"consolekit"
 ]
 
 vcodecs=["mp4v", "mp1v", "h264", "theo"]

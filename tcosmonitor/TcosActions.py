@@ -103,9 +103,9 @@ class TcosActions:
         self.lenclients=0
         self.excludes=0
         
-        if self.main.config.GetVar("scan_network_method") == "ping" or \
-            self.main.config.GetVar("scan_network_method") == "static" or \
-            self.main.config.GetVar("scan_network_method") == "nmap":
+        method=self.main.config.GetVar("scan_network_method")
+        
+        if method in ['ping', 'static', 'nmap']:
             # clean icons and files
             self.main.listview.clear()
             self.main.iconview.clear()

@@ -168,15 +168,17 @@ class TcosPreferences:
         self.read_checkbox(self.main.pref_notshowwhentcosmonitor, "notshowwhentcosmonitor")
         self.read_checkbox(self.main.pref_onlyshowtcos, "onlyshowtcos")
         self.read_checkbox(self.main.pref_selectedhosts, "selectedhosts")
-            
-        if self.main.pref_combo_scan_method.get_active() == 0:
-            self.main.config.SetVar("scan_network_method", "netstat")
-        elif self.main.pref_combo_scan_method.get_active() == 1:
-            self.main.config.SetVar("scan_network_method", "ping")
-        elif self.main.pref_combo_scan_method.get_active() == 2:
-            self.main.config.SetVar("scan_network_method", "nmap")
-        else:
-            self.main.config.SetVar("scan_network_method", "static")
+        
+        method=tcosmonitor.shared.scan_methods[self.main.pref_combo_scan_method.get_active()]
+        self.main.config.SetVar("scan_network_method", method)
+#        if self.main.pref_combo_scan_method.get_active() == 0:
+#            self.main.config.SetVar("scan_network_method", "netstat")
+#        elif self.main.pref_combo_scan_method.get_active() == 1:
+#            self.main.config.SetVar("scan_network_method", "ping")
+#        elif self.main.pref_combo_scan_method.get_active() == 2:
+#            self.main.config.SetVar("scan_network_method", "nmap")
+#        else:
+#            self.main.config.SetVar("scan_network_method", "static")
         
         active=self.main.pref_combo_listmode.get_active()
         self.main.config.SetVar("listmode", tcosmonitor.shared.list_modes[active][0])

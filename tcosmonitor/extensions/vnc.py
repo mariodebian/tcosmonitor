@@ -203,7 +203,9 @@ class VNC(TcosExtension):
                 #    cmd = ("vncviewer " + ip + " -passwd %s" %os.path.expanduser('~/.tcosvnc') )
                 #print_debug ( "start_process() threading \"%s\"" %(cmd) )
                 #self.main.common.exe_cmd (cmd, verbose=0, background=True)
+                self.main.common.threads_enter("TcosActions:start_vnc print x11vnc support msg")
                 self.vncviewer(ip, passwd)
+                self.main.common.threads_leave("TcosActions:start_vnc print x11vnc support msg")
         except Exception, err:
             print_debug("start_vnc() Exception, error=%s"%err)
             traceback.print_exc(file=sys.stderr)

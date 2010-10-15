@@ -297,6 +297,16 @@ class LocalData:
             print_debug ( "GetAllClients() Host connected=%s" %(self.allclients) )
             crono(start, "GetAllClients()")
             return self.allclients
+        
+        elif method == "consolekit":
+            print_debug ( "GetAllClients() using method \"consolekit\"" )
+            self.allclients=[]
+            import tcosmonitor.Sessions
+            conobj=tcosmonitor.Sessions.Connections()
+            for conn in conobj.connections:
+                if not conn['is_local']:
+                    self.allclients.append(conn['remote_host_name'])
+            return self.allclients
         else:
             self.allclients=[]
             if len(self.main.static.data) < 1:
@@ -498,7 +508,7 @@ class LocalData:
         # try to connect with GDM througth dbus to read all 
         # sessions & display info, better than read wtmp
         import tcosmonitor.Sessions
-        try:
+        if os.path.isfile("/etc/dbus-1/system.d/gdm.conf"):
             app=tcosmonitor.Sessions.Sessions()
             for session in app.sessions:
                 if session.remote_host_name == ip:
@@ -511,10 +521,6 @@ class LocalData:
                             "timelogged":session.diff,
                             "exclude":self.isLastExclude(session.user, ingroup)}
                     return data
-        except Exception, err:
-            print_debug("GetLast() Exception, no DBUS Session support, old GDM, err='%s'"%err)
-            #import traceback
-            #traceback.print_exc(file=sys.stderr)
         
         
         for i in range(10):
