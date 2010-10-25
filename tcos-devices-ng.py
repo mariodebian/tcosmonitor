@@ -293,7 +293,10 @@ class TcosDevicesNG:
             sys.exit(0)
 
     def get_desktop_path(self):
-        desktop=self.common.exe_cmd("/usr/lib/tcos/get-xdg-desktop", verbose=1, background=False, lines=0, cthreads=0)
+        try:
+            desktop=self.common.exe_cmd("/usr/lib/tcos/get-xdg-desktop", verbose=1, background=False, lines=0, cthreads=0)
+        except:
+            desktop=os.path.expanduser("~/Desktop")
         if not os.path.isdir(desktop):
             desktop=os.path.expanduser("~/Desktop")
         return desktop
