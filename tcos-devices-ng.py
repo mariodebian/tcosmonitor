@@ -296,9 +296,9 @@ class TcosDevicesNG:
         try:
             desktop=self.common.exe_cmd("/usr/lib/tcos/get-xdg-desktop", verbose=1, background=False, lines=0, cthreads=0)
         except:
-            desktop=os.path.expanduser("~/Desktop")
+            desktop=os.path.expanduser("~/")
         if not os.path.isdir(desktop):
-            desktop=os.path.expanduser("~/Desktop")
+            desktop=os.path.expanduser("~/")
         return desktop
 
     def getremote_cdroms(self):
