@@ -1,3 +1,11 @@
+tcosmonitor (0.2.38) unstable; urgency=low
+
+  * tcos-devices-ng.py: use exception in get_desktop_path() pt_BR
+    Desktop path have spaces
+  * tcos-devices-ng.py: use $HOME instead of Desktop
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 05 Nov 2010 16:23:18 +0100
+
 tcosmonitor (0.2.37) unstable; urgency=low
 
   * debian/control: add consolekit as Depends
