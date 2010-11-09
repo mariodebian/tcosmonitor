@@ -94,7 +94,7 @@ class SendFiles(TcosExtension):
                 usern, ip=user.split(":")
                 self.main.xmlrpc.newhost(ip)
                 server=self.main.xmlrpc.GetStandalone("get_server")
-                self.main.xmlrpc.DBus("sendfiles", _("Teacher"), server, open )
+                self.main.xmlrpc.DBus("sendfiles", "%s %s %s" %(_("Teacher"), server, open) )
                 self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames})
             else:
                 newusernames.append(user)
@@ -175,7 +175,7 @@ class SendFiles(TcosExtension):
                     #usern, ip=user.split(":")
                     #self.main.xmlrpc.newhost(ip)
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    self.main.xmlrpc.DBus("sendfiles", _("Teacher"), server, open )
+                    self.main.xmlrpc.DBus("sendfiles", "%s %s %s" %(_("Teacher"), server, open) )
                     self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames})
                 else:
                     newusernames.append(user)
@@ -255,7 +255,7 @@ class SendFiles(TcosExtension):
                     usern, ip=user.split(":")
                     self.main.xmlrpc.newhost(ip)
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    self.main.xmlrpc.DBus("sendfiles", _("Teacher"), server, open )
+                    self.main.xmlrpc.DBus("sendfiles", "%s %s %s" %(_("Teacher"), server, open) )
                     self.main.xmlrpc.DBus("mess", _("Teacher has sent some files to %(teacher)s folder:\n\n%(basenames)s")  %{"teacher":_("Teacher"), "basenames":basenames})
                 else:
                     newusernames.append(user)
