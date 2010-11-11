@@ -198,9 +198,10 @@ class TcosDBusServer:
                 msg_type=self.parse_dbus_str(message[2][0])
                 print_debug ( "new_message() Ummm one message for me!!" )
                 if msg_type == "sendfiles": 
-                    msg_arg_1=self.parse_dbus_str(message[3][0])
-                    msg_arg_2=self.parse_dbus_str(message[3][1])
-                    msg_arg_3=self.parse_dbus_str(message[3][2])
+                    tmp=self.parse_dbus_str(message[3][0]).split()
+                    msg_arg_1=self.parse_dbus_str(tmp[0])
+                    msg_arg_2=self.parse_dbus_str(tmp[1])
+                    msg_arg_3=self.parse_dbus_str(tmp[2])
                     print_debug ( "new_message() type=%s arg_1=%s arg_2=%s arg_3=%s" %(msg_type, msg_arg_1, msg_arg_2, msg_arg_3) )
                 else:
                     msg_args=self.parse_dbus_str(message[3][0])
