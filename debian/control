@@ -49,7 +49,7 @@ Depends:  python,
           tcos-core ( >= 0.89.44), 
           consolekit,
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
-Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.16~rc9)
+Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.38)
 Description: Thin client monitor for TCOS (common files)
  TCOS, thin Client Operating System is a method to create small embedded os
  based on Debian/Ubuntu with normal Debian kernel's.
