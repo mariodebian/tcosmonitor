@@ -1,3 +1,9 @@
+tcosmonitor (0.2.40.1) unstable; urgency=low
+
+  * tcosmonitor/TcosDBus.py: really fix fucking dbus issue
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 11 Nov 2010 22:06:24 +0100
+
 tcosmonitor (0.2.40) unstable; urgency=low
 
   * debian/control: move python-ipaddr, python-ipy to tcosmonitor-common
