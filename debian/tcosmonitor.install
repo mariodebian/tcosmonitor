@@ -27,7 +27,6 @@ debian/tmp/usr/lib/python*/*/tcosmonitor/TcosPreferences.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosStaticHosts.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosTrayIcon.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosTrayIcon2.py
-debian/tmp/usr/lib/python*/*/tcosmonitor/TcosXmlRpc.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/WakeOnLan.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/counter.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/ftps_server.py

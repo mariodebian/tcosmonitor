@@ -11,6 +11,7 @@ debian/tmp/usr/lib/python*/*/tcosmonitor/Sessions.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosCommon.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/LocalData.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/TcosXauth.py
+debian/tmp/usr/lib/python*/*/tcosmonitor/TcosXmlRpc.py
 debian/tmp/usr/lib/python*/*/tcosmonitor/__init__.py
 
 debian/tmp/usr/share/pixmaps/tcos-icon-32x32.png
