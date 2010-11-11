@@ -26,6 +26,9 @@
 import os, sys
 import getopt
 
+#if os.path.isdir('./debian') and os.path.isdir('./po'):
+#    sys.path.insert(0, './')
+
 from tcosmonitor import shared
 
 

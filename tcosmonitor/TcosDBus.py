@@ -197,8 +197,17 @@ class TcosDBusServer:
             if user == self.username:
                 msg_type=self.parse_dbus_str(message[2][0])
                 print_debug ( "new_message() Ummm one message for me!!" )
-                if msg_type == "sendfiles": 
-                    tmp=self.parse_dbus_str(message[3][0]).split()
+                if msg_type == "sendfiles":
+                    tmp=[]
+                    print_debug(message[3])
+                    if len(message[3][0]) == 1:
+                        # standalone
+                        # dbus.Array([dbus.String(u'Teacher 192.168.0.254 True')], signature=...)
+                        tmp=self.parse_dbus_str(message[3][0]).split()
+                    else:
+                        # thin client
+                        # dbus.Array([dbus.String(u'Teacher'), dbus.String(u'192.168.0.254'), dbus.String(u'True')], signature=...)
+                        tmp=message[3]
                     msg_arg_1=self.parse_dbus_str(tmp[0])
                     msg_arg_2=self.parse_dbus_str(tmp[1])
                     msg_arg_3=self.parse_dbus_str(tmp[2])
@@ -262,11 +271,11 @@ class TcosDBusServer:
             #pass
         return
         
-    def user_sendfiles(self, dir, server, open):
-        print_debug ( "user_sendfiles() dir=%s server=%s open=%s" %(dir, server, open))
+    def user_sendfiles(self, dir, server, openfile):
+        print_debug ( "user_sendfiles() dir=%s server=%s open=%s" %(dir, server, openfile))
         desktop=self.get_desktop_path()
         local_dir=os.path.join(desktop, dir)
-        cmd="/usr/lib/tcos/tcos-ftpclient --dir=%s --server=%s --open=%s" %(local_dir, server, open)
+        cmd="/usr/lib/tcos/tcos-ftpclient --dir=%s --server=%s --open=%s" %(local_dir, server, openfile)
         print_debug("user_sendfiles() cmd=%s" %cmd)
         p = subprocess.Popen(cmd, shell=True, close_fds=True)
         try:
