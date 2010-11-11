@@ -301,8 +301,8 @@ class LocalData:
         elif method == "consolekit":
             print_debug ( "GetAllClients() using method \"consolekit\"" )
             self.allclients=[]
-            import tcosmonitor.Sessions
-            conobj=tcosmonitor.Sessions.Connections()
+            from tcosmonitor.Sessions import Connections
+            conobj=Connections()
             for conn in conobj.connections:
                 if not conn['is_local']:
                     self.allclients.append(conn['remote_host_name'])
