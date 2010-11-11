@@ -153,6 +153,7 @@ DefaultConfig=[
 ["menugroups", 1, "int"],
 ["positions", "", "str"],
 ["show_about", 1, "int"],
+["consolekit", 0, "int"],
 ]
 
 #

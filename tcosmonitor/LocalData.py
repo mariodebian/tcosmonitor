@@ -505,22 +505,23 @@ class LocalData:
         hostname=self.GetHostname(ip)
         print_debug("GetLast() ip=%s hostname=%s "%(ip, hostname) )
         
-        # try to connect with GDM througth dbus to read all 
-        # sessions & display info, better than read wtmp
-        import tcosmonitor.Sessions
-        if os.path.isfile("/etc/dbus-1/system.d/gdm.conf"):
-            app=tcosmonitor.Sessions.Sessions()
-            for session in app.sessions:
-                if session.remote_host_name == ip:
-                    print_debug("GetLast() session=%s"%session)
-                    crono(start, "GetLast()")
-                    data= {"pid":0, 
-                            "user":session.user, 
-                            "host":tcosmonitor.shared.parseIPAddress(session.remote_host_name),
-                            "time":session.since, 
-                            "timelogged":session.diff,
-                            "exclude":self.isLastExclude(session.user, ingroup)}
-                    return data
+        if self.main.config.GetVar("consolekit") == 1:
+            # try to connect with GDM througth dbus to read all 
+            # sessions & display info, better than read wtmp
+            if os.path.isfile("/etc/dbus-1/system.d/gdm.conf"):
+                from tcosmonitor.Sessions import Sessions
+                app=Sessions()
+                for session in app.sessions:
+                    if session.remote_host_name == ip:
+                        print_debug("GetLast() session=%s"%session)
+                        crono(start, "GetLast()")
+                        data= {"pid":0, 
+                                "user":session.user, 
+                                "host":tcosmonitor.shared.parseIPAddress(session.remote_host_name),
+                                "time":session.since, 
+                                "timelogged":session.diff,
+                                "exclude":self.isLastExclude(session.user, ingroup)}
+                        return data
         
         
         for i in range(10):
@@ -543,9 +544,8 @@ class LocalData:
                             b.ut_host = half1
                         else:
                             b.ut_host = uthost
-                        print_debug(" ==> '%s' != '%s' ut_line=%s" %(str(tcosmonitor.shared.parseIPAddress(b.ut_host)), ip, b.ut_line) )
-                        if str(tcosmonitor.shared.parseIPAddress(b.ut_host)) == ip or \
-                            str(tcosmonitor.shared.parseIPAddress(b.ut_host)) == hostname:
+                        #print_debug(" ==> '%s' != '%s' ut_line=%s" %(uthost, ip, b.ut_line) )
+                        if uthost == ip or uthost == hostname:
                             if b.ut_line.startswith("pts/") or not \
                                 os.path.isdir("/proc/%s"%b.ut_pid):
                                 continue

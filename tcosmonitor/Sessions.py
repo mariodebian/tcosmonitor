@@ -264,9 +264,10 @@ class Connections(object):
 
 if __name__ == "__main__":
 #    # search for last connection of user prueba
-#    app=ConsoleKitHistory('prueba', last=True)
+#    app=ConsoleKitHistory(None, last=False)
+#    from pprint import pprint
 #    for con in app.data:
-#        print con
+#        pprint (con)
 #        print "\n"
 
 
