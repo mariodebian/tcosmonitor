@@ -200,7 +200,7 @@ class TcosDBusServer:
                 if msg_type == "sendfiles":
                     tmp=[]
                     print_debug(message[3])
-                    if len(message[3][0]) == 1:
+                    if " " in message[3][0]:
                         # standalone
                         # dbus.Array([dbus.String(u'Teacher 192.168.0.254 True')], signature=...)
                         tmp=self.parse_dbus_str(message[3][0]).split()
