@@ -1,3 +1,11 @@
+tcosmonitor (0.2.40) unstable; urgency=low
+
+  * debian/control: move python-ipaddr, python-ipy to tcosmonitor-common
+  * tcosmonitor/TcosDBus.py: fix sendfiles in thin client and standalone
+    at the same time ;)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 11 Nov 2010 20:44:23 +0100
+
 tcosmonitor (0.2.39) unstable; urgency=low
 
   * tcosmonitor/extensions/sendfiles.py: fix wrong number of arguments
