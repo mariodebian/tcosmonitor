@@ -1,3 +1,17 @@
+tcosmonitor (0.2.39) unstable; urgency=low
+
+  * tcosmonitor/extensions/sendfiles.py: fix wrong number of arguments
+    in xmlrpc.DBus()
+  * New pref variable 'consolekit' to disable Sessions() search
+  * Move TcosXmlRcp to tcosmonitor-common and move xlib to tcosmonitor-
+    common Depends
+  * debian/control update Conclicts versions
+  * tcosmonitor/LocalData.py: import Connections when search method is
+    consolekit
+  * tcosmonitor/TcosDBus.py: split dbus.Array instead of a string
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 11 Nov 2010 18:19:54 +0100
+
 tcosmonitor (0.2.38) unstable; urgency=low
 
   * tcos-devices-ng.py: use exception in get_desktop_path() pt_BR
