@@ -309,7 +309,7 @@ class TcosActions:
             if data['username'].startswith('error: tcos-last'):
                 data['username']="---"
             
-            if tcosmonitor.shared.dont_show_users_in_group != None and data['username'] != "---" and data['username'] != None:
+            if tcosmonitor.shared.dont_show_users_in_group != None and not data['username'] in ["---", None]:
                 if self.main.xmlrpc.IsStandalone(data['ip']):
                     groupexclude=self.main.xmlrpc.GetStandalone("get_exclude", \
                         tcosmonitor.shared.dont_show_users_in_group)
@@ -317,7 +317,7 @@ class TcosActions:
                     groupexclude=self.main.localdata.isExclude(data['ip'], \
                         tcosmonitor.shared.dont_show_users_in_group)
             
-                if groupexclude: 
+                if groupexclude in ['exlude', True]: 
                     print_debug("Host %s excluded, blacklisted by group" %data['ip'])
                     self.excludes+=1
                     self.main.write_into_statusbar ( _("Found %(len)d hosts, %(ex)d hosts excluded" ) %{"len":self.lenclients, "ex":self.excludes} )
