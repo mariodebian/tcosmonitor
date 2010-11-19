@@ -313,11 +313,13 @@ class TcosActions:
                 if self.main.xmlrpc.IsStandalone(data['ip']):
                     groupexclude=self.main.xmlrpc.GetStandalone("get_exclude", \
                         tcosmonitor.shared.dont_show_users_in_group)
+                    print_debug("***standalone***, get_exclude(%s)=%s"%(data['ip'], groupexclude))
                 else:
                     groupexclude=self.main.localdata.isExclude(data['ip'], \
                         tcosmonitor.shared.dont_show_users_in_group)
+                    print_debug("***thin-client***, isExclude(%s)=%s"%(data['ip'], groupexclude))
             
-                if groupexclude in ['exlude', True]: 
+                if groupexclude in ['exclude', True]: 
                     print_debug("Host %s excluded, blacklisted by group" %data['ip'])
                     self.excludes+=1
                     self.main.write_into_statusbar ( _("Found %(len)d hosts, %(ex)d hosts excluded" ) %{"len":self.lenclients, "ex":self.excludes} )
