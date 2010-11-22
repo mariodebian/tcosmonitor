@@ -50,6 +50,9 @@ def __load__():
 
 
 if not "DISPLAY" in __os__.environ or __os__.environ['DISPLAY'] == '':
-    print ("WARNING: [tcosmonitor.__init__] No display defined, no importing extensions")
+    print >> __sys__.stderr, ("WARNING: [tcosmonitor.__init__] No display defined, no importing extensions")
 else:
-    __all__=__load__()
+    if "TCOSMONITOR_NO_EXTENSIONS" in __os__.environ:
+        print >> __sys__.stderr, ("TCOSMONITOR_NO_EXTENSIONS in environment, no load extensions")
+    else:
+        __all__=__load__()
