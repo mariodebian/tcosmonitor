@@ -5,7 +5,7 @@ Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
 Build-Depends: debhelper (>= 7.0.0), cdbs, python, python-support (>= 0.3)
 Standards-Version: 3.8.4
 Vcs-Git: http://tcosproject.org/git/tcosmonitor.git
-Vcs-Browser: http://tcosproject.org/cgit/cgit.cgi/tcosmonitor.git/
+Vcs-Browser: http://tcosproject.org/cgit/tcosmonitor.git/
 Homepage: http://www.tcosproject.org
 
 Package: tcosmonitor
@@ -28,7 +28,7 @@ Package: tcosmonitor-common
 Architecture: all
 Depends:  python, 
           python-utmp, 
-          python-dbus | python2.4-dbus, 
+          python-dbus,
           python-gtk2, 
           python-dns, 
           python-netifaces, 
