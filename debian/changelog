@@ -1,3 +1,15 @@
+tcosmonitor (0.2.41) unstable; urgency=low
+
+  * tcosmonitor/TcosActions.py: fix compare groupexclude,
+    debian/control: update versions
+  * tcosmonitor/TcosActions.py: fix exclude typo and print debug
+    messages when asking for exclude user
+  * tcosmonitor/__init__.py: redirect errors to stderr and check for
+    TCOSMONITOR_NO_EXTENSIONS for not loading extensions dir
+  * debian/control: change GIT URL and remove obsolete python-2.4-dbus
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Thu, 25 Nov 2010 13:29:44 +0100
+
 tcosmonitor (0.2.40.1) unstable; urgency=low
 
   * tcosmonitor/TcosDBus.py: really fix fucking dbus issue
