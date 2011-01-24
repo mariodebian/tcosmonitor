@@ -385,7 +385,7 @@ class Info(TcosExtension):
             self.main.common.threads_leave("TcosActions:populate_datatxt update progressbar")
         
             # make a ping to port
-            if PingPort(ip, shared.pulseaudio_soundserver_port, 0.5).get_status() == "OPEN":
+            if tcos_vars["get_client"] == "standalone" or PingPort(ip, shared.pulseaudio_soundserver_port, 0.5).get_status() == "OPEN":
                 self.datatxt.insert_block ( _("PulseAudio Sound server is running"), image=shared.IMG_DIR + "info_sound_ok.png" )
                 
                 channel_list=[]
@@ -474,54 +474,55 @@ class Info(TcosExtension):
                     self.datatxt.insert_html(txt)
                     counter+=1
                 
-                # PulseAudio utils
-                self.main.openvolumecontrol_button=None
-                self.main.openvolumecontrol_button=gtk.Button(label=_("PulseAudio Control") )
-                self.main.openvolumecontrol_button.connect("clicked", self.on_openvolumecontrol_button_click, ip)
-                self.main.openvolumecontrol_button.show()
-                
-                self.main.openvolumemeter_button=None
-                self.main.openvolumemeter_button=gtk.Button(label=_("PulseAudio Meter") )
-                self.main.openvolumemeter_button.connect("clicked", self.on_openvolumemeter_button_click, ip)
-                self.main.openvolumemeter_button.show()
-                
-                self.main.volumemanager_button=None
-                self.main.volumemanager_button=gtk.Button(label=_("PulseAudio Manager") )
-                self.main.volumemanager_button.connect("clicked", self.on_volumemanager_button_click, ip)
-                self.main.volumemanager_button.show()
-                
-                self.datatxt.insert_block(_("PulseAudio utils: ") + """ 
-                <input type='button' name='self.main.volumemanager_button' />
-                <input type='button' name='self.main.openvolumecontrol_button' />
-                <input type='button' name='self.main.openvolumemeter_button' />
-                """)
-                
-                self.datatxt.insert_block( _("PulseAudio stats") )
-                pulseaudioinfo=self.main.xmlrpc.GetSoundInfo(channel="", mode="--getserverinfo").split('|')
-                #print pulseaudioinfo
-                allpulseaudioinfo=[]
-                allpulseaudioinfo_trans=[]
-                output=[]
-                for line in pulseaudioinfo:
-                    if line != "" and line.find(":") != -1:
-                        key, value = line.split(':')
-                        allpulseaudioinfo.append([ key+":", value ]) 
-                        allpulseaudioinfo_trans.append(value)
-                if len(allpulseaudioinfo_trans) == 11:
-                    output.append( ["%s:" %( _("Currently in use")), allpulseaudioinfo_trans[0] ])
-                    output.append( ["%s:" %( _("Allocated during whole lifetime")), allpulseaudioinfo_trans[1] ])
-                    output.append( ["%s:" %( _("Sample cache size")), allpulseaudioinfo_trans[2] ])
-                    output.append( ["%s:" %( _("User name")), allpulseaudioinfo_trans[3] ])
-                    output.append( ["%s:" %( _("Host Name")), allpulseaudioinfo_trans[4] ])
-                    output.append( ["%s:" %( _("Server Name")), allpulseaudioinfo_trans[5] ])
-                    output.append( ["%s:" %( _("Server Version")), allpulseaudioinfo_trans[6] ])
-                    output.append( ["%s:" %( _("Default Sample Specification")), allpulseaudioinfo_trans[7] ])
-                    output.append( ["%s:" %( _("Default Sink")), allpulseaudioinfo_trans[8] ])
-                    output.append( ["%s:" %( _("Default Source")), allpulseaudioinfo_trans[9] ])
-                    output.append( ["%s:" %( _("Cookie")), allpulseaudioinfo_trans[10] ])
-                    self.datatxt.insert_list( output )
-                else:
-                    self.datatxt.insert_list( allpulseaudioinfo )
+                if tcos_vars["get_client"] == "tcos":
+                    # PulseAudio utils
+                    self.main.openvolumecontrol_button=None
+                    self.main.openvolumecontrol_button=gtk.Button(label=_("PulseAudio Control") )
+                    self.main.openvolumecontrol_button.connect("clicked", self.on_openvolumecontrol_button_click, ip)
+                    self.main.openvolumecontrol_button.show()
+                    
+                    self.main.openvolumemeter_button=None
+                    self.main.openvolumemeter_button=gtk.Button(label=_("PulseAudio Meter") )
+                    self.main.openvolumemeter_button.connect("clicked", self.on_openvolumemeter_button_click, ip)
+                    self.main.openvolumemeter_button.show()
+                    
+                    self.main.volumemanager_button=None
+                    self.main.volumemanager_button=gtk.Button(label=_("PulseAudio Manager") )
+                    self.main.volumemanager_button.connect("clicked", self.on_volumemanager_button_click, ip)
+                    self.main.volumemanager_button.show()
+                    
+                    self.datatxt.insert_block(_("PulseAudio utils: ") + """ 
+                    <input type='button' name='self.main.volumemanager_button' />
+                    <input type='button' name='self.main.openvolumecontrol_button' />
+                    <input type='button' name='self.main.openvolumemeter_button' />
+                    """)
+                    
+                    self.datatxt.insert_block( _("PulseAudio stats") )
+                    pulseaudioinfo=self.main.xmlrpc.GetSoundInfo(channel="", mode="--getserverinfo").split('|')
+                    #print pulseaudioinfo
+                    allpulseaudioinfo=[]
+                    allpulseaudioinfo_trans=[]
+                    output=[]
+                    for line in pulseaudioinfo:
+                        if line != "" and line.find(":") != -1:
+                            key, value = line.split(':')
+                            allpulseaudioinfo.append([ key+":", value ]) 
+                            allpulseaudioinfo_trans.append(value)
+                    if len(allpulseaudioinfo_trans) == 11:
+                        output.append( ["%s:" %( _("Currently in use")), allpulseaudioinfo_trans[0] ])
+                        output.append( ["%s:" %( _("Allocated during whole lifetime")), allpulseaudioinfo_trans[1] ])
+                        output.append( ["%s:" %( _("Sample cache size")), allpulseaudioinfo_trans[2] ])
+                        output.append( ["%s:" %( _("User name")), allpulseaudioinfo_trans[3] ])
+                        output.append( ["%s:" %( _("Host Name")), allpulseaudioinfo_trans[4] ])
+                        output.append( ["%s:" %( _("Server Name")), allpulseaudioinfo_trans[5] ])
+                        output.append( ["%s:" %( _("Server Version")), allpulseaudioinfo_trans[6] ])
+                        output.append( ["%s:" %( _("Default Sample Specification")), allpulseaudioinfo_trans[7] ])
+                        output.append( ["%s:" %( _("Default Sink")), allpulseaudioinfo_trans[8] ])
+                        output.append( ["%s:" %( _("Default Source")), allpulseaudioinfo_trans[9] ])
+                        output.append( ["%s:" %( _("Cookie")), allpulseaudioinfo_trans[10] ])
+                        self.datatxt.insert_list( output )
+                    else:
+                        self.datatxt.insert_list( allpulseaudioinfo )
                 
             else:
                 self.datatxt.insert_block ( _("Sound server is not running"), image=shared.IMG_DIR + "info_sound_ko.png")
