@@ -3,7 +3,8 @@ Upstream-Name: tcosmonitor
 Source: http://tcosproject.org/cgit/tcosmonitor.git
 
 Files: tcosmonitor/TcosDbus.py
-Copyright: Oliver Grawert <ogra@ubuntu.com>
+Comment: based on dbus bindings of Student-Control-Center-0.1
+Copyright: 2005 Oliver Grawert <ogra@ubuntu.com>
 License: GPL-2.0+
 
 Files: tcosmonitor/WakeOnLan.py
@@ -15,11 +16,11 @@ Copyright: 2005 Gustavo J. A. M. Carneiro
 License: GPL-2.0+
 
 Files: *
-Copyright: 2005,2011 Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
+Copyright: 2005-2011 Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
 License: GPL-2.0+
 
 Files: debian/*
-Copyright: 2005,2011 Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
+Copyright: 2005-2011 Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
 License: GPL-2.0+
 
 License: GPL-2.0+
