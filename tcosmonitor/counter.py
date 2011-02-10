@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 # -*- Mode: Python; tab-width: 4 -*-
 #
 # Source taken from python-M2Crypto demos

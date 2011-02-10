@@ -1,6 +1,9 @@
+# -*- coding: UTF-8 -*-
+#
+# http://svn.osafoundation.org/m2crypto/trunk/demo/medusa/ftps_server.py
 # """An FTP/TLS server built on Medusa's ftp_server. 
 #
-# Source taken from python-M2Crypto demos
+# Source taken from python-M2Crypto demo/medusa
 #
 # Copyright (c) 1999-2003 Ng Pheng Siong. All rights reserved."""
 
