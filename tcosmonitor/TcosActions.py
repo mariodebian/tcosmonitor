@@ -183,22 +183,32 @@ class TcosActions:
         self.excludes=0
         self.main.write_into_statusbar ( _("Searching for connected hosts...") )
         
-        if self.main.config.GetVar("scan_network_method") == "ping" or \
-            self.main.config.GetVar("scan_network_method") == "static" or \
-            self.main.config.GetVar("scan_network_method") == "nmap":
-            # clean icons and files
-            self.main.listview.clear()
-            self.main.iconview.clear()
-            self.main.classview.clear()
+         # clean icons and files
+        self.main.listview.clear()
+        self.main.iconview.clear()
+        self.main.classview.clear()
+        
+        method=self.main.config.GetVar("scan_network_method")
+        
+        if method in ['ping', 'static', 'nmap']:
             allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             self.main.refreshbutton.set_sensitive(True)
             return False
             # ping will call populate_hostlist when finish
+        
+        elif method == 'avahi':
+            allclients=self.main.avahi.get_all_ips()
+            if not allclients:
+                self.main.write_into_statusbar ( _("Not connected hosts found.") )
+                return False
+            
+            if len(allclients)>0:
+                self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )
+                self.main.worker=tcosmonitor.shared.Workers(self.main, self.populate_hostlist, [allclients] )
+                self.main.worker.start()
+                return False
+        
         else:
-            # clean icons and files
-            self.main.listview.clear()
-            self.main.iconview.clear()
-            self.main.classview.clear()
             allclients=self.main.localdata.GetAllClients(self.main.config.GetVar("scan_network_method"))
             if len(allclients) != 0:
                 self.main.write_into_statusbar ( _("Found %d hosts" ) %len(allclients) )

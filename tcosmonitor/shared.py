@@ -84,7 +84,8 @@ scan_methods=[
 "ping",
 "nmap",
 "static",
-"consolekit"
+"consolekit",
+"avahi",
 ]
 
 vcodecs=["mp4v", "mp1v", "h264", "theo"]
@@ -657,6 +658,11 @@ def parseIPAddress(ipstr, return_ipv4=True):
     if re.match("[a-zA-Z].*:([0-9]{1,9})", ipstr):
         ipstr=ipstr.rsplit(":", 1)[0]
         return ipstr
+    
+    # match "127.0.0.1:10.0"
+    if re.match(".*:([0-9{1-9}][0-9{1-9}].[0-9{1-9}])$", ipstr):
+        ipstr=ipstr.rsplit(":", 1)[0]
+        return ipstr
 
     # hostname must start with letter and contain letters numbers and '-' or '.'
     if re.match("^[a-zA-Z][a-zA-Z0-9.-]+$", ipstr):
@@ -727,6 +733,7 @@ if __name__ == "__main__":
     print "   Hostname 'tcos-01:0'                     => '%s'" %parseIPAddress('tcos-01:0')
     print "   Hostname 'tcos.01:0'                     => '%s'" %parseIPAddress('tcos.01:0')
     print "   Hostname 'localhost:10.0'                => '%s'" %parseIPAddress('localhost:10.0')
+    print "   Hostname '127.0.0.1:10.0'                => '%s'" %parseIPAddress('127.0.0.1:10.0')
 
 
     # try with IPV6 $DISPLAY

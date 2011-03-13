@@ -304,6 +304,17 @@ class LocalData:
                 if not conn['is_local']:
                     self.allclients.append(conn['remote_host_name'])
             return self.allclients
+        
+        elif method == "avahi":
+            print_debug ( "GetAllClients() using method \"avahi\"" )
+            self.allclients=[]
+            if not hasattr(self.main, 'avahi'):
+                from tcosmonitor.Avahi import AvahiDiscover
+                self.main.avahi=AvahiDiscover( ['_workstation._tcp'] , 'tcos')
+                self.main.avahi.callback=self.main.actions.populate_host_list
+            
+            return self.main.avahi.get_all_ips()
+        
         else:
             self.allclients=[]
             if len(self.main.static.data) < 1:
