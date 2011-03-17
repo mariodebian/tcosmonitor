@@ -218,9 +218,10 @@ class TcosCommon:
         self.vars["display_hostname"]=self.vars["display_host"]
         self.vars["display_ip"]=self.vars["display_host"]
 
-
+        
         if self.vars["display_host"] != "":
-            self.vars["display_hostname"]=self.DNSgethostbyaddr(self.vars["display_host"])
+            #self.vars["display_hostname"]=self.DNSgethostbyaddr(self.vars["display_host"])
+            self.vars["display_hostname"]=self.vars["display_host"]
             self.vars["display_ip"]=self.lookup(self.vars["display_host"])
             
         else:
