@@ -613,6 +613,12 @@ import IPy
 import ipaddr
 import re
 
+def isIPAddr(ip_str):
+   pattern = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
+   if re.match(pattern, ip_str):
+      return True
+   else:
+      return False
 
 def is_bin(txt):
     if txt in ['3a', '2e', '61', '62', '63', '64', '65', '66']:
@@ -740,6 +746,11 @@ if __name__ == "__main__":
     print "   IPV6 DISPLAY '::ffff:192.168.0.1:0.0'    => '%s'" %parseIPAddress('::ffff:192.168.0.1:0.0')
     print "   IPV6 DISPLAY '::ffff:192.168.0.1:12'     => '%s'" %parseIPAddress('::ffff:192.168.0.1:12')
     print "   IPV6 DISPLAY '::ffff:172.16.10.200:12'   => '%s'" %parseIPAddress('::ffff:172.16.10.200:12')
+    
+    
+    print "   isIPAddr(127.0.0.1)  =%s"%isIPAddr('127.0.0.1')
+    print "   isIPAddr(pc22)       =%s"%isIPAddr('pc22')
+    print "   isIPAddr(localhost)  =%s"%isIPAddr('localhost')
 
 from threading import Thread
 
