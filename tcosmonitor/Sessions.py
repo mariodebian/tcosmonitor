@@ -213,7 +213,6 @@ class Connections(object):
     def __init__(self):
         self.connections=[]
         self.__get_all__()
-        pass
     
     def __get_all__(self):
         bus = dbus.SystemBus()
@@ -257,6 +256,29 @@ class Connections(object):
             return "%dd %s"%(diff.days, datetime.timedelta(0, diff.seconds))
         else:
             return "%s"%datetime.timedelta(0, diff.seconds)
+
+
+class MultiSeat(Connections):
+    def __init__(self):
+        Connections.__init__(self)
+        EMPTY={'is_local': None, 'unix_user': None, 'remote_host_name': None, 'active': None, 'diff': '', 'x11_display': '', 'since': '', 'user': ''}
+        multiseats={}
+        for seat in self.get_seats():
+            multiseats[seat]=EMPTY
+            multiseats[seat]['x11_display']=":%s"%seat
+            isrunning=False
+            for con in self.connections:
+                if con['x11_display'] == ":%s"%seat:
+                    multiseats[seat]=con
+                    isrunning=True
+            multiseats[seat]['running']=isrunning
+        self.connections=multiseats
+
+    def get_seats(self):
+        if os.path.isdir('/dev/usbseat/'):
+            return ['0'] + os.listdir('/dev/usbseat/')
+        return ['0']
+
 
 if __name__ == "__main__":
 #    # search for last connection of user prueba

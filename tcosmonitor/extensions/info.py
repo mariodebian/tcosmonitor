@@ -121,6 +121,9 @@ class Info(TcosExtension):
             
             elif tcos_vars["get_client"] == "standalone":
                 self.datatxt.insert_block( _("Standalone info") , image=shared.IMG_DIR + "standalone.png" )
+            
+            elif tcos_vars["get_client"] == "multiseat":
+                self.datatxt.insert_block( _("Multiseat info") , image=shared.IMG_DIR + "standalone.png" )
         
             else:
                 self.datatxt.insert_block( _("Unknow client info")  )
