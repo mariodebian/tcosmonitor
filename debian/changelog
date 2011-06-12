@@ -1,3 +1,16 @@
+tcosmonitor (0.2.42) unstable; urgency=low
+
+  * tcosmonitor/extensions/info.py: show Pulseaudio mixer if standalone without pingport()
+  * debian/copyright: Machine readable debian/copyright format
+  * update debian/copyright
+  * global license headers fix
+  * Add Avahi mDNS for discover thin clients
+  * tcosmonitor/shared.py: add isIPAddr method
+  * tcosmonitor/TcosCommon.py: don't make a gethostbyaddr()
+  * initial multiseat support
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 12 Jun 2011 13:48:09 +0200
+
 tcosmonitor (0.2.41) unstable; urgency=low
 
   * tcosmonitor/TcosActions.py: fix compare groupexclude,
