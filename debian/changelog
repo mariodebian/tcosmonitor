@@ -1,3 +1,9 @@
+tcosmonitor (0.2.43) unstable; urgency=low
+
+  * Remove 'op' Depends (breaks nmap mode)
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 06 Sep 2011 17:02:52 +0200
+
 tcosmonitor (0.2.42) unstable; urgency=low
 
   * tcosmonitor/extensions/info.py: show Pulseaudio mixer if standalone without pingport()

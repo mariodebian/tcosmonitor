@@ -87,11 +87,11 @@ class Ping:
         self.main.common.threads_leave("Nmap:only show tcos")
         
         if self.main.config.GetVar("onlyshowtcos") == 1:
-            print_debug("cmd='op nmap-tcos -sS -p%s -n --open -oX - %s'"%(tcosmonitor.shared.xmlremote_port, selfip))
-            cmd="op nmap-tcos -sS -p%s -n --open -oX - %s" %(tcosmonitor.shared.xmlremote_port, selfip)
+            print_debug("cmd='nmap -sS -p%s -n --open -oX - %s'"%(tcosmonitor.shared.xmlremote_port, selfip))
+            cmd="nmap -sS -p%s -n --open -oX - %s" %(tcosmonitor.shared.xmlremote_port, selfip)
         else:
-            print_debug("cmd='op nmap-tcos -sP -n -oX - %s'"%selfip)
-            cmd="op nmap-tcos -sP -n -oX - %s" %selfip
+            print_debug("cmd='nmap -sP -n -oX - %s'"%selfip)
+            cmd="nmap -sP -n -oX - %s" %selfip
             
         try:
             p = Popen(cmd, shell=True, bufsize=100000, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)

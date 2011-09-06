@@ -14,7 +14,6 @@ Depends:  python,
           tcosmonitor-common ( >= 0.2.39), 
           python-gtk-vnc, 
           gksu | kdebase-bin,
-          op,
           nmap,
           ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.16~rc9)

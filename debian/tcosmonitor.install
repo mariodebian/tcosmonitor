@@ -1,6 +1,5 @@
 debian/tmp/etc/tcos/tcosmonitor.conf
 debian/tmp/etc/tcos/tcos-devices-ng.conf
-debian/tmp/etc/op/op.d/nmap-tcos.conf
 
 debian/tmp/usr/share/tcosmonitor/images/*
 
