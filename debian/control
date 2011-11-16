@@ -3,7 +3,7 @@ Section: gnome
 Priority: optional
 Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
 Build-Depends: debhelper (>= 7.0.0), cdbs, python, python-support (>= 0.3)
-Standards-Version: 3.8.4
+Standards-Version: 3.9.2
 Vcs-Git: http://tcosproject.org/git/tcosmonitor.git
 Vcs-Browser: http://tcosproject.org/cgit/tcosmonitor.git/
 Homepage: http://www.tcosproject.org

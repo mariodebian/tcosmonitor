@@ -1,5 +1,7 @@
 tcosmonitor (0.2.43) unstable; urgency=low
 
+  * Promoted by "Antonio Pérez-Aranda <ant30tx@gmail.com>"
+	     from Yaco Sistemas SL <www.yaco.es>
   * Remove 'op' Depends (breaks nmap mode)
 
  -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Tue, 06 Sep 2011 17:02:52 +0200
