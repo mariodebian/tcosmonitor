@@ -1,6 +1,6 @@
 Source: tcosmonitor
 Section: gnome
-Priority: optional
+Priority: extra
 Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
 Build-Depends: debhelper (>= 7.0.0), cdbs, python, python-support (>= 0.3)
 Standards-Version: 3.9.2
