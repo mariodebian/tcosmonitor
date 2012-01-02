@@ -1,3 +1,14 @@
+tcosmonitor (0.2.44) unstable; urgency=low
+
+  * Change Priority to extra, we depend on some extra packages
+  * Fix spelling errors in manual pages
+  * README: Remove hex2ascii.c (is in tcos-core package)
+  * README.standalone: Update ports info
+  * Remove rsync doc
+  * Switch from CDBS to dh7 format
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 02 Jan 2012 17:08:18 +0100
+
 tcosmonitor (0.2.43) unstable; urgency=low
 
   * Promoted by "Antonio Pérez-Aranda <ant30tx@gmail.com>"
