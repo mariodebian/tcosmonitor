@@ -2,7 +2,7 @@ Source: tcosmonitor
 Section: gnome
 Priority: extra
 Maintainer: Mario Izquierdo (mariodebian) <mariodebian@gmail.com>
-Build-Depends: debhelper (>= 7.0.0), cdbs, python, python-support (>= 0.3)
+Build-Depends: debhelper (>= 7.0.50~), python-all (>=2.6.6-3~)
 Standards-Version: 3.9.2
 Vcs-Git: http://tcosproject.org/git/tcosmonitor.git
 Vcs-Browser: http://tcosproject.org/cgit/tcosmonitor.git/
@@ -10,13 +10,13 @@ Homepage: http://www.tcosproject.org
 
 Package: tcosmonitor
 Architecture: all
-Depends:  python, 
-          tcosmonitor-common ( >= 0.2.39), 
-          python-gtk-vnc, 
-          gksu | kdebase-bin,
-          nmap,
-          ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
-Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.16~rc9)
+Depends: python, 
+         tcosmonitor-common ( >= 0.2.39), 
+         python-gtk-vnc, 
+         gksu | kdebase-bin,
+         nmap,
+         ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Breaks: initramfs-tools-tcos (<= 0.88.16)
 Description: Thin client monitor for TCOS
  TCOS, thin Client Operating System is a method to create small embedded os
  based on Debian/Ubuntu with normal Debian kernel's.
@@ -25,30 +25,30 @@ Description: Thin client monitor for TCOS
 
 Package: tcosmonitor-common
 Architecture: all
-Depends:  python, 
-          python-utmp, 
-          python-dbus,
-          python-gtk2, 
-          python-dns, 
-          python-netifaces, 
-          python-notify, 
-          python-xlib,
-          python-ipaddr,
-          python-ipy,
-          python-eggtrayicon | python-gnome2-extras,
-          python-dateutil,
-          zenity, 
-          dbus, 
-          x11vnc, 
-          lsb-base (>= 3.0-6), 
-          notification-daemon | xfce4-notifyd, 
-          libnotify-bin, 
-          python-m2crypto,
-          python-medusa,
-          tcos-core ( >= 0.89.44), 
-          consolekit,
-          ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
-Conflicts: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.39)
+Depends: python, 
+         python-utmp, 
+         python-dbus,
+         python-gtk2, 
+         python-dns, 
+         python-netifaces, 
+         python-notify, 
+         python-xlib,
+         python-ipaddr,
+         python-ipy,
+         python-eggtrayicon | python-gnome2-extras,
+         python-dateutil,
+         zenity, 
+         dbus, 
+         x11vnc, 
+         lsb-base (>= 3.0-6), 
+         notification-daemon | xfce4-notifyd, 
+         libnotify-bin, 
+         python-m2crypto,
+         python-medusa,
+         tcos-core ( >= 0.89.44), 
+         consolekit,
+         ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Breaks: initramfs-tools-tcos (<= 0.88.16), tcosmonitor (<=0.2.39)
 Description: Thin client monitor for TCOS (common files)
  TCOS, thin Client Operating System is a method to create small embedded os
  based on Debian/Ubuntu with normal Debian kernel's.
