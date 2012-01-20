@@ -1318,7 +1318,7 @@ class TcosDevicesNG:
     def remove_dupes(self, mylist):
         """
         check for duplicate events, 
-        kernel create 3-4 umount events before mounting a device
+        kernel sometimes create 3-4 umount events before mounting a device
         the events are created and diff at max 1 second
         """
         if len(mylist) != 1:
@@ -1326,7 +1326,10 @@ class TcosDevicesNG:
             have_mount=False
             umount_index=None
             nodupes=[]
-            nodupes=[ u for u in mylist if u not in locals()['_[1]'] ]
+            try:
+                nodupes=list(set(mylist))
+            except:
+                pass
             
             # if have ACTION=umount and ACTION=mount and 
             # DEVPATH is the same remove ACTION=umount
