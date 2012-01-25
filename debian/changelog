@@ -1,3 +1,9 @@
+tcosmonitor (0.2.45) unstable; urgency=low
+
+  * tcos-devices-ng.py: fix remove_duplicates() inliner
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Wed, 25 Jan 2012 11:59:16 +0100
+
 tcosmonitor (0.2.44) unstable; urgency=low
 
   * Change Priority to extra, we depend on some extra packages
