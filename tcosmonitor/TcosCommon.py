@@ -190,14 +190,18 @@ class TcosCommon:
 
     def lookup(self, name):
         response=name
-        try:
-            c=DNS.Base.DnsRequest(name, qtype = 'a', timeout=0.2).req()
-            response=c.answers[0]['data']
-        except DNS.Base.DNSError, err:
-            print_debug("revlookup() Exception Timeout, error=%s"%err)
-        except IndexError, err:
-            #print_debug("revlookup() Exception IndexError, error=%s"%err)
-            return name
+        if DNS.Base.defaults['server'] == []:
+            DNS.Base.DiscoverNameServers()
+        # /etc/resolv.conf can have 2 or more nameservers
+        # ask every nameserver DNS
+        for nameserver in DNS.Base.defaults['server']:
+            try:
+                c=DNS.Base.DnsRequest(name, qtype = 'a', timeout=0.2, server=nameserver).req()
+                response=c.answers[0]['data']
+            except DNS.Base.DNSError, err:
+                print_debug("revlookup() nameserver=%s Exception Timeout, error=%s"%(nameserver,err))
+            except IndexError, err:
+                print_debug("revlookup() nameserver=%s Exception IndexError, error=%s"%(nameserver, err))
         return response
 
     def DNSgethostbyaddr(self, ip):
