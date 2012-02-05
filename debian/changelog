@@ -1,9 +1,17 @@
+tcosmonitor (0.2.47) unstable; urgency=low
+
+  * tcosmonitor/TcosCommon.py:
+    - Fix print_debug() typo in lookup()
+    - Do a revlookup() in all nameservers
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 05 Feb 2012 21:57:29 +0100
+
 tcosmonitor (0.2.46) unstable; urgency=low
 
   * tcosmonitor/TcosCommon.py:
     - Ask all nameservers and init server list in lookup()
 
- -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 05 Feb 2012 21:16:51 +0100
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 05 Feb 2012 21:56:40 +0100
 
 tcosmonitor (0.2.45) unstable; urgency=low
 
