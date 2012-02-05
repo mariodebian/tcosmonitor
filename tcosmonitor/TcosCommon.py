@@ -178,14 +178,15 @@ class TcosCommon:
         b = ".".join(a)+'.in-addr.arpa'
         # this will only return one of any records returned.
         response=_("unknow")
-        try:
-            c=DNS.Base.DnsRequest(b, qtype = 'ptr', timeout=0.2).req()
-            response=c.answers[0]['data']
-        except DNS.Base.DNSError, err:
-            print_debug("revlookup() Exception Timeout, error=%s"%err)
-        except IndexError, err:
-            #print_debug("revlookup() Exception IndexError, error=%s"%err)
-            return _("unknow")
+        for nameserver in DNS.Base.defaults['server']:
+            try:
+                print_debug("revlookup() reverse name=%s"%b)
+                c=DNS.Base.DnsRequest(b, qtype = 'ptr', timeout=0.2, server=nameserver).req()
+                response=c.answers[0]['data']
+            except DNS.Base.DNSError, err:
+                print_debug("revlookup() nameserver=%s Exception Timeout, error=%s"%(nameserver,err))
+            except IndexError, err:
+                print_debug("revlookup() nameserver=%s Exception IndexError, error=%s"%(nameserver,err))
         return response
 
     def lookup(self, name):
@@ -199,9 +200,9 @@ class TcosCommon:
                 c=DNS.Base.DnsRequest(name, qtype = 'a', timeout=0.2, server=nameserver).req()
                 response=c.answers[0]['data']
             except DNS.Base.DNSError, err:
-                print_debug("revlookup() nameserver=%s Exception Timeout, error=%s"%(nameserver,err))
+                print_debug("lookup() nameserver=%s Exception Timeout, error=%s"%(nameserver,err))
             except IndexError, err:
-                print_debug("revlookup() nameserver=%s Exception IndexError, error=%s"%(nameserver, err))
+                print_debug("lookup() nameserver=%s Exception IndexError, error=%s"%(nameserver, err))
         return response
 
     def DNSgethostbyaddr(self, ip):
