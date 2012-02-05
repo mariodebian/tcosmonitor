@@ -1,3 +1,10 @@
+tcosmonitor (0.2.46) unstable; urgency=low
+
+  * tcosmonitor/TcosCommon.py:
+    - Ask all nameservers and init server list in lookup()
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 05 Feb 2012 21:16:51 +0100
+
 tcosmonitor (0.2.45) unstable; urgency=low
 
   * tcos-devices-ng.py: fix remove_duplicates() inliner
