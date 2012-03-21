@@ -148,10 +148,10 @@ class VideoOne(TcosExtension):
             return
             
         if access == "udp":
-            remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --loop" %(ip_broadcast)
-            remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --loop" %(ip_broadcast)
+            remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --volume=300 --fullscreen --aspect-ratio=4:3 --loop" %(ip_broadcast)
+            remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --volume=300 --aspect-ratio=4:3 --loop" %(ip_broadcast)
             
-        p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+        p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000"], shell=False, bufsize=0, close_fds=True)
             
         self.main.write_into_statusbar( _("Waiting for start video transmission...") )
             
@@ -177,13 +177,13 @@ class VideoOne(TcosExtension):
                 self.main.xmlrpc.newhost(ip)
                 if access == "http":
                     server=self.main.xmlrpc.GetStandalone("get_server")
-                    remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_broadcast)
+                    remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_broadcast)
                 self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
             else:
                 newusernames.append(user)
                         
         if access == "http":
-            remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" % (ip_broadcast)
+            remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" % (ip_broadcast)
                     
         result = self.main.dbus_action.do_exec( newusernames, remote_cmd_thin )
             
@@ -274,11 +274,11 @@ class VideoOne(TcosExtension):
                     elif uip == max_uip:
                         print_debug("Not found an available broadcast ip")
                         return
-                remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --loop" %(ip_unicast)
+                remote_cmd="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --volume=300 --aspect-ratio=4:3 --loop" %(ip_unicast)
             else:
                 uip_cmd=""
                 ip_unicast="%s:1234" %self.main.selected_ip
-                remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --loop"
+                remote_cmd="vlc udp://@:1234 --udp-caching=1000 --aout=alsa --brightness=2.000000 --volume=300 --fullscreen --aspect-ratio=4:3 --loop"
         else:
             max_uip=50255
             uip=50000
@@ -297,7 +297,7 @@ class VideoOne(TcosExtension):
                     print_debug("Not found an available broadcast ip")
                     return
             if self.client_type == "tcos":
-                remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" %(ip_unicast)
+                remote_cmd="vlc http://localhost%s --aout=alsa --brightness=2.000000 --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" %(ip_unicast)
        
         if uip_cmd != "":
             result = self.main.localdata.Route("route-add", uip_cmd, "255.255.255.0", eth)
@@ -344,13 +344,13 @@ class VideoOne(TcosExtension):
                     msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
                     shared.info_msg( msg )
                     return
-                p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000"], shell=False, bufsize=0, close_fds=True)
             elif response == 1:
-                p=subprocess.Popen(["vlc", "dvdsimple:///dev/cdrom", "--sout=#duplicate{dst=display{delay=700},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "dvdsimple:///dev/cdrom", "--sout=#duplicate{dst=display{delay=700},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000"], shell=False, bufsize=0, close_fds=True)
             elif response == 2:
-                p=subprocess.Popen(["vlc", "vcd:///dev/cdrom", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "vcd:///dev/cdrom", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000"], shell=False, bufsize=0, close_fds=True)
             elif response == 3:
-                p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_unicast), "--miface=%s" %eth, "--ttl=12"], shell=False, bufsize=0, close_fds=True)
             # exec this app on client
             
             self.main.write_into_statusbar( _("Waiting for start video transmission...") )
@@ -375,7 +375,7 @@ class VideoOne(TcosExtension):
                     # we have a standalone user...
                     if access == "http":
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_unicast)
+                        remote_cmd="vlc http://%s%s --aout=alsa --brightness=2.000000 --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_unicast)
                     self.main.xmlrpc.DBus("exec", remote_cmd )
                 else:
                     newusernames.append(user)
@@ -577,18 +577,18 @@ class VideoOne(TcosExtension):
                     msg=_("Not allowed white spaces in \"%s\".\nPlease rename it." %os.path.basename(filename) )
                     shared.info_msg( msg )
                     return
-                p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "file://%s" %filename, "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000"], shell=False, bufsize=0, close_fds=True)
             elif response == 1:
-                p=subprocess.Popen(["vlc", "dvdsimple:///dev/cdrom", "--sout=#duplicate{dst=display{delay=700},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "dvdsimple:///dev/cdrom", "--sout=#duplicate{dst=display{delay=700},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--loop", "--brightness=2.000000"], shell=False, bufsize=0, close_fds=True)
             elif response == 2:
-                p=subprocess.Popen(["vlc", "vcd:///dev/cdrom", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "vcd:///dev/cdrom", "--sout=#duplicate{dst=display{delay=1000},dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=800,ab=112,channels=2,soverlay}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--brightness=2.000000"], shell=False, bufsize=0, close_fds=True)
             elif response == 3:
-                p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12", "--no-x11-shm", "--no-xvideo-shm"], shell=False, bufsize=0, close_fds=True)
+                p=subprocess.Popen(["vlc", "cdda:///dev/cdrom", "--sout=#duplicate{dst=display,dst=\"transcode{vcodec=%s,venc=%s,acodec=%s,aenc=%s,vb=200,ab=112,channels=2}:standard{access=%s,mux=%s,dst=%s}\"}" %(vcodec, venc, acodec, aenc, access, mux, ip_broadcast), "--miface=%s" %eth, "--ttl=12"], shell=False, bufsize=0, close_fds=True)
             # exec this app on client
             
             if access == "udp":
-                remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --loop" %(ip_broadcast)
-                remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --loop" %(ip_broadcast)
+                remote_cmd_standalone="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --volume=300 --fullscreen --aspect-ratio=4:3 --loop" %(ip_broadcast)
+                remote_cmd_thin="vlc udp://@%s --udp-caching=1000 --aout=alsa --brightness=2.000000 --volume=300 --aspect-ratio=4:3 --loop" %(ip_broadcast)
 
             self.main.write_into_statusbar( _("Waiting for start video transmission...") )
         
@@ -614,13 +614,13 @@ class VideoOne(TcosExtension):
                     self.main.xmlrpc.newhost(ip)
                     if access == "http":
                         server=self.main.xmlrpc.GetStandalone("get_server")
-                        remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_broadcast)
+                        remote_cmd_standalone="vlc http://%s%s --aout=alsa --brightness=2.000000 --volume=300 --fullscreen --aspect-ratio=4:3 --http-reconnect --loop" %(server, ip_broadcast)
                     self.main.xmlrpc.DBus("exec", remote_cmd_standalone )
                 else:
                     newusernames.append(user)
                         
             if access == "http":
-                remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --no-x11-shm --no-xvideo-shm --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" % (ip_broadcast)
+                remote_cmd_thin="vlc http://localhost%s --aout=alsa --brightness=2.000000 --volume=300 --aspect-ratio=4:3 --http-reconnect --loop" % (ip_broadcast)
                     
             result = self.main.dbus_action.do_exec( newusernames, remote_cmd_thin )
             
