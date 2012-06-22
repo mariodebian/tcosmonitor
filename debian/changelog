@@ -1,3 +1,10 @@
+tcosmonitor (0.2.48) unstable; urgency=low
+
+  * Add French translation (closes: #678235)
+    Thanks to Julien Patriarca <patriarcaj@gmail.com>
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Fri, 22 Jun 2012 13:33:28 +0200
+
 tcosmonitor (0.2.47) unstable; urgency=low
 
   * tcosmonitor/TcosCommon.py:
