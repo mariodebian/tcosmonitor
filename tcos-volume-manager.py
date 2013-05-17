@@ -97,19 +97,8 @@ class TcosVolumeManager:
             icon.set_tooltip( _("Tcos Sound levels on:\n%s") %(self.host) )
             icon.connect("activate", self.on_tray_icon_press_event)
         else:
-            import egg.trayicon
-            icon = egg.trayicon.TrayIcon("TCOS_sound")
-            eventbox = gtk.EventBox()
-            icon.add(eventbox)
-            image=gtk.Image()
-            image.set_from_file (shared.IMG_DIR + "tcos-volume-32x32.png")
-            eventbox.add(image)
-            tips = gtk.Tooltips() # deprecated
-            
-            tips.set_tip(icon, ( _("Tcos Sound levels on:\n%s") %(self.host) )[0:79])
-            tips.enable()
-            icon.show_all()
-            eventbox.connect("button_press_event", self.on_tray_icon_press_event)
+            shared.error_msg( _("ERROR: No tray icon support") )
+            sys.exit(1)
         
         
         from tcosmonitor.ping import PingPort

@@ -170,22 +170,8 @@ class TcosTrayIcon:
             self.statusIcon.set_tooltip( _("Tcos Devices") )
             self.statusIcon.connect('popup-menu', self.popup_menu)
         else:
-            # based on http://www.burtonini.com/computing/notify.py
-            import egg.trayicon
-            icon = egg.trayicon.TrayIcon("TCOS")
-            eventbox = gtk.EventBox()
-            icon.add(eventbox)
-            #tcos-icon-32x32.png
-            image=gtk.Image()
-            image.set_from_file (tcosmonitor.shared.IMG_DIR + "tcos-devices-32x32.png")
-            eventbox.add(image)
-            tips = gtk.Tooltips()
-            
-            tips.set_tip(icon, ( _("Tcos Devices") )[0:79])
-            tips.enable()
-            icon.show_all()
-            eventbox.connect("button_press_event", self.popup_menu2)
-        return
+            shared.error_msg( _("ERROR: No tray icon support") )
+            sys.exit(1)
      
     def popup_menu(self, widget, button, mtime):
         self.InitMenu()
