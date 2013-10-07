@@ -257,6 +257,7 @@ class TcosMonitor(object):
             self.ftp_thread.setDaemon(1)
             self.ftp_thread.start()
         except Exception, err:
+            shared.error_msg("Exception starting FTPs %s" %err)
             pass
 
     def loadconf(self, conffile):
