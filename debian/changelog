@@ -1,3 +1,10 @@
+tcosmonitor (0.2.49) unstable; urgency=low
+
+  * Remove python-eggtrayicon, (closes #702104)
+  * Add msg if FTP fail
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Mon, 07 Oct 2013 15:43:20 +0200
+
 tcosmonitor (0.2.48) unstable; urgency=low
 
   * Add French translation (closes: #678235)
