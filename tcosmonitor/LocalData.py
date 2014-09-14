@@ -49,6 +49,19 @@ def crono(start, txt):
     print_debug ("crono(), %s get %f seconds" %(txt, (time() - start)) )
     return
 
+def _hex2dec(s):
+    return str(int(s,16))
+
+def _ip(s):
+    ip = [(_hex2dec(s[6:8])),(_hex2dec(s[4:6])),(_hex2dec(s[2:4])),(_hex2dec(s[0:2]))]
+    return '.'.join(ip)
+
+def _remove_empty(array):
+    return [x for x in array if x !='']
+
+def _convert_ip_port(array):
+    host,port = array.split(':')
+    return _ip(host),_hex2dec(port)
 
 
 class LocalData:
@@ -193,6 +206,31 @@ class LocalData:
         _append(current_fragment)    
         return tuple(index)
 
+    def _netstat(self):
+        '''
+        Function to return a list with status of tcp connections at linux systems
+        To get pid of all network process running on system, you must run this script
+        as superuser
+        '''
+        with open("/proc/net/tcp",'r') as f:
+            content = f.readlines()
+            content.pop(0)
+
+        result = []
+        for line in content:
+            line_array = _remove_empty(line.split(' '))     # Split lines and remove empty spaces.
+            l_host,l_port = _convert_ip_port(line_array[1]) # Convert ipaddress and port from hex to decimal.
+            r_host,r_port = _convert_ip_port(line_array[2]) 
+            tcp_id = line_array[0]
+            # only ESTABLISHED
+            if line_array[3] != '01':
+                continue
+            if int(r_port) not in range(6000, 6010):
+                continue
+
+            result.append(r_host +':'+r_port)
+        return result
+
         
     def GetAllClients(self, method):
         """
@@ -241,9 +279,9 @@ class LocalData:
             self.allclients=[]
             self.hostname=None
             #read this command output
-            cmd="LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
-            
-            output=self.main.common.exe_cmd(cmd)
+            #cmd="LC_ALL=C LC_MESSAGES=C netstat -putan 2>/dev/null | grep  \":600[0-9] \"| grep ESTABLISHED | awk '{print $5}'"
+            #output=self.main.common.exe_cmd(cmd)
+            output=self._netstat()
             
             #avoid to have a spimple string
             if isinstance(output, str):
@@ -559,6 +597,8 @@ class LocalData:
                                 continue
                             print_debug(" Ip \"%s:0\" => found host=%s hostname=%s ut_line=%s user=%s pid=%s" % \
                                 (ip, hostname, b.ut_host, b.ut_line, b.ut_user, b.ut_pid))
+                            if b.ut_user == '(unknown)':
+                                b.ut_user=''
                             last=b
                 a.endutent()
                 if last and os.path.isdir("/proc/%s"%last.ut_pid):
