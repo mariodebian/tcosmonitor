@@ -226,11 +226,11 @@ class AudioRTP(TcosExtension):
             shared.error_msg( _("No users logged.") )
             return
 
-        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
-        output=self.main.common.exe_cmd(cmd)
-        if output != "1":
-            shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
-            return
+        # cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
+        # output=self.main.common.exe_cmd(cmd)
+        # if output != "1":
+        #     shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
+        #     return
         
         msg=_( _("Do you want to start audio conference to the following users: %s?" )%(self.connected_users_txt) )
                                                 
@@ -313,11 +313,11 @@ class AudioRTP(TcosExtension):
             shared.error_msg( _("Can't start conference mode, user is not logged") )
             return
         
-        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
-        output=self.main.common.exe_cmd(cmd)
-        if output != "1":
-            shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
-            return
+        # cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
+        # output=self.main.common.exe_cmd(cmd)
+        # if output != "1":
+        #     shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
+        #     return
             
         msg=_( _("Do you want audio conference from user %s?" ) %(client_simple) )
         if not shared.ask_msg ( msg ):
@@ -405,11 +405,11 @@ class AudioRTP(TcosExtension):
             shared.error_msg( _("No users logged.") )
             return
 
-        cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
-        output=self.main.common.exe_cmd(cmd)
-        if output != "1":
-            shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
-            return
+        # cmd=("LC_ALL=C LC_MESSAGES=C pactl --version 2>/dev/null | awk '{print $2}' | awk -F\".\" '{if ((int($2) >= 9) && (int($3) >= 10)) printf 1}'")
+        # output=self.main.common.exe_cmd(cmd)
+        # if output != "1":
+        #     shared.error_msg( _("Your pulseaudio server is too old.\nIs required pulseaudio version >= 0.9.10") )
+        #     return
         
         msg=_( _("Do you want to start audio chat conference to the following users: %s?" )%(self.connected_users_txt) )
                                                 
