@@ -1,3 +1,13 @@
+tcosmonitor (0.2.50) unstable; urgency=low
+
+  * LocalData.py: Use native netstat() reading /proc/net/tcp
+  * tcosmonitor.py: exit if can't start FTP SSL server
+  * extensions/audiortp.py: Disable Pulseaudio version check,
+    all supported versions have > 0.9.10
+  * Bump standards version to 3.9.5, no changes needed
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sun, 14 Sep 2014 17:10:51 +0200
+
 tcosmonitor (0.2.49) unstable; urgency=low
 
   * Remove python-eggtrayicon, (closes: #702104)
