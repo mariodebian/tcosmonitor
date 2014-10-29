@@ -1,5 +1,8 @@
 #!/usr/bin/make -f
 
+DISTRO_VERSION=$(shell dpkg-parsechangelog | awk '/^Distribution/ {print $$2}')
+
+
 %:
 	dh $@ --with python2
 
@@ -8,20 +11,14 @@ override_dh_auto_clean:
 	dh_auto_clean
 	cd po && make clean
 
+override_dh_install:
+	dh_install
+
+ifeq ($(DISTRO_VERSION),max)
+	sed -i '/show_donate/s/1/0/g' debian/tcosmonitor-common/usr/lib/python2.*/dist-packages/tcosmonitor/shared.py;
+endif
+	
 
 
 .PHONY: override_dh_auto_clean
 
-#install/tcosmonitor::
-#	@if [ `find $(CURDIR)/debian/tmp/ -name "*.py" | xargs grep __VERSION__ | wc -l` != 0 ]; then \
-#		echo "__VERSION__ unparsed"; \
-#		find *.py | xargs grep __VERSION__;\
-#		exit 1; \
-#	fi
-#
-#
-#binary-predeb/tcosmonitor-common::
-#	# link doc
-#	rm -rf debian/tcosmonitor/usr/share/doc/tcosmonitor
-#	ln -s tcosmonitor-common debian/tcosmonitor/usr/share/doc/tcosmonitor
-#
