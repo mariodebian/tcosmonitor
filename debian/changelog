@@ -1,3 +1,12 @@
+tcosmonitor (0.2.51) unstable; urgency=low
+
+  * Disable show_donate on MAX and add dh-python as build depend
+  * Move project to github
+  * Add more proc names to hidden
+  * Use loginctl, if avalaible, to search user in IP
+
+ -- Mario Izquierdo (mariodebian) <mariodebian@gmail.com>  Sat, 21 Feb 2015 14:48:45 +0100
+
 tcosmonitor (0.2.50) unstable; urgency=low
 
   * LocalData.py: Use native netstat() reading /proc/net/tcp
