@@ -32,6 +32,7 @@ from UTMPCONST import WTMP_FILE, USER_PROCESS
 
 import pwd, grp
 import socket
+import datetime
 
 COL_HOST, COL_IP, COL_USERNAME, COL_ACTIVE, COL_LOGGED, COL_BLOCKED, COL_PROCESS, COL_TIME = range(8)
 
@@ -81,6 +82,7 @@ class LocalData:
         self.time_login=None
         self.allhostdata=[]
         self.arptable=[]
+        self._loginctlcache={}
         if self.main:
             self.cache_timeout=self.main.config.GetVar("cache_timeout")
     
@@ -542,6 +544,73 @@ class LocalData:
                     exclude="exclude"
         return exclude
 
+    def getLastLoginctl(self, ip, ingroup=None):
+        if ip in self._loginctlcache.keys():
+            if time() - self._loginctlcache[ip]['_cache'] < 5:
+                print_debug("getLastLoginctl(%s) return from cache" % ip)
+                return self._loginctlcache[ip]
+            #
+            #
+        LOGINCTL = "LC_ALL=C loginctl --no-legend "
+        import commands
+        ret = commands.getoutput(LOGINCTL + "list-sessions")
+        # print ret
+        # SESSION        UID USER             SEAT
+        for line in ret.split('\n'):
+            # print "line=%s" % line
+            tmp = line.split()
+            # print tmp
+            sess_id = tmp[0]
+            sess_attrs = commands.getoutput(LOGINCTL + "show-session %s" % sess_id)
+            sess_attrs = sess_attrs.split('\n')
+            tmp_session_data = {}
+            for l in sess_attrs:
+                tmp3 = l.split('=')
+                tmp_session_data[tmp3[0]] = tmp3[1]
+            #
+            #
+            ip_addr = str(tcosmonitor.shared.parseIPAddress(tmp_session_data['Display']))
+            #
+            if tmp_session_data['Active'] != 'yes' or \
+               tmp_session_data['Type'] != 'x11' or \
+               tmp_session_data['State'] != 'active' or \
+               tmp_session_data['Class'] != 'user':
+                # print_debug("getLastLoginctl() NO ACTIVE ip=%s %s" % (ip, tmp_session_data))
+                continue
+            elif ip != ip_addr:
+                # print_debug("getLastLoginctl() NO IP  '%s' != '%s'" % (ip, ip_addr))
+                continue
+            else:
+                #
+                print_debug("getLastLoginctl(%s) FOUND %s" % (ip, tmp_session_data['Name']))
+                #
+                tmp_date = tmp_session_data['Timestamp'].split()
+                since = datetime.datetime.strptime(tmp_date[1] + " " + tmp_date[2], '%Y-%m-%d %H:%M:%S')
+                #
+                diff = (datetime.datetime.now() - since).total_seconds()
+                days = int(diff / (3600 * 24))
+                diff = diff - days * 3600 * 24
+                hours = int(diff / 3600)
+                diff = diff - hours * 3600
+                minutes = int(diff / 60)
+                seconds = int(diff - minutes * 60)
+                if days == 0:
+                    timelogged = "%02dh:%02dm" % (hours, minutes)
+                else:
+                    timelogged = "%dd %02dh:%02dm" % (days, hours, minutes)
+
+                data = {"pid": 0,
+                        "user": tmp_session_data['Name'],
+                        "host": ip,
+                        "time": since,
+                        "timelogged": timelogged,
+                        "exclude": self.isLastExclude(tmp_session_data['Name'], ingroup)
+                        }
+                self._loginctlcache[ip] = data
+                self._loginctlcache[ip]['_cache'] = time()
+                return data
+        return None
+
     def GetLast(self, ip, ingroup=None):
         start=time()
         last=None
@@ -550,6 +619,15 @@ class LocalData:
             ip=self.GetIpAddress(ip)
         hostname=self.GetHostname(ip)
         print_debug("GetLast() ip=%s hostname=%s "%(ip, hostname) )
+
+        # use loginctl from systemd to search usernames
+        if os.path.isfile('/bin/loginctl'):
+            try:
+                tmp = self.getLastLoginctl(ip, ingroup)
+                if tmp is not None:
+                    return tmp
+            except:
+                pass
         
         if self.main.config.GetVar("consolekit") == 1:
             # try to connect with GDM througth dbus to read all 
