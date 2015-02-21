@@ -98,6 +98,7 @@ class ViewProc(TcosExtension):
             
             if int(self.main.config.GetVar("systemprocess")) == 0:
                 for hidden in shared.system_process:
+                    # print_debug ( "%s in %s"  % (hidden, name))
                     if hidden in name:
                         is_hidden=True
             
